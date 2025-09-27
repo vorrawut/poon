@@ -107,14 +107,45 @@ test-ui: ## 🧪 Run tests with UI
 
 test-e2e: ## 🧪 Run end-to-end tests
 	@echo "$(CYAN)🧪 Running E2E tests...$(RESET)"
+	@echo "$(YELLOW)🏠 Starting local server for E2E tests...$(RESET)"
 	npm run test:e2e
+	@echo "$(GREEN)✅ E2E tests completed!$(RESET)"
+
+test-e2e-ui: ## 🧪 Run E2E tests with UI
+	@echo "$(CYAN)🧪 Starting E2E test UI...$(RESET)"
+	@echo "$(YELLOW)💡 This will open Playwright Test Runner UI$(RESET)"
+	npm run test:e2e:ui
+
+test-e2e-headed: ## 🧪 Run E2E tests in headed mode (visible browser)
+	@echo "$(CYAN)🧪 Running E2E tests in headed mode...$(RESET)"
+	npx playwright test --headed
+
+test-e2e-debug: ## 🧪 Run E2E tests in debug mode
+	@echo "$(CYAN)🔍 Running E2E tests in debug mode...$(RESET)"
+	npx playwright test --debug
+
+test-e2e-report: ## 📊 Show E2E test report
+	@echo "$(CYAN)📊 Opening E2E test report...$(RESET)"
+	npx playwright show-report e2e-results
+
+test-e2e-install: ## 📦 Install Playwright browsers
+	@echo "$(CYAN)📦 Installing Playwright browsers...$(RESET)"
+	npx playwright install
+	@echo "$(GREEN)✅ Playwright browsers installed!$(RESET)"
+
+test-e2e-clean: ## 🧹 Clean E2E test results
+	@echo "$(CYAN)🧹 Cleaning E2E test results...$(RESET)"
+	@rm -rf e2e-results test-results
+	@echo "$(GREEN)✅ E2E test results cleaned!$(RESET)"
 
 test-all: ## 🧪 Run all tests (unit + coverage + e2e)
 	@echo "$(CYAN)🧪 Running complete test suite...$(RESET)"
+	@$(MAKE) type-check
 	@$(MAKE) test-run
 	@$(MAKE) test-coverage
 	@$(MAKE) test-e2e
 	@echo "$(GREEN)🎉 Complete test suite finished!$(RESET)"
+	@echo "$(YELLOW)📊 Check coverage/index.html and e2e-results/index.html for detailed reports$(RESET)"
 
 #==============================================================================
 # Linting & Formatting
