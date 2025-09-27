@@ -21,14 +21,14 @@ const typeStyles = {
   warning: "from-yellow-500/20 to-orange-600/20 border-yellow-400/30",
   celebration: "from-rose-500/20 to-red-600/20 border-rose-400/30",
   insight: "from-purple-500/20 to-pink-600/20 border-purple-400/30",
-  alert: "from-teal-500/20 to-cyan-600/20 border-teal-400/30"
+  alert: "from-teal-500/20 to-cyan-600/20 border-teal-400/30",
 };
 
-export function SmartHighlights({ 
-  highlights, 
+export function SmartHighlights({
+  highlights,
   title = "Smart Highlights",
   subtitle = "Your personal financial newsfeed — like Spotify Wrapped, but every week!",
-  className = "" 
+  className = "",
 }: SmartHighlightsProps) {
   return (
     <motion.div
@@ -42,11 +42,9 @@ export function SmartHighlights({
           <span className="mr-3">🧠</span>
           {title}
         </h2>
-        <p className="text-white/70 max-w-2xl mx-auto">
-          {subtitle}
-        </p>
+        <p className="text-white/70 max-w-2xl mx-auto">{subtitle}</p>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {highlights.map((highlight, index) => (
           <motion.div
@@ -62,9 +60,7 @@ export function SmartHighlights({
               <div className="text-3xl">{highlight.icon}</div>
               <h3 className="text-white font-bold">{highlight.title}</h3>
             </div>
-            <p className="text-white/80 text-sm">
-              {highlight.message}
-            </p>
+            <p className="text-white/80 text-sm">{highlight.message}</p>
           </motion.div>
         ))}
       </div>

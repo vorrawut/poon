@@ -67,7 +67,7 @@ export function GoalsAsStars({ goals, className = "" }: GoalsAsStarsProps) {
   const getConstellationPositions = (index: number, total: number) => {
     // Arrange stars in a natural constellation pattern with consistent positioning
     const baseAngle = (index / total) * 2 * Math.PI;
-    const angleVariation = (index % 2 === 0 ? 0.2 : -0.2); // Deterministic variation
+    const angleVariation = index % 2 === 0 ? 0.2 : -0.2; // Deterministic variation
     const angle = baseAngle + angleVariation;
     const radius = 80 + (index % 3) * 20; // Deterministic radius between 80-120px
 
@@ -78,7 +78,9 @@ export function GoalsAsStars({ goals, className = "" }: GoalsAsStarsProps) {
   };
 
   return (
-    <div className={`relative p-12 min-w-[380px] min-h-[380px] overflow-visible ${className}`}>
+    <div
+      className={`relative p-12 min-w-[380px] min-h-[380px] overflow-visible ${className}`}
+    >
       {/* Background Galaxy */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-gradient-radial from-purple-900/20 via-transparent to-transparent" />
@@ -116,7 +118,6 @@ export function GoalsAsStars({ goals, className = "" }: GoalsAsStarsProps) {
                   className="relative group cursor-pointer"
                   whileHover={{ scale: 1.5 }}
                 >
-
                   {/* Star Core */}
                   <motion.div
                     className="relative rounded-full"
@@ -200,7 +201,6 @@ export function GoalsAsStars({ goals, className = "" }: GoalsAsStarsProps) {
                     <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 border-4 border-transparent border-t-black/80" />
                   </motion.div>
                 </motion.div>
-
               </motion.div>
             );
           })}

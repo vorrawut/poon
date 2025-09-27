@@ -1,16 +1,59 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { SplitText, FadeIn, TimeRangeSelector } from "../components/ui";
 import { EnhancedNetWorthWidget } from "../features/networth/components/EnhancedNetWorthWidget";
 import { EnhancedAccountsWidget } from "../features/accounts/components/EnhancedAccountsWidget";
 import { RecentTransactionsWidget } from "../features/transactions";
+import {
+  SmartHighlights,
+  DualLensToggle,
+  UniverseBackground,
+} from "../components/widgets";
 // Debug components - remove in production
 import { EnvironmentDebugger } from "../components/EnvironmentDebugger";
 import { ServiceTester } from "../components/ServiceTester";
 import { DirectServiceTest } from "../components/DirectServiceTest";
 import { MockDataDisplay } from "../components/MockDataDisplay";
 
+// Accounts Smart Highlights
+const accountsHighlights = [
+  {
+    id: "1",
+    title: "Account Health Check",
+    message:
+      "All 5 accounts are connected and syncing perfectly! Your financial data is up-to-date across the board.",
+    icon: "✅",
+    type: "success" as const,
+  },
+  {
+    id: "2",
+    title: "Balance Alert",
+    message:
+      "Your checking account balance is running low at $1,240. Consider transferring from savings or monitoring upcoming bills.",
+    icon: "⚠️",
+    type: "warning" as const,
+  },
+  {
+    id: "3",
+    title: "Investment Growth",
+    message:
+      "Your investment accounts gained $2,340 this month! Your diversified portfolio is working hard for you.",
+    icon: "📈",
+    type: "info" as const,
+  },
+  {
+    id: "4",
+    title: "Security Update",
+    message:
+      "Great job! All your accounts have strong security settings enabled. Your financial data is well protected.",
+    icon: "🔒",
+    type: "insight" as const,
+  },
+];
+
 export function AccountsPage() {
   const [timeRange, setTimeRange] = useState<"7d" | "30d" | "90d">("30d");
+  const [viewMode, setViewMode] = useState<"play" | "clarity">("clarity");
 
   const handleQuickAction = (action: string, data?: unknown) => {
     console.log("Quick action:", action, data);
@@ -49,9 +92,18 @@ export function AccountsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50">
+    <div
+      className={`min-h-screen relative overflow-hidden ${
+        viewMode === "play"
+          ? "bg-gradient-to-br from-emerald-900 via-teal-900 to-cyan-900"
+          : "bg-gradient-to-br from-emerald-50 to-teal-50"
+      }`}
+    >
+      {viewMode === "play" && <UniverseBackground starCount={40} />}
+      <DualLensToggle viewMode={viewMode} onToggle={setViewMode} />
+
       {/* Debug components - remove in production */}
-      <div className="max-w-7xl mx-auto p-4 space-y-4">
+      <div className="max-w-7xl mx-auto p-4 space-y-4 relative z-10">
         <EnvironmentDebugger />
         <MockDataDisplay />
         <DirectServiceTest />
@@ -59,16 +111,39 @@ export function AccountsPage() {
       </div>
 
       {/* Main Accounts Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 relative z-10">
         {/* Hero Header */}
         <FadeIn direction="down" delay={0.1} className="text-center py-12">
           <div className="mb-6">
-            <SplitText className="text-5xl md:text-6xl font-bold text-gray-900 mb-4">
-              🏦 Your Accounts
-            </SplitText>
-            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Complete overview of all your financial accounts in one place.
-              Track everything from checking to investments.
+            <div
+              className={`text-5xl md:text-6xl font-bold mb-4 ${
+                viewMode === "play" ? "text-white" : "text-gray-900"
+              }`}
+            >
+              <motion.span
+                className="inline-block mr-4"
+                animate={{
+                  rotateY: [0, 360],
+                  scale: [1, 1.1, 1],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              >
+                🏦
+              </motion.span>
+              <SplitText className="inline">Your Accounts</SplitText>
+            </div>
+            <p
+              className={`text-xl mb-8 max-w-2xl mx-auto ${
+                viewMode === "play" ? "text-white/80" : "text-gray-600"
+              }`}
+            >
+              {viewMode === "play"
+                ? "Navigate your account constellation — each account is a star in your financial galaxy!"
+                : "Complete overview of all your financial accounts in one place. Track everything from checking to investments."}
             </p>
           </div>
 
@@ -230,19 +305,41 @@ export function AccountsPage() {
           </FadeIn>
         </div>
 
+        {/* Account Smart Highlights */}
+        <SmartHighlights
+          highlights={accountsHighlights}
+          title="Account Intelligence"
+          subtitle="Smart insights about your accounts — your personal banking assistant!"
+          className="mb-12"
+        />
+
         {/* Security & Trust Footer */}
         <FadeIn direction="up" delay={1.0}>
-          <div className="text-center bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl p-8 border border-emerald-200">
+          <div
+            className={`text-center rounded-2xl p-8 border ${
+              viewMode === "play"
+                ? "bg-white/10 backdrop-blur-sm border-white/20 text-white"
+                : "bg-gradient-to-r from-emerald-50 to-teal-50 border-emerald-200 text-gray-900"
+            }`}
+          >
             <div className="text-4xl mb-4">🔒</div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+            <h3 className="text-2xl font-bold mb-4">
               Your data is safe and secure
             </h3>
-            <p className="text-lg text-gray-600 mb-6 max-w-2xl mx-auto">
+            <p
+              className={`text-lg mb-6 max-w-2xl mx-auto ${
+                viewMode === "play" ? "text-white/80" : "text-gray-600"
+              }`}
+            >
               Bank-level encryption protects all your account information. We
               never store your login credentials, only read-only access to
               account balances and transactions.
             </p>
-            <div className="text-sm text-gray-500">
+            <div
+              className={`text-sm ${
+                viewMode === "play" ? "text-white/60" : "text-gray-500"
+              }`}
+            >
               🔐 256-bit SSL encryption • 🛡️ SOC 2 compliant • 🔒 Read-only
               access
             </div>

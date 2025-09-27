@@ -1,16 +1,59 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { SplitText, FadeIn, TimeRangeSelector } from "../components/ui";
 import { EnhancedNetWorthWidget } from "../features/networth/components/EnhancedNetWorthWidget";
 import { EnhancedAccountsWidget } from "../features/accounts/components/EnhancedAccountsWidget";
 import { RecentTransactionsWidget } from "../features/transactions";
+import {
+  SmartHighlights,
+  DualLensToggle,
+  UniverseBackground,
+} from "../components/widgets";
 // Debug components - remove in production
 import { EnvironmentDebugger } from "../components/EnvironmentDebugger";
 import { ServiceTester } from "../components/ServiceTester";
 import { DirectServiceTest } from "../components/DirectServiceTest";
 import { MockDataDisplay } from "../components/MockDataDisplay";
 
+// Dashboard Smart Highlights
+const dashboardHighlights = [
+  {
+    id: "1",
+    title: "Monthly Summary",
+    message:
+      "You spent $3,450 this month, staying 12% under budget! Your disciplined spending is paying off.",
+    icon: "🎯",
+    type: "success" as const,
+  },
+  {
+    id: "2",
+    title: "Net Worth Growth",
+    message:
+      "Your net worth grew by $8K this month! Investment gains and smart saving are building your wealth.",
+    icon: "📈",
+    type: "info" as const,
+  },
+  {
+    id: "3",
+    title: "Account Alert",
+    message:
+      "Your checking account balance is getting low. Consider transferring from savings or reviewing recent spending.",
+    icon: "⚠️",
+    type: "warning" as const,
+  },
+  {
+    id: "4",
+    title: "Savings Milestone",
+    message:
+      "Congratulations! You've saved $50K total across all accounts. You're building serious financial security!",
+    icon: "🎉",
+    type: "celebration" as const,
+  },
+];
+
 export default function Dashboard() {
   const [timeRange, setTimeRange] = useState<"7d" | "30d" | "90d">("30d");
+  const [viewMode, setViewMode] = useState<"play" | "clarity">("clarity");
 
   const handleQuickAction = (action: string, data?: unknown) => {
     console.log("Quick action:", action, data);
@@ -40,9 +83,18 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div
+      className={`min-h-screen relative overflow-hidden ${
+        viewMode === "play"
+          ? "bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900"
+          : "bg-gradient-to-br from-slate-50 to-blue-50"
+      }`}
+    >
+      {viewMode === "play" && <UniverseBackground starCount={30} />}
+      <DualLensToggle viewMode={viewMode} onToggle={setViewMode} />
+
       {/* Debug components - remove in production */}
-      <div className="max-w-7xl mx-auto p-4 space-y-4">
+      <div className="max-w-7xl mx-auto p-4 space-y-4 relative z-10">
         <EnvironmentDebugger />
         <MockDataDisplay />
         <DirectServiceTest />
@@ -50,16 +102,32 @@ export default function Dashboard() {
       </div>
 
       {/* Main Dashboard Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 relative z-10">
         {/* Hero Header */}
         <FadeIn direction="down" delay={0.1} className="text-center py-12">
           <div className="mb-6">
-            <SplitText className="text-5xl md:text-6xl font-bold text-gray-900 mb-4">
-              👋 Welcome back!
-            </SplitText>
-            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Here's your money in plain English. Everything you need to know,
-              nothing you don't.
+            <div
+              className={`text-5xl md:text-6xl font-bold mb-4 ${
+                viewMode === "play" ? "text-white" : "text-gray-900"
+              }`}
+            >
+              <motion.span
+                className="inline-block mr-4"
+                animate={{ rotate: [0, 360] }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              >
+                👋
+              </motion.span>
+              <SplitText className="inline">Welcome back!</SplitText>
+            </div>
+            <p
+              className={`text-xl mb-8 max-w-2xl mx-auto ${
+                viewMode === "play" ? "text-white/80" : "text-gray-600"
+              }`}
+            >
+              {viewMode === "play"
+                ? "Navigate your financial universe — where every dollar has its place in your wealth galaxy!"
+                : "Here's your money in plain English. Everything you need to know, nothing you don't."}
             </p>
           </div>
 
@@ -195,18 +263,40 @@ export default function Dashboard() {
           </FadeIn>
         </div>
 
+        {/* Smart Highlights - Financial Insights */}
+        <SmartHighlights
+          highlights={dashboardHighlights}
+          title="Your Financial Pulse"
+          subtitle="Smart insights about your money — like having a personal finance coach in your pocket!"
+          className="mb-12"
+        />
+
         {/* Encouraging Footer Message */}
         <FadeIn direction="up" delay={1.0}>
-          <div className="text-center bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-200">
+          <div
+            className={`text-center rounded-2xl p-8 border ${
+              viewMode === "play"
+                ? "bg-white/10 backdrop-blur-sm border-white/20 text-white"
+                : "bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200 text-gray-900"
+            }`}
+          >
             <div className="text-4xl mb-4">🎉</div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+            <h3 className="text-2xl font-bold mb-4">
               You're doing great with your money!
             </h3>
-            <p className="text-lg text-gray-600 mb-6 max-w-2xl mx-auto">
+            <p
+              className={`text-lg mb-6 max-w-2xl mx-auto ${
+                viewMode === "play" ? "text-white/80" : "text-gray-600"
+              }`}
+            >
               Keep track of your finances, and watch your wealth grow over time.
               Remember, every dollar saved is a dollar earned!
             </p>
-            <div className="text-sm text-gray-500">
+            <div
+              className={`text-sm ${
+                viewMode === "play" ? "text-white/60" : "text-gray-500"
+              }`}
+            >
               💡 Tip: Check your dashboard regularly to stay on top of your
               financial health
             </div>

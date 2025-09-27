@@ -20,7 +20,11 @@ interface WealthSolarSystemProps {
   className?: string;
 }
 
-export function WealthSolarSystem({ assets, totalValue, className = "" }: WealthSolarSystemProps) {
+export function WealthSolarSystem({
+  assets,
+  totalValue,
+  className = "",
+}: WealthSolarSystemProps) {
   const [selectedAsset, setSelectedAsset] = useState<string | null>(null);
 
   const formatCurrency = (amount: number) => {
@@ -30,16 +34,18 @@ export function WealthSolarSystem({ assets, totalValue, className = "" }: Wealth
   };
 
   return (
-    <div className={`relative w-full h-[900px] flex items-center justify-center overflow-visible ${className}`}>
+    <div
+      className={`relative w-full h-[900px] flex items-center justify-center overflow-visible ${className}`}
+    >
       {/* Central Sun (Portfolio Value) */}
       <motion.div
         className="absolute z-20 flex flex-col items-center justify-center"
-        animate={{ 
+        animate={{
           boxShadow: [
             "0 0 80px rgba(255, 215, 0, 0.4)",
             "0 0 120px rgba(255, 215, 0, 0.6)",
-            "0 0 80px rgba(255, 215, 0, 0.4)"
-          ]
+            "0 0 80px rgba(255, 215, 0, 0.4)",
+          ],
         }}
         transition={{ duration: 4, repeat: Infinity }}
       >
@@ -47,7 +53,9 @@ export function WealthSolarSystem({ assets, totalValue, className = "" }: Wealth
           ☀️
         </div>
         <div className="mt-6 text-center">
-          <div className="text-3xl font-bold text-white">{formatCurrency(totalValue)}</div>
+          <div className="text-3xl font-bold text-white">
+            {formatCurrency(totalValue)}
+          </div>
           <div className="text-white/70 text-sm">Portfolio Sun</div>
         </div>
       </motion.div>
@@ -57,7 +65,7 @@ export function WealthSolarSystem({ assets, totalValue, className = "" }: Wealth
         const angle = (index / assets.length) * 2 * Math.PI;
         const x = Math.cos(angle) * asset.orbit;
         const y = Math.sin(angle) * asset.orbit;
-        
+
         return (
           <motion.div
             key={asset.id}
@@ -75,7 +83,9 @@ export function WealthSolarSystem({ assets, totalValue, className = "" }: Wealth
               ease: "linear",
             }}
             whileHover={{ scale: 1.3 }}
-            onClick={() => setSelectedAsset(selectedAsset === asset.id ? null : asset.id)}
+            onClick={() =>
+              setSelectedAsset(selectedAsset === asset.id ? null : asset.id)
+            }
           >
             <motion.div
               className="relative flex flex-col items-center"
@@ -84,7 +94,9 @@ export function WealthSolarSystem({ assets, totalValue, className = "" }: Wealth
               {/* Planet with Performance Glow */}
               <motion.div
                 className={`rounded-full flex items-center justify-center text-3xl shadow-xl border-4 ${
-                  asset.performance >= 0 ? 'border-green-400/60' : 'border-red-400/60'
+                  asset.performance >= 0
+                    ? "border-green-400/60"
+                    : "border-red-400/60"
                 }`}
                 style={{
                   width: asset.size,
@@ -92,26 +104,39 @@ export function WealthSolarSystem({ assets, totalValue, className = "" }: Wealth
                   backgroundColor: asset.color,
                   boxShadow: `0 0 30px ${asset.color}60`,
                 }}
-                animate={asset.performance >= 0 ? {
-                  boxShadow: [
-                    `0 0 30px ${asset.color}60`,
-                    `0 0 50px ${asset.color}80`,
-                    `0 0 30px ${asset.color}60`
-                  ]
-                } : {}}
+                animate={
+                  asset.performance >= 0
+                    ? {
+                        boxShadow: [
+                          `0 0 30px ${asset.color}60`,
+                          `0 0 50px ${asset.color}80`,
+                          `0 0 30px ${asset.color}60`,
+                        ],
+                      }
+                    : {}
+                }
                 transition={{ duration: 3, repeat: Infinity }}
               >
                 {asset.icon}
               </motion.div>
-              
+
               {/* Planet Info */}
               <div className="mt-3 text-center">
-                <div className="text-lg font-bold text-white">{formatCurrency(asset.value)}</div>
-                <div className="text-xs text-white/70 max-w-20 truncate">{asset.name}</div>
-                <div className={`text-sm font-bold ${asset.performance >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                  {asset.performance >= 0 ? '+' : ''}{asset.performance}%
+                <div className="text-lg font-bold text-white">
+                  {formatCurrency(asset.value)}
                 </div>
-                <div className="text-xs text-white/60">{asset.allocation}% allocation</div>
+                <div className="text-xs text-white/70 max-w-20 truncate">
+                  {asset.name}
+                </div>
+                <div
+                  className={`text-sm font-bold ${asset.performance >= 0 ? "text-green-400" : "text-red-400"}`}
+                >
+                  {asset.performance >= 0 ? "+" : ""}
+                  {asset.performance}%
+                </div>
+                <div className="text-xs text-white/60">
+                  {asset.allocation}% allocation
+                </div>
               </div>
 
               {/* Orbit Trail */}
@@ -120,8 +145,8 @@ export function WealthSolarSystem({ assets, totalValue, className = "" }: Wealth
                 style={{
                   width: asset.orbit * 2,
                   height: asset.orbit * 2,
-                  left: `calc(-50% - ${asset.orbit - asset.size/2}px)`,
-                  top: `calc(-50% - ${asset.orbit - asset.size/2}px)`,
+                  left: `calc(-50% - ${asset.orbit - asset.size / 2}px)`,
+                  top: `calc(-50% - ${asset.orbit - asset.size / 2}px)`,
                 }}
               />
 
@@ -138,28 +163,41 @@ export function WealthSolarSystem({ assets, totalValue, className = "" }: Wealth
                       <div className="text-2xl">{asset.icon}</div>
                       <div>
                         <h3 className="text-white font-bold">{asset.name}</h3>
-                        <p className="text-white/70 text-sm">{asset.description}</p>
+                        <p className="text-white/70 text-sm">
+                          {asset.description}
+                        </p>
                       </div>
                     </div>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-white/70">Current Value:</span>
-                        <span className="text-white font-bold">{formatCurrency(asset.value)}</span>
+                        <span className="text-white font-bold">
+                          {formatCurrency(asset.value)}
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-white/70">Performance:</span>
-                        <span className={`font-bold ${asset.performance >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                          {asset.performance >= 0 ? '+' : ''}{asset.performance}%
+                        <span
+                          className={`font-bold ${asset.performance >= 0 ? "text-green-400" : "text-red-400"}`}
+                        >
+                          {asset.performance >= 0 ? "+" : ""}
+                          {asset.performance}%
                         </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-white/70">Allocation:</span>
-                        <span className="text-blue-400 font-bold">{asset.allocation}%</span>
+                        <span className="text-blue-400 font-bold">
+                          {asset.allocation}%
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-white/70">Growth:</span>
-                        <span className={`font-bold ${asset.performance >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                          {formatCurrency(asset.value * asset.performance / 100)}
+                        <span
+                          className={`font-bold ${asset.performance >= 0 ? "text-green-400" : "text-red-400"}`}
+                        >
+                          {formatCurrency(
+                            (asset.value * asset.performance) / 100,
+                          )}
                         </span>
                       </div>
                     </div>

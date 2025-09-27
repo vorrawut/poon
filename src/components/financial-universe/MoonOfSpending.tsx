@@ -71,7 +71,9 @@ export function MoonOfSpending({
   };
 
   return (
-    <div className={`relative flex flex-col items-center p-14 min-w-[320px] min-h-[320px] overflow-visible ${className}`}>
+    <div
+      className={`relative flex flex-col items-center p-14 min-w-[320px] min-h-[320px] overflow-visible ${className}`}
+    >
       {/* Spending Trails (like meteor trails) - Constrained to moon area */}
       <div className="absolute top-0 left-0 w-32 h-32 overflow-hidden pointer-events-none">
         {topCategories.slice(0, 3).map((category, i) => (
