@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { SplitText, FadeIn } from "../components/ui";
-import { CalendarDaysIcon } from "@heroicons/react/24/outline";
-import { NetWorthWidget } from "../features/networth";
-import { AccountsOverviewWidget } from "../features/accounts";
-import { QuickActionsWidget } from "../features/quickactions";
+import { SplitText, FadeIn, TimeRangeSelector } from "../components/ui";
+import { EnhancedNetWorthWidget } from "../features/networth/components/EnhancedNetWorthWidget";
+import { EnhancedAccountsWidget } from "../features/accounts/components/EnhancedAccountsWidget";
 import { RecentTransactionsWidget } from "../features/transactions";
+// Debug components - remove in production
 import { EnvironmentDebugger } from "../components/EnvironmentDebugger";
 import { ServiceTester } from "../components/ServiceTester";
 import { DirectServiceTest } from "../components/DirectServiceTest";
@@ -41,154 +40,157 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-8">
-      <EnvironmentDebugger />
-      <MockDataDisplay />
-      <DirectServiceTest />
-      <ServiceTester />
-      {/* Header with Time Range Selector */}
-      <FadeIn
-        direction="down"
-        delay={0.1}
-        className="flex flex-col sm:flex-row sm:items-center sm:justify-between"
-      >
-        <div>
-          <SplitText className="text-4xl font-bold text-gray-900 mb-2">
-            Welcome back!
-          </SplitText>
-          <p className="text-gray-600">Here's your financial overview</p>
-        </div>
-        <div className="flex items-center space-x-2 mt-4 sm:mt-0">
-          <CalendarDaysIcon className="h-5 w-5 text-gray-500" />
-          <div className="flex rounded-lg bg-gray-100 p-1">
-            {["7d", "30d", "90d"].map((range) => (
-              <button
-                key={range}
-                onClick={() => setTimeRange(range as "7d" | "30d" | "90d")}
-                className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
-                  timeRange === range
-                    ? "bg-white text-blue-600 shadow-sm"
-                    : "text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                {range === "7d"
-                  ? "7 days"
-                  : range === "30d"
-                    ? "30 days"
-                    : "90 days"}
-              </button>
-            ))}
-          </div>
-        </div>
-      </FadeIn>
-
-      {/* Net Worth Hero Section */}
-      <NetWorthWidget timeRange={timeRange} onQuickAction={handleQuickAction} />
-
-      {/* Accounts Overview */}
-      <AccountsOverviewWidget onAccountAction={handleQuickAction} />
-
-      {/* Grid Layout for Additional Widgets */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Quick Actions */}
-        <QuickActionsWidget
-          category="transaction"
-          title="Quick Actions"
-          description="Most used actions"
-          config={{
-            layout: "grid",
-            showLabels: true,
-            maxActions: 4,
-            showShortcuts: true,
-          }}
-          className="lg:col-span-1"
-        />
-
-        {/* Recent Transactions */}
-        <RecentTransactionsWidget
-          className="lg:col-span-2"
-          limit={5}
-          onTransactionClick={(transaction) =>
-            handleQuickAction("view_transaction", transaction)
-          }
-          onViewAllClick={() => handleQuickAction("view_transactions")}
-        />
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      {/* Debug components - remove in production */}
+      <div className="max-w-7xl mx-auto p-4 space-y-4">
+        <EnvironmentDebugger />
+        <MockDataDisplay />
+        <DirectServiceTest />
+        <ServiceTester />
       </div>
 
-      {/* Additional Feature Widgets Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Portfolio Preview Placeholder */}
-        <FadeIn direction="right" delay={0.8}>
-          <div className="bg-white rounded-xl shadow-card border border-gray-100 overflow-hidden">
-            <div className="p-6 border-b border-gray-100">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Portfolio Holdings
-                </h3>
-                <button
-                  onClick={() => handleQuickAction("view_portfolio")}
-                  className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-                >
-                  View Portfolio
-                </button>
-              </div>
-            </div>
-            <div className="p-6">
-              <div className="text-center py-12 text-gray-500">
-                <p>Portfolio widget coming soon...</p>
-                <p className="text-sm mt-2">
-                  This will be implemented in the Portfolio feature module
-                </p>
-              </div>
-            </div>
-          </div>
-        </FadeIn>
-
-        {/* Analytics Preview Placeholder */}
-        <FadeIn direction="left" delay={1.0}>
-          <div className="bg-white rounded-xl shadow-card border border-gray-100 overflow-hidden">
-            <div className="p-6 border-b border-gray-100">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Spending Insights
-                </h3>
-                <button
-                  onClick={() => handleQuickAction("view_analytics")}
-                  className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-                >
-                  View Analytics
-                </button>
-              </div>
-            </div>
-            <div className="p-6">
-              <div className="text-center py-12 text-gray-500">
-                <p>Analytics widget coming soon...</p>
-                <p className="text-sm mt-2">
-                  This will be implemented in the Analytics feature module
-                </p>
-              </div>
-            </div>
-          </div>
-        </FadeIn>
-      </div>
-
-      {/* AI Insights Placeholder */}
-      <FadeIn direction="up" delay={1.2}>
-        <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl border border-purple-200 p-8">
-          <div className="text-center">
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              AI Financial Insights
-            </h3>
-            <p className="text-gray-600 mb-4">
-              Personalized insights and recommendations based on your spending
-              patterns
+      {/* Main Dashboard Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+        {/* Hero Header */}
+        <FadeIn direction="down" delay={0.1} className="text-center py-12">
+          <div className="mb-6">
+            <SplitText className="text-5xl md:text-6xl font-bold text-gray-900 mb-4">
+              👋 Welcome back!
+            </SplitText>
+            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+              Here's your money in plain English. Everything you need to know, nothing you don't.
             </p>
-            <div className="inline-flex items-center space-x-2 text-purple-600 bg-purple-100 px-4 py-2 rounded-lg">
-              <span className="text-sm font-medium">Coming Soon</span>
+          </div>
+          
+          {/* Big, Touch-Friendly Time Selector */}
+          <TimeRangeSelector
+            value={timeRange}
+            onChange={setTimeRange}
+            size="lg"
+            className="mb-8"
+          />
+        </FadeIn>
+
+        {/* Net Worth Hero Section - The Star of the Show */}
+        <div className="mb-12">
+          <EnhancedNetWorthWidget 
+            timeRange={timeRange} 
+            onQuickAction={handleQuickAction}
+          />
+        </div>
+
+        {/* Accounts Overview - Clear and Simple */}
+        <div className="mb-12">
+          <EnhancedAccountsWidget onAccountAction={handleQuickAction} />
+        </div>
+
+        {/* Recent Activity Section - Simple and Clear */}
+        <div className="mb-12">
+          <FadeIn direction="up" delay={0.6}>
+            <div className="bg-white rounded-2xl shadow-card border border-gray-200 overflow-hidden">
+              <div className="bg-gradient-to-r from-indigo-50 to-purple-50 px-8 py-6 border-b border-gray-200">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <h2 className="text-2xl font-bold text-gray-900 mr-3">📋 Recent Activity</h2>
+                  </div>
+                  <button
+                    onClick={() => handleQuickAction("view_transactions")}
+                    className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors"
+                  >
+                    See All Activity
+                  </button>
+                </div>
+                <p className="text-gray-600 text-lg mt-2">
+                  Your latest money movements
+                </p>
+              </div>
+
+              <div className="p-8">
+                <RecentTransactionsWidget
+                  limit={5}
+                  onTransactionClick={(transaction) =>
+                    handleQuickAction("view_transaction", transaction)
+                  }
+                  onViewAllClick={() => handleQuickAction("view_transactions")}
+                />
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+
+        {/* Quick Action Center - Big Buttons for Easy Access */}
+        <div className="mb-12">
+          <FadeIn direction="up" delay={0.8}>
+            <div className="bg-white rounded-2xl shadow-card border border-gray-200 overflow-hidden">
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 px-8 py-6 border-b border-gray-200">
+                <div className="text-center">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">⚡ Quick Actions</h2>
+                  <p className="text-gray-600 text-lg">
+                    Common things you might want to do
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <button
+                    onClick={() => handleQuickAction("add_transaction")}
+                    className="bg-green-50 hover:bg-green-100 border-2 border-green-200 rounded-xl p-6 text-center transition-all hover:scale-105"
+                  >
+                    <div className="text-4xl mb-3">➕</div>
+                    <div className="font-semibold text-green-800 mb-1">Add Transaction</div>
+                    <div className="text-sm text-green-600">Record a purchase or payment</div>
+                  </button>
+
+                  <button
+                    onClick={() => handleQuickAction("link_account")}
+                    className="bg-blue-50 hover:bg-blue-100 border-2 border-blue-200 rounded-xl p-6 text-center transition-all hover:scale-105"
+                  >
+                    <div className="text-4xl mb-3">🔗</div>
+                    <div className="font-semibold text-blue-800 mb-1">Link Account</div>
+                    <div className="text-sm text-blue-600">Connect a new bank account</div>
+                  </button>
+
+                  <button
+                    onClick={() => handleQuickAction("import_csv")}
+                    className="bg-purple-50 hover:bg-purple-100 border-2 border-purple-200 rounded-xl p-6 text-center transition-all hover:scale-105"
+                  >
+                    <div className="text-4xl mb-3">📄</div>
+                    <div className="font-semibold text-purple-800 mb-1">Import Data</div>
+                    <div className="text-sm text-purple-600">Upload transactions from file</div>
+                  </button>
+
+                  <button
+                    onClick={() => handleQuickAction("view_analytics")}
+                    className="bg-orange-50 hover:bg-orange-100 border-2 border-orange-200 rounded-xl p-6 text-center transition-all hover:scale-105"
+                  >
+                    <div className="text-4xl mb-3">📊</div>
+                    <div className="font-semibold text-orange-800 mb-1">View Reports</div>
+                    <div className="text-sm text-orange-600">See spending patterns</div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+
+        {/* Encouraging Footer Message */}
+        <FadeIn direction="up" delay={1.0}>
+          <div className="text-center bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-200">
+            <div className="text-4xl mb-4">🎉</div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              You're doing great with your money!
+            </h3>
+            <p className="text-lg text-gray-600 mb-6 max-w-2xl mx-auto">
+              Keep track of your finances, and watch your wealth grow over time. 
+              Remember, every dollar saved is a dollar earned!
+            </p>
+            <div className="text-sm text-gray-500">
+              💡 Tip: Check your dashboard regularly to stay on top of your financial health
             </div>
           </div>
-        </div>
-      </FadeIn>
+        </FadeIn>
+      </div>
     </div>
   );
 }

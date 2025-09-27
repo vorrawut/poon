@@ -85,10 +85,13 @@ class AccountsService {
       {} as Record<AccountType, Account[]>,
     );
 
+    const netWorth = totalAssets - totalLiabilities;
+
     return {
-      totalBalance: totalAssets - totalLiabilities,
       totalAssets,
       totalLiabilities,
+      netWorth,
+      accounts, // Include the actual accounts array
       accountsByType,
       lastSyncAt: new Date(),
     };

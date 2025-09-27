@@ -1,5 +1,6 @@
 // Components
 export { AccountsOverviewWidget } from "./components/AccountsOverviewWidget";
+export { EnhancedAccountsWidget } from "./components/EnhancedAccountsWidget";
 
 // Hooks
 export {

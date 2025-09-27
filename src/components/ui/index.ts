@@ -5,6 +5,13 @@ export { AnimatedList } from "./AnimatedList";
 export { FadeIn } from "./FadeIn";
 export { PulseLoader } from "./PulseLoader";
 
+// Enhanced UX Components
+export { Tooltip, InfoTooltip } from "./Tooltip";
+export { ProgressBar, RatioBar } from "./ProgressBar";
+export { StatusIndicator, SyncStatus } from "./StatusIndicator";
+export { BigNumber, CompactNumber } from "./BigNumber";
+export { TimeRangeSelector } from "./TimeRangeSelector";
+
 // UI Components
 export { Button } from "./Button";
 export { Card } from "./Card";

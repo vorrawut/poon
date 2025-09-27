@@ -99,7 +99,11 @@ export function RecentTransactionsWidget({
     }).format(amount);
   };
 
-  const formatDate = (date: Date) => {
+  const formatDate = (date: Date | undefined) => {
+    if (!date || !(date instanceof Date)) {
+      return 'N/A';
+    }
+    
     const now = new Date();
     const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
 
