@@ -22,6 +22,15 @@ export function AccountsOverviewWidget({
   const { overview, loading, error, refreshOverview } = useAccountsOverview();
   const { syncAllAccounts, isSyncing } = useAccountSync();
 
+  console.log('🔍 AccountsOverviewWidget render:', {
+    loading,
+    hasData: !!overview,
+    error,
+    accountCount: overview?.accounts?.length || 0,
+    totalAssets: overview?.totalAssets,
+    totalLiabilities: overview?.totalLiabilities
+  });
+
   const handleSyncAll = async () => {
     await syncAllAccounts();
     refreshOverview();

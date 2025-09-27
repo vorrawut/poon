@@ -5,6 +5,10 @@ import { NetWorthWidget } from "../features/networth";
 import { AccountsOverviewWidget } from "../features/accounts";
 import { QuickActionsWidget } from "../features/quickactions";
 import { RecentTransactionsWidget } from "../features/transactions";
+import { EnvironmentDebugger } from "../components/EnvironmentDebugger";
+import { ServiceTester } from "../components/ServiceTester";
+import { DirectServiceTest } from "../components/DirectServiceTest";
+import { MockDataDisplay } from "../components/MockDataDisplay";
 
 export default function Dashboard() {
   const [timeRange, setTimeRange] = useState<"7d" | "30d" | "90d">("30d");
@@ -38,6 +42,10 @@ export default function Dashboard() {
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-8">
+      <EnvironmentDebugger />
+      <MockDataDisplay />
+      <DirectServiceTest />
+      <ServiceTester />
       {/* Header with Time Range Selector */}
       <FadeIn
         direction="down"

@@ -16,7 +16,7 @@ async function globalSetup(config: FullConfig) {
     
     while (attempts < maxAttempts) {
       try {
-        await page.goto(config.projects[0].use?.baseURL || 'http://localhost:5174', {
+        await page.goto(config.projects[0].use?.baseURL || 'http://localhost:5173', {
           waitUntil: 'load',
           timeout: 15000,
         });

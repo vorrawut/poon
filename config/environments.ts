@@ -65,7 +65,7 @@ const localConfig: AppConfig = {
   isLocal: true,
   apiBaseUrl: 'http://localhost:3001/api',
   dataSource: 'mock',
-  mockApiDelay: 300, // Faster for local development
+  mockApiDelay: 0, // No delay for testing
   mockEnableErrors: false,
   features: {
     ...baseConfig.features,

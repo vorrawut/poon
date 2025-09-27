@@ -13,17 +13,26 @@ export function useNetWorth() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log('🔍 useNetWorth effect triggered');
+    
     const fetchNetWorth = async () => {
       try {
+        console.log('🔍 useNetWorth: Starting fetch, setting loading=true');
         setLoading(true);
-        const data = await netWorthService.fetchNetWorth();
-        setNetWorthData(data);
         setError(null);
+        
+        const data = await netWorthService.fetchNetWorth();
+        console.log('🔍 useNetWorth: Data received:', data);
+        
+        setNetWorthData(data);
+        console.log('🔍 useNetWorth: Data set in state');
       } catch (err) {
+        console.error('🔍 useNetWorth: Error occurred:', err);
         setError(
           err instanceof Error ? err.message : "Failed to fetch net worth",
         );
       } finally {
+        console.log('🔍 useNetWorth: Setting loading=false');
         setLoading(false);
       }
     };

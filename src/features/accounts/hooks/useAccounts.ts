@@ -43,22 +43,30 @@ export function useAccountsOverview() {
 
   const fetchOverview = async () => {
     try {
+      console.log('🔍 useAccountsOverview: Starting fetch, setting loading=true');
       setLoading(true);
-      const data = await accountsService.fetchAccountsOverview();
-      setOverview(data);
       setError(null);
+      
+      const data = await accountsService.fetchAccountsOverview();
+      console.log('🔍 useAccountsOverview: Data received:', data);
+      
+      setOverview(data);
+      console.log('🔍 useAccountsOverview: Data set in state');
     } catch (err) {
+      console.error('🔍 useAccountsOverview: Error occurred:', err);
       setError(
         err instanceof Error
           ? err.message
           : "Failed to fetch accounts overview",
       );
     } finally {
+      console.log('🔍 useAccountsOverview: Setting loading=false');
       setLoading(false);
     }
   };
 
   useEffect(() => {
+    console.log('🔍 useAccountsOverview effect triggered');
     fetchOverview();
   }, []);
 

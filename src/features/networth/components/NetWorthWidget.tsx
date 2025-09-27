@@ -36,7 +36,16 @@ export function NetWorthWidget({
   const { trendData, growth, growthPercent } =
     useNetWorthTrend(selectedTimeRange);
 
+  console.log('🔍 NetWorthWidget render:', {
+    loading,
+    hasData: !!netWorthData,
+    error,
+    selectedTimeRange,
+    netWorthData: netWorthData ? `$${netWorthData.totalNetWorth}` : null
+  });
+
   if (loading) {
+    console.log('🔍 NetWorthWidget: Rendering loading state');
     return (
       <div
         className={`animate-pulse bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl h-64 ${className}`}

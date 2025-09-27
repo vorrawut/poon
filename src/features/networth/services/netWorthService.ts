@@ -5,12 +5,21 @@ class NetWorthService {
   private baseUrl = "/api/networth";
 
   async fetchNetWorth(): Promise<NetWorthData> {
+    console.log('🔍 NetWorthService.fetchNetWorth called');
+    console.log('🔍 Environment:', config.environment);
+    console.log('🔍 Should use mock data:', shouldUseMockData());
+    console.log('🔍 Config:', config);
+    
     // Check if we should use mock data based on environment configuration
     if (shouldUseMockData()) {
+      console.log(`🔄 Using mock net worth data (${config.environment} mode)`);
       // Simulate API delay for realistic UX
       await new Promise((resolve) => setTimeout(resolve, config.mockApiDelay));
-      console.info(`🔄 Using mock net worth data (${config.environment} mode)`);
-      return this.getMockNetWorthData();
+      console.log('🔄 Mock delay completed, generating data...');
+      
+      const mockData = this.getMockNetWorthData();
+      console.log('🔄 Mock data generated:', mockData);
+      return mockData;
     }
 
     try {
