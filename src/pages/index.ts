@@ -1,4 +1,4 @@
-export { Dashboard } from './Dashboard';
+export { default as Dashboard } from './Dashboard';
 export { Accounts } from './Accounts';
 export { Portfolio } from './Portfolio';
 export { Spending } from './Spending';
