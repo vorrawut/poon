@@ -62,7 +62,7 @@ Same for Assets, Liabilities, Investments.
 
 Use info icons (ℹ️) → universal for all ages.
 
-5. Accessibility / Grandpa Mode
+5. Accessibility Mode
 
 Add a “Simple View” toggle:
 

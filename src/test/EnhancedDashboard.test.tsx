@@ -155,13 +155,19 @@ describe("Enhanced Dashboard", () => {
       </BrowserRouter>,
     );
 
-    await waitFor(() => {
-      expect(screen.getByText("💰 Your Money Summary")).toBeInTheDocument();
-    });
+    await waitFor(
+      () => {
+        expect(screen.getByText("💰 Your Money Summary")).toBeInTheDocument();
+      },
+      { timeout: 5000 },
+    );
 
-    await waitFor(() => {
-      expect(screen.getByText("Total Net Worth")).toBeInTheDocument();
-    });
+    await waitFor(
+      () => {
+        expect(screen.getByText("Total Net Worth")).toBeInTheDocument();
+      },
+      { timeout: 5000 },
+    );
   });
 
   it("shows accounts overview section when data loads", async () => {
@@ -171,14 +177,20 @@ describe("Enhanced Dashboard", () => {
       </BrowserRouter>,
     );
 
-    await waitFor(() => {
-      expect(screen.getByText("🏦 Your Bank Accounts")).toBeInTheDocument();
-    });
+    await waitFor(
+      () => {
+        expect(screen.getByText("🏦 Your Bank Accounts")).toBeInTheDocument();
+      },
+      { timeout: 5000 },
+    );
 
-    await waitFor(() => {
-      expect(screen.getByText("💰 Your Assets")).toBeInTheDocument();
-      expect(screen.getByText("💳 Your Debts")).toBeInTheDocument();
-    });
+    await waitFor(
+      () => {
+        expect(screen.getByText("💰 Your Assets")).toBeInTheDocument();
+        expect(screen.getByText("💳 Your Debts")).toBeInTheDocument();
+      },
+      { timeout: 5000 },
+    );
   });
 
   it("displays recent activity section", async () => {
@@ -188,12 +200,15 @@ describe("Enhanced Dashboard", () => {
       </BrowserRouter>,
     );
 
-    await waitFor(() => {
-      expect(screen.getByText("📋 Recent Activity")).toBeInTheDocument();
-      expect(
-        screen.getByText("Your latest money movements"),
-      ).toBeInTheDocument();
-    });
+    await waitFor(
+      () => {
+        expect(screen.getByText("📋 Recent Activity")).toBeInTheDocument();
+        expect(
+          screen.getByText("Your latest money movements"),
+        ).toBeInTheDocument();
+      },
+      { timeout: 5000 },
+    );
   });
 
   it("shows quick action buttons", async () => {
@@ -203,13 +218,16 @@ describe("Enhanced Dashboard", () => {
       </BrowserRouter>,
     );
 
-    await waitFor(() => {
-      expect(screen.getByText("⚡ Quick Actions")).toBeInTheDocument();
-      expect(screen.getByText("Add Transaction")).toBeInTheDocument();
-      expect(screen.getByText("Link Account")).toBeInTheDocument();
-      expect(screen.getByText("Import Data")).toBeInTheDocument();
-      expect(screen.getByText("View Reports")).toBeInTheDocument();
-    });
+    await waitFor(
+      () => {
+        expect(screen.getByText("⚡ Quick Actions")).toBeInTheDocument();
+        expect(screen.getByText("Add Transaction")).toBeInTheDocument();
+        expect(screen.getByText("Link Account")).toBeInTheDocument();
+        expect(screen.getByText("Import Data")).toBeInTheDocument();
+        expect(screen.getByText("View Reports")).toBeInTheDocument();
+      },
+      { timeout: 5000 },
+    );
   });
 
   it("displays encouraging footer message", async () => {
@@ -219,11 +237,14 @@ describe("Enhanced Dashboard", () => {
       </BrowserRouter>,
     );
 
-    await waitFor(() => {
-      expect(
-        screen.getByText("You're doing great with your money!"),
-      ).toBeInTheDocument();
-    });
+    await waitFor(
+      () => {
+        expect(
+          screen.getByText("You're doing great with your money!"),
+        ).toBeInTheDocument();
+      },
+      { timeout: 5000 },
+    );
 
     expect(
       screen.getByText(
@@ -240,7 +261,7 @@ describe("Enhanced Dashboard", () => {
     );
 
     // Debug components should be visible
-    expect(screen.getByText("Mock Data Direct Access")).toBeInTheDocument();
-    expect(screen.getByText("Direct Service Test")).toBeInTheDocument();
+    expect(screen.getByText("📊 Mock Data Direct Access")).toBeInTheDocument();
+    expect(screen.getByText("🧪 Direct Service Test")).toBeInTheDocument();
   });
 });
