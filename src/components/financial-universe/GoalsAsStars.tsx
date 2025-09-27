@@ -65,9 +65,11 @@ export function GoalsAsStars({ goals, className = "" }: GoalsAsStarsProps) {
   };
 
   const getConstellationPositions = (index: number, total: number) => {
-    // Arrange stars in a natural constellation pattern
-    const angle = (index / total) * 2 * Math.PI + (Math.random() - 0.5) * 0.5;
-    const radius = 120 + (Math.random() - 0.5) * 60;
+    // Arrange stars in a natural constellation pattern with consistent positioning
+    const baseAngle = (index / total) * 2 * Math.PI;
+    const angleVariation = (index % 2 === 0 ? 0.2 : -0.2); // Deterministic variation
+    const angle = baseAngle + angleVariation;
+    const radius = 80 + (index % 3) * 20; // Deterministic radius between 80-120px
 
     return {
       x: Math.cos(angle) * radius,
@@ -76,7 +78,7 @@ export function GoalsAsStars({ goals, className = "" }: GoalsAsStarsProps) {
   };
 
   return (
-    <div className={`relative p-4 ${className}`}>
+    <div className={`relative p-12 min-w-[380px] min-h-[380px] overflow-visible ${className}`}>
       {/* Background Galaxy */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-gradient-radial from-purple-900/20 via-transparent to-transparent" />
@@ -112,48 +114,8 @@ export function GoalsAsStars({ goals, className = "" }: GoalsAsStarsProps) {
                 {/* Main Star */}
                 <motion.div
                   className="relative group cursor-pointer"
-                  whileHover={{ scale: 1.2 }}
-                  animate={
-                    isCelebrating
-                      ? {
-                          scale: [1, 1.5, 1],
-                          rotate: [0, 180, 360],
-                        }
-                      : {}
-                  }
-                  transition={
-                    isCelebrating
-                      ? {
-                          duration: 1,
-                          repeat: 3,
-                        }
-                      : {}
-                  }
+                  whileHover={{ scale: 1.5 }}
                 >
-                  {/* Star Glow */}
-                  <motion.div
-                    className="absolute inset-0 rounded-full blur-sm"
-                    style={{
-                      width: size * 2,
-                      height: size * 2,
-                      backgroundColor: color,
-                      opacity: brightness * 0.6,
-                      transform: "translate(-50%, -50%)",
-                    }}
-                    animate={
-                      isCompleted
-                        ? {
-                            scale: [1, 1.3, 1],
-                            opacity: [0.6, 1, 0.6],
-                          }
-                        : {}
-                    }
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
-                  />
 
                   {/* Star Core */}
                   <motion.div
@@ -181,34 +143,6 @@ export function GoalsAsStars({ goals, className = "" }: GoalsAsStarsProps) {
                       repeat: Infinity,
                     }}
                   />
-
-                  {/* Star Points (for completed goals) */}
-                  {isCompleted && (
-                    <motion.div
-                      className="absolute inset-0"
-                      style={{ transform: "translate(-50%, -50%)" }}
-                      animate={{ rotate: 360 }}
-                      transition={{
-                        duration: 8,
-                        repeat: Infinity,
-                        ease: "linear",
-                      }}
-                    >
-                      {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
-                        <div
-                          key={angle}
-                          className="absolute w-1 bg-white/80 rounded-full"
-                          style={{
-                            height: size * 0.8,
-                            left: "50%",
-                            top: "50%",
-                            transformOrigin: "center",
-                            transform: `rotate(${angle}deg) translateY(-${size * 0.4}px) translateX(-0.5px)`,
-                          }}
-                        />
-                      ))}
-                    </motion.div>
-                  )}
 
                   {/* Celebration Particles */}
                   <AnimatePresence>
@@ -267,31 +201,6 @@ export function GoalsAsStars({ goals, className = "" }: GoalsAsStarsProps) {
                   </motion.div>
                 </motion.div>
 
-                {/* Connection Lines (optional - creates constellation effect) */}
-                {index > 0 && (
-                  <svg
-                    className="absolute pointer-events-none"
-                    style={{
-                      left: `${-position.x}px`,
-                      top: `${-position.y}px`,
-                      width: Math.abs(position.x),
-                      height: Math.abs(position.y),
-                    }}
-                  >
-                    <motion.line
-                      x1={Math.abs(position.x)}
-                      y1={Math.abs(position.y)}
-                      x2={0}
-                      y2={0}
-                      stroke="rgba(255,255,255,0.1)"
-                      strokeWidth="1"
-                      strokeDasharray="2,4"
-                      initial={{ pathLength: 0, opacity: 0 }}
-                      animate={{ pathLength: 1, opacity: 0.3 }}
-                      transition={{ duration: 1, delay: index * 0.3 }}
-                    />
-                  </svg>
-                )}
               </motion.div>
             );
           })}
@@ -314,20 +223,20 @@ export function GoalsAsStars({ goals, className = "" }: GoalsAsStarsProps) {
         </p>
 
         {/* Progress Summary */}
-        <div className="mt-4 grid grid-cols-2 lg:grid-cols-4 gap-3 max-w-2xl mx-auto">
-          <div className="bg-white/10 rounded-lg p-2 md:p-3 backdrop-blur-sm text-center">
+        <div className="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-3xl mx-auto">
+          <div className="bg-white/10 rounded-lg p-3 md:p-4 backdrop-blur-sm text-center">
             <div className="text-lg md:text-2xl font-bold text-white">
               {goals.length}
             </div>
             <div className="text-xs text-white/70">Total Goals</div>
           </div>
-          <div className="bg-white/10 rounded-lg p-2 md:p-3 backdrop-blur-sm text-center">
+          <div className="bg-white/10 rounded-lg p-3 md:p-4 backdrop-blur-sm text-center">
             <div className="text-lg md:text-2xl font-bold text-yellow-300">
               {goals.filter((g) => g.isCompleted).length}
             </div>
             <div className="text-xs text-white/70">Completed</div>
           </div>
-          <div className="bg-white/10 rounded-lg p-2 md:p-3 backdrop-blur-sm text-center">
+          <div className="bg-white/10 rounded-lg p-3 md:p-4 backdrop-blur-sm text-center">
             <div className="text-lg md:text-2xl font-bold text-blue-300">
               {
                 goals.filter(
@@ -337,7 +246,7 @@ export function GoalsAsStars({ goals, className = "" }: GoalsAsStarsProps) {
             </div>
             <div className="text-xs text-white/70">Close to Goal</div>
           </div>
-          <div className="bg-white/10 rounded-lg p-2 md:p-3 backdrop-blur-sm text-center">
+          <div className="bg-white/10 rounded-lg p-3 md:p-4 backdrop-blur-sm text-center">
             <div className="text-sm md:text-xl font-bold text-green-300">
               {formatCurrency(
                 goals.reduce((sum, g) => sum + g.currentAmount, 0),

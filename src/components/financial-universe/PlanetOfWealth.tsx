@@ -35,11 +35,6 @@ export function PlanetOfWealth({
       // Growing - pulsing glow animation
       controls.start({
         scale: [1, 1.05, 1],
-        boxShadow: [
-          "0 0 30px rgba(34, 197, 94, 0.3)",
-          "0 0 50px rgba(34, 197, 94, 0.6)",
-          "0 0 30px rgba(34, 197, 94, 0.3)",
-        ],
         transition: {
           duration: 2,
           repeat: Infinity,
@@ -50,11 +45,6 @@ export function PlanetOfWealth({
       // Shrinking - gentle warning glow
       controls.start({
         scale: [1, 0.95, 1],
-        boxShadow: [
-          "0 0 30px rgba(239, 68, 68, 0.2)",
-          "0 0 40px rgba(239, 68, 68, 0.4)",
-          "0 0 30px rgba(239, 68, 68, 0.2)",
-        ],
         transition: {
           duration: 3,
           repeat: Infinity,
@@ -75,7 +65,7 @@ export function PlanetOfWealth({
   };
 
   return (
-    <div className={`relative flex flex-col items-center p-8 ${className}`}>
+    <div className={`relative flex flex-col items-center p-16 min-w-[350px] min-h-[350px] overflow-visible ${className}`}>
       {/* Background Stars */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(20)].map((_, i) => (

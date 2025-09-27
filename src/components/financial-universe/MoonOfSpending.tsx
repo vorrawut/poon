@@ -34,11 +34,6 @@ export function MoonOfSpending({
       // Spending increased - warning glow
       controls.start({
         scale: [1, 1.03, 1],
-        boxShadow: [
-          "0 0 40px rgba(251, 191, 36, 0.3)",
-          "0 0 60px rgba(251, 191, 36, 0.5)",
-          "0 0 40px rgba(251, 191, 36, 0.3)",
-        ],
         transition: {
           duration: 2.5,
           repeat: Infinity,
@@ -49,11 +44,6 @@ export function MoonOfSpending({
       // Spending controlled - gentle glow
       controls.start({
         scale: [1, 1.01, 1],
-        boxShadow: [
-          "0 0 30px rgba(148, 163, 184, 0.2)",
-          "0 0 40px rgba(148, 163, 184, 0.4)",
-          "0 0 30px rgba(148, 163, 184, 0.2)",
-        ],
         transition: {
           duration: 3,
           repeat: Infinity,
@@ -81,20 +71,20 @@ export function MoonOfSpending({
   };
 
   return (
-    <div className={`relative flex flex-col items-center p-6 ${className}`}>
-      {/* Spending Trails (like meteor trails) */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div className={`relative flex flex-col items-center p-14 min-w-[320px] min-h-[320px] overflow-visible ${className}`}>
+      {/* Spending Trails (like meteor trails) - Constrained to moon area */}
+      <div className="absolute top-0 left-0 w-32 h-32 overflow-hidden pointer-events-none">
         {topCategories.slice(0, 3).map((category, i) => (
           <motion.div
             key={category.name}
             className="absolute"
             style={{
-              top: `${20 + i * 25}%`,
-              right: `${10 + i * 15}%`,
+              top: `${15 + i * 20}%`,
+              right: `${5 + i * 10}%`,
             }}
           >
             <motion.div
-              className="w-1 h-8 rounded-full opacity-60"
+              className="w-1 h-6 rounded-full opacity-60"
               style={{ background: category.color }}
               animate={{
                 scaleY: [0, 1, 0],
@@ -106,7 +96,7 @@ export function MoonOfSpending({
                 delay: i * 0.5,
               }}
             />
-            <div className="text-xs text-white/70 mt-1 whitespace-nowrap">
+            <div className="text-xs text-white/70 mt-1 whitespace-nowrap opacity-0">
               {category.name}
             </div>
           </motion.div>

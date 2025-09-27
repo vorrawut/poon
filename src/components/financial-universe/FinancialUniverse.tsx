@@ -144,7 +144,7 @@ export function FinancialUniverse({
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute top-3/4 left-1/3 w-64 h-64 bg-pink-500/5 rounded-full blur-3xl" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -174,10 +174,10 @@ export function FinancialUniverse({
         {/* Main Universe Layout */}
         <div className="space-y-12 lg:space-y-0">
           {/* Desktop Layout */}
-          <div className="hidden lg:grid lg:grid-cols-3 gap-8 items-center justify-items-center mb-12 min-h-[500px]">
+          <div className="hidden lg:grid lg:grid-cols-3 gap-16 items-center justify-items-center mb-12 min-h-[700px] overflow-visible">
             {/* Planet of Wealth - Left */}
             <motion.div
-              className="w-full max-w-sm flex justify-center items-center h-full"
+              className="w-full max-w-lg flex justify-center items-center h-full overflow-visible"
               initial={{ opacity: 0, x: -100 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.5 }}
@@ -191,7 +191,7 @@ export function FinancialUniverse({
 
             {/* Goals Constellation - Center */}
             <motion.div
-              className="w-full max-w-lg flex justify-center items-center h-full"
+              className="w-full max-w-2xl flex justify-center items-center h-full overflow-visible"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 1 }}
@@ -201,7 +201,7 @@ export function FinancialUniverse({
 
             {/* Moon of Spending - Right */}
             <motion.div
-              className="w-full max-w-sm flex justify-center items-center h-full"
+              className="w-full max-w-lg flex justify-center items-center h-full overflow-visible"
               initial={{ opacity: 0, x: 100 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.8 }}
