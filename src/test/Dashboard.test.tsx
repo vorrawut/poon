@@ -104,7 +104,7 @@ describe('Dashboard', () => {
 
     expect(screen.getByText('Quick Actions')).toBeInTheDocument();
     expect(screen.getByText('Add Transaction')).toBeInTheDocument();
-    expect(screen.getByText('Link Bank Account')).toBeInTheDocument();
+    expect(screen.getByText('Link Account')).toBeInTheDocument();
     expect(screen.getByText('Import CSV')).toBeInTheDocument();
   });
 });
