@@ -22,13 +22,13 @@ export function AccountsOverviewWidget({
   const { overview, loading, error, refreshOverview } = useAccountsOverview();
   const { syncAllAccounts, isSyncing } = useAccountSync();
 
-  console.log('🔍 AccountsOverviewWidget render:', {
+  console.log("🔍 AccountsOverviewWidget render:", {
     loading,
     hasData: !!overview,
     error,
     accountCount: overview?.accounts?.length || 0,
     totalAssets: overview?.totalAssets,
-    totalLiabilities: overview?.totalLiabilities
+    totalLiabilities: overview?.totalLiabilities,
   });
 
   const handleSyncAll = async () => {
@@ -71,7 +71,11 @@ export function AccountsOverviewWidget({
 
   const accountTypeConfig: Record<
     AccountType,
-    { icon: React.ComponentType<{ className?: string }>; label: string; color: string }
+    {
+      icon: React.ComponentType<{ className?: string }>;
+      label: string;
+      color: string;
+    }
   > = {
     checking: {
       icon: BanknotesIcon,

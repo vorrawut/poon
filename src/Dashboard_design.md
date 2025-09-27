@@ -17,6 +17,7 @@ Contrast & readability → large fonts, no cramped text, avoid subtle gray on wh
 Reduce friction → don’t overwhelm with too many details at once; collapse or simplify.
 
 🛠 Specific Enhancements for Your Dashboard
+
 1. Net Worth Panel (hero section)
 
 Make Net Worth super clear:

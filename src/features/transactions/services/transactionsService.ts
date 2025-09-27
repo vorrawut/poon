@@ -91,7 +91,9 @@ class TransactionsService {
     };
   }
 
-  private transformTransactionResponse(data: Record<string, unknown>): Transaction {
+  private transformTransactionResponse(
+    data: Record<string, unknown>,
+  ): Transaction {
     return {
       id: data.id,
       accountId: data.account_id,

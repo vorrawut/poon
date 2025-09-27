@@ -101,9 +101,9 @@ export function RecentTransactionsWidget({
 
   const formatDate = (date: Date | undefined) => {
     if (!date || !(date instanceof Date)) {
-      return 'N/A';
+      return "N/A";
     }
-    
+
     const now = new Date();
     const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
 
@@ -123,7 +123,10 @@ export function RecentTransactionsWidget({
   };
 
   const getCategoryIcon = (category: string) => {
-    const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+    const iconMap: Record<
+      string,
+      React.ComponentType<{ className?: string }>
+    > = {
       income: ArrowUpIcon,
       transfer: ArrowUpIcon,
       default: ArrowDownIcon,

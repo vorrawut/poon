@@ -8,10 +8,10 @@ import { config, shouldUseMockData } from "../../../../config/environments";
 
 class AccountsService {
   async fetchAccounts(): Promise<Account[]> {
-    console.log('🔍 AccountsService.fetchAccounts called');
-    console.log('🔍 Environment:', config.environment);
-    console.log('🔍 Should use mock data:', shouldUseMockData());
-    
+    console.log("🔍 AccountsService.fetchAccounts called");
+    console.log("🔍 Environment:", config.environment);
+    console.log("🔍 Should use mock data:", shouldUseMockData());
+
     // Check if we should use mock data based on environment configuration
     if (shouldUseMockData()) {
       console.log(`🏦 Using mock accounts data (${config.environment} mode)`);
@@ -19,10 +19,10 @@ class AccountsService {
       await new Promise((resolve) =>
         setTimeout(resolve, config.mockApiDelay * 0.6),
       ); // Slightly faster for accounts
-      console.log('🏦 Mock delay completed, generating accounts...');
-      
+      console.log("🏦 Mock delay completed, generating accounts...");
+
       const mockData = this.getMockAccounts();
-      console.log('🏦 Mock accounts generated:', mockData.length, 'accounts');
+      console.log("🏦 Mock accounts generated:", mockData.length, "accounts");
       return mockData;
     }
 

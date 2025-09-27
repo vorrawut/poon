@@ -82,7 +82,7 @@ export const expectedMockData = {
 
   formatting: {
     currencyRegex: /\$[\d,]+(\.\d{2})?/,
-    percentRegex: /[\+\-]?[\d.]+%/,
+    percentRegex: /[+-]?[\d.]+%/,
     dateRegex: /\d{1,2}\/\d{1,2}\/\d{4}|\w+ \d{1,2}, \d{4}/,
   }
 };
@@ -165,7 +165,7 @@ export class MockDataValidator {
    * Extract all percentage values from text
    */
   static extractPercentageValues(text: string): number[] {
-    const matches = text.match(/[\+\-]?[\d.]+%/g) || [];
-    return matches.map(match => parseFloat(match.replace(/[%\+]/g, '')));
+    const matches = text.match(/[+-]?[\d.]+%/g) || [];
+    return matches.map(match => parseFloat(match.replace(/[%+]/g, '')));
   }
 }

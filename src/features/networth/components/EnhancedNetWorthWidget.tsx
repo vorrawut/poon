@@ -1,10 +1,22 @@
-import { useEffect, useState } from 'react';
-import { FadeIn, BigNumber, SyncStatus, InfoTooltip } from '../../../components/ui';
-import { useNetWorth, useNetWorthTrend } from '../hooks/useNetWorth';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import { useEffect, useState } from "react";
+import {
+  FadeIn,
+  BigNumber,
+  SyncStatus,
+  InfoTooltip,
+} from "../../../components/ui";
+import { useNetWorth } from "../hooks/useNetWorth";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 interface EnhancedNetWorthWidgetProps {
-  timeRange: '7d' | '30d' | '90d';
+  timeRange: "7d" | "30d" | "90d";
   onQuickAction?: (action: string, data?: unknown) => void;
   className?: string;
 }
@@ -12,9 +24,11 @@ interface EnhancedNetWorthWidgetProps {
 export function EnhancedNetWorthWidget({
   timeRange,
   onQuickAction,
-  className = ''
+  className = "",
 }: EnhancedNetWorthWidgetProps) {
-  const [selectedTimeRange, setSelectedTimeRange] = useState<'7d' | '30d' | '90d'>(timeRange);
+  const [selectedTimeRange, setSelectedTimeRange] = useState<
+    "7d" | "30d" | "90d"
+  >(timeRange);
 
   useEffect(() => {
     setSelectedTimeRange(timeRange);
@@ -22,18 +36,20 @@ export function EnhancedNetWorthWidget({
 
   const { netWorthData, loading, error, refreshNetWorth } = useNetWorth();
 
-  console.log('🔍 EnhancedNetWorthWidget render:', {
+  console.log("🔍 EnhancedNetWorthWidget render:", {
     loading,
     hasData: !!netWorthData,
     error,
     selectedTimeRange,
-    netWorthData: netWorthData ? `$${netWorthData.totalNetWorth}` : null
+    netWorthData: netWorthData ? `$${netWorthData.totalNetWorth}` : null,
   });
 
   if (loading) {
-    console.log('🔍 EnhancedNetWorthWidget: Rendering loading state');
+    console.log("🔍 EnhancedNetWorthWidget: Rendering loading state");
     return (
-      <FadeIn className={`bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl p-8 ${className}`}>
+      <FadeIn
+        className={`bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl p-8 ${className}`}
+      >
         <div className="animate-pulse text-center">
           <div className="h-8 bg-gray-300 rounded w-48 mx-auto mb-4"></div>
           <div className="h-16 bg-gray-300 rounded w-64 mx-auto mb-4"></div>
@@ -45,7 +61,9 @@ export function EnhancedNetWorthWidget({
 
   if (error) {
     return (
-      <FadeIn className={`bg-red-50 border border-red-200 rounded-2xl p-8 ${className}`}>
+      <FadeIn
+        className={`bg-red-50 border border-red-200 rounded-2xl p-8 ${className}`}
+      >
         <div className="text-center">
           <div className="text-6xl mb-4">⚠️</div>
           <h3 className="text-xl font-semibold text-red-800 mb-2">
@@ -67,7 +85,9 @@ export function EnhancedNetWorthWidget({
 
   if (!netWorthData) {
     return (
-      <FadeIn className={`bg-gray-50 border border-gray-200 rounded-2xl p-8 ${className}`}>
+      <FadeIn
+        className={`bg-gray-50 border border-gray-200 rounded-2xl p-8 ${className}`}
+      >
         <div className="text-center text-gray-500">
           <div className="text-4xl mb-4">💰</div>
           <p>No financial data available</p>
@@ -79,35 +99,42 @@ export function EnhancedNetWorthWidget({
   // Prepare pie chart data
   const pieData = [
     {
-      name: '💰 Cash',
+      name: "💰 Cash",
       value: Math.abs(netWorthData.breakdown.cash),
-      color: '#10b981', // green
-      description: 'Money in your bank accounts'
+      color: "#10b981", // green
+      description: "Money in your bank accounts",
     },
     {
-      name: '📈 Investments',
+      name: "📈 Investments",
       value: Math.abs(netWorthData.breakdown.investments),
-      color: '#3b82f6', // blue
-      description: '401k, IRA, stocks, and other investments'
+      color: "#3b82f6", // blue
+      description: "401k, IRA, stocks, and other investments",
     },
     {
-      name: '💳 Debts',
+      name: "💳 Debts",
       value: Math.abs(netWorthData.breakdown.other),
-      color: '#ef4444', // red
-      description: 'Credit cards, loans, and other debts'
-    }
-  ].filter(item => item.value > 0);
+      color: "#ef4444", // red
+      description: "Credit cards, loans, and other debts",
+    },
+  ].filter((item) => item.value > 0);
 
-  const totalAssets = netWorthData.breakdown.cash + netWorthData.breakdown.investments + netWorthData.breakdown.realEstate;
+  const totalAssets =
+    netWorthData.breakdown.cash +
+    netWorthData.breakdown.investments +
+    netWorthData.breakdown.realEstate;
   const totalDebts = Math.abs(netWorthData.breakdown.other);
 
   return (
-    <FadeIn className={`bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl shadow-elegant border border-blue-200 overflow-hidden ${className}`}>
+    <FadeIn
+      className={`bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl shadow-elegant border border-blue-200 overflow-hidden ${className}`}
+    >
       {/* Header with sync status */}
       <div className="px-8 pt-6 pb-4">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center">
-            <h2 className="text-2xl font-bold text-gray-900 mr-3">💰 Your Money Summary</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mr-3">
+              💰 Your Money Summary
+            </h2>
             <InfoTooltip content="This shows everything you own minus everything you owe. It's like your financial scorecard!" />
           </div>
           <SyncStatus lastSyncAt={netWorthData.lastUpdated} />
@@ -169,7 +196,7 @@ export function EnhancedNetWorthWidget({
               <h4 className="text-lg font-semibold text-gray-900 mb-4 text-center">
                 💼 Where Your Money Is
               </h4>
-              
+
               {pieData.length > 0 ? (
                 <div className="h-64">
                   <ResponsiveContainer width="100%" height="100%">
@@ -179,7 +206,9 @@ export function EnhancedNetWorthWidget({
                         cx="50%"
                         cy="50%"
                         labelLine={false}
-                        label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                        label={({ name, percent }) =>
+                          `${name} ${(percent * 100).toFixed(0)}%`
+                        }
                         outerRadius={80}
                         fill="#8884d8"
                         dataKey="value"
@@ -189,9 +218,13 @@ export function EnhancedNetWorthWidget({
                         ))}
                       </Pie>
                       <Tooltip
-                        formatter={(value: number, _name: string, props: { payload: { description: string } }) => [
+                        formatter={(
+                          value: number,
+                          _name: string,
+                          props: { payload: { description: string } },
+                        ) => [
                           `$${value.toLocaleString()}`,
-                          props.payload.description
+                          props.payload.description,
                         ]}
                       />
                       <Legend />
@@ -213,21 +246,21 @@ export function EnhancedNetWorthWidget({
         {/* Bottom Action Buttons */}
         <div className="mt-8 flex flex-wrap justify-center gap-4">
           <button
-            onClick={() => onQuickAction?.('view_details')}
+            onClick={() => onQuickAction?.("view_details")}
             className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center space-x-2"
           >
             <span>📊</span>
             <span>See Full Details</span>
           </button>
-          
+
           <button
-            onClick={() => onQuickAction?.('add_transaction')}
+            onClick={() => onQuickAction?.("add_transaction")}
             className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center space-x-2"
           >
             <span>➕</span>
             <span>Add Transaction</span>
           </button>
-          
+
           <button
             onClick={refreshNetWorth}
             className="bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-700 transition-colors flex items-center space-x-2"

@@ -6,94 +6,100 @@ import Dashboard from "../pages/Dashboard";
 // Mock the service modules
 vi.mock("../features/networth/services/netWorthService", () => ({
   netWorthService: {
-    fetchNetWorth: vi.fn(() => Promise.resolve({
-      totalNetWorth: 305917.23,
-      netWorthChange: 8347.23,
-      netWorthChangePercent: 2.8,
-      previousNetWorth: 297570.0,
-      lastUpdated: new Date(),
-      breakdown: {
-        cash: 81670.5,
-        investments: 247050.25,
-        realEstate: 0,
-        other: -22803.54,
-      },
-    })),
+    fetchNetWorth: vi.fn(() =>
+      Promise.resolve({
+        totalNetWorth: 305917.23,
+        netWorthChange: 8347.23,
+        netWorthChangePercent: 2.8,
+        previousNetWorth: 297570.0,
+        lastUpdated: new Date(),
+        breakdown: {
+          cash: 81670.5,
+          investments: 247050.25,
+          realEstate: 0,
+          other: -22803.54,
+        },
+      }),
+    ),
   },
 }));
 
 vi.mock("../features/accounts/services/accountsService", () => ({
   accountsService: {
-    fetchAccountsOverview: vi.fn(() => Promise.resolve({
-      totalAssets: 328720.75,
-      totalLiabilities: 22803.54,
-      netWorth: 305917.21,
-      accounts: [
-        {
-          id: "1",
-          name: "Chase Total Checking",
-          type: "checking",
-          provider: "Chase Bank",
-          providerAccountId: "chase_****1234",
-          balance: 15420.5,
-          currency: "USD",
-          lastSyncAt: new Date(),
-          status: "active",
-          syncStatus: "synced",
-          isManual: false,
-          metadata: { accountNumber: "****1234" },
-        },
-        {
-          id: "2",
-          name: "Ally Online Savings",
-          type: "savings",
-          provider: "Ally Bank", 
-          providerAccountId: "ally_****5678",
-          balance: 45000.0,
-          currency: "USD",
-          lastSyncAt: new Date(),
-          status: "active",
-          syncStatus: "synced",
-          isManual: false,
-          metadata: { accountNumber: "****5678" },
-        },
-      ],
-      accountsByType: {},
-      lastSyncAt: new Date(),
-    })),
+    fetchAccountsOverview: vi.fn(() =>
+      Promise.resolve({
+        totalAssets: 328720.75,
+        totalLiabilities: 22803.54,
+        netWorth: 305917.21,
+        accounts: [
+          {
+            id: "1",
+            name: "Chase Total Checking",
+            type: "checking",
+            provider: "Chase Bank",
+            providerAccountId: "chase_****1234",
+            balance: 15420.5,
+            currency: "USD",
+            lastSyncAt: new Date(),
+            status: "active",
+            syncStatus: "synced",
+            isManual: false,
+            metadata: { accountNumber: "****1234" },
+          },
+          {
+            id: "2",
+            name: "Ally Online Savings",
+            type: "savings",
+            provider: "Ally Bank",
+            providerAccountId: "ally_****5678",
+            balance: 45000.0,
+            currency: "USD",
+            lastSyncAt: new Date(),
+            status: "active",
+            syncStatus: "synced",
+            isManual: false,
+            metadata: { accountNumber: "****5678" },
+          },
+        ],
+        accountsByType: {},
+        lastSyncAt: new Date(),
+      }),
+    ),
     syncAllAccounts: vi.fn(() => Promise.resolve([])),
   },
 }));
 
 vi.mock("../features/transactions/services/transactionsService", () => ({
   transactionsService: {
-    fetchTransactions: vi.fn(() => Promise.resolve([
-      {
-        id: "t1",
-        accountId: "1",
-        date: new Date(),
-        description: "Whole Foods Market",
-        amount: -75.23,
-        type: "expense",
-        category: "groceries",
-        status: "posted",
-        merchant: "Whole Foods",
-        location: "Austin, TX",
-        tags: ["food", "essentials"],
-      },
-      {
-        id: "t2",
-        accountId: "1",
-        date: new Date(),
-        description: "Salary Deposit",
-        amount: 3500.0,
-        type: "income",
-        category: "salary",
-        status: "posted",
-        merchant: "Employer",
-        tags: ["work"],
-      },
-    ])),
+    fetchTransactions: vi.fn(() =>
+      Promise.resolve([
+        {
+          id: "t1",
+          accountId: "1",
+          date: new Date(),
+          description: "Whole Foods Market",
+          amount: -75.23,
+          type: "expense",
+          category: "groceries",
+          status: "posted",
+          merchant: "Whole Foods",
+          location: "Austin, TX",
+          tags: ["food", "essentials"],
+        },
+        {
+          id: "t2",
+          accountId: "1",
+          date: new Date(),
+          description: "Salary Deposit",
+          amount: 3500.0,
+          type: "income",
+          category: "salary",
+          status: "posted",
+          merchant: "Employer",
+          tags: ["work"],
+        },
+      ]),
+    ),
   },
 }));
 
@@ -123,8 +129,8 @@ describe("Enhanced Dashboard", () => {
     expect(screen.getByText("👋 Welcome back!")).toBeInTheDocument();
     expect(
       screen.getByText(
-        "Here's your money in plain English. Everything you need to know, nothing you don't."
-      )
+        "Here's your money in plain English. Everything you need to know, nothing you don't.",
+      ),
     ).toBeInTheDocument();
   });
 
@@ -136,7 +142,7 @@ describe("Enhanced Dashboard", () => {
     );
 
     expect(screen.getByText("Week")).toBeInTheDocument();
-    expect(screen.getByText("Month")).toBeInTheDocument(); 
+    expect(screen.getByText("Month")).toBeInTheDocument();
     expect(screen.getByText("Quarter")).toBeInTheDocument();
     expect(screen.getByText("Short Term")).toBeInTheDocument();
     expect(screen.getByText("Long Term")).toBeInTheDocument();
@@ -184,7 +190,9 @@ describe("Enhanced Dashboard", () => {
 
     await waitFor(() => {
       expect(screen.getByText("📋 Recent Activity")).toBeInTheDocument();
-      expect(screen.getByText("Your latest money movements")).toBeInTheDocument();
+      expect(
+        screen.getByText("Your latest money movements"),
+      ).toBeInTheDocument();
     });
   });
 
@@ -212,13 +220,15 @@ describe("Enhanced Dashboard", () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText("You're doing great with your money!")).toBeInTheDocument();
+      expect(
+        screen.getByText("You're doing great with your money!"),
+      ).toBeInTheDocument();
     });
 
     expect(
       screen.getByText(
-        "Keep track of your finances, and watch your wealth grow over time. Remember, every dollar saved is a dollar earned!"
-      )
+        "Keep track of your finances, and watch your wealth grow over time. Remember, every dollar saved is a dollar earned!",
+      ),
     ).toBeInTheDocument();
   });
 

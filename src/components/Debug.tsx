@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import { netWorthService } from '../features/networth/services/netWorthService';
-import { accountsService } from '../features/accounts/services/accountsService';
-import { config, shouldUseMockData } from '../../config/environments';
+import { useEffect, useState } from "react";
+import { netWorthService } from "../features/networth/services/netWorthService";
+import { accountsService } from "../features/accounts/services/accountsService";
+import { config, shouldUseMockData } from "../../config/environments";
 
 export function Debug() {
   const [netWorthData, setNetWorthData] = useState<any>(null);
@@ -10,23 +10,23 @@ export function Debug() {
 
   useEffect(() => {
     const testServices = async () => {
-      console.log('🔧 Testing services...');
-      console.log('Environment:', config.environment);
-      console.log('Should use mock:', shouldUseMockData());
-      console.log('Config:', config);
+      console.log("🔧 Testing services...");
+      console.log("Environment:", config.environment);
+      console.log("Should use mock:", shouldUseMockData());
+      console.log("Config:", config);
 
       try {
-        console.log('Fetching net worth...');
+        console.log("Fetching net worth...");
         const netWorth = await netWorthService.fetchNetWorth();
-        console.log('Net worth result:', netWorth);
+        console.log("Net worth result:", netWorth);
         setNetWorthData(netWorth);
 
-        console.log('Fetching accounts...');
+        console.log("Fetching accounts...");
         const accounts = await accountsService.fetchAccounts();
-        console.log('Accounts result:', accounts);
+        console.log("Accounts result:", accounts);
         setAccountsData(accounts);
       } catch (error) {
-        console.error('Service error:', error);
+        console.error("Service error:", error);
       } finally {
         setLoading(false);
       }
@@ -46,13 +46,17 @@ export function Debug() {
       <div className="mb-4">
         <h4 className="font-semibold">Environment:</h4>
         <pre className="text-xs bg-gray-200 p-2 rounded">
-          {JSON.stringify({
-            environment: config.environment,
-            dataSource: config.dataSource,
-            shouldUseMock: shouldUseMockData(),
-            isLocal: config.isLocal,
-            mockDelay: config.mockApiDelay
-          }, null, 2)}
+          {JSON.stringify(
+            {
+              environment: config.environment,
+              dataSource: config.dataSource,
+              shouldUseMock: shouldUseMockData(),
+              isLocal: config.isLocal,
+              mockDelay: config.mockApiDelay,
+            },
+            null,
+            2,
+          )}
         </pre>
       </div>
 

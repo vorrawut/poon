@@ -31,10 +31,10 @@ test.describe('Widget Functionality Tests', () => {
         const pageText = await page.textContent('body');
         
         // Should show change amount
-        expect(pageText).toMatch(/[\+\-]?\$[\d,]+/);
+        expect(pageText).toMatch(/[+-]?\$[\d,]+/);
         
         // Should show percentage change
-        expect(pageText).toMatch(/[\+\-]?[\d.]+%/);
+        expect(pageText).toMatch(/[+-]?[\d.]+%/);
       });
 
       await test.step('Verify quick action buttons work', async () => {
@@ -50,7 +50,8 @@ test.describe('Widget Functionality Tests', () => {
     test('should respond to time range changes', async ({ page }) => {
       await dashboardHelpers.waitForNetWorthWidget();
 
-      const originalValue = await dashboardHelpers.getNetWorthValue();
+      // Store original value for potential future use
+      await dashboardHelpers.getNetWorthValue();
 
       await test.step('Change time range and verify response', async () => {
         await dashboardHelpers.changeTimeRange('7 days');
@@ -285,7 +286,8 @@ test.describe('Widget Functionality Tests', () => {
       });
 
       await test.step('Verify time range affects relevant widgets', async () => {
-        const originalText = await page.textContent('body');
+        // Store original text for potential comparison
+        await page.textContent('body');
         
         // Change time range
         await dashboardHelpers.changeTimeRange('7 days');

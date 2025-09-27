@@ -58,10 +58,11 @@ export default function Dashboard() {
               👋 Welcome back!
             </SplitText>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Here's your money in plain English. Everything you need to know, nothing you don't.
+              Here's your money in plain English. Everything you need to know,
+              nothing you don't.
             </p>
           </div>
-          
+
           {/* Big, Touch-Friendly Time Selector */}
           <TimeRangeSelector
             value={timeRange}
@@ -73,8 +74,8 @@ export default function Dashboard() {
 
         {/* Net Worth Hero Section - The Star of the Show */}
         <div className="mb-12">
-          <EnhancedNetWorthWidget 
-            timeRange={timeRange} 
+          <EnhancedNetWorthWidget
+            timeRange={timeRange}
             onQuickAction={handleQuickAction}
           />
         </div>
@@ -91,7 +92,9 @@ export default function Dashboard() {
               <div className="bg-gradient-to-r from-indigo-50 to-purple-50 px-8 py-6 border-b border-gray-200">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <h2 className="text-2xl font-bold text-gray-900 mr-3">📋 Recent Activity</h2>
+                    <h2 className="text-2xl font-bold text-gray-900 mr-3">
+                      📋 Recent Activity
+                    </h2>
                   </div>
                   <button
                     onClick={() => handleQuickAction("view_transactions")}
@@ -124,7 +127,9 @@ export default function Dashboard() {
             <div className="bg-white rounded-2xl shadow-card border border-gray-200 overflow-hidden">
               <div className="bg-gradient-to-r from-green-50 to-emerald-50 px-8 py-6 border-b border-gray-200">
                 <div className="text-center">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">⚡ Quick Actions</h2>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                    ⚡ Quick Actions
+                  </h2>
                   <p className="text-gray-600 text-lg">
                     Common things you might want to do
                   </p>
@@ -138,8 +143,12 @@ export default function Dashboard() {
                     className="bg-green-50 hover:bg-green-100 border-2 border-green-200 rounded-xl p-6 text-center transition-all hover:scale-105"
                   >
                     <div className="text-4xl mb-3">➕</div>
-                    <div className="font-semibold text-green-800 mb-1">Add Transaction</div>
-                    <div className="text-sm text-green-600">Record a purchase or payment</div>
+                    <div className="font-semibold text-green-800 mb-1">
+                      Add Transaction
+                    </div>
+                    <div className="text-sm text-green-600">
+                      Record a purchase or payment
+                    </div>
                   </button>
 
                   <button
@@ -147,8 +156,12 @@ export default function Dashboard() {
                     className="bg-blue-50 hover:bg-blue-100 border-2 border-blue-200 rounded-xl p-6 text-center transition-all hover:scale-105"
                   >
                     <div className="text-4xl mb-3">🔗</div>
-                    <div className="font-semibold text-blue-800 mb-1">Link Account</div>
-                    <div className="text-sm text-blue-600">Connect a new bank account</div>
+                    <div className="font-semibold text-blue-800 mb-1">
+                      Link Account
+                    </div>
+                    <div className="text-sm text-blue-600">
+                      Connect a new bank account
+                    </div>
                   </button>
 
                   <button
@@ -156,8 +169,12 @@ export default function Dashboard() {
                     className="bg-purple-50 hover:bg-purple-100 border-2 border-purple-200 rounded-xl p-6 text-center transition-all hover:scale-105"
                   >
                     <div className="text-4xl mb-3">📄</div>
-                    <div className="font-semibold text-purple-800 mb-1">Import Data</div>
-                    <div className="text-sm text-purple-600">Upload transactions from file</div>
+                    <div className="font-semibold text-purple-800 mb-1">
+                      Import Data
+                    </div>
+                    <div className="text-sm text-purple-600">
+                      Upload transactions from file
+                    </div>
                   </button>
 
                   <button
@@ -165,8 +182,12 @@ export default function Dashboard() {
                     className="bg-orange-50 hover:bg-orange-100 border-2 border-orange-200 rounded-xl p-6 text-center transition-all hover:scale-105"
                   >
                     <div className="text-4xl mb-3">📊</div>
-                    <div className="font-semibold text-orange-800 mb-1">View Reports</div>
-                    <div className="text-sm text-orange-600">See spending patterns</div>
+                    <div className="font-semibold text-orange-800 mb-1">
+                      View Reports
+                    </div>
+                    <div className="text-sm text-orange-600">
+                      See spending patterns
+                    </div>
                   </button>
                 </div>
               </div>
@@ -182,11 +203,12 @@ export default function Dashboard() {
               You're doing great with your money!
             </h3>
             <p className="text-lg text-gray-600 mb-6 max-w-2xl mx-auto">
-              Keep track of your finances, and watch your wealth grow over time. 
+              Keep track of your finances, and watch your wealth grow over time.
               Remember, every dollar saved is a dollar earned!
             </p>
             <div className="text-sm text-gray-500">
-              💡 Tip: Check your dashboard regularly to stay on top of your financial health
+              💡 Tip: Check your dashboard regularly to stay on top of your
+              financial health
             </div>
           </div>
         </FadeIn>

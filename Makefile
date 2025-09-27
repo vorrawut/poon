@@ -156,10 +156,12 @@ lint: ## 🧪 Check code quality and linting
 	npm run lint:check
 	@echo "$(GREEN)✅ Linting passed!$(RESET)"
 
-lint-fix: ## 🧪 Fix linting issues automatically
-	@echo "$(CYAN)🔧 Fixing linting issues...$(RESET)"
+lint-fix: ## 🔧 Fix linting issues automatically
+	@echo "$(CYAN)🔧 Fixing auto-fixable linting issues...$(RESET)"
 	npm run lint:fix
-	@echo "$(GREEN)✅ Linting issues fixed!$(RESET)"
+	@echo "$(CYAN)🔧 Running Prettier for code formatting...$(RESET)"
+	npm run format
+	@echo "$(GREEN)✅ All auto-fixable issues resolved!$(RESET)"
 
 format: ## 🧪 Format code with Prettier
 	@echo "$(CYAN)✨ Formatting code...$(RESET)"
