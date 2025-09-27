@@ -12,12 +12,12 @@ test.describe('Basic Dashboard Functionality', () => {
       await expect(page.locator('body')).toBeVisible();
     });
 
-    await test.step('Verify welcome message appears', async () => {
-      await expect(page.getByText('Welcome back!')).toBeVisible({ timeout: 10000 });
+    await test.step('Verify universe header appears', async () => {
+      await expect(page.getByText('Your Financial Universe')).toBeVisible({ timeout: 10000 });
     });
 
-    await test.step('Verify financial overview text', async () => {
-      await expect(page.getByText('financial overview')).toBeVisible({ timeout: 10000 });
+    await test.step('Verify universe welcome text', async () => {
+      await expect(page.getByText('Welcome to your personal galaxy of wealth!')).toBeVisible({ timeout: 10000 });
     });
   });
 
@@ -35,16 +35,15 @@ test.describe('Basic Dashboard Functionality', () => {
     });
   });
 
-  test('should have time range selector', async ({ page }) => {
-    await test.step('Verify time range buttons exist', async () => {
-      await expect(page.getByText('30 days')).toBeVisible({ timeout: 10000 });
-      await expect(page.getByText('7 days')).toBeVisible({ timeout: 10000 });
-      await expect(page.getByText('90 days')).toBeVisible({ timeout: 10000 });
+  test('should have universe navigation', async ({ page }) => {
+    await test.step('Verify universe components are visible', async () => {
+      await expect(page.getByText('Planet of Wealth')).toBeVisible({ timeout: 10000 });
+      await expect(page.getByText('Moon of Spending')).toBeVisible({ timeout: 10000 });
+      await expect(page.getByText('Your Goal Constellation')).toBeVisible({ timeout: 10000 });
     });
 
-    await test.step('Verify time range can be changed', async () => {
-      await page.getByText('7 days').click();
-      await expect(page.locator('.bg-white.text-blue-600')).toContainText('7 days');
+    await test.step('Verify detailed view button exists', async () => {
+      await expect(page.getByText('Detailed View')).toBeVisible({ timeout: 10000 });
     });
   });
 
@@ -54,7 +53,7 @@ test.describe('Basic Dashboard Functionality', () => {
     });
 
     await test.step('Verify mobile layout', async () => {
-      await expect(page.getByText('Welcome back!')).toBeVisible();
+      await expect(page.getByText('Your Financial Universe')).toBeVisible();
       
       // Take a screenshot for manual review
       await page.screenshot({ 

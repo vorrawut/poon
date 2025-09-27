@@ -74,9 +74,9 @@ export function FinancialUniverse({
   if (loading) {
     return (
       <div
-        className={`relative min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-indigo-900 overflow-hidden ${className}`}
+        className={`relative h-full bg-gradient-to-b from-slate-900 via-purple-900 to-indigo-900 overflow-hidden ${className}`}
       >
-        <div className="flex items-center justify-center min-h-screen">
+        <div className="flex items-center justify-center h-full">
           <motion.div
             className="text-white text-xl"
             animate={{ opacity: [0.5, 1, 0.5] }}
@@ -92,9 +92,9 @@ export function FinancialUniverse({
   if (error || !netWorthData) {
     return (
       <div
-        className={`relative min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-indigo-900 overflow-hidden ${className}`}
+        className={`relative h-full bg-gradient-to-b from-slate-900 via-purple-900 to-indigo-900 overflow-hidden ${className}`}
       >
-        <div className="flex items-center justify-center min-h-screen text-center">
+        <div className="flex items-center justify-center h-full text-center">
           <div className="text-white">
             <div className="text-6xl mb-4">🌌</div>
             <h2 className="text-2xl font-bold mb-2">Universe Loading Error</h2>
@@ -113,7 +113,7 @@ export function FinancialUniverse({
 
   return (
     <div
-      className={`relative min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-indigo-900 overflow-hidden ${className}`}
+      className={`relative h-full bg-gradient-to-b from-slate-900 via-purple-900 to-indigo-900 overflow-hidden ${className}`}
     >
       {/* Background Stars Field */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -147,10 +147,10 @@ export function FinancialUniverse({
         <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Universe Header */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-12"
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
@@ -174,10 +174,10 @@ export function FinancialUniverse({
         {/* Main Universe Layout */}
         <div className="space-y-12 lg:space-y-0">
           {/* Desktop Layout */}
-          <div className="hidden lg:grid lg:grid-cols-3 gap-8 items-center justify-items-center mb-16">
+          <div className="hidden lg:grid lg:grid-cols-3 gap-8 items-center justify-items-center mb-12 min-h-[500px]">
             {/* Planet of Wealth - Left */}
             <motion.div
-              className="w-full max-w-sm flex justify-center"
+              className="w-full max-w-sm flex justify-center items-center h-full"
               initial={{ opacity: 0, x: -100 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.5 }}
@@ -191,7 +191,7 @@ export function FinancialUniverse({
 
             {/* Goals Constellation - Center */}
             <motion.div
-              className="w-full max-w-lg flex justify-center"
+              className="w-full max-w-lg flex justify-center items-center h-full"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 1 }}
@@ -201,7 +201,7 @@ export function FinancialUniverse({
 
             {/* Moon of Spending - Right */}
             <motion.div
-              className="w-full max-w-sm flex justify-center"
+              className="w-full max-w-sm flex justify-center items-center h-full"
               initial={{ opacity: 0, x: 100 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.8 }}
@@ -216,7 +216,7 @@ export function FinancialUniverse({
           </div>
 
           {/* Mobile/Tablet Layout */}
-          <div className="lg:hidden space-y-12 mb-16">
+          <div className="lg:hidden space-y-8 mb-12">
             {/* Goals Constellation - Top on mobile */}
             <motion.div
               className="flex justify-center"

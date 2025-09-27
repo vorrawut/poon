@@ -75,7 +75,7 @@ export function PlanetOfWealth({
   };
 
   return (
-    <div className={`relative flex flex-col items-center ${className}`}>
+    <div className={`relative flex flex-col items-center p-8 ${className}`}>
       {/* Background Stars */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(20)].map((_, i) => (

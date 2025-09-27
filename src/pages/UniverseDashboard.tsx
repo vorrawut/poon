@@ -121,7 +121,7 @@ export function UniverseDashboard() {
 
       {/* Optional: Universe Controls */}
       <motion.div
-        className="fixed top-8 right-8 z-40 space-y-4"
+        className="fixed top-24 right-8 z-40 space-y-4"
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 1.5 }}

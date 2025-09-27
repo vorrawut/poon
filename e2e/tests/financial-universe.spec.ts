@@ -23,13 +23,13 @@ test.describe('Financial Universe', () => {
 
     test('renders all three main components', async ({ page }) => {
       // Planet of Wealth
-      await expect(page.locator('text=🌍 Planet of Wealth')).toBeVisible();
+      await expect(page.locator('text=🌍 Planet of Wealth').first()).toBeVisible();
       
       // Moon of Spending
-      await expect(page.locator('text=🌙 Moon of Spending')).toBeVisible();
+      await expect(page.locator('text=🌙 Moon of Spending').first()).toBeVisible();
       
       // Goals Constellation
-      await expect(page.locator('text=⭐ Your Goal Constellation')).toBeVisible();
+      await expect(page.locator('text=⭐ Your Goal Constellation').first()).toBeVisible();
     });
 
     test('displays universe status section', async ({ page }) => {
@@ -92,8 +92,8 @@ test.describe('Financial Universe', () => {
     });
 
     test('shows goal progress information', async ({ page }) => {
-      await expect(page.locator('text=Each star represents a financial goal')).toBeVisible();
-      await expect(page.locator('text=When you reach a goal, your star ignites!')).toBeVisible();
+      await expect(page.locator('text=Each star represents a financial goal').first()).toBeVisible();
+      await expect(page.locator('text=When you reach a goal, your star ignites!').first()).toBeVisible();
     });
   });
 
@@ -107,25 +107,25 @@ test.describe('Financial Universe', () => {
 
     test('navigation buttons are clickable', async ({ page }) => {
       // Test Quick Actions button
-      const quickActionsButton = page.locator('button:has-text("Quick Actions")');
+      const quickActionsButton = page.locator('button:has-text("Quick Actions")').first();
       await expect(quickActionsButton).toBeEnabled();
       
       // Test Detailed View button
-      const detailedViewButton = page.locator('button:has-text("Detailed View")');
+      const detailedViewButton = page.locator('button:has-text("Detailed View")').first();
       await expect(detailedViewButton).toBeEnabled();
       
       // Test Analytics button
-      const analyticsButton = page.locator('button:has-text("Analytics")');
+      const analyticsButton = page.locator('button:has-text("Analytics")').first();
       await expect(analyticsButton).toBeEnabled();
       
       // Test Settings button
-      const settingsButton = page.locator('button:has-text("Settings")');
+      const settingsButton = page.locator('button:has-text("Settings")').first();
       await expect(settingsButton).toBeEnabled();
     });
 
     test('clicking navigation buttons triggers interactions', async ({ page }) => {
       // Click Detailed View button and verify it's clickable
-      const detailedViewButton = page.locator('button:has-text("Detailed View")');
+      const detailedViewButton = page.locator('button:has-text("Detailed View")').first();
       await detailedViewButton.click();
       
       // The button should remain visible after click (no navigation away from universe)

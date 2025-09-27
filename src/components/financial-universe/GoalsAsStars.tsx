@@ -76,7 +76,7 @@ export function GoalsAsStars({ goals, className = "" }: GoalsAsStarsProps) {
   };
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative p-4 ${className}`}>
       {/* Background Galaxy */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-gradient-radial from-purple-900/20 via-transparent to-transparent" />

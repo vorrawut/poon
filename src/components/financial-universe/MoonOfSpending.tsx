@@ -81,7 +81,7 @@ export function MoonOfSpending({
   };
 
   return (
-    <div className={`relative flex flex-col items-center ${className}`}>
+    <div className={`relative flex flex-col items-center p-6 ${className}`}>
       {/* Spending Trails (like meteor trails) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {topCategories.slice(0, 3).map((category, i) => (
@@ -200,7 +200,7 @@ export function MoonOfSpending({
 
       {/* Top Spending Categories */}
       <motion.div
-        className="mt-4 grid grid-cols-2 gap-2 max-w-xs mx-auto"
+        className="mt-6 grid grid-cols-2 gap-3 max-w-sm mx-auto"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1 }}
@@ -208,7 +208,7 @@ export function MoonOfSpending({
         {topCategories.slice(0, 4).map((category, _i) => (
           <motion.div
             key={category.name}
-            className="bg-white/10 rounded-lg px-2 md:px-3 py-2 backdrop-blur-sm"
+            className="bg-white/10 rounded-lg px-3 py-3 backdrop-blur-sm"
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
