@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { netWorthService } from "../features/networth/services/netWorthService";
 import { accountsService } from "../features/accounts/services/accountsService";
+import type { NetWorthData } from "../features/networth/types";
+import type { Account } from "../features/accounts/types";
 
 export function ServiceTester() {
-  const [netWorthData, setNetWorthData] = useState<any>(null);
-  const [accountsData, setAccountsData] = useState<any>(null);
+  const [netWorthData, setNetWorthData] = useState<NetWorthData | null>(null);
+  const [accountsData, setAccountsData] = useState<Account[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState<string[]>([]);
 

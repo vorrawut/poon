@@ -5,8 +5,12 @@ export function MockDataDisplay() {
   // Get the mock data directly (synchronously)
   const getMockData = () => {
     // Access the private method by creating a new instance
-    const netWorthServiceInstance = netWorthService as any;
-    const accountsServiceInstance = accountsService as any;
+    const netWorthServiceInstance = netWorthService as {
+      getMockNetWorthData?: () => unknown;
+    };
+    const accountsServiceInstance = accountsService as {
+      getMockAccounts?: () => unknown;
+    };
 
     try {
       const mockNetWorth = netWorthServiceInstance.getMockNetWorthData();
@@ -48,9 +52,11 @@ export function MockDataDisplay() {
             <strong>Accounts:</strong> {mockData.accounts?.length} total
             <br />
             <strong>Types:</strong>{" "}
-            {[...new Set(mockData.accounts?.map((acc: any) => acc.type))].join(
-              ", ",
-            )}
+            {[
+              ...new Set(
+                mockData.accounts?.map((acc: { type: string }) => acc.type),
+              ),
+            ].join(", ")}
           </div>
 
           <details className="bg-white p-2 rounded">

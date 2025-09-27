@@ -35,7 +35,11 @@ module.exports = {
   ignorePatterns: [
     'dist/',
     'node_modules/',
+    'react-bits/**/*',
+    '**/react-bits/**',
     '*.config.js',
     '*.config.ts',
+    'test-results/',
+    'e2e-results/',
   ],
 };

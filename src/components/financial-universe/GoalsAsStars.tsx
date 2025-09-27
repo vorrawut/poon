@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Goal {
   id: string;
@@ -16,15 +16,15 @@ interface GoalsAsStarsProps {
   className?: string;
 }
 
-export function GoalsAsStars({ goals, className = '' }: GoalsAsStarsProps) {
+export function GoalsAsStars({ goals, className = "" }: GoalsAsStarsProps) {
   const [celebratingGoal, setCelebratingGoal] = useState<string | null>(null);
 
   useEffect(() => {
     // Check for newly completed goals to trigger celebration
-    const completedGoal = goals.find(goal => 
-      goal.isCompleted && celebratingGoal !== goal.id
+    const completedGoal = goals.find(
+      (goal) => goal.isCompleted && celebratingGoal !== goal.id,
     );
-    
+
     if (completedGoal) {
       setCelebratingGoal(completedGoal.id);
       // Clear celebration after 3 seconds
@@ -42,20 +42,20 @@ export function GoalsAsStars({ goals, className = '' }: GoalsAsStarsProps) {
     const brightness = getStarBrightness(goal);
     const baseSize = 8;
     const maxSize = 20;
-    return baseSize + (brightness * (maxSize - baseSize));
+    return baseSize + brightness * (maxSize - baseSize);
   };
 
   const getStarColor = (goal: Goal, brightness: number) => {
     if (goal.isCompleted) {
-      return '#FFD700'; // Gold for completed
+      return "#FFD700"; // Gold for completed
     }
     if (brightness > 0.8) {
-      return '#F59E0B'; // Amber for almost there
+      return "#F59E0B"; // Amber for almost there
     }
     if (brightness > 0.5) {
-      return '#3B82F6'; // Blue for good progress
+      return "#3B82F6"; // Blue for good progress
     }
-    return '#94A3B8'; // Gray for early progress
+    return "#94A3B8"; // Gray for early progress
   };
 
   const formatCurrency = (amount: number) => {
@@ -68,7 +68,7 @@ export function GoalsAsStars({ goals, className = '' }: GoalsAsStarsProps) {
     // Arrange stars in a natural constellation pattern
     const angle = (index / total) * 2 * Math.PI + (Math.random() - 0.5) * 0.5;
     const radius = 120 + (Math.random() - 0.5) * 60;
-    
+
     return {
       x: Math.cos(angle) * radius,
       y: Math.sin(angle) * radius,
@@ -113,14 +113,22 @@ export function GoalsAsStars({ goals, className = '' }: GoalsAsStarsProps) {
                 <motion.div
                   className="relative group cursor-pointer"
                   whileHover={{ scale: 1.2 }}
-                  animate={isCelebrating ? {
-                    scale: [1, 1.5, 1],
-                    rotate: [0, 180, 360],
-                  } : {}}
-                  transition={isCelebrating ? {
-                    duration: 1,
-                    repeat: 3,
-                  } : {}}
+                  animate={
+                    isCelebrating
+                      ? {
+                          scale: [1, 1.5, 1],
+                          rotate: [0, 180, 360],
+                        }
+                      : {}
+                  }
+                  transition={
+                    isCelebrating
+                      ? {
+                          duration: 1,
+                          repeat: 3,
+                        }
+                      : {}
+                  }
                 >
                   {/* Star Glow */}
                   <motion.div
@@ -130,16 +138,20 @@ export function GoalsAsStars({ goals, className = '' }: GoalsAsStarsProps) {
                       height: size * 2,
                       backgroundColor: color,
                       opacity: brightness * 0.6,
-                      transform: 'translate(-50%, -50%)',
+                      transform: "translate(-50%, -50%)",
                     }}
-                    animate={isCompleted ? {
-                      scale: [1, 1.3, 1],
-                      opacity: [0.6, 1, 0.6],
-                    } : {}}
+                    animate={
+                      isCompleted
+                        ? {
+                            scale: [1, 1.3, 1],
+                            opacity: [0.6, 1, 0.6],
+                          }
+                        : {}
+                    }
                     transition={{
                       duration: 2,
                       repeat: Infinity,
-                      ease: "easeInOut"
+                      ease: "easeInOut",
                     }}
                   />
 
@@ -151,15 +163,19 @@ export function GoalsAsStars({ goals, className = '' }: GoalsAsStarsProps) {
                       height: size,
                       backgroundColor: color,
                       boxShadow: `0 0 ${size}px ${color}40`,
-                      transform: 'translate(-50%, -50%)',
+                      transform: "translate(-50%, -50%)",
                     }}
-                    animate={isCompleted ? {
-                      boxShadow: [
-                        `0 0 ${size}px ${color}40`,
-                        `0 0 ${size * 2}px ${color}80`,
-                        `0 0 ${size}px ${color}40`,
-                      ],
-                    } : {}}
+                    animate={
+                      isCompleted
+                        ? {
+                            boxShadow: [
+                              `0 0 ${size}px ${color}40`,
+                              `0 0 ${size * 2}px ${color}80`,
+                              `0 0 ${size}px ${color}40`,
+                            ],
+                          }
+                        : {}
+                    }
                     transition={{
                       duration: 1.5,
                       repeat: Infinity,
@@ -170,12 +186,12 @@ export function GoalsAsStars({ goals, className = '' }: GoalsAsStarsProps) {
                   {isCompleted && (
                     <motion.div
                       className="absolute inset-0"
-                      style={{ transform: 'translate(-50%, -50%)' }}
+                      style={{ transform: "translate(-50%, -50%)" }}
                       animate={{ rotate: 360 }}
                       transition={{
                         duration: 8,
                         repeat: Infinity,
-                        ease: "linear"
+                        ease: "linear",
                       }}
                     >
                       {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
@@ -184,9 +200,9 @@ export function GoalsAsStars({ goals, className = '' }: GoalsAsStarsProps) {
                           className="absolute w-1 bg-white/80 rounded-full"
                           style={{
                             height: size * 0.8,
-                            left: '50%',
-                            top: '50%',
-                            transformOrigin: 'center',
+                            left: "50%",
+                            top: "50%",
+                            transformOrigin: "center",
                             transform: `rotate(${angle}deg) translateY(-${size * 0.4}px) translateX(-0.5px)`,
                           }}
                         />
@@ -203,20 +219,20 @@ export function GoalsAsStars({ goals, className = '' }: GoalsAsStarsProps) {
                             key={i}
                             className="absolute w-1 h-1 bg-yellow-300 rounded-full"
                             style={{
-                              left: '50%',
-                              top: '50%',
+                              left: "50%",
+                              top: "50%",
                             }}
                             initial={{ opacity: 1, scale: 0 }}
                             animate={{
-                              x: Math.cos(i * 30 * Math.PI / 180) * 50,
-                              y: Math.sin(i * 30 * Math.PI / 180) * 50,
+                              x: Math.cos((i * 30 * Math.PI) / 180) * 50,
+                              y: Math.sin((i * 30 * Math.PI) / 180) * 50,
                               opacity: 0,
                               scale: 2,
                             }}
                             exit={{ opacity: 0 }}
                             transition={{
                               duration: 1,
-                              ease: "easeOut"
+                              ease: "easeOut",
                             }}
                           />
                         ))}
@@ -234,13 +250,16 @@ export function GoalsAsStars({ goals, className = '' }: GoalsAsStarsProps) {
                     <div className="bg-black/80 text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap backdrop-blur-sm">
                       <div className="font-semibold">{goal.name}</div>
                       <div className="text-xs opacity-80">
-                        {formatCurrency(goal.currentAmount)} / {formatCurrency(goal.targetAmount)}
+                        {formatCurrency(goal.currentAmount)} /{" "}
+                        {formatCurrency(goal.targetAmount)}
                       </div>
                       <div className="text-xs opacity-80">
                         {(brightness * 100).toFixed(0)}% complete
                       </div>
                       {isCompleted && (
-                        <div className="text-xs text-yellow-300">✨ Goal Achieved!</div>
+                        <div className="text-xs text-yellow-300">
+                          ✨ Goal Achieved!
+                        </div>
                       )}
                     </div>
                     {/* Tooltip Arrow */}
@@ -280,7 +299,7 @@ export function GoalsAsStars({ goals, className = '' }: GoalsAsStarsProps) {
       </div>
 
       {/* Goals Legend */}
-      <motion.div 
+      <motion.div
         className="mt-8 text-center"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -290,31 +309,39 @@ export function GoalsAsStars({ goals, className = '' }: GoalsAsStarsProps) {
           ⭐ Your Goal Constellation
         </h3>
         <p className="text-white/70 max-w-md mx-auto text-sm">
-          Each star represents a financial goal. Brighter stars are closer to completion. 
-          When you reach a goal, your star ignites! ✨
+          Each star represents a financial goal. Brighter stars are closer to
+          completion. When you reach a goal, your star ignites! ✨
         </p>
-        
+
         {/* Progress Summary */}
         <div className="mt-4 grid grid-cols-2 lg:grid-cols-4 gap-3 max-w-2xl mx-auto">
           <div className="bg-white/10 rounded-lg p-2 md:p-3 backdrop-blur-sm text-center">
-            <div className="text-lg md:text-2xl font-bold text-white">{goals.length}</div>
+            <div className="text-lg md:text-2xl font-bold text-white">
+              {goals.length}
+            </div>
             <div className="text-xs text-white/70">Total Goals</div>
           </div>
           <div className="bg-white/10 rounded-lg p-2 md:p-3 backdrop-blur-sm text-center">
             <div className="text-lg md:text-2xl font-bold text-yellow-300">
-              {goals.filter(g => g.isCompleted).length}
+              {goals.filter((g) => g.isCompleted).length}
             </div>
             <div className="text-xs text-white/70">Completed</div>
           </div>
           <div className="bg-white/10 rounded-lg p-2 md:p-3 backdrop-blur-sm text-center">
             <div className="text-lg md:text-2xl font-bold text-blue-300">
-              {goals.filter(g => !g.isCompleted && getStarBrightness(g) > 0.5).length}
+              {
+                goals.filter(
+                  (g) => !g.isCompleted && getStarBrightness(g) > 0.5,
+                ).length
+              }
             </div>
             <div className="text-xs text-white/70">Close to Goal</div>
           </div>
           <div className="bg-white/10 rounded-lg p-2 md:p-3 backdrop-blur-sm text-center">
             <div className="text-sm md:text-xl font-bold text-green-300">
-              {formatCurrency(goals.reduce((sum, g) => sum + g.currentAmount, 0))}
+              {formatCurrency(
+                goals.reduce((sum, g) => sum + g.currentAmount, 0),
+              )}
             </div>
             <div className="text-xs text-white/70">Total Saved</div>
           </div>

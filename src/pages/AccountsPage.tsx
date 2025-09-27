@@ -67,7 +67,7 @@ export function AccountsPage() {
               🏦 Your Accounts
             </SplitText>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Complete overview of all your financial accounts in one place. 
+              Complete overview of all your financial accounts in one place.
               Track everything from checking to investments.
             </p>
           </div>
@@ -238,11 +238,13 @@ export function AccountsPage() {
               Your data is safe and secure
             </h3>
             <p className="text-lg text-gray-600 mb-6 max-w-2xl mx-auto">
-              Bank-level encryption protects all your account information. 
-              We never store your login credentials, only read-only access to account balances and transactions.
+              Bank-level encryption protects all your account information. We
+              never store your login credentials, only read-only access to
+              account balances and transactions.
             </p>
             <div className="text-sm text-gray-500">
-              🔐 256-bit SSL encryption • 🛡️ SOC 2 compliant • 🔒 Read-only access
+              🔐 256-bit SSL encryption • 🛡️ SOC 2 compliant • 🔒 Read-only
+              access
             </div>
           </div>
         </FadeIn>

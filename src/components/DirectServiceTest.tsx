@@ -5,13 +5,27 @@ import { config, shouldUseMockData } from "../../config/environments";
 import { netWorthService } from "../features/networth/services/netWorthService";
 import { accountsService } from "../features/accounts/services/accountsService";
 
+interface TestResult {
+  success: boolean;
+  data?: unknown;
+  error?: string;
+  duration?: number;
+  totalNetWorth?: number;
+  count?: number;
+}
+
+interface TestResults {
+  netWorth?: TestResult;
+  accounts?: TestResult;
+}
+
 export function DirectServiceTest() {
-  const [testResults, setTestResults] = useState<any>({});
+  const [testResults, setTestResults] = useState<TestResults>({});
   const [isRunning, setIsRunning] = useState(false);
 
   const runTests = async () => {
     setIsRunning(true);
-    const results: any = {};
+    const results: TestResults = {};
 
     console.log("🧪 Starting direct service tests...");
     console.log("🧪 Environment info:", {

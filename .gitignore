@@ -54,3 +54,10 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+
+# Tests
+/test-results
+/e2e-results
+
+react-bits

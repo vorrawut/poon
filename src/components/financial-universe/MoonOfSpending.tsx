@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import { useEffect, useState } from "react";
+import { motion, useAnimation } from "framer-motion";
 
 interface MoonOfSpendingProps {
   monthlySpending: number;
@@ -9,12 +9,12 @@ interface MoonOfSpendingProps {
   className?: string;
 }
 
-export function MoonOfSpending({ 
-  monthlySpending, 
-  previousMonthSpending,
+export function MoonOfSpending({
+  monthlySpending,
+  previousMonthSpending: _previousMonthSpending,
   spendingChange,
   topCategories,
-  className = '' 
+  className = "",
 }: MoonOfSpendingProps) {
   const controls = useAnimation();
   const [isSpendingUp, setIsSpendingUp] = useState(spendingChange > 0);
@@ -29,36 +29,36 @@ export function MoonOfSpending({
   // Animate moon based on spending changes
   useEffect(() => {
     setIsSpendingUp(spendingChange > 0);
-    
+
     if (spendingChange > 0) {
       // Spending increased - warning glow
       controls.start({
         scale: [1, 1.03, 1],
         boxShadow: [
-          '0 0 40px rgba(251, 191, 36, 0.3)',
-          '0 0 60px rgba(251, 191, 36, 0.5)',
-          '0 0 40px rgba(251, 191, 36, 0.3)',
+          "0 0 40px rgba(251, 191, 36, 0.3)",
+          "0 0 60px rgba(251, 191, 36, 0.5)",
+          "0 0 40px rgba(251, 191, 36, 0.3)",
         ],
         transition: {
           duration: 2.5,
           repeat: Infinity,
-          ease: "easeInOut"
-        }
+          ease: "easeInOut",
+        },
       });
     } else {
       // Spending controlled - gentle glow
       controls.start({
         scale: [1, 1.01, 1],
         boxShadow: [
-          '0 0 30px rgba(148, 163, 184, 0.2)',
-          '0 0 40px rgba(148, 163, 184, 0.4)',
-          '0 0 30px rgba(148, 163, 184, 0.2)',
+          "0 0 30px rgba(148, 163, 184, 0.2)",
+          "0 0 40px rgba(148, 163, 184, 0.4)",
+          "0 0 30px rgba(148, 163, 184, 0.2)",
         ],
         transition: {
           duration: 3,
           repeat: Infinity,
-          ease: "easeInOut"
-        }
+          ease: "easeInOut",
+        },
       });
     }
   }, [spendingChange, controls]);
@@ -75,9 +75,9 @@ export function MoonOfSpending({
 
   const getMoonGradient = () => {
     if (isSpendingUp) {
-      return 'from-amber-400 via-orange-500 to-red-500';
+      return "from-amber-400 via-orange-500 to-red-500";
     }
-    return 'from-slate-300 via-slate-400 to-slate-500';
+    return "from-slate-300 via-slate-400 to-slate-500";
   };
 
   return (
@@ -114,10 +114,7 @@ export function MoonOfSpending({
       </div>
 
       {/* Main Moon */}
-      <motion.div
-        className="relative w-32 h-32"
-        animate={controls}
-      >
+      <motion.div className="relative w-32 h-32" animate={controls}>
         {/* Moon Base */}
         <div className="relative w-full h-full rounded-full bg-slate-600 shadow-2xl overflow-hidden">
           {/* Moon Phase (Illuminated Portion) */}
@@ -147,13 +144,16 @@ export function MoonOfSpending({
           ))}
 
           {/* Moon Glow Inner */}
-          <div className={`
+          <div
+            className={`
             absolute inset-2 rounded-full opacity-30
-            ${isSpendingUp 
-              ? 'bg-gradient-to-br from-amber-300/40 to-transparent' 
-              : 'bg-gradient-to-br from-slate-300/40 to-transparent'
+            ${
+              isSpendingUp
+                ? "bg-gradient-to-br from-amber-300/40 to-transparent"
+                : "bg-gradient-to-br from-slate-300/40 to-transparent"
             }
-          `} />
+          `}
+          />
         </div>
 
         {/* Orbital Ring */}
@@ -163,19 +163,21 @@ export function MoonOfSpending({
           transition={{
             duration: 25,
             repeat: Infinity,
-            ease: "linear"
+            ease: "linear",
           }}
         >
-          <div className={`
+          <div
+            className={`
             absolute -top-2 -left-2 -right-2 -bottom-2 
             rounded-full border border-dashed opacity-30
-            ${isSpendingUp ? 'border-amber-400' : 'border-slate-400'}
-          `} />
+            ${isSpendingUp ? "border-amber-400" : "border-slate-400"}
+          `}
+          />
         </motion.div>
       </motion.div>
 
       {/* Moon Label */}
-      <motion.div 
+      <motion.div
         className="mt-4 md:mt-6 text-center px-2"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -187,27 +189,30 @@ export function MoonOfSpending({
         <div className="text-2xl md:text-3xl font-bold text-white mb-1">
           {formatCurrency(monthlySpending)}
         </div>
-        <div className={`text-sm ${isSpendingUp ? 'text-amber-300' : 'text-slate-300'}`}>
-          {isSpendingUp ? '⬆️' : '⬇️'} {spendingChange >= 0 ? '+' : ''}{Math.abs(spendingChange).toFixed(1)}%
-          {isSpendingUp ? ' increase' : ' decrease'}
+        <div
+          className={`text-sm ${isSpendingUp ? "text-amber-300" : "text-slate-300"}`}
+        >
+          {isSpendingUp ? "⬆️" : "⬇️"} {spendingChange >= 0 ? "+" : ""}
+          {Math.abs(spendingChange).toFixed(1)}%
+          {isSpendingUp ? " increase" : " decrease"}
         </div>
       </motion.div>
 
       {/* Top Spending Categories */}
-      <motion.div 
+      <motion.div
         className="mt-4 grid grid-cols-2 gap-2 max-w-xs mx-auto"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1 }}
       >
-        {topCategories.slice(0, 4).map((category, i) => (
+        {topCategories.slice(0, 4).map((category, _i) => (
           <motion.div
             key={category.name}
             className="bg-white/10 rounded-lg px-2 md:px-3 py-2 backdrop-blur-sm"
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            <div 
+            <div
               className="w-2 h-2 md:w-3 md:h-3 rounded-full mb-1"
               style={{ backgroundColor: category.color }}
             />
@@ -229,12 +234,12 @@ export function MoonOfSpending({
               key={i}
               className="absolute w-1 h-1 bg-amber-400 rounded-full"
               style={{
-                top: '30%',
-                left: '50%',
+                top: "30%",
+                left: "50%",
               }}
               animate={{
-                x: [0, (Math.cos(i * 60 * Math.PI / 180) * 60)],
-                y: [0, (Math.sin(i * 60 * Math.PI / 180) * 60)],
+                x: [0, Math.cos((i * 60 * Math.PI) / 180) * 60],
+                y: [0, Math.sin((i * 60 * Math.PI) / 180) * 60],
                 opacity: [1, 0],
                 scale: [1, 0],
               }}
@@ -242,7 +247,7 @@ export function MoonOfSpending({
                 duration: 1.5,
                 repeat: Infinity,
                 delay: Math.random() * 1.5,
-                ease: "easeOut"
+                ease: "easeOut",
               }}
             />
           ))}

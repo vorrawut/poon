@@ -63,7 +63,9 @@ describe("Dashboard", () => {
     );
 
     expect(
-      screen.getByText("Here's your financial overview"),
+      screen.getByText(
+        "Here's your money in plain English. Everything you need to know, nothing you don't.",
+      ),
     ).toBeInTheDocument();
   });
 
@@ -74,7 +76,9 @@ describe("Dashboard", () => {
       </BrowserRouter>,
     );
 
+    expect(screen.getByText("Your Money Summary")).toBeInTheDocument();
     expect(screen.getByText("Total Net Worth")).toBeInTheDocument();
+    expect(screen.getByText("$305,917.21")).toBeInTheDocument();
   });
 
   it("displays recent transactions section", () => {
@@ -84,7 +88,8 @@ describe("Dashboard", () => {
       </BrowserRouter>,
     );
 
-    expect(screen.getByText("Recent Transactions")).toBeInTheDocument();
+    expect(screen.getByText("📋 Recent Activity")).toBeInTheDocument();
+    expect(screen.getByText("Coffee Shop")).toBeInTheDocument();
   });
 
   it("shows top holdings section", () => {

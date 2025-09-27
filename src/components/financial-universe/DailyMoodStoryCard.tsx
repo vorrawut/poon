@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface FinancialStory {
   id: string;
   emoji: string;
   title: string;
   story: string;
-  mood: 'excellent' | 'good' | 'neutral' | 'caution' | 'concern';
+  mood: "excellent" | "good" | "neutral" | "caution" | "concern";
   tip?: string;
   celebration?: string;
 }
@@ -28,10 +28,10 @@ export function DailyMoodStoryCard({
   spendingChange,
   savingsRate,
   topSpendingCategory,
-  className = ''
+  className = "",
 }: DailyMoodStoryCardProps) {
   const [currentStory, setCurrentStory] = useState<FinancialStory | null>(null);
-  const [mascotAnimation, setMascotAnimation] = useState('idle');
+  const [mascotAnimation, setMascotAnimation] = useState("idle");
 
   useEffect(() => {
     const story = generateDailyStory({
@@ -43,8 +43,15 @@ export function DailyMoodStoryCard({
       topSpendingCategory,
     });
     setCurrentStory(story);
-    setMascotAnimation(story.mood === 'excellent' ? 'celebrate' : 'happy');
-  }, [netWorth, netWorthChange, monthlySpending, spendingChange, savingsRate, topSpendingCategory]);
+    setMascotAnimation(story.mood === "excellent" ? "celebrate" : "happy");
+  }, [
+    netWorth,
+    netWorthChange,
+    monthlySpending,
+    spendingChange,
+    savingsRate,
+    topSpendingCategory,
+  ]);
 
   const generateDailyStory = (data: {
     netWorth: number;
@@ -59,125 +66,129 @@ export function DailyMoodStoryCard({
     // Excellent mood stories (significant positive changes)
     if (data.netWorthChange > 5000) {
       stories.push({
-        id: 'wealth_boost',
-        emoji: '🚀',
-        title: 'Wealth Rocket Launch!',
+        id: "wealth_boost",
+        emoji: "🚀",
+        title: "Wealth Rocket Launch!",
         story: `Your net worth jumped by $${(data.netWorthChange / 1000).toFixed(1)}K! That's like finding a treasure chest in your backyard. 💰`,
-        mood: 'excellent',
-        celebration: 'You\'re building wealth faster than a superhero saves the day!',
+        mood: "excellent",
+        celebration:
+          "You're building wealth faster than a superhero saves the day!",
       });
     }
 
     if (data.savingsRate > 30) {
       stories.push({
-        id: 'savings_hero',
-        emoji: '🦸‍♀️',
-        title: 'Savings Superhero!',
+        id: "savings_hero",
+        emoji: "🦸‍♀️",
+        title: "Savings Superhero!",
         story: `You saved ${data.savingsRate.toFixed(1)}% of your income! That's like being a financial superhero with the power of delayed gratification. 🦸‍♂️`,
-        mood: 'excellent',
-        celebration: 'Keep up this amazing discipline!',
+        mood: "excellent",
+        celebration: "Keep up this amazing discipline!",
       });
     }
 
     // Good mood stories (positive trends)
     if (data.netWorthChange > 1000) {
       stories.push({
-        id: 'steady_growth',
-        emoji: '🌱',
-        title: 'Growing Like a Champion!',
+        id: "steady_growth",
+        emoji: "🌱",
+        title: "Growing Like a Champion!",
         story: `Your wealth grew by $${(data.netWorthChange / 1000).toFixed(1)}K this period. Like tending a garden, your consistent efforts are blooming! 🌻`,
-        mood: 'good',
-        tip: 'Small, consistent growth often beats big, risky moves.',
+        mood: "good",
+        tip: "Small, consistent growth often beats big, risky moves.",
       });
     }
 
     if (data.spendingChange < -10) {
       stories.push({
-        id: 'spending_wisdom',
-        emoji: '🧠',
-        title: 'Smart Spending Mode!',
+        id: "spending_wisdom",
+        emoji: "🧠",
+        title: "Smart Spending Mode!",
         story: `You cut spending by ${Math.abs(data.spendingChange).toFixed(1)}%! That's like finding money you already earned twice. 🔍💵`,
-        mood: 'good',
-        tip: 'Every dollar you don\'t spend is a dollar that can grow.',
+        mood: "good",
+        tip: "Every dollar you don't spend is a dollar that can grow.",
       });
     }
 
     // Neutral stories (stable situations)
     if (Math.abs(data.netWorthChange) < 1000) {
       const categoryStories = {
-        'food': `You spent the most on food this month 🍜. Maybe you discovered a new favorite restaurant? Life's too short for bad meals!`,
-        'transport': `Transportation took the biggest slice 🚗. Whether it's gas or rideshares, you're staying mobile and that's important!`,
-        'entertainment': `Entertainment was your top category 🎬. You're investing in experiences and joy - that's wealth for the soul!`,
-        'shopping': `Shopping led your spending 🛍️. Sometimes we need things, sometimes we want things - both are part of life!`,
-        'groceries': `Groceries topped your spending 🛒. Feeding yourself well is literally investing in your future health!`,
+        food: `You spent the most on food this month 🍜. Maybe you discovered a new favorite restaurant? Life's too short for bad meals!`,
+        transport: `Transportation took the biggest slice 🚗. Whether it's gas or rideshares, you're staying mobile and that's important!`,
+        entertainment: `Entertainment was your top category 🎬. You're investing in experiences and joy - that's wealth for the soul!`,
+        shopping: `Shopping led your spending 🛍️. Sometimes we need things, sometimes we want things - both are part of life!`,
+        groceries: `Groceries topped your spending 🛒. Feeding yourself well is literally investing in your future health!`,
       };
 
       stories.push({
-        id: 'category_insight',
-        emoji: '📊',
-        title: 'Steady as She Goes!',
-        story: categoryStories[data.topSpendingCategory as keyof typeof categoryStories] || 
-               `Your money stayed pretty steady this month. Sometimes consistency is the most powerful strategy! 🎯`,
-        mood: 'neutral',
-        tip: 'Stability in finances often beats dramatic swings.',
+        id: "category_insight",
+        emoji: "📊",
+        title: "Steady as She Goes!",
+        story:
+          categoryStories[
+            data.topSpendingCategory as keyof typeof categoryStories
+          ] ||
+          `Your money stayed pretty steady this month. Sometimes consistency is the most powerful strategy! 🎯`,
+        mood: "neutral",
+        tip: "Stability in finances often beats dramatic swings.",
       });
     }
 
     // Caution stories (gentle warnings)
     if (data.spendingChange > 15 && data.spendingChange < 30) {
       stories.push({
-        id: 'spending_uptick',
-        emoji: '👀',
-        title: 'Spending on the Rise!',
+        id: "spending_uptick",
+        emoji: "👀",
+        title: "Spending on the Rise!",
         story: `Your spending increased by ${data.spendingChange.toFixed(1)}% this month. Like a plant growing faster in spring - sometimes natural cycles happen! 🌿`,
-        mood: 'caution',
-        tip: 'Keep an eye on it, but don\'t stress. You\'ve got this!',
+        mood: "caution",
+        tip: "Keep an eye on it, but don't stress. You've got this!",
       });
     }
 
     if (data.savingsRate < 10 && data.savingsRate > 0) {
       stories.push({
-        id: 'savings_opportunity',
-        emoji: '🎯',
-        title: 'Savings Adventure Awaits!',
+        id: "savings_opportunity",
+        emoji: "🎯",
+        title: "Savings Adventure Awaits!",
         story: `You saved ${data.savingsRate.toFixed(1)}% this month. Even small saves add up - like collecting coins in a video game! 🪙`,
-        mood: 'caution',
-        tip: 'Every percentage point counts toward your future self.',
+        mood: "caution",
+        tip: "Every percentage point counts toward your future self.",
       });
     }
 
     // Concern stories (need attention but stay positive)
     if (data.netWorthChange < -2000) {
       stories.push({
-        id: 'temporary_dip',
-        emoji: '🌊',
-        title: 'Riding the Wave!',
+        id: "temporary_dip",
+        emoji: "🌊",
+        title: "Riding the Wave!",
         story: `Your net worth dipped by $${Math.abs(data.netWorthChange / 1000).toFixed(1)}K. Like ocean waves, financial ups and downs are natural cycles. 🌊`,
-        mood: 'concern',
-        tip: 'Focus on what you can control: spending and saving habits.',
+        mood: "concern",
+        tip: "Focus on what you can control: spending and saving habits.",
       });
     }
 
     if (data.spendingChange > 30) {
       stories.push({
-        id: 'spending_spike',
-        emoji: '🎢',
-        title: 'Spending Roller Coaster!',
+        id: "spending_spike",
+        emoji: "🎢",
+        title: "Spending Roller Coaster!",
         story: `Spending jumped ${data.spendingChange.toFixed(1)}% this month! Like a theme park ride, sometimes life has unexpected thrills. 🎢`,
-        mood: 'concern',
-        tip: 'Review your biggest expenses - some might be one-time events.',
+        mood: "concern",
+        tip: "Review your biggest expenses - some might be one-time events.",
       });
     }
 
     // Default story if no conditions are met
     if (stories.length === 0) {
       stories.push({
-        id: 'default_positive',
-        emoji: '⭐',
-        title: 'Financial Journey Continues!',
+        id: "default_positive",
+        emoji: "⭐",
+        title: "Financial Journey Continues!",
         story: `Every day you manage your money is a win! Like a traveler on a long journey, you're making progress step by step. 🗺️`,
-        mood: 'good',
-        tip: 'The fact that you\'re tracking your finances puts you ahead of most people!',
+        mood: "good",
+        tip: "The fact that you're tracking your finances puts you ahead of most people!",
       });
     }
 
@@ -187,24 +198,36 @@ export function DailyMoodStoryCard({
 
   const getMoodColor = (mood: string) => {
     switch (mood) {
-      case 'excellent': return 'from-green-400 to-emerald-500';
-      case 'good': return 'from-blue-400 to-cyan-500';
-      case 'neutral': return 'from-gray-400 to-slate-500';
-      case 'caution': return 'from-yellow-400 to-amber-500';
-      case 'concern': return 'from-orange-400 to-red-500';
-      default: return 'from-blue-400 to-cyan-500';
+      case "excellent":
+        return "from-green-400 to-emerald-500";
+      case "good":
+        return "from-blue-400 to-cyan-500";
+      case "neutral":
+        return "from-gray-400 to-slate-500";
+      case "caution":
+        return "from-yellow-400 to-amber-500";
+      case "concern":
+        return "from-orange-400 to-red-500";
+      default:
+        return "from-blue-400 to-cyan-500";
     }
   };
 
   const getMascotEmoji = (mood: string, animation: string) => {
-    if (animation === 'celebrate') return '🎉';
+    if (animation === "celebrate") return "🎉";
     switch (mood) {
-      case 'excellent': return '😍';
-      case 'good': return '😊';
-      case 'neutral': return '🤔';
-      case 'caution': return '🧐';
-      case 'concern': return '🤗';
-      default: return '😊';
+      case "excellent":
+        return "😍";
+      case "good":
+        return "😊";
+      case "neutral":
+        return "🤔";
+      case "caution":
+        return "🧐";
+      case "concern":
+        return "🤗";
+      default:
+        return "😊";
     }
   };
 
@@ -231,19 +254,25 @@ export function DailyMoodStoryCard({
         transition={{ duration: 0.5 }}
       >
         {/* Header with mood gradient */}
-        <div className={`bg-gradient-to-r ${getMoodColor(currentStory.mood)} p-6 text-white`}>
+        <div
+          className={`bg-gradient-to-r ${getMoodColor(currentStory.mood)} p-6 text-white`}
+        >
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <motion.div
                 className="text-4xl mr-4"
-                animate={mascotAnimation === 'celebrate' ? {
-                  rotate: [0, 10, -10, 0],
-                  scale: [1, 1.2, 1],
-                } : {
-                  y: [0, -5, 0],
-                }}
+                animate={
+                  mascotAnimation === "celebrate"
+                    ? {
+                        rotate: [0, 10, -10, 0],
+                        scale: [1, 1.2, 1],
+                      }
+                    : {
+                        y: [0, -5, 0],
+                      }
+                }
                 transition={{
-                  duration: mascotAnimation === 'celebrate' ? 0.8 : 2,
+                  duration: mascotAnimation === "celebrate" ? 0.8 : 2,
                   repeat: Infinity,
                 }}
               >
@@ -255,18 +284,20 @@ export function DailyMoodStoryCard({
                   <span className="text-2xl mr-2">
                     {getMascotEmoji(currentStory.mood, mascotAnimation)}
                   </span>
-                  <span className="text-white/90 capitalize">{currentStory.mood} mood</span>
+                  <span className="text-white/90 capitalize">
+                    {currentStory.mood} mood
+                  </span>
                 </div>
               </div>
             </div>
-            
+
             {/* Today's date */}
             <div className="text-right text-white/80">
               <div className="text-sm">Today</div>
               <div className="font-bold">
-                {new Date().toLocaleDateString('en-US', { 
-                  month: 'short', 
-                  day: 'numeric' 
+                {new Date().toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
                 })}
               </div>
             </div>
@@ -294,7 +325,9 @@ export function DailyMoodStoryCard({
             >
               <div className="flex items-center">
                 <span className="text-2xl mr-3">🎉</span>
-                <p className="text-green-800 font-medium">{currentStory.celebration}</p>
+                <p className="text-green-800 font-medium">
+                  {currentStory.celebration}
+                </p>
               </div>
             </motion.div>
           )}
@@ -337,7 +370,7 @@ export function DailyMoodStoryCard({
               <span className="mr-1">🔄</span>
               New Story
             </motion.button>
-            
+
             <motion.button
               className="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors flex items-center"
               whileHover={{ scale: 1.05 }}

@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import { useEffect, useState } from "react";
+import { motion, useAnimation } from "framer-motion";
 
 interface PlanetOfWealthProps {
   netWorth: number;
@@ -8,57 +8,58 @@ interface PlanetOfWealthProps {
   className?: string;
 }
 
-export function PlanetOfWealth({ 
-  netWorth, 
-  previousNetWorth, 
-  growth, 
-  className = '' 
+export function PlanetOfWealth({
+  netWorth,
+  previousNetWorth: _previousNetWorth,
+  growth,
+  className = "",
 }: PlanetOfWealthProps) {
   const controls = useAnimation();
   const [isGrowing, setIsGrowing] = useState(growth >= 0);
   const [planetSize, setPlanetSize] = useState(100);
-  
+
   // Calculate planet size based on net worth (more wealth = bigger planet)
   useEffect(() => {
     const baseSize = 100;
-    const wealthMultiplier = Math.log(Math.max(netWorth, 1000)) / Math.log(1000);
-    const newSize = baseSize + (wealthMultiplier * 20);
+    const wealthMultiplier =
+      Math.log(Math.max(netWorth, 1000)) / Math.log(1000);
+    const newSize = baseSize + wealthMultiplier * 20;
     setPlanetSize(Math.min(newSize, 200)); // Cap at 200px
   }, [netWorth]);
 
   // Animate planet based on growth
   useEffect(() => {
     setIsGrowing(growth >= 0);
-    
+
     if (growth >= 0) {
       // Growing - pulsing glow animation
       controls.start({
         scale: [1, 1.05, 1],
         boxShadow: [
-          '0 0 30px rgba(34, 197, 94, 0.3)',
-          '0 0 50px rgba(34, 197, 94, 0.6)',
-          '0 0 30px rgba(34, 197, 94, 0.3)',
+          "0 0 30px rgba(34, 197, 94, 0.3)",
+          "0 0 50px rgba(34, 197, 94, 0.6)",
+          "0 0 30px rgba(34, 197, 94, 0.3)",
         ],
         transition: {
           duration: 2,
           repeat: Infinity,
-          ease: "easeInOut"
-        }
+          ease: "easeInOut",
+        },
       });
     } else {
       // Shrinking - gentle warning glow
       controls.start({
         scale: [1, 0.95, 1],
         boxShadow: [
-          '0 0 30px rgba(239, 68, 68, 0.2)',
-          '0 0 40px rgba(239, 68, 68, 0.4)',
-          '0 0 30px rgba(239, 68, 68, 0.2)',
+          "0 0 30px rgba(239, 68, 68, 0.2)",
+          "0 0 40px rgba(239, 68, 68, 0.4)",
+          "0 0 30px rgba(239, 68, 68, 0.2)",
         ],
         transition: {
           duration: 3,
           repeat: Infinity,
-          ease: "easeInOut"
-        }
+          ease: "easeInOut",
+        },
       });
     }
   }, [growth, controls]);
@@ -110,16 +111,17 @@ export function PlanetOfWealth({
         <div
           className={`
             relative w-full h-full rounded-full
-            ${isGrowing 
-              ? 'bg-gradient-to-br from-emerald-400 via-green-500 to-emerald-600' 
-              : 'bg-gradient-to-br from-orange-400 via-red-500 to-orange-600'
+            ${
+              isGrowing
+                ? "bg-gradient-to-br from-emerald-400 via-green-500 to-emerald-600"
+                : "bg-gradient-to-br from-orange-400 via-red-500 to-orange-600"
             }
             shadow-2xl overflow-hidden
           `}
         >
           {/* Planet Surface Pattern */}
           <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white to-transparent opacity-20" />
-          
+
           {/* Rotating Ring Effect */}
           <motion.div
             className="absolute inset-0 rounded-full border-2 border-white opacity-30"
@@ -127,18 +129,21 @@ export function PlanetOfWealth({
             transition={{
               duration: 20,
               repeat: Infinity,
-              ease: "linear"
+              ease: "linear",
             }}
           />
 
           {/* Inner Glow */}
-          <div className={`
+          <div
+            className={`
             absolute inset-2 rounded-full
-            ${isGrowing 
-              ? 'bg-gradient-to-br from-emerald-300/40 to-transparent' 
-              : 'bg-gradient-to-br from-orange-300/40 to-transparent'
+            ${
+              isGrowing
+                ? "bg-gradient-to-br from-emerald-300/40 to-transparent"
+                : "bg-gradient-to-br from-orange-300/40 to-transparent"
             }
-          `} />
+          `}
+          />
         </div>
 
         {/* Orbital Elements */}
@@ -148,19 +153,21 @@ export function PlanetOfWealth({
           transition={{
             duration: 30,
             repeat: Infinity,
-            ease: "linear"
+            ease: "linear",
           }}
         >
-          <div className={`
+          <div
+            className={`
             absolute -top-1 -left-1 -right-1 -bottom-1 
             rounded-full border border-dashed opacity-50
-            ${isGrowing ? 'border-emerald-400' : 'border-orange-400'}
-          `} />
+            ${isGrowing ? "border-emerald-400" : "border-orange-400"}
+          `}
+          />
         </motion.div>
       </motion.div>
 
       {/* Planet Label */}
-      <motion.div 
+      <motion.div
         className="mt-4 md:mt-6 text-center px-2"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -172,9 +179,12 @@ export function PlanetOfWealth({
         <div className="text-2xl md:text-4xl font-bold text-white mb-1">
           {formatCurrency(netWorth)}
         </div>
-        <div className={`text-sm md:text-lg ${isGrowing ? 'text-emerald-300' : 'text-orange-300'}`}>
-          {isGrowing ? '📈' : '📉'} {growth >= 0 ? '+' : ''}{formatCurrency(growth)} 
-          {isGrowing ? ' growth' : ' decline'}
+        <div
+          className={`text-sm md:text-lg ${isGrowing ? "text-emerald-300" : "text-orange-300"}`}
+        >
+          {isGrowing ? "📈" : "📉"} {growth >= 0 ? "+" : ""}
+          {formatCurrency(growth)}
+          {isGrowing ? " growth" : " decline"}
         </div>
       </motion.div>
 
@@ -186,12 +196,12 @@ export function PlanetOfWealth({
               key={i}
               className="absolute w-2 h-2 bg-emerald-400 rounded-full"
               style={{
-                top: '50%',
-                left: '50%',
+                top: "50%",
+                left: "50%",
               }}
               animate={{
-                x: [0, (Math.cos(i * 45 * Math.PI / 180) * 80)],
-                y: [0, (Math.sin(i * 45 * Math.PI / 180) * 80)],
+                x: [0, Math.cos((i * 45 * Math.PI) / 180) * 80],
+                y: [0, Math.sin((i * 45 * Math.PI) / 180) * 80],
                 opacity: [1, 0],
                 scale: [0.5, 0],
               }}
@@ -199,7 +209,7 @@ export function PlanetOfWealth({
                 duration: 2,
                 repeat: Infinity,
                 delay: Math.random() * 2,
-                ease: "easeOut"
+                ease: "easeOut",
               }}
             />
           ))}

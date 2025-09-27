@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 import { FinancialUniverse } from "../components/financial-universe";
 import { DailyMoodStoryCard } from "../components/financial-universe/DailyMoodStoryCard";
 import { useNetWorth } from "../features/networth/hooks/useNetWorth";
@@ -10,22 +10,22 @@ export function UniverseDashboard() {
 
   const handleQuickAction = (action: string, data?: unknown) => {
     console.log("Universe quick action:", action, data);
-    
+
     switch (action) {
-      case 'detailed_view':
+      case "detailed_view":
         setShowDetailedView(true);
         break;
-      case 'quick_actions':
+      case "quick_actions":
         // Open quick actions panel
         break;
-      case 'analytics':
+      case "analytics":
         // Navigate to analytics
         break;
-      case 'settings':
+      case "settings":
         // Navigate to settings
         break;
       default:
-        console.log('Unhandled universe action:', action);
+        console.log("Unhandled universe action:", action);
     }
   };
 
@@ -73,12 +73,14 @@ export function UniverseDashboard() {
             >
               {/* Placeholder for additional widgets */}
               <div className="bg-white rounded-2xl p-6 shadow-lg">
-                <h3 className="text-xl font-bold mb-4">📊 Financial Insights</h3>
+                <h3 className="text-xl font-bold mb-4">
+                  📊 Financial Insights
+                </h3>
                 <p className="text-gray-600">
                   Detailed analytics and insights coming soon...
                 </p>
               </div>
-              
+
               <div className="bg-white rounded-2xl p-6 shadow-lg">
                 <h3 className="text-xl font-bold mb-4">🎯 Goal Tracker</h3>
                 <p className="text-gray-600">
@@ -95,7 +97,7 @@ export function UniverseDashboard() {
   return (
     <div className="relative">
       <FinancialUniverse onQuickAction={handleQuickAction} />
-      
+
       {/* Floating Navigation */}
       <motion.div
         className="fixed bottom-8 right-8 z-50"
@@ -106,9 +108,9 @@ export function UniverseDashboard() {
         <motion.button
           onClick={() => setShowDetailedView(true)}
           className="bg-white/90 backdrop-blur-sm border border-white/20 text-gray-800 px-6 py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all"
-          whileHover={{ 
+          whileHover={{
             scale: 1.05,
-            backgroundColor: 'rgba(255, 255, 255, 0.95)'
+            backgroundColor: "rgba(255, 255, 255, 0.95)",
           }}
           whileTap={{ scale: 0.95 }}
         >
@@ -132,7 +134,7 @@ export function UniverseDashboard() {
         >
           ⛶
         </motion.button>
-        
+
         <motion.button
           className="bg-black/20 backdrop-blur-sm border border-white/20 text-white p-3 rounded-full hover:bg-black/30 transition-all"
           whileHover={{ scale: 1.1 }}

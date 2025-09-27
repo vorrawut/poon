@@ -1,8 +1,8 @@
-import { motion } from 'framer-motion';
-import { PlanetOfWealth } from './PlanetOfWealth';
-import { MoonOfSpending } from './MoonOfSpending';
-import { GoalsAsStars } from './GoalsAsStars';
-import { useNetWorth } from '../../features/networth/hooks/useNetWorth';
+import { motion } from "framer-motion";
+import { PlanetOfWealth } from "./PlanetOfWealth";
+import { MoonOfSpending } from "./MoonOfSpending";
+import { GoalsAsStars } from "./GoalsAsStars";
+import { useNetWorth } from "../../features/networth/hooks/useNetWorth";
 
 // Mock data for now - this will come from your actual data stores
 const mockSpendingData = {
@@ -10,54 +10,54 @@ const mockSpendingData = {
   previousMonthSpending: 3200,
   spendingChange: 7.8,
   topCategories: [
-    { name: 'Food', amount: 890, color: '#F59E0B' },
-    { name: 'Transport', amount: 450, color: '#3B82F6' },
-    { name: 'Entertainment', amount: 320, color: '#8B5CF6' },
-    { name: 'Shopping', amount: 280, color: '#EF4444' },
-  ]
+    { name: "Food", amount: 890, color: "#F59E0B" },
+    { name: "Transport", amount: 450, color: "#3B82F6" },
+    { name: "Entertainment", amount: 320, color: "#8B5CF6" },
+    { name: "Shopping", amount: 280, color: "#EF4444" },
+  ],
 };
 
 const mockGoals = [
   {
-    id: '1',
-    name: 'Emergency Fund',
+    id: "1",
+    name: "Emergency Fund",
     targetAmount: 10000,
     currentAmount: 7500,
-    category: 'safety',
-    isCompleted: false
+    category: "safety",
+    isCompleted: false,
   },
   {
-    id: '2',
-    name: 'Vacation to Japan',
+    id: "2",
+    name: "Vacation to Japan",
     targetAmount: 5000,
     currentAmount: 5000,
-    category: 'travel',
-    isCompleted: true
+    category: "travel",
+    isCompleted: true,
   },
   {
-    id: '3',
-    name: 'New Car Down Payment',
+    id: "3",
+    name: "New Car Down Payment",
     targetAmount: 8000,
     currentAmount: 2400,
-    category: 'transportation',
-    isCompleted: false
+    category: "transportation",
+    isCompleted: false,
   },
   {
-    id: '4',
-    name: 'Investment Portfolio',
+    id: "4",
+    name: "Investment Portfolio",
     targetAmount: 50000,
     currentAmount: 12800,
-    category: 'investment',
-    isCompleted: false
+    category: "investment",
+    isCompleted: false,
   },
   {
-    id: '5',
-    name: 'Home Down Payment',
+    id: "5",
+    name: "Home Down Payment",
     targetAmount: 80000,
     currentAmount: 15200,
-    category: 'home',
-    isCompleted: false
-  }
+    category: "home",
+    isCompleted: false,
+  },
 ];
 
 interface FinancialUniverseProps {
@@ -65,12 +65,17 @@ interface FinancialUniverseProps {
   onQuickAction?: (action: string, data?: unknown) => void;
 }
 
-export function FinancialUniverse({ className = '', onQuickAction }: FinancialUniverseProps) {
+export function FinancialUniverse({
+  className = "",
+  onQuickAction,
+}: FinancialUniverseProps) {
   const { netWorthData, loading, error } = useNetWorth();
 
   if (loading) {
     return (
-      <div className={`relative min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-indigo-900 overflow-hidden ${className}`}>
+      <div
+        className={`relative min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-indigo-900 overflow-hidden ${className}`}
+      >
         <div className="flex items-center justify-center min-h-screen">
           <motion.div
             className="text-white text-xl"
@@ -86,13 +91,15 @@ export function FinancialUniverse({ className = '', onQuickAction }: FinancialUn
 
   if (error || !netWorthData) {
     return (
-      <div className={`relative min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-indigo-900 overflow-hidden ${className}`}>
+      <div
+        className={`relative min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-indigo-900 overflow-hidden ${className}`}
+      >
         <div className="flex items-center justify-center min-h-screen text-center">
           <div className="text-white">
             <div className="text-6xl mb-4">🌌</div>
             <h2 className="text-2xl font-bold mb-2">Universe Loading Error</h2>
             <p className="text-white/70">Unable to load your financial data</p>
-            <button 
+            <button
               onClick={() => window.location.reload()}
               className="mt-4 bg-purple-600 hover:bg-purple-700 px-6 py-2 rounded-lg font-medium transition-colors"
             >
@@ -105,7 +112,9 @@ export function FinancialUniverse({ className = '', onQuickAction }: FinancialUn
   }
 
   return (
-    <div className={`relative min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-indigo-900 overflow-hidden ${className}`}>
+    <div
+      className={`relative min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-indigo-900 overflow-hidden ${className}`}
+    >
       {/* Background Stars Field */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(100)].map((_, i) => (
@@ -157,7 +166,8 @@ export function FinancialUniverse({ className = '', onQuickAction }: FinancialUn
             Your Financial Universe
           </h1>
           <p className="text-xl text-white/80 max-w-3xl mx-auto">
-            Welcome to your personal galaxy of wealth! Every planet, moon, and star tells the story of your financial journey.
+            Welcome to your personal galaxy of wealth! Every planet, moon, and
+            star tells the story of your financial journey.
           </p>
         </motion.div>
 
@@ -257,10 +267,10 @@ export function FinancialUniverse({ className = '', onQuickAction }: FinancialUn
           transition={{ duration: 1, delay: 1.5 }}
         >
           {[
-            { emoji: '🚀', label: 'Quick Actions', action: 'quick_actions' },
-            { emoji: '🔭', label: 'Detailed View', action: 'detailed_view' },
-            { emoji: '📊', label: 'Analytics', action: 'analytics' },
-            { emoji: '⚙️', label: 'Settings', action: 'settings' }
+            { emoji: "🚀", label: "Quick Actions", action: "quick_actions" },
+            { emoji: "🔭", label: "Detailed View", action: "detailed_view" },
+            { emoji: "📊", label: "Analytics", action: "analytics" },
+            { emoji: "⚙️", label: "Settings", action: "settings" },
           ].map((item) => (
             <motion.button
               key={item.action}
@@ -269,8 +279,12 @@ export function FinancialUniverse({ className = '', onQuickAction }: FinancialUn
               whileTap={{ scale: 0.95 }}
               onClick={() => onQuickAction?.(item.action)}
             >
-              <div className="text-2xl md:text-3xl mb-1 md:mb-2">{item.emoji}</div>
-              <div className="text-white text-xs md:text-sm font-medium">{item.label}</div>
+              <div className="text-2xl md:text-3xl mb-1 md:mb-2">
+                {item.emoji}
+              </div>
+              <div className="text-white text-xs md:text-sm font-medium">
+                {item.label}
+              </div>
             </motion.button>
           ))}
         </motion.div>
@@ -290,28 +304,36 @@ export function FinancialUniverse({ className = '', onQuickAction }: FinancialUn
               <div className="text-xl md:text-3xl font-bold text-green-300">
                 ${(netWorthData.totalNetWorth / 1000).toFixed(0)}K
               </div>
-              <div className="text-white/70 text-xs md:text-sm">Total Worth</div>
+              <div className="text-white/70 text-xs md:text-sm">
+                Total Worth
+              </div>
               <div className="text-green-300 text-xs mt-1">Planet Mass</div>
             </div>
             <div className="text-center">
               <div className="text-xl md:text-3xl font-bold text-amber-300">
                 ${(mockSpendingData.monthlySpending / 1000).toFixed(1)}K
               </div>
-              <div className="text-white/70 text-xs md:text-sm">Monthly Flow</div>
+              <div className="text-white/70 text-xs md:text-sm">
+                Monthly Flow
+              </div>
               <div className="text-amber-300 text-xs mt-1">Moon Cycle</div>
             </div>
             <div className="text-center">
               <div className="text-xl md:text-3xl font-bold text-blue-300">
-                {mockGoals.filter(g => !g.isCompleted).length}
+                {mockGoals.filter((g) => !g.isCompleted).length}
               </div>
-              <div className="text-white/70 text-xs md:text-sm">Active Goals</div>
+              <div className="text-white/70 text-xs md:text-sm">
+                Active Goals
+              </div>
               <div className="text-blue-300 text-xs mt-1">Burning Stars</div>
             </div>
             <div className="text-center">
               <div className="text-xl md:text-3xl font-bold text-purple-300">
-                {mockGoals.filter(g => g.isCompleted).length}
+                {mockGoals.filter((g) => g.isCompleted).length}
               </div>
-              <div className="text-white/70 text-xs md:text-sm">Goals Achieved</div>
+              <div className="text-white/70 text-xs md:text-sm">
+                Goals Achieved
+              </div>
               <div className="text-purple-300 text-xs mt-1">Ignited Stars</div>
             </div>
           </div>
@@ -329,8 +351,9 @@ export function FinancialUniverse({ className = '', onQuickAction }: FinancialUn
             Your Financial Galaxy is Growing!
           </h3>
           <p className="text-white/70 max-w-xl md:max-w-2xl mx-auto text-sm md:text-lg">
-            Like the universe itself, your wealth is expanding. Every transaction shapes your galaxy, 
-            every goal becomes a shining star, and every achievement ignites new possibilities.
+            Like the universe itself, your wealth is expanding. Every
+            transaction shapes your galaxy, every goal becomes a shining star,
+            and every achievement ignites new possibilities.
           </p>
         </motion.div>
       </div>

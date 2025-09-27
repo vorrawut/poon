@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# External libraries
+react-bits/
+
+# Config files
+*.config.js
+*.config.ts
+vite.config.ts
+postcss.config.js
+
+# Other generated files
+coverage/
+.nyc_output/
+
+# TEST
+/test-results
+
+
+/.github
+/config
+/e2e
+/e2e-results
+react-bits
