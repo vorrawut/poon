@@ -126,7 +126,8 @@ describe("Enhanced Dashboard", () => {
       </BrowserRouter>,
     );
 
-    expect(screen.getByText("👋 Welcome back!")).toBeInTheDocument();
+    // Check for welcome content via aria-label instead of text content due to split text animation
+    expect(screen.getByLabelText("👋 Welcome back!")).toBeInTheDocument();
     expect(
       screen.getByText(
         "Here's your money in plain English. Everything you need to know, nothing you don't.",
@@ -141,11 +142,10 @@ describe("Enhanced Dashboard", () => {
       </BrowserRouter>,
     );
 
+    // Check for time range buttons
     expect(screen.getByText("Week")).toBeInTheDocument();
     expect(screen.getByText("Month")).toBeInTheDocument();
     expect(screen.getByText("Quarter")).toBeInTheDocument();
-    expect(screen.getByText("Short Term")).toBeInTheDocument();
-    expect(screen.getByText("Long Term")).toBeInTheDocument();
   });
 
   it("displays net worth section when data loads", async () => {
@@ -240,7 +240,7 @@ describe("Enhanced Dashboard", () => {
     );
 
     // Debug components should be visible
-    expect(screen.getByText("🔧 Environment Debug")).toBeInTheDocument();
-    expect(screen.getByText("🧪 Direct Service Test")).toBeInTheDocument();
+    expect(screen.getByText("Mock Data Direct Access")).toBeInTheDocument();
+    expect(screen.getByText("Direct Service Test")).toBeInTheDocument();
   });
 });

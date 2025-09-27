@@ -9,10 +9,12 @@ import {
   DocumentArrowUpIcon,
   Cog6ToothIcon,
   XMarkIcon,
+  GlobeAltIcon,
 } from "@heroicons/react/24/outline";
 
 const navigation = [
-  { name: "Dashboard", href: "/", icon: HomeIcon },
+  { name: "Universe", href: "/", icon: GlobeAltIcon },
+  { name: "Dashboard", href: "/dashboard", icon: HomeIcon },
   { name: "Accounts", href: "/accounts", icon: BanknotesIcon },
   { name: "Portfolio", href: "/portfolio", icon: ChartPieIcon },
   { name: "Spending", href: "/spending", icon: CreditCardIcon },

@@ -83,8 +83,8 @@ export function GoalsAsStars({ goals, className = '' }: GoalsAsStarsProps) {
       </div>
 
       {/* Stars Constellation */}
-      <div className="relative w-full h-96 flex items-center justify-center">
-        <div className="relative">
+      <div className="relative w-full h-80 md:h-96 flex items-center justify-center">
+        <div className="relative w-full max-w-md md:max-w-lg">
           {/* Center Point */}
           <div className="absolute top-1/2 left-1/2 w-2 h-2 bg-white/30 rounded-full transform -translate-x-1/2 -translate-y-1/2" />
 
@@ -295,25 +295,25 @@ export function GoalsAsStars({ goals, className = '' }: GoalsAsStarsProps) {
         </p>
         
         {/* Progress Summary */}
-        <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-white/10 rounded-lg p-3 backdrop-blur-sm">
-            <div className="text-2xl font-bold text-white">{goals.length}</div>
+        <div className="mt-4 grid grid-cols-2 lg:grid-cols-4 gap-3 max-w-2xl mx-auto">
+          <div className="bg-white/10 rounded-lg p-2 md:p-3 backdrop-blur-sm text-center">
+            <div className="text-lg md:text-2xl font-bold text-white">{goals.length}</div>
             <div className="text-xs text-white/70">Total Goals</div>
           </div>
-          <div className="bg-white/10 rounded-lg p-3 backdrop-blur-sm">
-            <div className="text-2xl font-bold text-yellow-300">
+          <div className="bg-white/10 rounded-lg p-2 md:p-3 backdrop-blur-sm text-center">
+            <div className="text-lg md:text-2xl font-bold text-yellow-300">
               {goals.filter(g => g.isCompleted).length}
             </div>
             <div className="text-xs text-white/70">Completed</div>
           </div>
-          <div className="bg-white/10 rounded-lg p-3 backdrop-blur-sm">
-            <div className="text-2xl font-bold text-blue-300">
+          <div className="bg-white/10 rounded-lg p-2 md:p-3 backdrop-blur-sm text-center">
+            <div className="text-lg md:text-2xl font-bold text-blue-300">
               {goals.filter(g => !g.isCompleted && getStarBrightness(g) > 0.5).length}
             </div>
             <div className="text-xs text-white/70">Close to Goal</div>
           </div>
-          <div className="bg-white/10 rounded-lg p-3 backdrop-blur-sm">
-            <div className="text-2xl font-bold text-green-300">
+          <div className="bg-white/10 rounded-lg p-2 md:p-3 backdrop-blur-sm text-center">
+            <div className="text-sm md:text-xl font-bold text-green-300">
               {formatCurrency(goals.reduce((sum, g) => sum + g.currentAmount, 0))}
             </div>
             <div className="text-xs text-white/70">Total Saved</div>

@@ -162,50 +162,96 @@ export function FinancialUniverse({ className = '', onQuickAction }: FinancialUn
         </motion.div>
 
         {/* Main Universe Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 items-start mb-16">
-          {/* Planet of Wealth - Left */}
-          <motion.div
-            className="lg:justify-self-start"
-            initial={{ opacity: 0, x: -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
-          >
-            <PlanetOfWealth
-              netWorth={netWorthData.totalNetWorth}
-              previousNetWorth={netWorthData.previousNetWorth}
-              growth={netWorthData.netWorthChange}
-            />
-          </motion.div>
+        <div className="space-y-12 lg:space-y-0">
+          {/* Desktop Layout */}
+          <div className="hidden lg:grid lg:grid-cols-3 gap-8 items-center justify-items-center mb-16">
+            {/* Planet of Wealth - Left */}
+            <motion.div
+              className="w-full max-w-sm flex justify-center"
+              initial={{ opacity: 0, x: -100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, delay: 0.5 }}
+            >
+              <PlanetOfWealth
+                netWorth={netWorthData.totalNetWorth}
+                previousNetWorth={netWorthData.previousNetWorth}
+                growth={netWorthData.netWorthChange}
+              />
+            </motion.div>
 
-          {/* Goals Constellation - Center */}
-          <motion.div
-            className="lg:justify-self-center"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 1 }}
-          >
-            <GoalsAsStars goals={mockGoals} />
-          </motion.div>
+            {/* Goals Constellation - Center */}
+            <motion.div
+              className="w-full max-w-lg flex justify-center"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 1 }}
+            >
+              <GoalsAsStars goals={mockGoals} />
+            </motion.div>
 
-          {/* Moon of Spending - Right */}
-          <motion.div
-            className="lg:justify-self-end"
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.8 }}
-          >
-            <MoonOfSpending
-              monthlySpending={mockSpendingData.monthlySpending}
-              previousMonthSpending={mockSpendingData.previousMonthSpending}
-              spendingChange={mockSpendingData.spendingChange}
-              topCategories={mockSpendingData.topCategories}
-            />
-          </motion.div>
+            {/* Moon of Spending - Right */}
+            <motion.div
+              className="w-full max-w-sm flex justify-center"
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, delay: 0.8 }}
+            >
+              <MoonOfSpending
+                monthlySpending={mockSpendingData.monthlySpending}
+                previousMonthSpending={mockSpendingData.previousMonthSpending}
+                spendingChange={mockSpendingData.spendingChange}
+                topCategories={mockSpendingData.topCategories}
+              />
+            </motion.div>
+          </div>
+
+          {/* Mobile/Tablet Layout */}
+          <div className="lg:hidden space-y-12 mb-16">
+            {/* Goals Constellation - Top on mobile */}
+            <motion.div
+              className="flex justify-center"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 0.3 }}
+            >
+              <GoalsAsStars goals={mockGoals} />
+            </motion.div>
+
+            {/* Planet and Moon - Side by side on mobile */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              <motion.div
+                className="flex justify-center"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.6 }}
+              >
+                <PlanetOfWealth
+                  netWorth={netWorthData.totalNetWorth}
+                  previousNetWorth={netWorthData.previousNetWorth}
+                  growth={netWorthData.netWorthChange}
+                />
+              </motion.div>
+
+              <motion.div
+                className="flex justify-center"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.9 }}
+              >
+                <MoonOfSpending
+                  monthlySpending={mockSpendingData.monthlySpending}
+                  previousMonthSpending={mockSpendingData.previousMonthSpending}
+                  spendingChange={mockSpendingData.spendingChange}
+                  topCategories={mockSpendingData.topCategories}
+                />
+              </motion.div>
+            </div>
+          </div>
         </div>
 
         {/* Universe Navigation */}
         <motion.div
-          className="flex justify-center space-x-8 mb-12"
+          className="grid grid-cols-2 md:flex md:justify-center md:space-x-6 gap-4 md:gap-0 mb-12 max-w-2xl mx-auto px-4"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.5 }}
@@ -218,54 +264,54 @@ export function FinancialUniverse({ className = '', onQuickAction }: FinancialUn
           ].map((item) => (
             <motion.button
               key={item.action}
-              className="bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-2xl px-6 py-4 text-center transition-all"
+              className="bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-xl md:rounded-2xl px-3 md:px-6 py-3 md:py-4 text-center transition-all"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => onQuickAction?.(item.action)}
             >
-              <div className="text-3xl mb-2">{item.emoji}</div>
-              <div className="text-white text-sm font-medium">{item.label}</div>
+              <div className="text-2xl md:text-3xl mb-1 md:mb-2">{item.emoji}</div>
+              <div className="text-white text-xs md:text-sm font-medium">{item.label}</div>
             </motion.button>
           ))}
         </motion.div>
 
         {/* Universe Stats */}
         <motion.div
-          className="bg-black/20 backdrop-blur-sm rounded-3xl p-8 border border-white/10"
+          className="bg-black/20 backdrop-blur-sm rounded-2xl md:rounded-3xl p-4 md:p-8 border border-white/10 mx-4"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 2 }}
         >
-          <h3 className="text-2xl font-bold text-white mb-6 text-center">
+          <h3 className="text-xl md:text-2xl font-bold text-white mb-4 md:mb-6 text-center">
             🌌 Universe Status
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             <div className="text-center">
-              <div className="text-3xl font-bold text-green-300">
+              <div className="text-xl md:text-3xl font-bold text-green-300">
                 ${(netWorthData.totalNetWorth / 1000).toFixed(0)}K
               </div>
-              <div className="text-white/70 text-sm">Total Worth</div>
+              <div className="text-white/70 text-xs md:text-sm">Total Worth</div>
               <div className="text-green-300 text-xs mt-1">Planet Mass</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-amber-300">
+              <div className="text-xl md:text-3xl font-bold text-amber-300">
                 ${(mockSpendingData.monthlySpending / 1000).toFixed(1)}K
               </div>
-              <div className="text-white/70 text-sm">Monthly Flow</div>
+              <div className="text-white/70 text-xs md:text-sm">Monthly Flow</div>
               <div className="text-amber-300 text-xs mt-1">Moon Cycle</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-blue-300">
+              <div className="text-xl md:text-3xl font-bold text-blue-300">
                 {mockGoals.filter(g => !g.isCompleted).length}
               </div>
-              <div className="text-white/70 text-sm">Active Goals</div>
+              <div className="text-white/70 text-xs md:text-sm">Active Goals</div>
               <div className="text-blue-300 text-xs mt-1">Burning Stars</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-purple-300">
+              <div className="text-xl md:text-3xl font-bold text-purple-300">
                 {mockGoals.filter(g => g.isCompleted).length}
               </div>
-              <div className="text-white/70 text-sm">Goals Achieved</div>
+              <div className="text-white/70 text-xs md:text-sm">Goals Achieved</div>
               <div className="text-purple-300 text-xs mt-1">Ignited Stars</div>
             </div>
           </div>
@@ -273,16 +319,16 @@ export function FinancialUniverse({ className = '', onQuickAction }: FinancialUn
 
         {/* Inspirational Message */}
         <motion.div
-          className="text-center mt-12"
+          className="text-center mt-8 md:mt-12 px-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 2.5 }}
         >
-          <div className="text-6xl mb-4">✨</div>
-          <h3 className="text-2xl font-bold text-white mb-4">
+          <div className="text-4xl md:text-6xl mb-3 md:mb-4">✨</div>
+          <h3 className="text-xl md:text-2xl font-bold text-white mb-3 md:mb-4">
             Your Financial Galaxy is Growing!
           </h3>
-          <p className="text-white/70 max-w-2xl mx-auto text-lg">
+          <p className="text-white/70 max-w-xl md:max-w-2xl mx-auto text-sm md:text-lg">
             Like the universe itself, your wealth is expanding. Every transaction shapes your galaxy, 
             every goal becomes a shining star, and every achievement ignites new possibilities.
           </p>

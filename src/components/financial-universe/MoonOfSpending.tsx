@@ -176,15 +176,15 @@ export function MoonOfSpending({
 
       {/* Moon Label */}
       <motion.div 
-        className="mt-6 text-center"
+        className="mt-4 md:mt-6 text-center px-2"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
       >
-        <h3 className="text-xl font-bold text-white mb-2">
+        <h3 className="text-lg md:text-xl font-bold text-white mb-2">
           🌙 Moon of Spending
         </h3>
-        <div className="text-3xl font-bold text-white mb-1">
+        <div className="text-2xl md:text-3xl font-bold text-white mb-1">
           {formatCurrency(monthlySpending)}
         </div>
         <div className={`text-sm ${isSpendingUp ? 'text-amber-300' : 'text-slate-300'}`}>
@@ -195,7 +195,7 @@ export function MoonOfSpending({
 
       {/* Top Spending Categories */}
       <motion.div 
-        className="mt-4 grid grid-cols-2 gap-2"
+        className="mt-4 grid grid-cols-2 gap-2 max-w-xs mx-auto"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1 }}
@@ -203,15 +203,15 @@ export function MoonOfSpending({
         {topCategories.slice(0, 4).map((category, i) => (
           <motion.div
             key={category.name}
-            className="bg-white/10 rounded-lg px-3 py-2 backdrop-blur-sm"
+            className="bg-white/10 rounded-lg px-2 md:px-3 py-2 backdrop-blur-sm"
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
             <div 
-              className="w-3 h-3 rounded-full mb-1"
+              className="w-2 h-2 md:w-3 md:h-3 rounded-full mb-1"
               style={{ backgroundColor: category.color }}
             />
-            <div className="text-xs text-white/90 font-medium">
+            <div className="text-xs text-white/90 font-medium truncate">
               {category.name}
             </div>
             <div className="text-xs text-white/70">

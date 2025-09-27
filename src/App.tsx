@@ -27,6 +27,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<UniverseDashboard />} />
+          <Route path="universe" element={<UniverseDashboard />} />
+          <Route path="dashboard" element={<Dashboard />} />
           <Route path="accounts" element={<Accounts />} />
           <Route path="portfolio" element={<Portfolio />} />
           <Route path="spending" element={<Spending />} />

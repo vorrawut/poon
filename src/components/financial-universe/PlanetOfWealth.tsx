@@ -161,18 +161,18 @@ export function PlanetOfWealth({
 
       {/* Planet Label */}
       <motion.div 
-        className="mt-6 text-center"
+        className="mt-4 md:mt-6 text-center px-2"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
       >
-        <h3 className="text-2xl font-bold text-white mb-2">
+        <h3 className="text-lg md:text-2xl font-bold text-white mb-2">
           🌍 Planet of Wealth
         </h3>
-        <div className="text-4xl font-bold text-white mb-1">
+        <div className="text-2xl md:text-4xl font-bold text-white mb-1">
           {formatCurrency(netWorth)}
         </div>
-        <div className={`text-lg ${isGrowing ? 'text-emerald-300' : 'text-orange-300'}`}>
+        <div className={`text-sm md:text-lg ${isGrowing ? 'text-emerald-300' : 'text-orange-300'}`}>
           {isGrowing ? '📈' : '📉'} {growth >= 0 ? '+' : ''}{formatCurrency(growth)} 
           {isGrowing ? ' growth' : ' decline'}
         </div>
