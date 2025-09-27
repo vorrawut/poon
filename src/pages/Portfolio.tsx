@@ -1,4 +1,4 @@
-import { FadeIn, SplitText } from '../components/ui';
+import { FadeIn, SplitText } from "../components/ui";
 
 export function Portfolio() {
   return (
@@ -7,9 +7,11 @@ export function Portfolio() {
         <SplitText className="text-3xl font-bold text-gray-900 mb-6">
           Portfolio
         </SplitText>
-        <p className="text-gray-600">Track your investments and portfolio performance.</p>
+        <p className="text-gray-600">
+          Track your investments and portfolio performance.
+        </p>
       </FadeIn>
-      
+
       <div className="mt-8 text-center">
         <p className="text-gray-500">🚧 Coming Soon</p>
       </div>

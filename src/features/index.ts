@@ -1,20 +1,20 @@
 // NetWorth Feature
-export * from './networth';
+export * from "./networth";
 
 // Accounts Feature
-export * from './accounts';
+export * from "./accounts";
 
-// Quick Actions Feature  
-export * from './quickactions';
+// Quick Actions Feature
+export * from "./quickactions";
 
 // Transactions Feature
-export * from './transactions';
+export * from "./transactions";
 
 // Feature exports for lazy loading (implemented features only)
-export const NetWorthFeature = () => import('./networth');
-export const AccountsFeature = () => import('./accounts');
-export const QuickActionsFeature = () => import('./quickactions');
-export const TransactionsFeature = () => import('./transactions');
+export const NetWorthFeature = () => import("./networth");
+export const AccountsFeature = () => import("./accounts");
+export const QuickActionsFeature = () => import("./quickactions");
+export const TransactionsFeature = () => import("./transactions");
 
 // Future features (to be implemented)
 // export const PortfolioFeature = () => import('./portfolio');

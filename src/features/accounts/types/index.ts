@@ -1,6 +1,12 @@
-export type AccountType = 'checking' | 'savings' | 'credit' | 'investment' | 'loan' | 'mortgage';
-export type AccountStatus = 'active' | 'inactive' | 'pending' | 'error';
-export type SyncStatus = 'synced' | 'syncing' | 'failed' | 'manual';
+export type AccountType =
+  | "checking"
+  | "savings"
+  | "credit"
+  | "investment"
+  | "loan"
+  | "mortgage";
+export type AccountStatus = "active" | "inactive" | "pending" | "error";
+export type SyncStatus = "synced" | "syncing" | "failed" | "manual";
 
 export interface Account {
   id: string;

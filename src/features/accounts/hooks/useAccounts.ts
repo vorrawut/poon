@@ -1,6 +1,10 @@
-import { useState, useEffect } from 'react';
-import { type Account, type AccountsOverview, type AccountSyncResult } from '../types';
-import { accountsService } from '../services/accountsService';
+import { useState, useEffect } from "react";
+import {
+  type Account,
+  type AccountsOverview,
+  type AccountSyncResult,
+} from "../types";
+import { accountsService } from "../services/accountsService";
 
 export function useAccounts() {
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -14,7 +18,7 @@ export function useAccounts() {
       setAccounts(data);
       setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch accounts');
+      setError(err instanceof Error ? err.message : "Failed to fetch accounts");
     } finally {
       setLoading(false);
     }
@@ -44,7 +48,11 @@ export function useAccountsOverview() {
       setOverview(data);
       setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch accounts overview');
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to fetch accounts overview",
+      );
     } finally {
       setLoading(false);
     }
@@ -67,23 +75,23 @@ export function useAccountSync() {
   const [syncResults, setSyncResults] = useState<AccountSyncResult[]>([]);
 
   const syncAccount = async (accountId: string) => {
-    setSyncing(prev => [...prev, accountId]);
-    
+    setSyncing((prev) => [...prev, accountId]);
+
     try {
       const result = await accountsService.syncAccount(accountId);
-      setSyncResults(prev => {
-        const filtered = prev.filter(r => r.accountId !== accountId);
+      setSyncResults((prev) => {
+        const filtered = prev.filter((r) => r.accountId !== accountId);
         return [...filtered, result];
       });
       return result;
     } finally {
-      setSyncing(prev => prev.filter(id => id !== accountId));
+      setSyncing((prev) => prev.filter((id) => id !== accountId));
     }
   };
 
   const syncAllAccounts = async () => {
-    setSyncing(['all']);
-    
+    setSyncing(["all"]);
+
     try {
       const results = await accountsService.syncAllAccounts();
       setSyncResults(results);
@@ -98,7 +106,7 @@ export function useAccountSync() {
   };
 
   const getSyncResult = (accountId: string) => {
-    return syncResults.find(r => r.accountId === accountId);
+    return syncResults.find((r) => r.accountId === accountId);
   };
 
   return {

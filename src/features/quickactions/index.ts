@@ -1,8 +1,12 @@
 // Components
-export { QuickActionsWidget } from './components/QuickActionsWidget';
+export { QuickActionsWidget } from "./components/QuickActionsWidget";
 
 // Types
-export type { QuickAction, QuickActionsConfig, QuickActionCategory } from './types';
+export type {
+  QuickAction,
+  QuickActionsConfig,
+  QuickActionCategory,
+} from "./types";
 
 // Services
-export { quickActionsService } from './services/quickActionsService';
+export { quickActionsService } from "./services/quickActionsService";

@@ -10,15 +10,21 @@ export interface User {
 export interface Account {
   id: string;
   user_id: string;
-  provider: 'manual' | 'plaid' | 'saltedge' | 'csv';
+  provider: "manual" | "plaid" | "saltedge" | "csv";
   provider_account_id?: string;
   name: string;
-  type: 'checking' | 'savings' | 'investment' | 'company' | 'insurance' | 'provident_fund';
+  type:
+    | "checking"
+    | "savings"
+    | "investment"
+    | "company"
+    | "insurance"
+    | "provident_fund";
   currency: string;
   last_sync_at?: string;
   current_balance: number;
   is_active: boolean;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface Transaction {
@@ -27,14 +33,14 @@ export interface Transaction {
   account_id: string;
   posted_at: string;
   amount: number;
-  type: 'debit' | 'credit';
+  type: "debit" | "credit";
   category: string;
   subcategory?: string;
   merchant?: string;
   description: string;
-  imported_from: 'manual' | 'csv' | 'plaid' | 'saltedge';
+  imported_from: "manual" | "csv" | "plaid" | "saltedge";
   tags: string[];
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
   is_duplicate?: boolean;
 }
 
@@ -42,7 +48,7 @@ export interface Asset {
   id: string;
   user_id: string;
   account_id: string;
-  asset_type: 'stock' | 'crypto' | 'bond' | 'mutual_fund' | 'etf';
+  asset_type: "stock" | "crypto" | "bond" | "mutual_fund" | "etf";
   symbol: string;
   name: string;
   quantity: number;
@@ -92,11 +98,11 @@ export interface PriceData {
 export interface ProviderToken {
   id: string;
   user_id: string;
-  provider: 'plaid' | 'saltedge';
+  provider: "plaid" | "saltedge";
   access_token_encrypted: string;
   refresh_token_encrypted?: string;
   expires_at?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 // UI State Types
@@ -104,7 +110,7 @@ export interface FilterState {
   dateRange: {
     from: string;
     to: string;
-    preset?: 'week' | 'month' | 'quarter' | 'year' | 'all';
+    preset?: "week" | "month" | "quarter" | "year" | "all";
   };
   accounts: string[];
   categories: string[];
@@ -127,7 +133,14 @@ export interface CSVColumn {
   index: number;
   name: string;
   sample_values: string[];
-  mapped_to?: 'date' | 'amount' | 'description' | 'category' | 'merchant' | 'type' | 'ignore';
+  mapped_to?:
+    | "date"
+    | "amount"
+    | "description"
+    | "category"
+    | "merchant"
+    | "type"
+    | "ignore";
   format?: string; // For date/amount formatting
 }
 
@@ -139,7 +152,7 @@ export interface CSVImportSession {
   sample_rows: string[][];
   total_rows: number;
   account_id: string;
-  status: 'mapping' | 'preview' | 'importing' | 'completed' | 'error';
+  status: "mapping" | "preview" | "importing" | "completed" | "error";
   created_at: string;
   processed_count?: number;
   error_count?: number;
@@ -192,10 +205,10 @@ export interface PaginatedResponse<T> {
 // Plaid/SaltEdge Integration Types
 export interface BankConnection {
   id: string;
-  provider: 'plaid' | 'saltedge';
+  provider: "plaid" | "saltedge";
   institution_name: string;
   institution_id: string;
-  status: 'connected' | 'requires_update' | 'error' | 'expired';
+  status: "connected" | "requires_update" | "error" | "expired";
   accounts: Account[];
   last_sync: string;
   error_message?: string;
@@ -212,13 +225,18 @@ export interface PlaidLinkEvent {
 // Insight Types
 export interface Insight {
   id: string;
-  type: 'spending_alert' | 'savings_goal' | 'category_trend' | 'income_change' | 'subscription_detected';
+  type:
+    | "spending_alert"
+    | "savings_goal"
+    | "category_trend"
+    | "income_change"
+    | "subscription_detected";
   title: string;
   description: string;
-  severity: 'info' | 'warning' | 'critical';
+  severity: "info" | "warning" | "critical";
   category?: string;
   amount?: number;
   created_at: string;
   is_read: boolean;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }

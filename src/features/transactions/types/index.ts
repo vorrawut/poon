@@ -1,19 +1,19 @@
-export type TransactionType = 'debit' | 'credit';
-export type TransactionCategory = 
-  | 'groceries' 
-  | 'restaurants' 
-  | 'gas' 
-  | 'shopping' 
-  | 'entertainment' 
-  | 'utilities'
-  | 'insurance'
-  | 'healthcare'
-  | 'travel'
-  | 'education'
-  | 'income'
-  | 'transfer'
-  | 'investment'
-  | 'other';
+export type TransactionType = "debit" | "credit";
+export type TransactionCategory =
+  | "groceries"
+  | "restaurants"
+  | "gas"
+  | "shopping"
+  | "entertainment"
+  | "utilities"
+  | "insurance"
+  | "healthcare"
+  | "travel"
+  | "education"
+  | "income"
+  | "transfer"
+  | "investment"
+  | "other";
 
 export interface Transaction {
   id: string;

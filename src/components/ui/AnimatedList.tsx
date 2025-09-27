@@ -1,10 +1,16 @@
-import React, { useEffect, useRef, Children, cloneElement, type ReactElement } from 'react';
-import { gsap } from 'gsap';
+import React, {
+  useEffect,
+  useRef,
+  Children,
+  cloneElement,
+  type ReactElement,
+} from "react";
+import { gsap } from "gsap";
 
 interface AnimatedListProps {
   children: React.ReactNode;
   className?: string;
-  animationType?: 'fadeIn' | 'slideUp' | 'slideLeft' | 'scaleIn';
+  animationType?: "fadeIn" | "slideUp" | "slideLeft" | "scaleIn";
   duration?: number;
   stagger?: number;
   delay?: number;
@@ -13,8 +19,8 @@ interface AnimatedListProps {
 
 export function AnimatedList({
   children,
-  className = '',
-  animationType = 'slideUp',
+  className = "",
+  animationType = "slideUp",
   duration = 0.6,
   stagger = 0.1,
   delay = 0,
@@ -34,15 +40,15 @@ export function AnimatedList({
     const animationStyles: gsap.TweenVars = { opacity: 1 };
 
     switch (animationType) {
-      case 'slideUp':
+      case "slideUp":
         initialStyles.y = 30;
         animationStyles.y = 0;
         break;
-      case 'slideLeft':
+      case "slideLeft":
         initialStyles.x = 30;
         animationStyles.x = 0;
         break;
-      case 'scaleIn':
+      case "scaleIn":
         initialStyles.scale = 0.8;
         animationStyles.scale = 1;
         break;
@@ -59,7 +65,7 @@ export function AnimatedList({
     timeline.to(items, {
       ...animationStyles,
       duration,
-      ease: 'power2.out',
+      ease: "power2.out",
       stagger,
     });
 
@@ -71,9 +77,12 @@ export function AnimatedList({
   // Add refs to children
   const childrenWithRefs = Children.map(children, (child, index) => {
     if (React.isValidElement(child)) {
-      return cloneElement(child as ReactElement, {
-        key: index,
-      } as any);
+      return cloneElement(
+        child as ReactElement,
+        {
+          key: index,
+        } as React.Attributes,
+      );
     }
     return child;
   });

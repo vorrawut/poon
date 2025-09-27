@@ -1,8 +1,13 @@
 // Components
-export { RecentTransactionsWidget } from './components/RecentTransactionsWidget';
+export { RecentTransactionsWidget } from "./components/RecentTransactionsWidget";
 
 // Types
-export type { Transaction, TransactionType, TransactionCategory, TransactionSummary } from './types';
+export type {
+  Transaction,
+  TransactionType,
+  TransactionCategory,
+  TransactionSummary,
+} from "./types";
 
 // Services
-export { transactionsService } from './services/transactionsService';
+export { transactionsService } from "./services/transactionsService";

@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'react';
-import { clsx } from 'clsx';
-import { gsap } from 'gsap';
+import { useEffect, useRef } from "react";
+import { clsx } from "clsx";
+import { gsap } from "gsap";
 
 interface DialogProps {
   open: boolean;
@@ -15,23 +15,26 @@ export function Dialog({ open, onOpenChange, children }: DialogProps) {
   useEffect(() => {
     const overlay = overlayRef.current;
     const content = contentRef.current;
-    
+
     if (!overlay || !content) return;
 
     if (open) {
       // Show dialog
-      gsap.set(overlay, { display: 'flex', opacity: 0 });
+      gsap.set(overlay, { display: "flex", opacity: 0 });
       gsap.set(content, { scale: 0.9, opacity: 0 });
-      
+
       const tl = gsap.timeline();
-      tl.to(overlay, { opacity: 1, duration: 0.2 })
-        .to(content, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(1.7)' }, 0.1);
+      tl.to(overlay, { opacity: 1, duration: 0.2 }).to(
+        content,
+        { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(1.7)" },
+        0.1,
+      );
     } else {
       // Hide dialog
       const tl = gsap.timeline();
       tl.to(content, { scale: 0.9, opacity: 0, duration: 0.2 })
         .to(overlay, { opacity: 0, duration: 0.2 }, 0.1)
-        .set(overlay, { display: 'none' });
+        .set(overlay, { display: "none" });
     }
   }, [open]);
 
@@ -64,11 +67,7 @@ interface DialogHeaderProps {
 }
 
 export function DialogHeader({ children, className }: DialogHeaderProps) {
-  return (
-    <div className={clsx('mb-4', className)}>
-      {children}
-    </div>
-  );
+  return <div className={clsx("mb-4", className)}>{children}</div>;
 }
 
 interface DialogTitleProps {
@@ -78,7 +77,7 @@ interface DialogTitleProps {
 
 export function DialogTitle({ children, className }: DialogTitleProps) {
   return (
-    <h2 className={clsx('text-lg font-semibold text-gray-900', className)}>
+    <h2 className={clsx("text-lg font-semibold text-gray-900", className)}>
       {children}
     </h2>
   );
@@ -89,12 +88,11 @@ interface DialogDescriptionProps {
   className?: string;
 }
 
-export function DialogDescription({ children, className }: DialogDescriptionProps) {
-  return (
-    <p className={clsx('text-sm text-gray-500', className)}>
-      {children}
-    </p>
-  );
+export function DialogDescription({
+  children,
+  className,
+}: DialogDescriptionProps) {
+  return <p className={clsx("text-sm text-gray-500", className)}>{children}</p>;
 }
 
 interface DialogContentProps {
@@ -103,11 +101,7 @@ interface DialogContentProps {
 }
 
 export function DialogContent({ children, className }: DialogContentProps) {
-  return (
-    <div className={clsx('mb-6', className)}>
-      {children}
-    </div>
-  );
+  return <div className={clsx("mb-6", className)}>{children}</div>;
 }
 
 interface DialogFooterProps {
@@ -117,7 +111,7 @@ interface DialogFooterProps {
 
 export function DialogFooter({ children, className }: DialogFooterProps) {
   return (
-    <div className={clsx('flex justify-end space-x-2', className)}>
+    <div className={clsx("flex justify-end space-x-2", className)}>
       {children}
     </div>
   );

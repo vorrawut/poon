@@ -1,5 +1,5 @@
 // Environment configuration for different deployment modes
-export type Environment = 'local' | 'development' | 'production';
+export type Environment = 'local' | 'development' | 'production' | 'test';
 export type DataSource = 'mock' | 'api' | 'hybrid';
 
 export interface AppConfig {
@@ -119,6 +119,28 @@ const productionConfig: AppConfig = {
   },
 };
 
+// Test environment (same as local but optimized for testing)
+const testConfig: AppConfig = {
+  ...baseConfig,
+  environment: 'test',
+  isDevelopment: false,
+  isProduction: false,
+  isLocal: false,
+  apiBaseUrl: 'http://localhost:3001/api',
+  dataSource: 'mock', // Always use mock data for tests
+  mockApiDelay: 0, // No delays in tests
+  mockEnableErrors: false,
+  features: {
+    ...baseConfig.features,
+    debugMode: false, // Reduce noise in test output
+    animations: false, // Disable animations in tests
+  },
+  devTools: {
+    reduxDevtools: false,
+    reactProfiler: false,
+  },
+};
+
 // Environment selection logic
 export function getConfig(): AppConfig {
   // Check for explicit environment variable first
@@ -134,6 +156,8 @@ export function getConfig(): AppConfig {
   switch (environment) {
     case 'local':
       return localConfig;
+    case 'test':
+      return testConfig;
     case 'production':
       return productionConfig;
     case 'development':

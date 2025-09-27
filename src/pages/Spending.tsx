@@ -1,4 +1,4 @@
-import { FadeIn, SplitText } from '../components/ui';
+import { FadeIn, SplitText } from "../components/ui";
 
 export function Spending() {
   return (
@@ -7,9 +7,11 @@ export function Spending() {
         <SplitText className="text-3xl font-bold text-gray-900 mb-6">
           Spending
         </SplitText>
-        <p className="text-gray-600">Analyze your spending patterns and categories.</p>
+        <p className="text-gray-600">
+          Analyze your spending patterns and categories.
+        </p>
       </FadeIn>
-      
+
       <div className="mt-8 text-center">
         <p className="text-gray-500">🚧 Coming Soon</p>
       </div>

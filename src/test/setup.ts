@@ -1,8 +1,8 @@
 /// <reference types="vitest/globals" />
-import '@testing-library/jest-dom';
+import "@testing-library/jest-dom";
 
 // Mock GSAP for tests
-vi.mock('gsap', () => ({
+vi.mock("gsap", () => ({
   gsap: {
     set: vi.fn(),
     to: vi.fn(() => ({ kill: vi.fn() })),
@@ -16,19 +16,21 @@ vi.mock('gsap', () => ({
 }));
 
 // Mock IntersectionObserver
-(global as any).IntersectionObserver = class {
+(global as typeof globalThis).IntersectionObserver = class {
   constructor() {}
   disconnect() {}
   observe() {}
   unobserve() {}
   root = null;
-  rootMargin = '';
+  rootMargin = "";
   thresholds = [];
-  takeRecords() { return []; }
+  takeRecords() {
+    return [];
+  }
 };
 
 // Mock ResizeObserver
-(global as any).ResizeObserver = class {
+(global as typeof globalThis).ResizeObserver = class {
   constructor() {}
   disconnect() {}
   observe() {}

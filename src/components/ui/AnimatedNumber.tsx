@@ -1,10 +1,10 @@
-import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
 
 interface AnimatedNumberProps {
   value: number;
   duration?: number;
-  format?: 'currency' | 'decimal' | 'percent';
+  format?: "currency" | "decimal" | "percent";
   currency?: string;
   decimals?: number;
   className?: string;
@@ -16,12 +16,12 @@ interface AnimatedNumberProps {
 export function AnimatedNumber({
   value,
   duration = 1.2,
-  format = 'decimal',
-  currency = 'USD',
+  format = "decimal",
+  currency = "USD",
   decimals = 2,
-  className = '',
-  prefix = '',
-  suffix = '',
+  className = "",
+  prefix = "",
+  suffix = "",
   delay = 0,
 }: AnimatedNumberProps) {
   const numberRef = useRef<HTMLSpanElement>(null);
@@ -41,36 +41,36 @@ export function AnimatedNumber({
       value: endValue,
       duration,
       delay,
-      ease: 'power2.out',
+      ease: "power2.out",
       onUpdate: () => {
         const currentValue = animationObject.value;
         currentValueRef.current = currentValue;
-        
+
         let formattedValue: string;
-        
+
         switch (format) {
-          case 'currency':
-            formattedValue = new Intl.NumberFormat('en-US', {
-              style: 'currency',
+          case "currency":
+            formattedValue = new Intl.NumberFormat("en-US", {
+              style: "currency",
               currency,
               minimumFractionDigits: decimals,
               maximumFractionDigits: decimals,
             }).format(currentValue);
             break;
-          case 'percent':
-            formattedValue = new Intl.NumberFormat('en-US', {
-              style: 'percent',
+          case "percent":
+            formattedValue = new Intl.NumberFormat("en-US", {
+              style: "percent",
               minimumFractionDigits: decimals,
               maximumFractionDigits: decimals,
             }).format(currentValue / 100);
             break;
           default:
-            formattedValue = new Intl.NumberFormat('en-US', {
+            formattedValue = new Intl.NumberFormat("en-US", {
               minimumFractionDigits: decimals,
               maximumFractionDigits: decimals,
             }).format(currentValue);
         }
-        
+
         element.textContent = `${prefix}${formattedValue}${suffix}`;
       },
     });
@@ -81,12 +81,14 @@ export function AnimatedNumber({
   }, [value, duration, format, currency, decimals, prefix, suffix, delay]);
 
   return (
-    <span 
-      ref={numberRef} 
+    <span
+      ref={numberRef}
       className={`animate-count font-mono ${className}`}
       aria-label={`${prefix}${value.toLocaleString()}${suffix}`}
     >
-      {prefix}{value.toLocaleString()}{suffix}
+      {prefix}
+      {value.toLocaleString()}
+      {suffix}
     </span>
   );
 }

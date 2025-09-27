@@ -1,14 +1,21 @@
-import { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Layout } from './components/layout/Layout';
-import { Dashboard, Accounts, Portfolio, Spending, Imports, Settings } from './pages';
-import { setupMockAPI } from './mock/server';
-import { useInitializeData } from './hooks/useInitializeData';
+import { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Layout } from "./components/layout/Layout";
+import {
+  Dashboard,
+  Accounts,
+  Portfolio,
+  Spending,
+  Imports,
+  Settings,
+} from "./pages";
+import { setupMockAPI } from "./mock/server";
+import { useInitializeData } from "./hooks/useInitializeData";
 
 function App() {
   // Initialize data and mock API
   useInitializeData();
-  
+
   useEffect(() => {
     // Setup mock API for development
     setupMockAPI();
