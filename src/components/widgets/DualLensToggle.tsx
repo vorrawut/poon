@@ -13,7 +13,7 @@ export function DualLensToggle({
 }: DualLensToggleProps) {
   return (
     <motion.div
-      className={`fixed top-24 left-8 z-50 ${className}`}
+      className={`fixed top-24 left-72 z-50 ${className}`}
       initial={{ opacity: 0, x: -50 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.5 }}
