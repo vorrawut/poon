@@ -4,3 +4,5 @@ export { WealthTimeline } from "./WealthTimeline";
 export { DualLensToggle } from "./DualLensToggle";
 export { UniverseBackground } from "./UniverseBackground";
 export { SpendingAnalyzer } from "./SpendingAnalyzer";
+export { PerformanceChart } from "./PerformanceChart";
+export { RiskGauge } from "./RiskGauge";

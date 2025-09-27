@@ -18,12 +18,14 @@ interface WealthSolarSystemProps {
   assets: Asset[];
   totalValue: number;
   className?: string;
+  onAssetClick?: (assetId: string) => void;
 }
 
 export function WealthSolarSystem({
   assets,
   totalValue,
   className = "",
+  onAssetClick,
 }: WealthSolarSystemProps) {
   const [selectedAsset, setSelectedAsset] = useState<string | null>(null);
 
@@ -83,9 +85,13 @@ export function WealthSolarSystem({
               ease: "linear",
             }}
             whileHover={{ scale: 1.3 }}
-            onClick={() =>
-              setSelectedAsset(selectedAsset === asset.id ? null : asset.id)
-            }
+            onClick={() => {
+              if (onAssetClick) {
+                onAssetClick(asset.id);
+              } else {
+                setSelectedAsset(selectedAsset === asset.id ? null : asset.id);
+              }
+            }}
           >
             <motion.div
               className="relative flex flex-col items-center"

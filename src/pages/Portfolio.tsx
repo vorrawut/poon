@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { FadeIn, SplitText } from "../components/ui";
 import {
   WealthSolarSystem,
@@ -140,6 +141,7 @@ const mockHighlights = [
 ];
 
 export function Portfolio() {
+  const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<"play" | "clarity">("play");
   const [showTimeline, setShowTimeline] = useState(false);
   const [showSimulation, setShowSimulation] = useState(false);
@@ -187,7 +189,7 @@ export function Portfolio() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Portfolio Universe Header */}
-        <FadeIn direction="down">
+      <FadeIn direction="down">
           <div className="text-center mb-16">
             <div className="text-4xl md:text-6xl font-bold text-white mb-4">
               <motion.span
@@ -235,7 +237,7 @@ export function Portfolio() {
               </div>
             </motion.div>
           </div>
-        </FadeIn>
+      </FadeIn>
 
         {/* Main Portfolio Universe */}
         <AnimatePresence mode="wait">
@@ -251,6 +253,7 @@ export function Portfolio() {
               <WealthSolarSystem
                 assets={mockPortfolioAssets}
                 totalValue={totalValue}
+                onAssetClick={(assetId) => navigate(`/portfolio/${assetId}`)}
               />
             </motion.div>
           ) : (
@@ -297,7 +300,8 @@ export function Portfolio() {
                       {mockPortfolioAssets.map((asset) => (
                         <tr
                           key={asset.id}
-                          className="border-b border-white/5 hover:bg-white/5"
+                          className="border-b border-white/5 hover:bg-white/5 cursor-pointer"
+                          onClick={() => navigate(`/portfolio/${asset.id}`)}
                         >
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-3">
