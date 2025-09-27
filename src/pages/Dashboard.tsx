@@ -4,6 +4,7 @@ import { CalendarDaysIcon } from '@heroicons/react/24/outline';
 import { NetWorthWidget } from '../features/networth';
 import { AccountsOverviewWidget } from '../features/accounts';
 import { QuickActionsWidget } from '../features/quickactions';
+import { RecentTransactionsWidget } from '../features/transactions';
 
 export default function Dashboard() {
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d'>('30d');
@@ -67,6 +68,7 @@ export default function Dashboard() {
 
       {/* Net Worth Hero Section */}
       <NetWorthWidget 
+        timeRange={timeRange}
         onQuickAction={handleQuickAction}
       />
 
@@ -91,28 +93,13 @@ export default function Dashboard() {
           className="lg:col-span-1"
         />
 
-        {/* Recent Transactions Placeholder */}
-        <FadeIn direction="left" delay={0.6} className="lg:col-span-2">
-          <div className="bg-white rounded-xl shadow-card border border-gray-100 overflow-hidden">
-            <div className="p-6 border-b border-gray-100">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900">Recent Transactions</h3>
-                <button 
-                  onClick={() => handleQuickAction('view_transactions')}
-                  className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-                >
-                  View All
-                </button>
-              </div>
-            </div>
-            <div className="p-6">
-              <div className="text-center py-12 text-gray-500">
-                <p>Transaction widget coming soon...</p>
-                <p className="text-sm mt-2">This will be implemented in the Transactions feature module</p>
-              </div>
-            </div>
-          </div>
-        </FadeIn>
+        {/* Recent Transactions */}
+        <RecentTransactionsWidget 
+          className="lg:col-span-2"
+          limit={5}
+          onTransactionClick={(transaction) => handleQuickAction('view_transaction', transaction)}
+          onViewAllClick={() => handleQuickAction('view_transactions')}
+        />
       </div>
 
       {/* Additional Feature Widgets Row */}

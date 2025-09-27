@@ -20,6 +20,7 @@ export interface Account {
     interestRate?: number;
     creditLimit?: number;
     minimumPayment?: number;
+    description?: string;
   };
 }
 

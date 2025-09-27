@@ -1,19 +1,49 @@
 import { type NetWorthData } from '../types';
+import { config, shouldUseMockData } from '../../../../config/environments';
 
 class NetWorthService {
   private baseUrl = '/api/networth';
 
   async fetchNetWorth(): Promise<NetWorthData> {
+    // Check if we should use mock data based on environment configuration
+    if (shouldUseMockData()) {
+      // Simulate API delay for realistic UX
+      await new Promise(resolve => setTimeout(resolve, config.mockApiDelay));
+      console.info(`🔄 Using mock net worth data (${config.environment} mode)`);
+      return this.getMockNetWorthData();
+    }
+
     try {
-      const response = await fetch(`${this.baseUrl}/current`);
+      const apiUrl = `${config.apiBaseUrl}/networth/current`;
+      console.info(`🌐 Fetching net worth from: ${apiUrl}`);
+      
+      // Create timeout signal for fetch
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), config.apiTimeout);
+      
+      const response = await fetch(apiUrl, {
+        signal: controller.signal,
+      });
+      
+      clearTimeout(timeoutId);
+      
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+      
       const data = await response.json();
+      console.info('✅ Net worth data fetched successfully');
       return this.transformApiResponse(data);
     } catch (error) {
-      // Fallback to mock data in development
-      console.warn('Using mock net worth data:', error);
+      console.warn('⚠️ API failed, falling back to mock net worth data:', error);
+      
+      // In production, show error; in development, fallback to mock
+      if (config.isProduction) {
+        throw error;
+      }
+      
+      // Fallback to mock data for development/local
+      await new Promise(resolve => setTimeout(resolve, config.mockApiDelay));
       return this.getMockNetWorthData();
     }
   }
@@ -52,17 +82,28 @@ class NetWorthService {
   }
 
   private getMockNetWorthData(): NetWorthData {
+    // Calculate realistic totals based on mock accounts
+    const cash = 81670.50; // Checking + Savings accounts
+    const investments = 247050.25; // 401k + IRA + Trading + Stock options  
+    const realEstate = 0; // No real estate in current mock data
+    const other = -22803.54; // Credit cards and loans (negative)
+    
+    const totalNetWorth = cash + investments + realEstate + other; // ~305,917
+    const previousNetWorth = totalNetWorth - 8347.23; // Previous month
+    const netWorthChange = totalNetWorth - previousNetWorth;
+    const netWorthChangePercent = (netWorthChange / previousNetWorth) * 100;
+    
     return {
-      totalNetWorth: 284750.50,
-      netWorthChange: 12456.78,
-      netWorthChangePercent: 4.57,
-      previousNetWorth: 272293.72,
+      totalNetWorth: Math.round(totalNetWorth * 100) / 100,
+      netWorthChange: Math.round(netWorthChange * 100) / 100,
+      netWorthChangePercent: Math.round(netWorthChangePercent * 100) / 100,
+      previousNetWorth: Math.round(previousNetWorth * 100) / 100,
       lastUpdated: new Date(),
       breakdown: {
-        cash: 45000,
-        investments: 195000,
-        realEstate: 35000,
-        other: 9750.50,
+        cash: cash,
+        investments: investments,
+        realEstate: realEstate,
+        other: other,
       },
     };
   }

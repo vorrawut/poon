@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ResponsiveContainer, LineChart, Line, Tooltip } from 'recharts';
 import { AnimatedNumber, FadeIn } from '../../../components/ui';
 import { 
@@ -14,16 +14,23 @@ import { type TimeRange } from '../types';
 
 interface NetWorthWidgetProps {
   className?: string;
+  timeRange?: TimeRange['value'];
   showQuickActions?: boolean;
   onQuickAction?: (action: string) => void;
 }
 
 export function NetWorthWidget({ 
   className = '', 
+  timeRange = '30d',
   showQuickActions = true,
   onQuickAction 
 }: NetWorthWidgetProps) {
-  const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange['value']>('30d');
+  const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange['value']>(timeRange);
+  
+  useEffect(() => {
+    setSelectedTimeRange(timeRange);
+  }, [timeRange]);
+  
   const { netWorthData, loading, error, refreshNetWorth } = useNetWorth();
   const { trendData, growth, growthPercent } = useNetWorthTrend(selectedTimeRange);
 

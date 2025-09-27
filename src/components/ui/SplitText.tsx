@@ -2,7 +2,8 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
 interface SplitTextProps {
-  children: string;
+  children?: string;
+  text?: string;
   className?: string;
   animationType?: 'fadeIn' | 'slideUp' | 'slideDown' | 'scaleIn' | 'rotateIn';
   duration?: number;
@@ -14,6 +15,7 @@ interface SplitTextProps {
 
 export function SplitText({
   children,
+  text,
   className = '',
   animationType = 'fadeIn',
   duration = 0.8,
@@ -23,6 +25,7 @@ export function SplitText({
   trigger = true,
 }: SplitTextProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const textContent = text || children || '';
 
   useEffect(() => {
     if (!containerRef.current || !trigger) return;
@@ -33,10 +36,10 @@ export function SplitText({
     container.innerHTML = '';
     
     // Split text based on type
-    let elements: HTMLElement[] = [];
+    const elements: HTMLElement[] = [];
     
     if (split === 'chars') {
-      const chars = children.split('');
+      const chars = textContent.split('');
       chars.forEach((char) => {
         const span = document.createElement('span');
         span.textContent = char === ' ' ? '\u00A0' : char; // Use non-breaking space
@@ -46,7 +49,7 @@ export function SplitText({
         elements.push(span);
       });
     } else if (split === 'words') {
-      const words = children.split(' ');
+      const words = textContent.split(' ');
       words.forEach((word, index) => {
         const span = document.createElement('span');
         span.textContent = word;
@@ -60,7 +63,7 @@ export function SplitText({
       });
     } else if (split === 'lines') {
       // For simplicity, treat lines as words for now
-      const words = children.split(' ');
+      const words = textContent.split(' ');
       words.forEach((word, index) => {
         const span = document.createElement('span');
         span.textContent = word;
@@ -115,13 +118,13 @@ export function SplitText({
     return () => {
       timeline.kill();
     };
-  }, [children, animationType, duration, stagger, delay, split, trigger]);
+  }, [textContent, animationType, duration, stagger, delay, split, trigger]);
 
   return (
     <div 
       ref={containerRef}
       className={`split-text ${className}`}
-      aria-label={children}
+      aria-label={textContent}
     />
   );
 }
