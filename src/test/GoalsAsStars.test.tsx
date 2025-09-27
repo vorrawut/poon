@@ -6,7 +6,17 @@ import { GoalsAsStars } from "../components/financial-universe/GoalsAsStars";
 // Mock framer-motion
 vi.mock("framer-motion", () => ({
   motion: {
-    div: ({ children, className, onClick, ...props }: any) => (
+    div: ({
+      children,
+      className,
+      onClick,
+      ...props
+    }: {
+      children: React.ReactNode;
+      className?: string;
+      onClick?: () => void;
+      [key: string]: unknown;
+    }) => (
       <div className={className} onClick={onClick} {...props}>
         {children}
       </div>

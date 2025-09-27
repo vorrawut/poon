@@ -7,32 +7,84 @@ import { useNetWorth } from "../features/networth/hooks/useNetWorth";
 // Mock framer-motion to avoid animation issues in tests
 vi.mock("framer-motion", () => ({
   motion: {
-    div: ({ children, className, onClick, ...props }: any) => (
+    div: ({
+      children,
+      className,
+      onClick,
+      ...props
+    }: {
+      children: React.ReactNode;
+      className?: string;
+      onClick?: () => void;
+      [key: string]: unknown;
+    }) => (
       <div className={className} onClick={onClick} {...props}>
         {children}
       </div>
     ),
-    button: ({ children, className, onClick, ...props }: any) => (
+    button: ({
+      children,
+      className,
+      onClick,
+      ...props
+    }: {
+      children: React.ReactNode;
+      className?: string;
+      onClick?: () => void;
+      [key: string]: unknown;
+    }) => (
       <button className={className} onClick={onClick} {...props}>
         {children}
       </button>
     ),
-    h1: ({ children, className, ...props }: any) => (
+    h1: ({
+      children,
+      className,
+      ...props
+    }: {
+      children: React.ReactNode;
+      className?: string;
+      [key: string]: unknown;
+    }) => (
       <h1 className={className} {...props}>
         {children}
       </h1>
     ),
-    h3: ({ children, className, ...props }: any) => (
+    h3: ({
+      children,
+      className,
+      ...props
+    }: {
+      children: React.ReactNode;
+      className?: string;
+      [key: string]: unknown;
+    }) => (
       <h3 className={className} {...props}>
         {children}
       </h3>
     ),
-    p: ({ children, className, ...props }: any) => (
+    p: ({
+      children,
+      className,
+      ...props
+    }: {
+      children: React.ReactNode;
+      className?: string;
+      [key: string]: unknown;
+    }) => (
       <p className={className} {...props}>
         {children}
       </p>
     ),
-    span: ({ children, className, ...props }: any) => (
+    span: ({
+      children,
+      className,
+      ...props
+    }: {
+      children: React.ReactNode;
+      className?: string;
+      [key: string]: unknown;
+    }) => (
       <span className={className} {...props}>
         {children}
       </span>
@@ -42,7 +94,7 @@ vi.mock("framer-motion", () => ({
     start: vi.fn(),
     set: vi.fn(),
   }),
-  AnimatePresence: ({ children }: any) => children,
+  AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 // Mock the useNetWorth hook
@@ -67,7 +119,7 @@ describe("FinancialUniverse Component", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    (useNetWorth as any).mockReturnValue({
+    (useNetWorth as jest.Mock).mockReturnValue({
       netWorthData: mockNetWorthData,
       loading: false,
       error: null,

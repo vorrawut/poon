@@ -6,7 +6,15 @@ import { PlanetOfWealth } from "../components/financial-universe/PlanetOfWealth"
 // Mock framer-motion
 vi.mock("framer-motion", () => ({
   motion: {
-    div: ({ children, className, ...props }: any) => (
+    div: ({
+      children,
+      className,
+      ...props
+    }: {
+      children: React.ReactNode;
+      className?: string;
+      [key: string]: unknown;
+    }) => (
       <div className={className} {...props}>
         {children}
       </div>
