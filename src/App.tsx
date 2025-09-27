@@ -8,6 +8,7 @@ import {
   Spending,
   Imports,
   Settings,
+  UniverseDashboard,
 } from "./pages";
 import { setupMockAPI } from "./mock/server";
 import { useInitializeData } from "./hooks/useInitializeData";
@@ -25,7 +26,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Dashboard />} />
+          <Route index element={<UniverseDashboard />} />
           <Route path="accounts" element={<Accounts />} />
           <Route path="portfolio" element={<Portfolio />} />
           <Route path="spending" element={<Spending />} />

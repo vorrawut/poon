@@ -1,0 +1,293 @@
+import { motion } from 'framer-motion';
+import { PlanetOfWealth } from './PlanetOfWealth';
+import { MoonOfSpending } from './MoonOfSpending';
+import { GoalsAsStars } from './GoalsAsStars';
+import { useNetWorth } from '../../features/networth/hooks/useNetWorth';
+
+// Mock data for now - this will come from your actual data stores
+const mockSpendingData = {
+  monthlySpending: 3450,
+  previousMonthSpending: 3200,
+  spendingChange: 7.8,
+  topCategories: [
+    { name: 'Food', amount: 890, color: '#F59E0B' },
+    { name: 'Transport', amount: 450, color: '#3B82F6' },
+    { name: 'Entertainment', amount: 320, color: '#8B5CF6' },
+    { name: 'Shopping', amount: 280, color: '#EF4444' },
+  ]
+};
+
+const mockGoals = [
+  {
+    id: '1',
+    name: 'Emergency Fund',
+    targetAmount: 10000,
+    currentAmount: 7500,
+    category: 'safety',
+    isCompleted: false
+  },
+  {
+    id: '2',
+    name: 'Vacation to Japan',
+    targetAmount: 5000,
+    currentAmount: 5000,
+    category: 'travel',
+    isCompleted: true
+  },
+  {
+    id: '3',
+    name: 'New Car Down Payment',
+    targetAmount: 8000,
+    currentAmount: 2400,
+    category: 'transportation',
+    isCompleted: false
+  },
+  {
+    id: '4',
+    name: 'Investment Portfolio',
+    targetAmount: 50000,
+    currentAmount: 12800,
+    category: 'investment',
+    isCompleted: false
+  },
+  {
+    id: '5',
+    name: 'Home Down Payment',
+    targetAmount: 80000,
+    currentAmount: 15200,
+    category: 'home',
+    isCompleted: false
+  }
+];
+
+interface FinancialUniverseProps {
+  className?: string;
+  onQuickAction?: (action: string, data?: unknown) => void;
+}
+
+export function FinancialUniverse({ className = '', onQuickAction }: FinancialUniverseProps) {
+  const { netWorthData, loading, error } = useNetWorth();
+
+  if (loading) {
+    return (
+      <div className={`relative min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-indigo-900 overflow-hidden ${className}`}>
+        <div className="flex items-center justify-center min-h-screen">
+          <motion.div
+            className="text-white text-xl"
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            🌌 Loading your financial universe...
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !netWorthData) {
+    return (
+      <div className={`relative min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-indigo-900 overflow-hidden ${className}`}>
+        <div className="flex items-center justify-center min-h-screen text-center">
+          <div className="text-white">
+            <div className="text-6xl mb-4">🌌</div>
+            <h2 className="text-2xl font-bold mb-2">Universe Loading Error</h2>
+            <p className="text-white/70">Unable to load your financial data</p>
+            <button 
+              onClick={() => window.location.reload()}
+              className="mt-4 bg-purple-600 hover:bg-purple-700 px-6 py-2 rounded-lg font-medium transition-colors"
+            >
+              Reload Universe
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={`relative min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-indigo-900 overflow-hidden ${className}`}>
+      {/* Background Stars Field */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(100)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute bg-white rounded-full"
+            style={{
+              width: Math.random() * 2 + 0.5,
+              height: Math.random() * 2 + 0.5,
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              opacity: [0.2, 1, 0.2],
+              scale: [0.8, 1.2, 0.8],
+            }}
+            transition={{
+              duration: 3 + Math.random() * 4,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Nebula Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Universe Header */}
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+        >
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
+            <motion.span
+              className="inline-block"
+              animate={{ rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 6, repeat: Infinity }}
+            >
+              🌍
+            </motion.span>
+            Your Financial Universe
+          </h1>
+          <p className="text-xl text-white/80 max-w-3xl mx-auto">
+            Welcome to your personal galaxy of wealth! Every planet, moon, and star tells the story of your financial journey.
+          </p>
+        </motion.div>
+
+        {/* Main Universe Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 items-start mb-16">
+          {/* Planet of Wealth - Left */}
+          <motion.div
+            className="lg:justify-self-start"
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: 0.5 }}
+          >
+            <PlanetOfWealth
+              netWorth={netWorthData.totalNetWorth}
+              previousNetWorth={netWorthData.previousNetWorth}
+              growth={netWorthData.netWorthChange}
+            />
+          </motion.div>
+
+          {/* Goals Constellation - Center */}
+          <motion.div
+            className="lg:justify-self-center"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 1 }}
+          >
+            <GoalsAsStars goals={mockGoals} />
+          </motion.div>
+
+          {/* Moon of Spending - Right */}
+          <motion.div
+            className="lg:justify-self-end"
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: 0.8 }}
+          >
+            <MoonOfSpending
+              monthlySpending={mockSpendingData.monthlySpending}
+              previousMonthSpending={mockSpendingData.previousMonthSpending}
+              spendingChange={mockSpendingData.spendingChange}
+              topCategories={mockSpendingData.topCategories}
+            />
+          </motion.div>
+        </div>
+
+        {/* Universe Navigation */}
+        <motion.div
+          className="flex justify-center space-x-8 mb-12"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 1.5 }}
+        >
+          {[
+            { emoji: '🚀', label: 'Quick Actions', action: 'quick_actions' },
+            { emoji: '🔭', label: 'Detailed View', action: 'detailed_view' },
+            { emoji: '📊', label: 'Analytics', action: 'analytics' },
+            { emoji: '⚙️', label: 'Settings', action: 'settings' }
+          ].map((item) => (
+            <motion.button
+              key={item.action}
+              className="bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-2xl px-6 py-4 text-center transition-all"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => onQuickAction?.(item.action)}
+            >
+              <div className="text-3xl mb-2">{item.emoji}</div>
+              <div className="text-white text-sm font-medium">{item.label}</div>
+            </motion.button>
+          ))}
+        </motion.div>
+
+        {/* Universe Stats */}
+        <motion.div
+          className="bg-black/20 backdrop-blur-sm rounded-3xl p-8 border border-white/10"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 2 }}
+        >
+          <h3 className="text-2xl font-bold text-white mb-6 text-center">
+            🌌 Universe Status
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-green-300">
+                ${(netWorthData.totalNetWorth / 1000).toFixed(0)}K
+              </div>
+              <div className="text-white/70 text-sm">Total Worth</div>
+              <div className="text-green-300 text-xs mt-1">Planet Mass</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-amber-300">
+                ${(mockSpendingData.monthlySpending / 1000).toFixed(1)}K
+              </div>
+              <div className="text-white/70 text-sm">Monthly Flow</div>
+              <div className="text-amber-300 text-xs mt-1">Moon Cycle</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-blue-300">
+                {mockGoals.filter(g => !g.isCompleted).length}
+              </div>
+              <div className="text-white/70 text-sm">Active Goals</div>
+              <div className="text-blue-300 text-xs mt-1">Burning Stars</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-purple-300">
+                {mockGoals.filter(g => g.isCompleted).length}
+              </div>
+              <div className="text-white/70 text-sm">Goals Achieved</div>
+              <div className="text-purple-300 text-xs mt-1">Ignited Stars</div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Inspirational Message */}
+        <motion.div
+          className="text-center mt-12"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 2.5 }}
+        >
+          <div className="text-6xl mb-4">✨</div>
+          <h3 className="text-2xl font-bold text-white mb-4">
+            Your Financial Galaxy is Growing!
+          </h3>
+          <p className="text-white/70 max-w-2xl mx-auto text-lg">
+            Like the universe itself, your wealth is expanding. Every transaction shapes your galaxy, 
+            every goal becomes a shining star, and every achievement ignites new possibilities.
+          </p>
+        </motion.div>
+      </div>
+    </div>
+  );
+}

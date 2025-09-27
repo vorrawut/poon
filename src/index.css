@@ -63,6 +63,50 @@
   }
 }
 
+@keyframes star-movement-bottom {
+  0% {
+    transform: translate(0%, 0%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-100%, 0%);
+    opacity: 0;
+  }
+}
+
+@keyframes star-movement-top {
+  0% {
+    transform: translate(0%, 0%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(100%, 0%);
+    opacity: 0;
+  }
+}
+
+@keyframes star-movement-bottom-slow {
+  0% {
+    transform: translate(0%, 0%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-80%, 0%);
+    opacity: 0;
+  }
+}
+
+@keyframes star-movement-top-slow {
+  0% {
+    transform: translate(0%, 0%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(80%, 0%);
+    opacity: 0;
+  }
+}
+
 @layer components {
   .animate-count {
     font-variant-numeric: tabular-nums;
@@ -91,6 +135,22 @@
 
   .animate-bounce-in {
     animation: bounceIn 0.6s ease-out;
+  }
+  
+  .animate-star-movement-bottom {
+    animation: star-movement-bottom linear infinite alternate;
+  }
+  
+  .animate-star-movement-top {
+    animation: star-movement-top linear infinite alternate;
+  }
+  
+  .animate-star-movement-bottom-slow {
+    animation: star-movement-bottom-slow linear infinite alternate;
+  }
+  
+  .animate-star-movement-top-slow {
+    animation: star-movement-top-slow linear infinite alternate;
   }
 
   .btn-primary {
