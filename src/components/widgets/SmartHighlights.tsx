@@ -1,0 +1,73 @@
+import { motion } from "framer-motion";
+
+interface Highlight {
+  id: string;
+  title: string;
+  message: string;
+  icon: string;
+  type: "success" | "info" | "warning" | "celebration" | "insight" | "alert";
+}
+
+interface SmartHighlightsProps {
+  highlights: Highlight[];
+  title?: string;
+  subtitle?: string;
+  className?: string;
+}
+
+const typeStyles = {
+  success: "from-green-500/20 to-emerald-600/20 border-green-400/30",
+  info: "from-blue-500/20 to-indigo-600/20 border-blue-400/30",
+  warning: "from-yellow-500/20 to-orange-600/20 border-yellow-400/30",
+  celebration: "from-rose-500/20 to-red-600/20 border-rose-400/30",
+  insight: "from-purple-500/20 to-pink-600/20 border-purple-400/30",
+  alert: "from-teal-500/20 to-cyan-600/20 border-teal-400/30"
+};
+
+export function SmartHighlights({ 
+  highlights, 
+  title = "Smart Highlights",
+  subtitle = "Your personal financial newsfeed — like Spotify Wrapped, but every week!",
+  className = "" 
+}: SmartHighlightsProps) {
+  return (
+    <motion.div
+      className={`${className}`}
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1, delay: 0.5 }}
+    >
+      <div className="text-center mb-12">
+        <h2 className="text-4xl font-bold text-white mb-4">
+          <span className="mr-3">🧠</span>
+          {title}
+        </h2>
+        <p className="text-white/70 max-w-2xl mx-auto">
+          {subtitle}
+        </p>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {highlights.map((highlight, index) => (
+          <motion.div
+            key={highlight.id}
+            className={`bg-gradient-to-br ${typeStyles[highlight.type]} backdrop-blur-sm rounded-xl p-6 border`}
+            whileHover={{ scale: 1.02, y: -5 }}
+            transition={{ type: "spring", stiffness: 300 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            style={{ animationDelay: `${index * 0.1}s` }}
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <div className="text-3xl">{highlight.icon}</div>
+              <h3 className="text-white font-bold">{highlight.title}</h3>
+            </div>
+            <p className="text-white/80 text-sm">
+              {highlight.message}
+            </p>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
