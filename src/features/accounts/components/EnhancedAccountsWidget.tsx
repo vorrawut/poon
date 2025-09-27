@@ -121,11 +121,11 @@ export function EnhancedAccountsWidget({
             <SyncStatus lastSyncAt={overview.lastSyncAt} />
             <button
               onClick={handleSyncAll}
-              disabled={isSyncing}
+              disabled={isSyncing()}
               className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center space-x-2"
             >
-              <span>{isSyncing ? '⏳' : '🔄'}</span>
-              <span>{isSyncing ? 'Updating...' : 'Update All'}</span>
+              <span>{isSyncing() ? '⏳' : '🔄'}</span>
+              <span>{isSyncing() ? 'Updating...' : 'Update All'}</span>
             </button>
           </div>
         </div>
