@@ -11,8 +11,13 @@ import {
   AchievementBadges,
   CategoryDetailView,
 } from "../../../components/widgets";
+import {
+  mockAssetData,
+  portfolioAssets,
+  mockPortfolioAchievements,
+} from "../../../../mockData/features/portfolio";
 
-// Enhanced Mock Data with Category-Specific Details
+// Using imported mock data
 const mockAssetData = {
   tesla: {
     id: "tesla",

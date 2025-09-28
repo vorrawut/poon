@@ -29,8 +29,12 @@ import {
   getCategoryById,
   getRecommendedBudgetPercentage,
 } from "../../../types/spending";
+import {
+  mockPaymentMethods,
+  generateMockSpendingData,
+} from "../../../../mockData/features/spending";
 
-// Enhanced Mock Data using Universal Category System
+// Using imported mock data
 const generateMockSpendingData = () => {
   const monthlyIncome = 50000;
 

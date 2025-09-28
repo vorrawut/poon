@@ -3,6 +3,7 @@ import { PlanetOfWealth } from "./PlanetOfWealth";
 import { MoonOfSpending } from "./MoonOfSpending";
 import { GoalsAsStars } from "./GoalsAsStars";
 import { useNetWorth } from "../../features/networth/hooks/useNetWorth";
+import { mockFinancialUniverseGoals } from "../../../mockData/features/dashboard";
 
 // Mock data for now - this will come from your actual data stores
 const mockSpendingData = {
@@ -196,7 +197,7 @@ export function FinancialUniverse({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 1 }}
             >
-              <GoalsAsStars goals={mockGoals} />
+              <GoalsAsStars goals={mockFinancialUniverseGoals} />
             </motion.div>
 
             {/* Moon of Spending - Right */}
@@ -224,7 +225,7 @@ export function FinancialUniverse({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.3 }}
             >
-              <GoalsAsStars goals={mockGoals} />
+              <GoalsAsStars goals={mockFinancialUniverseGoals} />
             </motion.div>
 
             {/* Planet and Moon - Side by side on mobile */}

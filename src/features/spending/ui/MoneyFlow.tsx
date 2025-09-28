@@ -14,8 +14,20 @@ import {
   AccessibilityModeToggle,
   AIFinancialCoach,
 } from "../../../components/widgets";
+import {
+  mockIncomeStreams,
+  mockSpendingCategories,
+  mockIncomeDetails,
+  mockBadges,
+  mockStreaks,
+  mockChallenges,
+  mockInsights,
+  mockSpendingWheel,
+  mockMoneyJars,
+  mockCoachingInsights,
+} from "../../../../mockData/features/spending";
 
-// Mock Data - Ultimate Money Flow Experience
+// Using imported mock data
 const mockIncomeStreams = [
   {
     id: "salary",
