@@ -597,16 +597,16 @@ export function MoneyFlow() {
       <DualLensToggle viewMode={viewMode} onToggle={setViewMode} />
       
       {/* Accessibility Mode Toggle */}
-      <div className="fixed top-20 right-2 sm:top-24 sm:right-8 lg:right-24 z-50">
+      <div className="fixed top-25 right-2 sm:top-25 sm:right-2 lg:top-25 lg:right-2 z-50">
         <AccessibilityModeToggle
           mode={accessibilityMode}
           onModeChange={setAccessibilityMode}
         />
       </div>
 
-      <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pb-8 sm:pb-12 relative z-10">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pb-8 sm:pb-12 pt-20 sm:pt-24 lg:pt-32 relative z-10">
         {/* Ultimate Hero Section */}
-        <FadeIn direction="down" delay={0.1} className="text-center py-8 sm:py-12">
+        <FadeIn direction="down" delay={0.1} className="text-center py-4 sm:py-8">
           <div className="mb-8">
             <div
               className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 ${
@@ -717,7 +717,7 @@ export function MoneyFlow() {
         </FadeIn>
 
         {/* Navigation Tabs */}
-        <div className="flex justify-center mb-8 sm:mb-12 px-2 sm:px-4">
+        <div className="flex justify-center mb-6 sm:mb-8 lg:mb-12 px-2 sm:px-4">
           <div className="flex overflow-x-auto scrollbar-hide gap-1 sm:gap-2 p-2 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 w-full max-w-4xl">
             {[
               { id: "flow", label: "💫 Money Flow", desc: "Live visualization" },

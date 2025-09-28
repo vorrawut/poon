@@ -49,12 +49,15 @@ export function AccessibilityModeToggle({
       {/* Toggle Button */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-colors"
+        className="flex items-center gap-1 sm:gap-2 px-1.5 sm:px-4 py-0.5 sm:py-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-colors"
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
       >
-        <Settings size={16} />
-        <span className="text-sm font-medium">{currentMode.name}</span>
+        <Settings size={14} className="sm:w-4 sm:h-4" />
+        <span className="text-xs sm:text-sm font-medium">
+          <span className="hidden sm:inline">{currentMode.name}</span>
+          <span className="sm:hidden">{currentMode.name === "Standard" ? "Std" : currentMode.name === "Elder Mode" ? "Elder" : "Youth"}</span>
+        </span>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
@@ -75,7 +78,7 @@ export function AccessibilityModeToggle({
 
             {/* Menu */}
             <motion.div
-              className="absolute top-full right-0 mt-2 w-72 sm:w-80 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl z-50 overflow-hidden"
+              className="absolute top-full right-0 mt-2 w-64 sm:w-72 lg:w-80 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl z-50 overflow-hidden"
               initial={{ opacity: 0, scale: 0.95, y: -10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -10 }}
