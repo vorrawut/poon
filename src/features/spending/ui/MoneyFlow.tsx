@@ -29,7 +29,7 @@ import {
 import { useUIStore } from "../../../store/useUIStore";
 
 export function MoneyFlow() {
-  const { viewMode, accessibilityMode } = useUIStore();
+  const { viewMode } = useUIStore();
   const [activeSection, setActiveSection] = useState<
     "flow" | "income" | "spending" | "goals" | "story" | "game" | "coach"
   >("flow");

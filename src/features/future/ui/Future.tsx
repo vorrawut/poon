@@ -13,9 +13,12 @@ import {
 } from "../../../../mockData/features/future";
 
 import { useUIStore } from "../../../store/useUIStore";
+import { useAccessibility, useAccessibilityText } from "../../../hooks/useAccessibility";
 
 export function Future() {
   const { viewMode, accessibilityMode } = useUIStore();
+  const { getClasses, colors } = useAccessibility();
+  const headingClasses = useAccessibilityText("heading", "h1");
   const [selectedMission, setSelectedMission] = useState<Mission | null>(null);
   const [missions, setMissions] = useState<Mission[]>([]);
 
@@ -71,10 +74,10 @@ export function Future() {
                 🚀
               </motion.div>
               <h1
-                className={`text-5xl md:text-7xl lg:text-8xl font-bold mb-4 ${
+                className={`${headingClasses} font-bold mb-4 ${
                   viewMode === "play"
                     ? "bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent"
-                    : "text-gray-900"
+                    : colors.text
                 }`}
               >
                 Future
@@ -97,9 +100,7 @@ export function Future() {
             </div>
 
             <p
-              className={`text-xl md:text-2xl mb-8 max-w-4xl mx-auto px-4 ${
-                viewMode === "play" ? "text-white/80" : "text-gray-600"
-              }`}
+              className={`${getClasses({ fontSize: "text" })} mb-8 max-w-4xl mx-auto px-4 ${colors.textSecondary}`}
             >
               {accessibilityMode === "elder"
                 ? "Track your financial goals with clear, simple progress indicators and helpful guidance."

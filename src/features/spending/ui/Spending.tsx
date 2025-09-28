@@ -38,7 +38,7 @@ const mockSpendingData = generateMockTransactionData();
 import { useUIStore } from "../../../store/useUIStore";
 
 export function Spending() {
-  const { viewMode, accessibilityMode } = useUIStore();
+  const { viewMode } = useUIStore();
   const [activeSection, setActiveSection] = useState<
     | "galaxy"
     | "timeline"

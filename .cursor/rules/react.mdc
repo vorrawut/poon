@@ -940,3 +940,300 @@ export function MyComponent() {
 8. **PERSISTENT PREFERENCES** - User choices saved and restored
 
 This ensures the application is accessible to users of all ages and abilities.
+
+## 🎨 **CORE DESIGN SYSTEM (MANDATORY)**
+
+### **Core Components Location**
+```
+src/core/
+├── components/
+│   ├── AccessibleText.tsx      # Text components with accessibility
+│   ├── AccessibleButton.tsx    # Button components with accessibility
+│   ├── AccessibleCard.tsx      # Layout & card components
+│   └── index.ts               # Core components exports
+├── index.ts                   # Main core exports
+```
+
+### **Import Strategy (MANDATORY)**
+```typescript
+// ✅ GOOD - Import from core for all new components
+import { 
+  AccessibleHeading, 
+  AccessibleText, 
+  AccessibleButton,
+  AccessibleCard 
+} from "../../core";
+
+// ✅ ACCEPTABLE - Import from ui (re-exports core)
+import { AccessibleHeading } from "../../components/ui";
+
+// ❌ BAD - Never hardcode accessibility styles
+<h1 className="text-3xl font-bold">Hardcoded heading</h1>
+```
+
+### **Text Components (MANDATORY)**
+```typescript
+// ✅ REQUIRED - Use AccessibleHeading for all headings
+<AccessibleHeading level="h1" gradient>Main Title</AccessibleHeading>
+<AccessibleHeading level="h2">Section Title</AccessibleHeading>
+<AccessibleHeading level="h3" color="accent">Subsection</AccessibleHeading>
+
+// ✅ REQUIRED - Use AccessibleText for all text
+<AccessibleText>Body text that adapts to accessibility mode</AccessibleText>
+<AccessibleText color="secondary">Secondary text</AccessibleText>
+<AccessibleText variant="caption">Small caption text</AccessibleText>
+
+// ✅ REQUIRED - Use specialized text components
+<AccessibleLabel required>Form Label</AccessibleLabel>
+<AccessibleDescription>Help text</AccessibleDescription>
+<AccessibleError>Error message</AccessibleError>
+<AccessibleSuccess>Success message</AccessibleSuccess>
+
+// ❌ BAD - Never use hardcoded text styles
+<p className="text-lg text-gray-600">Hardcoded text</p>
+```
+
+### **Button Components (MANDATORY)**
+```typescript
+// ✅ REQUIRED - Use AccessibleButton for all buttons
+<AccessibleButton variant="primary" size="lg">
+  Primary Action
+</AccessibleButton>
+
+<AccessibleButton variant="secondary" disabled loading>
+  Secondary Action
+</AccessibleButton>
+
+<AccessibleIconButton aria-label="Close" variant="ghost">
+  <XIcon />
+</AccessibleIconButton>
+
+// ✅ REQUIRED - Use AccessibleQuickAction for dashboard actions
+<AccessibleQuickAction
+  icon="➕"
+  title="Add Transaction"
+  description="Record a purchase or payment"
+  color="green"
+  onClick={handleAction}
+/>
+
+// ❌ BAD - Never use hardcoded button styles
+<button className="px-4 py-2 bg-blue-500 text-white">Hardcoded</button>
+```
+
+### **Layout Components (MANDATORY)**
+```typescript
+// ✅ REQUIRED - Use AccessibleCard for all cards
+<AccessibleCard variant="elevated" padding="lg" hover>
+  Card content with proper accessibility
+</AccessibleCard>
+
+// ✅ REQUIRED - Use AccessibleSection for page sections
+<AccessibleSection 
+  title="Section Title" 
+  description="Section description"
+>
+  Section content
+</AccessibleSection>
+
+// ✅ REQUIRED - Use AccessibleGrid for responsive grids
+<AccessibleGrid cols={4} gap="md">
+  <div>Grid item 1</div>
+  <div>Grid item 2</div>
+</AccessibleGrid>
+
+// ✅ REQUIRED - Use AccessibleFlex for flex layouts
+<AccessibleFlex direction="row" align="center" justify="between" gap="lg">
+  <div>Flex item 1</div>
+  <div>Flex item 2</div>
+</AccessibleFlex>
+
+// ❌ BAD - Never use hardcoded layout styles
+<div className="grid grid-cols-4 gap-6">Hardcoded grid</div>
+```
+
+### **Stats & Data Display (MANDATORY)**
+```typescript
+// ✅ REQUIRED - Use AccessibleStatsCard for metrics
+<AccessibleStatsCard
+  title="Total Balance"
+  value="$12,345"
+  subtitle="Available funds"
+  icon="💰"
+  trend="up"
+  trendValue="+5.2%"
+/>
+
+// ✅ GOOD - Combine with other core components
+<AccessibleCard>
+  <AccessibleHeading level="h2">Portfolio Performance</AccessibleHeading>
+  <AccessibleGrid cols={3}>
+    <AccessibleStatsCard title="Assets" value="15" />
+    <AccessibleStatsCard title="Growth" value="+12%" trend="up" />
+    <AccessibleStatsCard title="Risk" value="Medium" />
+  </AccessibleGrid>
+</AccessibleCard>
+```
+
+### **Component Development Rules (MANDATORY)**
+
+#### **For New Components:**
+```typescript
+// ✅ REQUIRED - Always import core components
+import { AccessibleHeading, AccessibleText, AccessibleButton } from "../../core";
+
+export function MyNewComponent() {
+  return (
+    <AccessibleCard>
+      <AccessibleHeading level="h2">Component Title</AccessibleHeading>
+      <AccessibleText color="secondary">
+        Description text that adapts to accessibility modes
+      </AccessibleText>
+      <AccessibleButton variant="primary">
+        Action Button
+      </AccessibleButton>
+    </AccessibleCard>
+  );
+}
+
+// ❌ BAD - Never hardcode styles in new components
+export function BadComponent() {
+  return (
+    <div className="p-6 bg-white rounded-lg">
+      <h2 className="text-2xl font-bold text-gray-900">Title</h2>
+      <p className="text-gray-600">Description</p>
+      <button className="px-4 py-2 bg-blue-500 text-white rounded">
+        Button
+      </button>
+    </div>
+  );
+}
+```
+
+#### **For Widget Components:**
+```typescript
+// ✅ REQUIRED - Widgets must use core components
+export function MyWidget({ data }: MyWidgetProps) {
+  return (
+    <AccessibleCard variant="elevated">
+      <AccessibleHeading level="h3">{data.title}</AccessibleHeading>
+      
+      <AccessibleGrid cols={2} gap="md">
+        {data.items.map(item => (
+          <AccessibleStatsCard
+            key={item.id}
+            title={item.label}
+            value={item.value}
+            trend={item.trend}
+          />
+        ))}
+      </AccessibleGrid>
+      
+      <AccessibleButton 
+        variant="outline" 
+        onClick={data.onViewMore}
+        fullWidth
+      >
+        View Details
+      </AccessibleButton>
+    </AccessibleCard>
+  );
+}
+```
+
+### **Migration Strategy (MANDATORY)**
+```typescript
+// ✅ STEP 1 - Replace hardcoded headings
+// Before:
+<h1 className="text-4xl font-bold text-gray-900">Title</h1>
+// After:
+<AccessibleHeading level="h1">Title</AccessibleHeading>
+
+// ✅ STEP 2 - Replace hardcoded text
+// Before:
+<p className="text-lg text-gray-600">Description</p>
+// After:
+<AccessibleText color="secondary">Description</AccessibleText>
+
+// ✅ STEP 3 - Replace hardcoded buttons
+// Before:
+<button className="px-4 py-2 bg-blue-500 text-white rounded">Click</button>
+// After:
+<AccessibleButton variant="primary">Click</AccessibleButton>
+
+// ✅ STEP 4 - Replace hardcoded layouts
+// Before:
+<div className="grid grid-cols-3 gap-6">...</div>
+// After:
+<AccessibleGrid cols={3} gap="md">...</AccessibleGrid>
+```
+
+### **Quality Assurance Rules (MANDATORY)**
+
+#### **Code Review Checklist:**
+- [ ] All headings use `AccessibleHeading`
+- [ ] All text uses `AccessibleText` or variants
+- [ ] All buttons use `AccessibleButton` or variants
+- [ ] All cards use `AccessibleCard`
+- [ ] All grids use `AccessibleGrid`
+- [ ] No hardcoded `text-*`, `font-*`, `p-*` classes
+- [ ] No hardcoded color classes for text
+- [ ] Component works in all 3 accessibility modes
+
+#### **Testing Requirements:**
+```typescript
+// ✅ REQUIRED - Test all accessibility modes
+describe("MyComponent Accessibility", () => {
+  it("renders correctly in elder mode", () => {
+    // Test with elder accessibility mode
+  });
+  
+  it("renders correctly in youth mode", () => {
+    // Test with youth accessibility mode
+  });
+  
+  it("has proper touch targets", () => {
+    // Verify minimum touch target sizes
+  });
+  
+  it("has proper color contrast", () => {
+    // Test high contrast in elder mode
+  });
+});
+```
+
+### **Performance Considerations**
+```typescript
+// ✅ GOOD - Tree-shake by importing from core
+import { AccessibleHeading } from "../../core";
+
+// ✅ ACCEPTABLE - Import multiple components
+import { 
+  AccessibleHeading, 
+  AccessibleText, 
+  AccessibleButton 
+} from "../../core";
+
+// ❌ AVOID - Importing entire core (affects bundle size)
+import * as Core from "../../core";
+```
+
+### **Enforcement Rules (MANDATORY)**
+1. **NO hardcoded text styles** - All text must use core components
+2. **NO hardcoded button styles** - All buttons must use core components  
+3. **NO hardcoded spacing** - Use core component padding/margin props
+4. **NO hardcoded colors** - Use core component color props
+5. **NO accessibility bypassing** - Never override core component styles
+6. **MANDATORY code review** - All PRs must verify core component usage
+7. **AUTOMATED testing** - All components must pass accessibility tests
+
+**🚨 CRITICAL CORE DESIGN SYSTEM REMINDERS:**
+1. **ALWAYS USE CORE COMPONENTS** - Never hardcode styles
+2. **IMPORT FROM CORE** - Use `import from "../../core"`
+3. **TEST ALL MODES** - Verify standard, elder, youth modes
+4. **PROPER SEMANTICS** - Use correct heading levels and ARIA
+5. **CONSISTENT PATTERNS** - Follow established component patterns
+6. **PERFORMANCE AWARE** - Import only needed components
+7. **FUTURE PROOF** - Core components evolve, hardcoded styles don't
+
+This ensures consistent, accessible, and maintainable UI across the entire application.

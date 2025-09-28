@@ -16,9 +16,13 @@ import {
 } from "../../../../mockData/features/portfolio";
 
 import { useUIStore } from "../../../store/useUIStore";
+import { useAccessibility, useAccessibilityText } from "../../../hooks/useAccessibility";
 
 export function Portfolio() {
   const { viewMode } = useUIStore();
+  const { getClasses } = useAccessibility();
+  const headingClasses = useAccessibilityText("heading", "h1");
+  const subheadingClasses = useAccessibilityText("heading", "h2");
   const [showTimeline, setShowTimeline] = useState(false);
   const [showSimulation, setShowSimulation] = useState(false);
   const [showCategoryOverlay, setShowCategoryOverlay] = useState(false);
@@ -68,7 +72,7 @@ export function Portfolio() {
         {/* Portfolio Universe Header */}
         <FadeIn direction="down">
           <div className="text-center mb-16">
-            <div className="text-4xl md:text-6xl font-bold text-white mb-4">
+            <div className={`${headingClasses} font-bold text-white mb-4`}>
               <motion.span
                 className="inline-block mr-4"
                 animate={{ rotate: [0, 360] }}
@@ -78,7 +82,7 @@ export function Portfolio() {
               </motion.span>
               <SplitText className="inline">Your Wealth Universe</SplitText>
             </div>
-            <p className="text-lg text-white/80 max-w-2xl mx-auto mb-8">
+            <p className={`${getClasses({ fontSize: "text" })} text-white/80 max-w-2xl mx-auto mb-8`}>
               {viewMode === "play"
                 ? "Navigate your financial solar system — each planet represents your asset categories orbiting around your portfolio sun!"
                 : "Clear overview of your portfolio performance with exact numbers and plain summaries."}
@@ -90,7 +94,7 @@ export function Portfolio() {
               whileHover={{ scale: 1.02 }}
             >
               <div className="text-center">
-                <div className="text-4xl font-bold text-white">
+                <div className={`${getClasses({ fontSize: "heading", headingLevel: "h2" })} font-bold text-white`}>
                   {formatCurrency(totalValue)}
                 </div>
                 <div className="text-white/70 text-sm">Total Portfolio</div>
@@ -148,7 +152,7 @@ export function Portfolio() {
               {/* Clean Table View */}
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 overflow-hidden">
                 <div className="px-6 py-4 border-b border-white/20">
-                  <h3 className="text-xl font-bold text-white">
+                  <h3 className={`${subheadingClasses} font-bold text-white`}>
                     Portfolio Assets
                   </h3>
                   <p className="text-white/70 text-sm">

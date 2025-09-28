@@ -13,7 +13,7 @@ import {
 import { useUIStore } from "../../../store/useUIStore";
 
 export function MoneyTimeMachine() {
-  const { viewMode, accessibilityMode } = useUIStore();
+  const { viewMode } = useUIStore();
   const [activeSection, setActiveSection] = useState<
     "galaxy" | "river" | "historian" | "capsule"
   >("galaxy");

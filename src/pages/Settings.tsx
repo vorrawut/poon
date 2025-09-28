@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { FadeIn, SplitText } from "../components/ui";
 import { SmartHighlights, UniverseBackground } from "../components/widgets";
 import { useUIStore } from "../store/useUIStore";
-import { getAccessibilityClasses, getAccessibilityColors } from "../libs/accessibility";
+import { getAccessibilityClasses } from "../libs/accessibility";
 
 // Settings Highlights
 const settingsHighlights = [

@@ -19,3 +19,7 @@ export { Input } from "./Input";
 export { Select } from "./Select";
 export { Dialog } from "./Dialog";
 export { Toast } from "./Toast";
+
+// Core Design System Components (Re-exported for convenience)
+// Note: Import directly from "../../core" for better tree-shaking
+export * from "../../core/components";

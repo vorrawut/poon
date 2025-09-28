@@ -7,7 +7,6 @@ import {
   getAccessibilitySpacing,
   getAccessibilityButtonSize,
   getAccessibilityAnimations,
-  type AccessibilityMode,
 } from "../libs/accessibility";
 
 /**
@@ -122,7 +121,7 @@ export function useAccessibilityMotion() {
   return {
     transition: {
       duration: animations.duration,
-      ease: animations.easing,
+      ease: animations.easing as any, // Type assertion for Framer Motion compatibility
     },
     // Disable animations for elder mode if reduce motion is preferred
     animate: animations.reduceMotion ? false : undefined,
