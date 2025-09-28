@@ -27,6 +27,10 @@ export function Future() {
     setMissions(initialMissions);
   }, []);
 
+  const handleMissionClick = (mission: Mission) => {
+    setSelectedMission(mission);
+  };
+
   const handleMissionUpdate = (updatedMission: Mission) => {
     setMissions((prev) =>
       prev.map((m) => (m.id === updatedMission.id ? updatedMission : m)),
@@ -46,10 +50,10 @@ export function Future() {
       {/* Main Content */}
       <div className="relative z-10 container mx-auto px-4 py-8">
         {/* Header */}
-        <FadeIn direction="down" className="text-center mb-12">
-          <div className="flex items-center justify-center gap-4 mb-6">
+        <FadeIn direction="down" className="text-center mb-8">
+          <div className="flex items-center justify-center gap-2 md:gap-4 mb-4">
             <motion.div
-              className="text-6xl"
+              className="text-4xl md:text-6xl"
               animate={{
                 rotate: [0, 10, -10, 0],
                 scale: [1, 1.1, 1],
@@ -62,11 +66,11 @@ export function Future() {
             >
               🚀
             </motion.div>
-            <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent">
               Future
             </h1>
             <motion.div
-              className="text-6xl"
+              className="text-4xl md:text-6xl"
               animate={{
                 rotate: [0, -10, 10, 0],
                 scale: [1, 1.1, 1],
@@ -83,7 +87,7 @@ export function Future() {
           </div>
 
           <p
-            className={`text-xl md:text-2xl mb-8 max-w-4xl mx-auto ${
+            className={`text-lg md:text-xl lg:text-2xl mb-6 max-w-4xl mx-auto px-4 ${
               viewMode === "play" ? "text-white/80" : "text-gray-600"
             }`}
           >
@@ -96,7 +100,7 @@ export function Future() {
         </FadeIn>
 
         {/* Controls */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 mb-8 px-4">
           <DualLensToggle
             viewMode={viewMode}
             onToggle={setViewMode}
@@ -134,7 +138,12 @@ export function Future() {
               exit={{ opacity: 0, x: 100 }}
               transition={{ duration: 0.3 }}
             >
-              <FutureMissionBoard />
+              <FutureMissionBoard 
+                missions={missions}
+                onMissionClick={handleMissionClick}
+                viewMode={viewMode}
+                accessibilityMode={accessibilityMode}
+              />
             </motion.div>
           )}
         </AnimatePresence>

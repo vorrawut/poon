@@ -1,24 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { mockFutureMissions } from "../../../mockData/features/widgets";
 import { Plus, Rocket, Target, Calendar, Map } from "lucide-react";
 import type { Mission } from "../../../mockData/features/future";
 
 interface FutureMissionBoardProps {
+  missions?: Mission[];
+  onMissionClick?: (mission: Mission) => void;
+  viewMode?: "play" | "clarity";
+  accessibilityMode?: "elder" | "youth" | "standard";
   className?: string;
 }
 
 export function FutureMissionBoard({
+  missions = [],
+  onMissionClick,
+  viewMode: _viewMode = "play",
+  accessibilityMode: _accessibilityMode = "standard",
   className = "",
 }: FutureMissionBoardProps) {
-  const [viewMode, setViewMode] = useState<"board" | "starmap">("board");
+  const [boardViewMode, setBoardViewMode] = useState<"board" | "starmap">("board");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [missions, setMissions] = useState<Mission[]>([]);
-
-  // Load missions data from centralized mock data
-  useEffect(() => {
-    setMissions(mockFutureMissions);
-  }, []);
 
   const getProgressPercentage = (mission: Mission) => {
     return Math.min((mission.currentAmount / mission.targetAmount) * 100, 100);
@@ -55,9 +56,9 @@ export function FutureMissionBoard({
           {/* View Mode Toggle */}
           <div className="flex bg-slate-800/50 rounded-lg p-1">
             <button
-              onClick={() => setViewMode("board")}
+              onClick={() => setBoardViewMode("board")}
               className={`px-4 py-2 rounded-md transition-all ${
-                viewMode === "board"
+                boardViewMode === "board"
                   ? "bg-purple-500 text-white"
                   : "text-slate-400 hover:text-white"
               }`}
@@ -65,9 +66,9 @@ export function FutureMissionBoard({
               <Target className="w-4 h-4" />
             </button>
             <button
-              onClick={() => setViewMode("starmap")}
+              onClick={() => setBoardViewMode("starmap")}
               className={`px-4 py-2 rounded-md transition-all ${
-                viewMode === "starmap"
+                boardViewMode === "starmap"
                   ? "bg-purple-500 text-white"
                   : "text-slate-400 hover:text-white"
               }`}
@@ -112,7 +113,8 @@ export function FutureMissionBoard({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 border border-slate-700/50 hover:border-purple-500/50 transition-all group"
+              onClick={() => onMissionClick?.(mission)}
+              className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 border border-slate-700/50 hover:border-purple-500/50 transition-all group cursor-pointer"
             >
               {/* Mission Header */}
               <div className="flex items-start justify-between mb-4">
