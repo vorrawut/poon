@@ -5,6 +5,9 @@ interface UIState {
   // Theme
   theme: "light" | "dark" | "system";
 
+  // View Mode (Play/Clarity)
+  viewMode: "play" | "clarity";
+
   // Sidebar
   sidebarOpen: boolean;
   sidebarCollapsed: boolean;
@@ -40,6 +43,8 @@ interface UIState {
 
   // Actions
   setTheme: (theme: "light" | "dark" | "system") => void;
+  setViewMode: (viewMode: "play" | "clarity") => void;
+  toggleViewMode: () => void;
   setSidebarOpen: (open: boolean) => void;
   setSidebarCollapsed: (collapsed: boolean) => void;
   toggleSidebar: () => void;
@@ -58,6 +63,7 @@ export const useUIStore = create<UIState>()(
   persist(
     (set, get) => ({
       theme: "system",
+      viewMode: "play",
       sidebarOpen: true,
       sidebarCollapsed: false,
       modals: {
@@ -74,6 +80,13 @@ export const useUIStore = create<UIState>()(
       isMobile: false,
 
       setTheme: (theme) => set({ theme }),
+
+      setViewMode: (viewMode) => set({ viewMode }),
+
+      toggleViewMode: () => {
+        const { viewMode } = get();
+        set({ viewMode: viewMode === "play" ? "clarity" : "play" });
+      },
 
       setSidebarOpen: (sidebarOpen) => set({ sidebarOpen }),
 

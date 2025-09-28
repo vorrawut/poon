@@ -5,7 +5,6 @@ import {
   FutureMissionBoard,
   MissionDetailView,
   AICoPilot,
-  DualLensToggle,
   UniverseBackground,
   AccessibilityModeToggle,
 } from "../../../components/widgets";
@@ -14,8 +13,10 @@ import {
   type Mission,
 } from "../../../../mockData/features/future";
 
+import { useUIStore } from "../../../store/useUIStore";
+
 export function Future() {
-  const [viewMode, setViewMode] = useState<"play" | "clarity">("play");
+  const { viewMode } = useUIStore();
   const [accessibilityMode, setAccessibilityMode] = useState<
     "elder" | "youth" | "standard"
   >("standard");
@@ -51,13 +52,6 @@ export function Future() {
       }`}
     >
       {viewMode === "play" && <UniverseBackground starCount={60} />}
-
-      {/* Dual Lens Toggle */}
-      <DualLensToggle
-        viewMode={viewMode}
-        onToggle={setViewMode}
-        className="fixed top-4 right-4 z-50"
-      />
 
       {/* Accessibility Mode Toggle */}
       <AccessibilityModeToggle

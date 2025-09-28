@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
 import { FadeIn, SplitText } from "../../../components/ui";
 import {
-  DualLensToggle,
   UniverseBackground,
   SmartHighlights,
   PerformanceChart,
@@ -16,6 +15,7 @@ import {
   portfolioAssets,
   mockPortfolioAchievements,
 } from "../../../../mockData/features/portfolio";
+import { useUIStore } from "../../../store/useUIStore";
 
 const aiInsights = [
   {
@@ -55,7 +55,7 @@ const aiInsights = [
 export function PortfolioDetail() {
   const { assetId } = useParams();
   const navigate = useNavigate();
-  const [viewMode, setViewMode] = useState<"play" | "clarity">("play");
+  const { viewMode } = useUIStore();
   const [timeRange, setTimeRange] = useState<"1D" | "1W" | "1M" | "1Y" | "Max">(
     "1Y",
   );
@@ -86,7 +86,6 @@ export function PortfolioDetail() {
       }`}
     >
       {viewMode === "play" && <UniverseBackground starCount={30} />}
-      <DualLensToggle viewMode={viewMode} onToggle={setViewMode} />
 
       {/* Back Button */}
       <motion.button

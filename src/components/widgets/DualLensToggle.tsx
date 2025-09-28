@@ -4,13 +4,42 @@ interface DualLensToggleProps {
   viewMode: "play" | "clarity";
   onToggle: (mode: "play" | "clarity") => void;
   className?: string;
+  sidebar?: boolean;
 }
 
 export function DualLensToggle({
   viewMode,
   onToggle,
   className = "",
+  sidebar = false,
 }: DualLensToggleProps) {
+  if (sidebar) {
+    return (
+      <div className={`flex rounded-lg bg-gray-100 p-1 ${className}`}>
+        <button
+          onClick={() => onToggle("play")}
+          className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-all ${
+            viewMode === "play"
+              ? "bg-white text-gray-900 shadow-sm"
+              : "text-gray-600 hover:text-gray-900"
+          }`}
+        >
+          🎮 Play
+        </button>
+        <button
+          onClick={() => onToggle("clarity")}
+          className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-all ${
+            viewMode === "clarity"
+              ? "bg-white text-gray-900 shadow-sm"
+              : "text-gray-600 hover:text-gray-900"
+          }`}
+        >
+          📊 Clarity
+        </button>
+      </div>
+    );
+  }
+
   return (
     <motion.div
       className={`fixed top-25 ${typeof onToggle === "boolean" && onToggle ? "left-65" : "left-22"} sm:top-25 sm:${typeof onToggle === "boolean" && onToggle ? "left-65" : "left-2"} lg:top-25 lg:left-65 z-40 ${className}`}

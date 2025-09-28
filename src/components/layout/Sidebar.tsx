@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { clsx } from "clsx";
 import { useUIStore } from "../../store/useUIStore";
+import { DualLensToggle } from "../widgets";
 import {
   HomeIcon,
   BanknotesIcon,
@@ -35,6 +36,8 @@ export function Sidebar() {
     isMobile,
     setSidebarOpen,
     setSidebarCollapsed,
+    viewMode,
+    toggleViewMode,
   } = useUIStore();
 
   const isVisible = isMobile ? sidebarOpen : true;
@@ -121,6 +124,36 @@ export function Sidebar() {
           </NavLink>
         ))}
       </nav>
+
+      {/* View Mode Toggle */}
+      {!isCollapsed && (
+        <div className="px-4 py-3 border-t border-gray-200">
+          <div className="mb-2">
+            <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+              View Mode
+            </span>
+          </div>
+          <DualLensToggle
+            viewMode={viewMode}
+            onToggle={toggleViewMode}
+            className="w-full"
+            sidebar={true}
+          />
+        </div>
+      )}
+
+      {/* Collapsed View Mode Toggle */}
+      {isCollapsed && (
+        <div className="px-2 py-3 border-t border-gray-200 flex justify-center">
+          <button
+            onClick={toggleViewMode}
+            className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+            title={`Switch to ${viewMode === "play" ? "Clarity" : "Play"} Mode`}
+          >
+            {viewMode === "play" ? "🎮" : "📊"}
+          </button>
+        </div>
+      )}
 
       {/* User section */}
       <div className="p-4 border-t border-gray-200">

@@ -10,7 +10,6 @@ import {
   SpendingGamification,
   AISpendingInsights,
   CategoryExplorer,
-  DualLensToggle,
   UniverseBackground,
   AccessibilityModeToggle,
 } from "../../../components/widgets";
@@ -37,8 +36,10 @@ const mockSpendingCategories = generateMockSpendingData();
 // Using imported generateMockTransactionData from centralized location
 const mockSpendingData = generateMockTransactionData();
 
+import { useUIStore } from "../../../store/useUIStore";
+
 export function Spending() {
-  const [viewMode, setViewMode] = useState<"play" | "clarity">("play");
+  const { viewMode } = useUIStore();
   const [accessibilityMode, setAccessibilityMode] = useState<
     "elder" | "youth" | "standard"
   >("standard");
@@ -99,7 +100,6 @@ export function Spending() {
       }`}
     >
       {viewMode === "play" && <UniverseBackground starCount={60} />}
-      <DualLensToggle viewMode={viewMode} onToggle={setViewMode} />
 
       {/* Accessibility Mode Toggle */}
       <div className="fixed top-6 right-2 sm:top-6 sm:right-4 lg:top-6 lg:right-8 z-50">

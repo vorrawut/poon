@@ -5,7 +5,6 @@ import {
   WealthSolarSystem,
   SmartHighlights,
   WealthTimeline,
-  DualLensToggle,
   UniverseBackground,
   CategoryOverlay,
 } from "../../../components/widgets";
@@ -16,8 +15,10 @@ import {
   mockPortfolioCategoryData,
 } from "../../../../mockData/features/portfolio";
 
+import { useUIStore } from "../../../store/useUIStore";
+
 export function Portfolio() {
-  const [viewMode, setViewMode] = useState<"play" | "clarity">("play");
+  const { viewMode } = useUIStore();
   const [showTimeline, setShowTimeline] = useState(false);
   const [showSimulation, setShowSimulation] = useState(false);
   const [showCategoryOverlay, setShowCategoryOverlay] = useState(false);
@@ -41,7 +42,6 @@ export function Portfolio() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900 relative overflow-hidden">
       <UniverseBackground starCount={50} />
-      <DualLensToggle viewMode={viewMode} onToggle={setViewMode} />
 
       {/* Navigation Controls */}
       <motion.div

@@ -7,7 +7,6 @@ import {
   MonthlyReportCard,
   GamificationLayer,
   SmartHighlights,
-  DualLensToggle,
   UniverseBackground,
   SpendingWheel,
   MoneyJars,
@@ -28,8 +27,10 @@ import {
   mockUserProfile,
 } from "../../../../mockData/features/spending";
 
+import { useUIStore } from "../../../store/useUIStore";
+
 export function MoneyFlow() {
-  const [viewMode, setViewMode] = useState<"play" | "clarity">("play");
+  const { viewMode } = useUIStore();
   const [accessibilityMode, setAccessibilityMode] = useState<
     "elder" | "youth" | "standard"
   >("standard");
@@ -51,13 +52,6 @@ export function MoneyFlow() {
         mode={accessibilityMode}
         onModeChange={setAccessibilityMode}
         className="fixed top-4 left-4 z-50"
-      />
-
-      {/* Dual Lens Toggle */}
-      <DualLensToggle
-        viewMode={viewMode}
-        onToggle={setViewMode}
-        className={`fixed top-4 right-4 z-50 ${accessibilityMode !== "standard" ? "translate-y-[60px]" : ""}`}
       />
 
       {/* Header */}

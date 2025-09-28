@@ -6,9 +6,9 @@ import { EnhancedAccountsWidget } from "../../../features/accounts/components/En
 import { RecentTransactionsWidget } from "../../../features/transactions";
 import {
   SmartHighlights,
-  DualLensToggle,
   UniverseBackground,
 } from "../../../components/widgets";
+import { useUIStore } from "../../../store/useUIStore";
 
 // Accounts Smart Highlights
 const accountsHighlights = [
@@ -48,7 +48,7 @@ const accountsHighlights = [
 
 export function AccountsPage() {
   const [timeRange, setTimeRange] = useState<"7d" | "30d" | "90d">("30d");
-  const [viewMode, setViewMode] = useState<"play" | "clarity">("clarity");
+  const { viewMode } = useUIStore();
 
   const handleQuickAction = (action: string, data?: unknown) => {
     console.log("Quick action:", action, data);
@@ -95,7 +95,6 @@ export function AccountsPage() {
       }`}
     >
       {viewMode === "play" && <UniverseBackground starCount={40} />}
-      <DualLensToggle viewMode={viewMode} onToggle={setViewMode} />
 
       {/* Main Accounts Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 relative z-10">

@@ -6,14 +6,15 @@ import { EnhancedAccountsWidget } from "../../accounts/components/EnhancedAccoun
 import { RecentTransactionsWidget } from "../../transactions";
 import {
   SmartHighlights,
-  DualLensToggle,
   UniverseBackground,
 } from "../../../components/widgets";
 import { dashboardHighlights } from "../../../../mockData/features/dashboard";
 
+import { useUIStore } from "../../../store/useUIStore";
+
 export default function Dashboard() {
   const [timeRange, setTimeRange] = useState<"7d" | "30d" | "90d">("30d");
-  const [viewMode, setViewMode] = useState<"play" | "clarity">("clarity");
+  const { viewMode } = useUIStore();
 
   const handleQuickAction = (action: string, data?: unknown) => {
     console.log("Quick action:", action, data);
@@ -51,7 +52,6 @@ export default function Dashboard() {
       }`}
     >
       {viewMode === "play" && <UniverseBackground starCount={30} />}
-      <DualLensToggle viewMode={viewMode} onToggle={setViewMode} />
 
       {/* Main Dashboard Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 relative z-10">

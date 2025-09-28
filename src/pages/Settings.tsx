@@ -1,11 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FadeIn, SplitText } from "../components/ui";
-import {
-  SmartHighlights,
-  DualLensToggle,
-  UniverseBackground,
-} from "../components/widgets";
+import { SmartHighlights, UniverseBackground } from "../components/widgets";
+import { useUIStore } from "../store/useUIStore";
 
 // Settings Highlights
 const settingsHighlights = [
@@ -44,7 +41,7 @@ const settingsHighlights = [
 ];
 
 export function Settings() {
-  const [viewMode, setViewMode] = useState<"play" | "clarity">("clarity");
+  const { viewMode } = useUIStore();
   const [notifications, setNotifications] = useState({
     email: true,
     push: true,
@@ -90,7 +87,6 @@ export function Settings() {
       }`}
     >
       {viewMode === "play" && <UniverseBackground starCount={25} />}
-      <DualLensToggle viewMode={viewMode} onToggle={setViewMode} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 relative z-10">
         {/* Hero Header */}
