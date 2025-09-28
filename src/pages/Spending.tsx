@@ -6,6 +6,10 @@ import {
   SpendingTimelineHeatmap,
   PaymentMethodRadar,
   LifestyleEssentialsBreakdown,
+  RecurringPaymentsRadar,
+  SpendingGamification,
+  AISpendingInsights,
+  CategoryExplorer,
   DualLensToggle,
   UniverseBackground,
   AccessibilityModeToggle,
@@ -19,87 +23,74 @@ import {
   TrendingUp,
 } from "lucide-react";
 
-// Enhanced Mock Data for Ultimate Spending Experience
-const mockSpendingCategories = [
-  {
-    id: "food",
-    name: "Food & Dining",
-    amount: 12400,
-    budget: 15000,
-    color: "#FF6B6B",
-    icon: "🍽️",
-    trend: "up" as const,
-    trendPercent: 8,
-    transactions: 45,
-    frequency: 8,
-    healthStatus: "warning" as const,
-  },
-  {
-    id: "transport",
-    name: "Transportation",
-    amount: 6800,
-    budget: 8000,
-    color: "#4ECDC4",
-    icon: "🚗",
-    trend: "down" as const,
-    trendPercent: 12,
-    transactions: 28,
-    frequency: 6,
-    healthStatus: "healthy" as const,
-  },
-  {
-    id: "entertainment",
-    name: "Entertainment",
-    amount: 4200,
-    budget: 6000,
-    color: "#45B7D1",
-    icon: "🎬",
-    trend: "stable" as const,
-    trendPercent: 2,
-    transactions: 18,
-    frequency: 3,
-    healthStatus: "healthy" as const,
-  },
-  {
-    id: "shopping",
-    name: "Shopping",
-    amount: 8900,
-    budget: 7000,
-    color: "#F9CA24",
-    icon: "🛍️",
-    trend: "up" as const,
-    trendPercent: 27,
-    transactions: 22,
-    frequency: 4,
-    healthStatus: "critical" as const,
-  },
-  {
-    id: "utilities",
-    name: "Utilities",
-    amount: 3400,
-    budget: 4000,
-    color: "#6C5CE7",
-    icon: "⚡",
-    trend: "stable" as const,
-    trendPercent: 1,
-    transactions: 8,
-    frequency: 2,
-    healthStatus: "healthy" as const,
-  },
-  {
-    id: "healthcare",
-    name: "Healthcare",
-    amount: 1800,
-    budget: 3000,
-    color: "#A29BFE",
-    icon: "🏥",
-    trend: "down" as const,
-    trendPercent: 15,
-    transactions: 5,
-    frequency: 1,
-    healthStatus: "healthy" as const,
-  },
-];
+import {
+  SpendingCategory,
+  SpendingCategoryType,
+  getCategoryById,
+  getRecommendedBudgetPercentage,
+} from "../types/spending";
+
+// Enhanced Mock Data using Universal Category System
+const generateMockSpendingData = () => {
+  const monthlyIncome = 50000;
+
+  // Select representative categories from each type
+  const selectedCategories = [
+    SpendingCategory.HOUSING,
+    SpendingCategory.GROCERIES,
+    SpendingCategory.TRANSPORTATION,
+    SpendingCategory.FOOD_DRINK,
+    SpendingCategory.SHOPPING,
+    SpendingCategory.ENTERTAINMENT,
+    SpendingCategory.HEALTH_FITNESS,
+    SpendingCategory.SUBSCRIPTIONS,
+    SpendingCategory.BILLS_SERVICES,
+    SpendingCategory.SAVINGS_INVESTMENTS,
+  ];
+
+  return selectedCategories.map((categoryId) => {
+    const categoryConfig = getCategoryById(categoryId);
+    const recommendedPercentage = getRecommendedBudgetPercentage(categoryId);
+    const budgetAmount = Math.round(
+      (monthlyIncome * recommendedPercentage) / 100,
+    );
+
+    // Generate realistic spending amounts with some variation
+    const spentAmount = Math.round(budgetAmount * (0.6 + Math.random() * 0.8));
+    const healthStatus =
+      spentAmount > budgetAmount * 1.1
+        ? ("critical" as const)
+        : spentAmount > budgetAmount * 0.9
+          ? ("warning" as const)
+          : ("healthy" as const);
+
+    const trend =
+      Math.random() > 0.5
+        ? ("up" as const)
+        : Math.random() > 0.5
+          ? ("down" as const)
+          : ("stable" as const);
+
+    return {
+      id: categoryId,
+      name: categoryConfig.name,
+      amount: spentAmount,
+      budget: budgetAmount,
+      color: categoryConfig.color,
+      icon: categoryConfig.icon,
+      trend,
+      trendPercent: Math.round(Math.random() * 30),
+      transactions: Math.round(Math.random() * 50) + 5,
+      frequency: Math.round(Math.random() * 10) + 1,
+      healthStatus,
+      type: categoryConfig.type,
+      description: categoryConfig.description,
+      subcategories: categoryConfig.subcategories,
+    };
+  });
+};
+
+const mockSpendingCategories = generateMockSpendingData();
 
 const mockPaymentMethods = [
   {
@@ -156,83 +147,231 @@ const mockPaymentMethods = [
   },
 ];
 
-const mockSpendingData = [
-  // Essential items
-  {
-    id: "1",
-    name: "Rent",
-    amount: 15000,
-    category: "Housing",
-    type: "essential" as const,
-    date: new Date(),
-    merchant: "Property Management",
-  },
-  {
-    id: "2",
-    name: "Groceries",
-    amount: 4500,
-    category: "Food",
-    type: "essential" as const,
-    date: new Date(),
-    merchant: "Supermarket",
-  },
-  {
-    id: "3",
-    name: "Utilities",
-    amount: 2800,
-    category: "Utilities",
-    type: "essential" as const,
-    date: new Date(),
-    merchant: "Electric Company",
-  },
-  {
-    id: "4",
-    name: "Insurance",
-    amount: 1200,
-    category: "Insurance",
-    type: "essential" as const,
-    date: new Date(),
-    merchant: "Insurance Co",
-  },
+// Generate comprehensive mock spending data using the universal category system
+const generateMockTransactionData = () => {
+  let transactionId = 1;
 
-  // Lifestyle items
-  {
-    id: "5",
-    name: "Dining Out",
-    amount: 3200,
-    category: "Food",
-    type: "lifestyle" as const,
-    date: new Date(),
-    merchant: "Restaurants",
-  },
-  {
-    id: "6",
-    name: "Entertainment",
-    amount: 1800,
-    category: "Entertainment",
-    type: "lifestyle" as const,
-    date: new Date(),
-    merchant: "Cinema",
-  },
-  {
-    id: "7",
-    name: "Shopping",
-    amount: 2500,
-    category: "Shopping",
-    type: "lifestyle" as const,
-    date: new Date(),
-    merchant: "Mall",
-  },
-  {
-    id: "8",
-    name: "Travel",
-    amount: 4000,
-    category: "Travel",
-    type: "lifestyle" as const,
-    date: new Date(),
-    merchant: "Airlines",
-  },
-];
+  // Essential spending
+  const essentialTransactions = [
+    {
+      name: "Monthly Rent",
+      category: SpendingCategory.HOUSING,
+      amount: 15000,
+      merchant: "Property Management",
+    },
+    {
+      name: "Electricity Bill",
+      category: SpendingCategory.HOUSING,
+      amount: 2800,
+      merchant: "MEA",
+    },
+    {
+      name: "Internet Bill",
+      category: SpendingCategory.HOUSING,
+      amount: 990,
+      merchant: "True Online",
+    },
+    {
+      name: "Weekly Groceries",
+      category: SpendingCategory.GROCERIES,
+      amount: 3500,
+      merchant: "Tesco Lotus",
+    },
+    {
+      name: "Fresh Market",
+      category: SpendingCategory.GROCERIES,
+      amount: 800,
+      merchant: "Local Market",
+    },
+    {
+      name: "Fuel",
+      category: SpendingCategory.TRANSPORTATION,
+      amount: 2200,
+      merchant: "PTT Station",
+    },
+    {
+      name: "BTS Card Top-up",
+      category: SpendingCategory.TRANSPORTATION,
+      amount: 500,
+      merchant: "BTS",
+    },
+    {
+      name: "Health Insurance",
+      category: SpendingCategory.BILLS_SERVICES,
+      amount: 1800,
+      merchant: "AIA Thailand",
+    },
+    {
+      name: "Mobile Plan",
+      category: SpendingCategory.BILLS_SERVICES,
+      amount: 599,
+      merchant: "AIS",
+    },
+  ];
+
+  // Lifestyle spending
+  const lifestyleTransactions = [
+    {
+      name: "Coffee Shop",
+      category: SpendingCategory.FOOD_DRINK,
+      amount: 180,
+      merchant: "Starbucks",
+    },
+    {
+      name: "Lunch",
+      category: SpendingCategory.FOOD_DRINK,
+      amount: 250,
+      merchant: "Food Court",
+    },
+    {
+      name: "Dinner Date",
+      category: SpendingCategory.FOOD_DRINK,
+      amount: 1200,
+      merchant: "Fine Dining",
+    },
+    {
+      name: "Food Delivery",
+      category: SpendingCategory.FOOD_DRINK,
+      amount: 320,
+      merchant: "Foodpanda",
+    },
+    {
+      name: "Clothing",
+      category: SpendingCategory.SHOPPING,
+      amount: 2500,
+      merchant: "Uniqlo",
+    },
+    {
+      name: "Electronics",
+      category: SpendingCategory.SHOPPING,
+      amount: 4500,
+      merchant: "Power Buy",
+    },
+    {
+      name: "Movie Tickets",
+      category: SpendingCategory.ENTERTAINMENT,
+      amount: 480,
+      merchant: "SF Cinema",
+    },
+    {
+      name: "Concert",
+      category: SpendingCategory.ENTERTAINMENT,
+      amount: 2800,
+      merchant: "Live Nation",
+    },
+    {
+      name: "Gym Membership",
+      category: SpendingCategory.HEALTH_FITNESS,
+      amount: 1200,
+      merchant: "Fitness First",
+    },
+    {
+      name: "Supplements",
+      category: SpendingCategory.HEALTH_FITNESS,
+      amount: 890,
+      merchant: "GNC",
+    },
+    {
+      name: "Weekend Trip",
+      category: SpendingCategory.TRAVEL,
+      amount: 3500,
+      merchant: "Agoda",
+    },
+  ];
+
+  // Obligations
+  const obligationTransactions = [
+    {
+      name: "Online Course",
+      category: SpendingCategory.EDUCATION,
+      amount: 1200,
+      merchant: "Udemy",
+    },
+    {
+      name: "Credit Card Payment",
+      category: SpendingCategory.DEBT_LOANS,
+      amount: 5000,
+      merchant: "Kasikorn Bank",
+    },
+    {
+      name: "Pet Food",
+      category: SpendingCategory.PETS,
+      amount: 800,
+      merchant: "Pet Lover",
+    },
+  ];
+
+  // Extras
+  const extraTransactions = [
+    {
+      name: "Birthday Gift",
+      category: SpendingCategory.GIFTS_DONATIONS,
+      amount: 1500,
+      merchant: "Gift Shop",
+    },
+    {
+      name: "Netflix",
+      category: SpendingCategory.SUBSCRIPTIONS,
+      amount: 419,
+      merchant: "Netflix",
+    },
+    {
+      name: "Spotify Premium",
+      category: SpendingCategory.SUBSCRIPTIONS,
+      amount: 149,
+      merchant: "Spotify",
+    },
+    {
+      name: "Wedding Gift",
+      category: SpendingCategory.EVENTS_CELEBRATIONS,
+      amount: 2000,
+      merchant: "Cash",
+    },
+  ];
+
+  // Financial Flow
+  const financialTransactions = [
+    {
+      name: "Emergency Fund",
+      category: SpendingCategory.SAVINGS_INVESTMENTS,
+      amount: 5000,
+      merchant: "Savings Account",
+    },
+    {
+      name: "Stock Investment",
+      category: SpendingCategory.SAVINGS_INVESTMENTS,
+      amount: 3000,
+      merchant: "SET Trade",
+    },
+  ];
+
+  // Combine all transactions
+  const allTransactions = [
+    ...essentialTransactions,
+    ...lifestyleTransactions,
+    ...obligationTransactions,
+    ...extraTransactions,
+    ...financialTransactions,
+  ];
+
+  // Convert to the expected format
+  return allTransactions.map((transaction) => {
+    const categoryConfig = getCategoryById(transaction.category);
+    const isEssential = categoryConfig.type === SpendingCategoryType.ESSENTIALS;
+
+    return {
+      id: (transactionId++).toString(),
+      name: transaction.name,
+      amount: transaction.amount,
+      category: categoryConfig.name,
+      type: isEssential ? ("essential" as const) : ("lifestyle" as const),
+      date: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000), // Random date within last 30 days
+      merchant: transaction.merchant,
+    };
+  });
+};
+
+const mockSpendingData = generateMockTransactionData();
 
 export function Spending() {
   const [viewMode, setViewMode] = useState<"play" | "clarity">("play");
@@ -240,9 +379,16 @@ export function Spending() {
     "elder" | "youth" | "standard"
   >("standard");
   const [activeSection, setActiveSection] = useState<
-    "galaxy" | "timeline" | "radar" | "balance"
+    | "galaxy"
+    | "timeline"
+    | "radar"
+    | "balance"
+    | "recurring"
+    | "gamification"
+    | "insights"
   >("galaxy");
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
+  const [showCategoryExplorer, setShowCategoryExplorer] = useState(false);
 
   // Calculate totals
   const totals = useMemo(() => {
@@ -272,6 +418,12 @@ export function Spending() {
 
   const handleCategoryClick = (category: any) => {
     setSelectedCategory(category);
+    setShowCategoryExplorer(true);
+  };
+
+  const handleBackFromExplorer = () => {
+    setShowCategoryExplorer(false);
+    setSelectedCategory(null);
   };
 
   return (
@@ -389,7 +541,7 @@ export function Spending() {
         {/* Navigation Tabs */}
         <FadeIn direction="up" delay={0.3} className="mb-8">
           <div className="flex justify-center">
-            <div className="flex overflow-x-auto scrollbar-hide gap-1 sm:gap-2 p-2 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 w-full max-w-4xl">
+            <div className="flex overflow-x-auto scrollbar-hide gap-1 sm:gap-2 p-2 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 w-full max-w-6xl">
               {[
                 {
                   id: "galaxy",
@@ -414,6 +566,24 @@ export function Spending() {
                   label: "Life Balance",
                   icon: <BarChart3 className="w-4 h-4" />,
                   desc: "Needs vs Wants",
+                },
+                {
+                  id: "recurring",
+                  label: "Recurring Radar",
+                  icon: <Sparkles className="w-4 h-4" />,
+                  desc: "Subscriptions",
+                },
+                {
+                  id: "gamification",
+                  label: "Achievements",
+                  icon: <TrendingUp className="w-4 h-4" />,
+                  desc: "Level Up",
+                },
+                {
+                  id: "insights",
+                  label: "AI Coach",
+                  icon: <Sparkles className="w-4 h-4" />,
+                  desc: "Smart Tips",
                 },
               ].map((tab) => (
                 <motion.button
@@ -512,6 +682,54 @@ export function Spending() {
               </FadeIn>
             </motion.div>
           )}
+
+          {activeSection === "recurring" && (
+            <motion.div
+              key="recurring"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+            >
+              <FadeIn direction="up" delay={0.4}>
+                <RecurringPaymentsRadar
+                  recurringPayments={[]}
+                  className="mb-8"
+                />
+              </FadeIn>
+            </motion.div>
+          )}
+
+          {activeSection === "gamification" && (
+            <motion.div
+              key="gamification"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+            >
+              <FadeIn direction="up" delay={0.4}>
+                <SpendingGamification className="mb-8" />
+              </FadeIn>
+            </motion.div>
+          )}
+
+          {activeSection === "insights" && (
+            <motion.div
+              key="insights"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+            >
+              <FadeIn direction="up" delay={0.4}>
+                <AISpendingInsights
+                  spendingData={mockSpendingData}
+                  className="mb-8"
+                />
+              </FadeIn>
+            </motion.div>
+          )}
         </AnimatePresence>
 
         {/* Inspirational Footer */}
@@ -553,6 +771,28 @@ export function Spending() {
           </div>
         </motion.div>
       </div>
+
+      {/* Category Explorer Overlay */}
+      <AnimatePresence>
+        {showCategoryExplorer && selectedCategory && (
+          <motion.div
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 overflow-y-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="min-h-screen p-4 sm:p-6 lg:p-8">
+              <div className="max-w-7xl mx-auto">
+                <CategoryExplorer
+                  category={selectedCategory}
+                  onBack={handleBackFromExplorer}
+                  className="bg-gradient-to-br from-gray-900/95 to-black/95 rounded-2xl p-6 sm:p-8"
+                />
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

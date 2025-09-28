@@ -6,8 +6,6 @@ import {
   AlertTriangle,
   Target,
   Sparkles,
-  Clock,
-  Calendar,
 } from "lucide-react";
 
 interface FinancialStory {
@@ -31,7 +29,7 @@ interface AIFinancialHistorianProps {
 
 export function AIFinancialHistorian({
   timelinePosition,
-  selectedRange,
+  selectedRange: _selectedRange,
   className = "",
 }: AIFinancialHistorianProps) {
   const [currentStory, setCurrentStory] = useState<FinancialStory | null>(null);

@@ -1,13 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Home,
-  Sparkles,
-  TrendingUp,
-  AlertTriangle,
-  Target,
-  Lightbulb,
-} from "lucide-react";
+import { Home, Sparkles, AlertTriangle, Target, Lightbulb } from "lucide-react";
 
 interface SpendingItem {
   id: string;

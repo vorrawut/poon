@@ -1,13 +1,6 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Calendar,
-  Clock,
-  TrendingUp,
-  Zap,
-  Rewind,
-  FastForward,
-} from "lucide-react";
+import { motion } from "framer-motion";
+import { Rewind, FastForward } from "lucide-react";
 
 interface TimeRange {
   id: string;
@@ -28,7 +21,7 @@ interface TimeMachineTimelineProps {
 
 export function TimeMachineTimeline({
   currentDate,
-  onDateChange,
+  onDateChange: _onDateChange,
   onRangeChange,
   selectedRange,
   timelinePosition,
@@ -282,7 +275,7 @@ export function TimeMachineTimeline({
           },
           { label: "Data Points", value: "1,247", icon: "📊" },
           { label: "Insights Found", value: "23", icon: "💡" },
-        ].map((stat, index) => (
+        ].map((stat, _index) => (
           <motion.div
             key={stat.label}
             className="bg-white/5 backdrop-blur-sm rounded-xl p-4 text-center border border-white/10"

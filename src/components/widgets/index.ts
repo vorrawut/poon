@@ -30,3 +30,7 @@ export { SpendingGalaxy } from "./SpendingGalaxy";
 export { SpendingTimelineHeatmap } from "./SpendingTimelineHeatmap";
 export { PaymentMethodRadar } from "./PaymentMethodRadar";
 export { LifestyleEssentialsBreakdown } from "./LifestyleEssentialsBreakdown";
+export { RecurringPaymentsRadar } from "./RecurringPaymentsRadar";
+export { SpendingGamification } from "./SpendingGamification";
+export { AISpendingInsights } from "./AISpendingInsights";
+export { CategoryExplorer } from "./CategoryExplorer";

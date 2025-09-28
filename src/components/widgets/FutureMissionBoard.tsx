@@ -1,16 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Plus,
-  Rocket,
-  Star,
-  Target,
-  Calendar,
-  DollarSign,
-  Zap,
-  Trophy,
-  Map,
-} from "lucide-react";
+import { Plus, Rocket, Star, Target, Calendar, Map } from "lucide-react";
 
 interface Mission {
   id: string;
@@ -63,7 +53,6 @@ export function FutureMissionBoard({
 }: FutureMissionBoardProps) {
   const [viewMode, setViewMode] = useState<"board" | "starmap">("board");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [showCreateModal, setShowCreateModal] = useState(false);
   const [missions, setMissions] = useState<Mission[]>([]);
 
   // Mock missions data

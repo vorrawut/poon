@@ -22,8 +22,8 @@ interface SpendingAnalyzerProps {
 
 export function SpendingAnalyzer({
   categories,
-  totalSpent,
-  totalBudget,
+  totalSpent: _totalSpent,
+  totalBudget: _totalBudget,
   className = "",
 }: SpendingAnalyzerProps) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);

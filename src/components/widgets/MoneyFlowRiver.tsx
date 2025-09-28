@@ -30,7 +30,7 @@ interface MoneyFlowRiverProps {
 
 export function MoneyFlowRiver({
   timelinePosition,
-  selectedRange,
+  selectedRange: _selectedRange,
   onStreamClick,
   className = "",
 }: MoneyFlowRiverProps) {

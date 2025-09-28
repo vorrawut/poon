@@ -16,7 +16,7 @@ interface SpendingTimelineHeatmapProps {
 }
 
 export function SpendingTimelineHeatmap({
-  spendingData,
+  spendingData: _spendingData,
   className = "",
 }: SpendingTimelineHeatmapProps) {
   const [timeRange, setTimeRange] = useState<"week" | "month" | "3months">(
@@ -117,20 +117,6 @@ export function SpendingTimelineHeatmap({
   }, [mockData]);
 
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const monthNames = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
 
   return (
     <div className={`${className}`}>

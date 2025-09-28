@@ -1,16 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Bot,
-  Zap,
-  TrendingUp,
-  AlertTriangle,
-  Target,
-  Star,
-  Rocket,
-  Clock,
-  X,
-} from "lucide-react";
+import { Bot, Zap, AlertTriangle, Target, Star, Rocket, X } from "lucide-react";
 
 interface Mission {
   id: string;

@@ -1,15 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft,
   Plus,
-  Minus,
   Calendar,
   DollarSign,
   Target,
   Zap,
-  TrendingUp,
-  Clock,
   Star,
   Trophy,
   Edit3,
@@ -95,22 +92,11 @@ export function MissionDetailView({
     return `฿${amount.toLocaleString()}`;
   };
 
-  const getProgressColor = (percentage: number) => {
-    if (percentage >= 100) return "#10B981";
-    if (percentage >= 75) return "#F59E0B";
-    if (percentage >= 50) return "#3B82F6";
-    return "#EF4444";
-  };
-
   const getCurrentMilestone = () => {
     return (
       mission.milestones.find((m) => progress >= m.percentage && !m.achieved) ||
       mission.milestones.find((m) => !m.achieved)
     );
-  };
-
-  const getNextMilestone = () => {
-    return mission.milestones.find((m) => progress < m.percentage);
   };
 
   const handleAddFunds = () => {
