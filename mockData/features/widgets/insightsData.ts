@@ -2,11 +2,11 @@
 
 interface SpendingInsight {
   id: string;
-  type: "story" | "trend" | "prediction" | "recommendation" | "alert";
+  type: "story" | "trend" | "prediction" | "recommendation" | "alert" | "tip" | "comparison";
   title: string;
   message: string;
-  category: string;
-  severity: "info" | "warning" | "success" | "error";
+  category?: string;
+  severity: "info" | "warning" | "success" | "error" | "critical" | "positive";
   confidence: number;
   actionable: boolean;
   action?: string;

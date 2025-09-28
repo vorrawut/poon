@@ -5,7 +5,13 @@ export interface QuickAction {
   icon: React.ComponentType<{ className?: string }>;
   color: string;
   shortcut?: string;
-  category: "transaction" | "account" | "analysis" | "import" | "settings";
+  category:
+    | "transaction"
+    | "account"
+    | "analysis"
+    | "import"
+    | "settings"
+    | "system";
   requiresAuth?: boolean;
   isPremium?: boolean;
   onClick: () => void | Promise<void>;
@@ -22,8 +28,7 @@ export interface QuickActionsConfig {
 
 export interface QuickActionCategory {
   id: string;
-  label: string;
+  name: string;
   description?: string;
   color: string;
-  actions: QuickAction[];
 }

@@ -1,5 +1,5 @@
 import { AnimatedList, FadeIn } from "../../../components/ui";
-import { type QuickActionsConfig } from "../types";
+import { type QuickActionsConfig, type QuickAction } from "../types";
 import { quickActionsService } from "../services/quickActionsService";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { CommandLineIcon } from "@heroicons/react/24/outline";
@@ -28,7 +28,9 @@ export function QuickActionsWidget({
   description = "Common tasks and shortcuts",
 }: QuickActionsWidgetProps) {
   const finalConfig = { ...defaultConfig, ...config };
-  const actions = quickActionsService.getActions(category);
+  const actions = category
+    ? quickActionsService.getActionsByCategory(category)
+    : quickActionsService.getAllActions();
   const displayActions = finalConfig.maxActions
     ? actions.slice(0, finalConfig.maxActions)
     : actions;
@@ -73,7 +75,7 @@ export function QuickActionsWidget({
               stagger={0.05}
               className="space-y-3"
             >
-              {displayActions.map((action) => (
+              {displayActions.map((action: QuickAction) => (
                 <button
                   key={action.id}
                   onClick={action.onClick}
@@ -115,7 +117,7 @@ export function QuickActionsWidget({
               stagger={0.1}
               className={`grid ${gridColumns} gap-4`}
             >
-              {displayActions.map((action) => (
+              {displayActions.map((action: QuickAction) => (
                 <button
                   key={action.id}
                   onClick={action.onClick}

@@ -12,6 +12,8 @@ const pageTitle: Record<string, string> = {
   "/money-flow": "Money Flow",
   "/spending": "Spending",
   "/imports": "Import Data",
+  "/time-machine": "Time Machine",
+  "/future": "Future",
   "/settings": "Settings",
 };
 

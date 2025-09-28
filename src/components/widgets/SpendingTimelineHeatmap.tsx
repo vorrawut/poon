@@ -1,14 +1,12 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Clock, TrendingUp, Filter } from "lucide-react";
+import {
+  generateMockTimelineData,
+  type TimelineSpendingData,
+} from "../../../mockData/features/widgets";
 
-interface SpendingData {
-  date: string;
-  amount: number;
-  category: string;
-  dayOfWeek: number; // 0 = Sunday, 6 = Saturday
-  hour: number; // 0-23
-}
+type SpendingData = TimelineSpendingData;
 
 interface SpendingTimelineHeatmapProps {
   spendingData: SpendingData[];
@@ -19,7 +17,7 @@ export function SpendingTimelineHeatmap({
   spendingData: _spendingData,
   className = "",
 }: SpendingTimelineHeatmapProps) {
-  const [timeRange, setTimeRange] = useState<"week" | "month" | "3months">(
+  const [timeRange, setTimeRange] = useState<"week" | "month" | "quarter">(
     "month",
   );
   const [viewMode, setViewMode] = useState<"daily" | "hourly">("daily");
@@ -30,34 +28,7 @@ export function SpendingTimelineHeatmap({
 
   // Generate mock data for demonstration
   const mockData = useMemo(() => {
-    const data: SpendingData[] = [];
-    const now = new Date();
-    const daysBack = timeRange === "week" ? 7 : timeRange === "month" ? 30 : 90;
-
-    for (let i = 0; i < daysBack; i++) {
-      const date = new Date(now);
-      date.setDate(date.getDate() - i);
-
-      // Generate realistic spending patterns
-      const dayOfWeek = date.getDay();
-      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-      const isFriday = dayOfWeek === 5;
-
-      // Weekend and Friday spending tends to be higher
-      const baseAmount = isWeekend ? 800 : isFriday ? 1200 : 400;
-      const randomVariation = Math.random() * 600;
-      const amount = baseAmount + randomVariation;
-
-      data.push({
-        date: date.toISOString().split("T")[0],
-        amount: Math.round(amount),
-        category: "mixed",
-        dayOfWeek,
-        hour: Math.floor(Math.random() * 24),
-      });
-    }
-
-    return data.reverse();
+    return generateMockTimelineData(timeRange);
   }, [timeRange]);
 
   // Calculate intensity for heatmap colors
@@ -134,7 +105,7 @@ export function SpendingTimelineHeatmap({
         <div className="flex flex-wrap gap-2">
           {/* Time Range Selector */}
           <div className="flex bg-white/10 rounded-lg p-1">
-            {(["week", "month", "3months"] as const).map((range) => (
+            {(["week", "month", "quarter"] as const).map((range) => (
               <motion.button
                 key={range}
                 onClick={() => setTimeRange(range)}
@@ -146,7 +117,7 @@ export function SpendingTimelineHeatmap({
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {range === "3months"
+                {range === "quarter"
                   ? "3 Months"
                   : range.charAt(0).toUpperCase() + range.slice(1)}
               </motion.button>

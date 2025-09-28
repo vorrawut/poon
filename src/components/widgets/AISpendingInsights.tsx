@@ -13,22 +13,7 @@ import {
   MessageCircle,
   BarChart3,
 } from "lucide-react";
-
-interface SpendingInsight {
-  id: string;
-  type: "story" | "trend" | "alert" | "tip" | "prediction" | "comparison";
-  title: string;
-  message: string;
-  category?: string;
-  severity: "info" | "warning" | "critical" | "positive";
-  confidence: number; // 0-100
-  actionable: boolean;
-  action?: string;
-  impact?: string;
-  icon: string;
-  color: string;
-  timestamp: Date;
-}
+import { mockSpendingInsights } from "../../../mockData/features/widgets";
 
 interface AISpendingInsightsProps {
   spendingData: any[];
@@ -43,104 +28,6 @@ export function AISpendingInsights({
     "all" | "stories" | "alerts" | "tips"
   >("all");
   const [isGenerating, setIsGenerating] = useState(false);
-
-  // Mock AI-generated insights
-  const mockInsights: SpendingInsight[] = [
-    {
-      id: "story-1",
-      type: "story",
-      title: "Your Coffee Story This Month",
-      message:
-        "You've spent ฿2,340 on coffee this month across 18 visits. That's equivalent to a round-trip flight to Chiang Mai! Your favorite spot is Starbucks (12 visits), followed by local cafes. You tend to spend more on weekends (฿180 avg) vs weekdays (฿120 avg).",
-      category: "Food & Drink",
-      severity: "info",
-      confidence: 95,
-      actionable: true,
-      action: "Try brewing coffee at home 2 days a week",
-      impact: "Could save ฿960/month (฿11,520/year)",
-      icon: "☕",
-      color: "#8B4513",
-      timestamp: new Date(),
-    },
-    {
-      id: "trend-1",
-      type: "trend",
-      title: "Shopping Surge Alert",
-      message:
-        "Your shopping spending increased 47% this month compared to last month. The biggest jump was in electronics (฿4,500) and clothing (฿2,800). This coincides with the mid-year sales season.",
-      category: "Shopping",
-      severity: "warning",
-      confidence: 88,
-      actionable: true,
-      action: "Set a shopping budget for next month",
-      impact: "Prevent overspending on impulse purchases",
-      icon: "🛍️",
-      color: "#EC4899",
-      timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
-    },
-    {
-      id: "alert-1",
-      type: "alert",
-      title: "Budget Breach: Entertainment",
-      message:
-        "You've exceeded your entertainment budget by 23% (฿1,380). Concert tickets and movie outings were the main contributors. You still have 8 days left in the month.",
-      category: "Entertainment",
-      severity: "critical",
-      confidence: 100,
-      actionable: true,
-      action: "Consider free entertainment options",
-      impact: "Stay within budget for remaining days",
-      icon: "🎬",
-      color: "#EF4444",
-      timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000),
-    },
-    {
-      id: "tip-1",
-      type: "tip",
-      title: "Transport Optimization",
-      message:
-        "You could save ฿800/month by using BTS instead of Grab for your regular commute. Your most frequent route (home to office) costs ฿120 via Grab vs ฿42 via BTS.",
-      category: "Transportation",
-      severity: "positive",
-      confidence: 92,
-      actionable: true,
-      action: "Use BTS for daily commute",
-      impact: "Save ฿9,600 annually",
-      icon: "🚇",
-      color: "#10B981",
-      timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000),
-    },
-    {
-      id: "prediction-1",
-      type: "prediction",
-      title: "Monthly Spending Forecast",
-      message:
-        "Based on your current spending pattern, you're projected to spend ฿48,200 this month - ฿1,800 over your ฿46,400 budget. The overage is mainly from dining out and shopping.",
-      severity: "warning",
-      confidence: 85,
-      actionable: true,
-      action: "Reduce dining out by 3 meals",
-      impact: "Stay within monthly budget",
-      icon: "🔮",
-      color: "#8B5CF6",
-      timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000),
-    },
-    {
-      id: "comparison-1",
-      type: "comparison",
-      title: "Peer Comparison Insight",
-      message:
-        "Compared to similar income earners in Bangkok, you spend 15% more on food delivery but 25% less on transportation. Your grocery spending is right on average.",
-      severity: "info",
-      confidence: 78,
-      actionable: true,
-      action: "Cook more meals at home",
-      impact: "Align with peer spending patterns",
-      icon: "👥",
-      color: "#06B6D4",
-      timestamp: new Date(Date.now() - 12 * 60 * 60 * 1000),
-    },
-  ];
 
   const getInsightIcon = (type: string) => {
     switch (type) {
@@ -174,7 +61,7 @@ export function AISpendingInsights({
     }
   };
 
-  const filteredInsights = mockInsights.filter((insight) => {
+  const filteredInsights = mockSpendingInsights.filter((insight) => {
     if (insightType === "all") return true;
     if (insightType === "stories") return insight.type === "story";
     if (insightType === "alerts")
@@ -354,27 +241,28 @@ export function AISpendingInsights({
         {[
           {
             label: "Total Insights",
-            value: mockInsights.length,
+            value: mockSpendingInsights.length,
             icon: "🧠",
             color: "#8B5CF6",
           },
           {
             label: "Action Items",
-            value: mockInsights.filter((i) => i.actionable).length,
+            value: mockSpendingInsights.filter((i) => i.actionable).length,
             icon: "🎯",
             color: "#10B981",
           },
           {
             label: "Alerts",
-            value: mockInsights.filter((i) => i.severity === "critical").length,
+            value: mockSpendingInsights.filter((i) => i.severity === "critical")
+              .length,
             icon: "⚠️",
             color: "#EF4444",
           },
           {
             label: "Avg Confidence",
             value: `${Math.round(
-              mockInsights.reduce((sum, i) => sum + i.confidence, 0) /
-                mockInsights.length,
+              mockSpendingInsights.reduce((sum, i) => sum + i.confidence, 0) /
+                mockSpendingInsights.length,
             )}%`,
             icon: "⭐",
             color: "#F59E0B",

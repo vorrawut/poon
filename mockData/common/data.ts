@@ -424,3 +424,5 @@ export const getMockData = (
       return [];
   }
 };
+
+export * from './navigationData';

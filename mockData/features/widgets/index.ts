@@ -14,3 +14,11 @@ export {
   mockCategoryTransactions,
   type Transaction as CategoryTransaction
 } from './categoryData';
+export { 
+  mockFinancialStories,
+  type FinancialStory
+} from './historianData';
+export { 
+  generateMockTimelineData,
+  type SpendingData as TimelineSpendingData
+} from './timelineData';
