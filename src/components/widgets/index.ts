@@ -1,8 +1,12 @@
 export { WealthSolarSystem } from "./WealthSolarSystem";
 export { SmartHighlights } from "./SmartHighlights";
+export { CategoryOverlay } from "./CategoryOverlay";
 export { WealthTimeline } from "./WealthTimeline";
 export { DualLensToggle } from "./DualLensToggle";
 export { UniverseBackground } from "./UniverseBackground";
 export { SpendingAnalyzer } from "./SpendingAnalyzer";
 export { PerformanceChart } from "./PerformanceChart";
 export { RiskGauge } from "./RiskGauge";
+export { WealthWheel } from "./WealthWheel";
+export { AchievementBadges } from "./AchievementBadges";
+export { CategoryDetailView } from "./CategoryDetailView";
