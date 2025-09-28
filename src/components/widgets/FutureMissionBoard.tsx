@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { mockFutureMissions } from "../../../mockData/features/widgets";
-import { Plus, Rocket, Star, Target, Calendar, Map } from "lucide-react";
+import { Plus, Rocket, Target, Calendar, Map } from "lucide-react";
 
 interface Mission {
   id: string;

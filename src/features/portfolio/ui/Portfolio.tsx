@@ -13,154 +13,8 @@ import {
   mockPortfolioAssets,
   mockTimelineEvents,
   mockPortfolioHighlights,
+  mockPortfolioCategoryData,
 } from "../../../../mockData/features/portfolio";
-
-// Using imported mock data from centralized location
-
-// Mock category data for the overlay
-const mockCategoryData = {
-  cash: {
-    totalCash: 125000,
-    emergencyFundMonths: 8.5,
-    interestRate: 4.2,
-    accounts: [
-      {
-        id: "1",
-        name: "High-Yield Savings",
-        type: "Savings",
-        balance: 75000,
-        interestRate: 4.5,
-        monthlyInterest: 281,
-      },
-      {
-        id: "2",
-        name: "Checking Account",
-        type: "Checking",
-        balance: 25000,
-        interestRate: 0.1,
-        monthlyInterest: 2,
-      },
-      {
-        id: "3",
-        name: "Money Market",
-        type: "Money Market",
-        balance: 25000,
-        interestRate: 3.8,
-        monthlyInterest: 79,
-      },
-    ],
-  },
-  stocks: {
-    totalValue: 280000,
-    todayChange: 15420,
-    allocation: 45,
-    holdings: [
-      {
-        ticker: "TSLA",
-        name: "Tesla Inc.",
-        units: 500,
-        value: 124500,
-        change: 12.5,
-      },
-      {
-        ticker: "AAPL",
-        name: "Apple Inc.",
-        units: 200,
-        value: 34000,
-        change: 8.2,
-      },
-      {
-        ticker: "GOOGL",
-        name: "Alphabet Inc.",
-        units: 150,
-        value: 45000,
-        change: -2.1,
-      },
-      {
-        ticker: "MSFT",
-        name: "Microsoft Corp.",
-        units: 100,
-        value: 41000,
-        change: 15.7,
-      },
-    ],
-  },
-  crypto: {
-    totalValue: 45000,
-    todayChange: -8.5,
-    volatility: 0.85,
-    holdings: [
-      {
-        symbol: "BTC",
-        name: "Bitcoin",
-        units: 0.75,
-        value: 28000,
-        change: -5.2,
-      },
-      {
-        symbol: "ETH",
-        name: "Ethereum",
-        units: 8.5,
-        value: 15000,
-        change: -15.8,
-      },
-      {
-        symbol: "ADA",
-        name: "Cardano",
-        units: 2500,
-        value: 2000,
-        change: 12.3,
-      },
-    ],
-  },
-  funds: {
-    totalValue: 150000,
-    todayChange: 2100,
-    holdings: [
-      {
-        name: "Vanguard S&P 500",
-        symbol: "VOO",
-        units: 200,
-        value: 85000,
-        change: 8.7,
-      },
-      {
-        name: "iShares MSCI World",
-        symbol: "URTH",
-        units: 150,
-        value: 45000,
-        change: 6.2,
-      },
-      {
-        name: "Vanguard Bond Index",
-        symbol: "BND",
-        units: 250,
-        value: 20000,
-        change: 1.8,
-      },
-    ],
-  },
-  property: {
-    totalValue: 85000,
-    todayChange: 580,
-    holdings: [
-      {
-        name: "REIT Portfolio",
-        type: "REIT",
-        value: 60000,
-        yield: 4.2,
-        change: 6.8,
-      },
-      {
-        name: "Property Investment",
-        type: "Direct",
-        value: 25000,
-        yield: 3.5,
-        change: 5.1,
-      },
-    ],
-  },
-};
 
 export function Portfolio() {
   const [viewMode, setViewMode] = useState<"play" | "clarity">("play");
@@ -522,7 +376,7 @@ export function Portfolio() {
         onClose={() => setShowCategoryOverlay(false)}
         initialCategory={selectedCategory || undefined}
         categories={mockPortfolioAssets}
-        categoryData={mockCategoryData}
+        categoryData={mockPortfolioCategoryData}
         viewMode={viewMode}
       />
     </div>

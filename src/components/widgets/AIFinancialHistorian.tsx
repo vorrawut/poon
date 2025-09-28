@@ -42,7 +42,7 @@ export function AIFinancialHistorian({
   >("normal");
 
   // Mock AI-generated stories based on timeline position
-  const generateStory = (position: number, range: string): FinancialStory => {
+  const generateStory = (position: number, _range: string): FinancialStory => {
     const stories: FinancialStory[] = [
       {
         id: "early-career",

@@ -40,7 +40,7 @@ export function SpendingWheel({
   const radius = 120;
   const centerX = 150;
   const centerY = 150;
-  const strokeWidth = 40;
+  const _strokeWidth = 40;
 
   // Calculate angles for each category
   let currentAngle = 0;

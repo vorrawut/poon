@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   RotateCcw,
   AlertTriangle,
   CheckCircle,
   XCircle,
   Calendar,
-  TrendingUp,
-  Zap,
 } from "lucide-react";
 import { mockRecurringPayments } from "../../../mockData/features/widgets";
 
@@ -33,7 +31,7 @@ interface RecurringPaymentsRadarProps {
 }
 
 export function RecurringPaymentsRadar({
-  recurringPayments = [],
+  recurringPayments: _recurringPayments = [],
   className = "",
 }: RecurringPaymentsRadarProps) {
   const [radarSweep, setRadarSweep] = useState(0);

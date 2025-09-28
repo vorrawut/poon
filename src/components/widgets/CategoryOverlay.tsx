@@ -347,7 +347,7 @@ export function CategoryOverlay({
               }`}
             >
               <div className="flex justify-center gap-2">
-                {categories.map((category, index) => (
+                {categories.map((category, _index) => (
                   <button
                     key={category.id}
                     onClick={() => setSelectedCategory(category.id)}

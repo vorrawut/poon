@@ -9,42 +9,7 @@ import {
   DualLensToggle,
   UniverseBackground,
 } from "../../../components/widgets";
-
-// Dashboard Smart Highlights
-const dashboardHighlights = [
-  {
-    id: "1",
-    title: "Monthly Summary",
-    message:
-      "You spent $3,450 this month, staying 12% under budget! Your disciplined spending is paying off.",
-    icon: "🎯",
-    type: "success" as const,
-  },
-  {
-    id: "2",
-    title: "Net Worth Growth",
-    message:
-      "Your net worth grew by $8K this month! Investment gains and smart saving are building your wealth.",
-    icon: "📈",
-    type: "info" as const,
-  },
-  {
-    id: "3",
-    title: "Account Alert",
-    message:
-      "Your checking account balance is getting low. Consider transferring from savings or reviewing recent spending.",
-    icon: "⚠️",
-    type: "warning" as const,
-  },
-  {
-    id: "4",
-    title: "Savings Milestone",
-    message:
-      "Congratulations! You've saved $50K total across all accounts. You're building serious financial security!",
-    icon: "🎉",
-    type: "celebration" as const,
-  },
-];
+import { dashboardHighlights } from "../../../../mockData/features/dashboard";
 
 export default function Dashboard() {
   const [timeRange, setTimeRange] = useState<"7d" | "30d" | "90d">("30d");
