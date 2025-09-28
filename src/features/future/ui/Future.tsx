@@ -6,7 +6,6 @@ import {
   MissionDetailView,
   AICoPilot,
   UniverseBackground,
-  AccessibilityModeToggle,
 } from "../../../components/widgets";
 import {
   initialMissions,
@@ -16,10 +15,7 @@ import {
 import { useUIStore } from "../../../store/useUIStore";
 
 export function Future() {
-  const { viewMode } = useUIStore();
-  const [accessibilityMode, setAccessibilityMode] = useState<
-    "elder" | "youth" | "standard"
-  >("standard");
+  const { viewMode, accessibilityMode } = useUIStore();
   const [selectedMission, setSelectedMission] = useState<Mission | null>(null);
   const [missions, setMissions] = useState<Mission[]>([]);
 
@@ -53,14 +49,6 @@ export function Future() {
     >
       {viewMode === "play" && <UniverseBackground starCount={60} />}
 
-      {/* Accessibility Mode Toggle */}
-      <AccessibilityModeToggle
-        mode={accessibilityMode}
-        onModeChange={setAccessibilityMode}
-        className={`fixed top-4 left-4 z-50 ${
-          viewMode === "play" ? "" : "translate-y-0"
-        }`}
-      />
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pb-20 sm:pb-24 pt-20 sm:pt-24 lg:pt-32 relative z-10">

@@ -10,7 +10,6 @@ import {
   UniverseBackground,
   SpendingWheel,
   MoneyJars,
-  AccessibilityModeToggle,
   AIFinancialCoach,
 } from "../../../components/widgets";
 import {
@@ -30,10 +29,7 @@ import {
 import { useUIStore } from "../../../store/useUIStore";
 
 export function MoneyFlow() {
-  const { viewMode } = useUIStore();
-  const [accessibilityMode, setAccessibilityMode] = useState<
-    "elder" | "youth" | "standard"
-  >("standard");
+  const { viewMode, accessibilityMode } = useUIStore();
   const [activeSection, setActiveSection] = useState<
     "flow" | "income" | "spending" | "goals" | "story" | "game" | "coach"
   >("flow");
@@ -47,12 +43,6 @@ export function MoneyFlow() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white overflow-hidden relative">
       <UniverseBackground />
 
-      {/* Accessibility Mode Toggle */}
-      <AccessibilityModeToggle
-        mode={accessibilityMode}
-        onModeChange={setAccessibilityMode}
-        className="fixed top-4 left-4 z-50"
-      />
 
       {/* Header */}
       <motion.div

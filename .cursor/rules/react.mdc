@@ -890,3 +890,53 @@ className="fixed inset-x-2 sm:inset-x-4 lg:inset-x-8 top-1/2 max-w-4xl mx-auto"
 // ✅ GOOD - Conditional rendering for mobile
 {isMobile ? <MobileComponent /> : <DesktopComponent />}
 ```
+
+## ♿ **ACCESSIBILITY RULES (MANDATORY)**
+
+### **Global Accessibility Management**
+- **ALWAYS use global accessibility mode** from `useUIStore`
+- **NO local accessibility state** in individual components
+- **Settings-based control**: Accessibility mode is managed through Settings page only
+- **Persistent preferences**: User accessibility choices are saved globally
+
+### **Accessibility Modes**
+```typescript
+// ✅ REQUIRED - Three accessibility modes
+type AccessibilityMode = "standard" | "elder" | "youth";
+
+// Elder Mode: Larger fonts, high contrast, slower animations, bigger touch targets
+// Youth Mode: Compact design, vibrant colors, fast animations
+// Standard Mode: Balanced design for general use
+```
+
+### **Accessibility Utilities (MANDATORY)**
+```typescript
+// ✅ GOOD - Use accessibility utilities
+import { useAccessibility, useAccessibilityText } from "../hooks/useAccessibility";
+
+export function MyComponent() {
+  const { getClasses, colors, isElderMode } = useAccessibility();
+  const headingClasses = useAccessibilityText("heading", "h1");
+  
+  return (
+    <div className={getClasses({ includeSpacing: true, includeColors: true })}>
+      <h1 className={headingClasses}>Accessible Heading</h1>
+    </div>
+  );
+}
+
+// ❌ BAD - Hardcoded accessibility styles
+<h1 className="text-3xl font-bold">Non-accessible heading</h1>
+```
+
+**🚨 CRITICAL ACCESSIBILITY REMINDERS:**
+1. **GLOBAL ACCESSIBILITY STATE** - Always use UIStore, never local state
+2. **SETTINGS-BASED CONTROL** - Accessibility managed through Settings page only
+3. **RESPONSIVE FONT SIZES** - Different sizes for elder/youth/standard modes
+4. **HIGH CONTRAST SUPPORT** - Elder mode requires high contrast colors
+5. **TOUCH TARGET COMPLIANCE** - Minimum 44px (48px for elder mode)
+6. **REDUCED MOTION SUPPORT** - Elder mode should have slower/reduced animations
+7. **LIVE PREVIEW** - Settings page must show real-time preview
+8. **PERSISTENT PREFERENCES** - User choices saved and restored
+
+This ensures the application is accessible to users of all ages and abilities.

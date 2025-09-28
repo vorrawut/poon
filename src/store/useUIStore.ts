@@ -8,6 +8,9 @@ interface UIState {
   // View Mode (Play/Clarity)
   viewMode: "play" | "clarity";
 
+  // Accessibility Mode
+  accessibilityMode: "standard" | "elder" | "youth";
+
   // Sidebar
   sidebarOpen: boolean;
   sidebarCollapsed: boolean;
@@ -45,6 +48,7 @@ interface UIState {
   setTheme: (theme: "light" | "dark" | "system") => void;
   setViewMode: (viewMode: "play" | "clarity") => void;
   toggleViewMode: () => void;
+  setAccessibilityMode: (mode: "standard" | "elder" | "youth") => void;
   setSidebarOpen: (open: boolean) => void;
   setSidebarCollapsed: (collapsed: boolean) => void;
   toggleSidebar: () => void;
@@ -64,6 +68,7 @@ export const useUIStore = create<UIState>()(
     (set, get) => ({
       theme: "system",
       viewMode: "play",
+      accessibilityMode: "standard",
       sidebarOpen: true,
       sidebarCollapsed: false,
       modals: {
@@ -87,6 +92,8 @@ export const useUIStore = create<UIState>()(
         const { viewMode } = get();
         set({ viewMode: viewMode === "play" ? "clarity" : "play" });
       },
+
+      setAccessibilityMode: (accessibilityMode) => set({ accessibilityMode }),
 
       setSidebarOpen: (sidebarOpen) => set({ sidebarOpen }),
 

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { FadeIn, SplitText } from "../components/ui";
 import { SmartHighlights, UniverseBackground } from "../components/widgets";
 import { useUIStore } from "../store/useUIStore";
+import { getAccessibilityClasses, getAccessibilityColors } from "../libs/accessibility";
 
 // Settings Highlights
 const settingsHighlights = [
@@ -41,7 +42,7 @@ const settingsHighlights = [
 ];
 
 export function Settings() {
-  const { viewMode } = useUIStore();
+  const { viewMode, accessibilityMode, setAccessibilityMode } = useUIStore();
   const [notifications, setNotifications] = useState({
     email: true,
     push: true,
@@ -215,6 +216,134 @@ export function Settings() {
             </div>
           </motion.div>
 
+          {/* Accessibility */}
+          <motion.div
+            className={`rounded-2xl p-8 border ${
+              viewMode === "play"
+                ? "bg-white/10 backdrop-blur-sm border-white/20"
+                : "bg-white border-gray-200"
+            }`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <h2
+              className={`text-2xl font-bold mb-6 flex items-center gap-3 ${
+                viewMode === "play" ? "text-white" : "text-gray-900"
+              }`}
+            >
+              <span className="text-3xl">♿</span>
+              Accessibility
+            </h2>
+
+            <div className="space-y-6">
+              <div>
+                <label
+                  className={`block font-semibold mb-3 ${
+                    viewMode === "play" ? "text-white" : "text-gray-900"
+                  }`}
+                >
+                  Accessibility Mode
+                </label>
+                <p
+                  className={`text-sm mb-4 ${
+                    viewMode === "play" ? "text-white/70" : "text-gray-600"
+                  }`}
+                >
+                  Choose the interface style that works best for you
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {[
+                    {
+                      mode: "standard" as const,
+                      title: "Standard",
+                      description: "Balanced design for all users",
+                      icon: "👤",
+                    },
+                    {
+                      mode: "elder" as const,
+                      title: "Elder Friendly",
+                      description: "Larger text, high contrast, slower animations",
+                      icon: "👴",
+                    },
+                    {
+                      mode: "youth" as const,
+                      title: "Youth Mode",
+                      description: "Compact design, vibrant colors, fast animations",
+                      icon: "🧒",
+                    },
+                  ].map((option) => (
+                    <button
+                      key={option.mode}
+                      onClick={() => setAccessibilityMode(option.mode)}
+                      className={`p-4 rounded-xl border-2 transition-all text-left ${
+                        accessibilityMode === option.mode
+                          ? viewMode === "play"
+                            ? "border-purple-400 bg-purple-500/20"
+                            : "border-purple-500 bg-purple-50"
+                          : viewMode === "play"
+                            ? "border-white/20 bg-white/5 hover:bg-white/10"
+                            : "border-gray-200 bg-gray-50 hover:bg-gray-100"
+                      }`}
+                    >
+                      <div className="text-2xl mb-2">{option.icon}</div>
+                      <h3
+                        className={`font-semibold mb-1 ${
+                          viewMode === "play" ? "text-white" : "text-gray-900"
+                        }`}
+                      >
+                        {option.title}
+                      </h3>
+                      <p
+                        className={`text-sm ${
+                          viewMode === "play" ? "text-white/70" : "text-gray-600"
+                        }`}
+                      >
+                        {option.description}
+                      </p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Accessibility Preview */}
+              <div
+                className={`p-4 rounded-lg border ${
+                  viewMode === "play"
+                    ? "border-white/20 bg-white/5"
+                    : "border-gray-200 bg-gray-50"
+                }`}
+              >
+                <h4
+                  className={`font-semibold mb-2 ${
+                    viewMode === "play" ? "text-white" : "text-gray-900"
+                  }`}
+                >
+                  Preview
+                </h4>
+                <div
+                  className={getAccessibilityClasses(accessibilityMode, viewMode, {
+                    fontSize: "text",
+                    includeColors: true,
+                  })}
+                >
+                  <p className="mb-2">
+                    This is how text will appear with {accessibilityMode} mode.
+                  </p>
+                  <button
+                    className={`${getAccessibilityClasses(
+                      accessibilityMode,
+                      viewMode,
+                      { fontSize: "button" }
+                    )} bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors`}
+                  >
+                    Sample Button
+                  </button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
           {/* Notifications */}
           <motion.div
             className={`rounded-2xl p-8 border ${
@@ -224,7 +353,7 @@ export function Settings() {
             }`}
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.4 }}
           >
             <h2
               className={`text-2xl font-bold mb-6 flex items-center gap-3 ${
@@ -275,7 +404,7 @@ export function Settings() {
             }`}
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 }}
+            transition={{ delay: 0.5 }}
           >
             <h2
               className={`text-2xl font-bold mb-6 flex items-center gap-3 ${
@@ -324,7 +453,7 @@ export function Settings() {
             }`}
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.5 }}
+            transition={{ delay: 0.6 }}
           >
             <h2
               className={`text-2xl font-bold mb-6 flex items-center gap-3 ${

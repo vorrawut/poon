@@ -11,7 +11,6 @@ import {
   AISpendingInsights,
   CategoryExplorer,
   UniverseBackground,
-  AccessibilityModeToggle,
 } from "../../../components/widgets";
 import {
   Radar,
@@ -39,10 +38,7 @@ const mockSpendingData = generateMockTransactionData();
 import { useUIStore } from "../../../store/useUIStore";
 
 export function Spending() {
-  const { viewMode } = useUIStore();
-  const [accessibilityMode, setAccessibilityMode] = useState<
-    "elder" | "youth" | "standard"
-  >("standard");
+  const { viewMode, accessibilityMode } = useUIStore();
   const [activeSection, setActiveSection] = useState<
     | "galaxy"
     | "timeline"
@@ -101,13 +97,6 @@ export function Spending() {
     >
       {viewMode === "play" && <UniverseBackground starCount={60} />}
 
-      {/* Accessibility Mode Toggle */}
-      <div className="fixed top-6 right-2 sm:top-6 sm:right-4 lg:top-6 lg:right-8 z-50">
-        <AccessibilityModeToggle
-          mode={accessibilityMode}
-          onModeChange={setAccessibilityMode}
-        />
-      </div>
 
       <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pb-8 sm:pb-12 pt-20 sm:pt-24 lg:pt-32 relative z-10">
         {/* Hero Section */}
