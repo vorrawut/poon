@@ -34,13 +34,13 @@ export function SpendingGalaxy({
   // Animation cycle for galaxy rotation
   useEffect(() => {
     const interval = setInterval(() => {
-      setAnimationPhase(prev => (prev + 1) % 360);
+      setAnimationPhase((prev) => (prev + 1) % 360);
     }, 100);
     return () => clearInterval(interval);
   }, []);
 
   const totalSpent = categories.reduce((sum, cat) => sum + cat.amount, 0);
-  const maxAmount = Math.max(...categories.map(cat => cat.amount));
+  const maxAmount = Math.max(...categories.map((cat) => cat.amount));
 
   const getPlanetSize = (amount: number) => {
     const minSize = 60;
@@ -57,12 +57,12 @@ export function SpendingGalaxy({
   const getHealthColor = (category: SpendingCategory) => {
     const spentRatio = category.amount / category.budget;
     if (spentRatio <= 0.7) return "#10B981"; // Green - healthy
-    if (spentRatio <= 0.9) return "#F59E0B"; // Yellow - warning  
+    if (spentRatio <= 0.9) return "#F59E0B"; // Yellow - warning
     return "#EF4444"; // Red - critical
   };
 
   const getPlanetPosition = (index: number, radius: number) => {
-    const angle = (index * (360 / categories.length)) + animationPhase * 0.5;
+    const angle = index * (360 / categories.length) + animationPhase * 0.5;
     const radian = (angle * Math.PI) / 180;
     return {
       x: Math.cos(radian) * radius,
@@ -78,20 +78,20 @@ export function SpendingGalaxy({
   return (
     <div className={`relative ${className}`}>
       {/* Galaxy Container */}
-      <div 
+      <div
         ref={containerRef}
         className="relative w-full h-[600px] bg-gradient-to-br from-indigo-900/20 to-purple-900/20 rounded-3xl overflow-hidden border border-white/10"
       >
         {/* Central Sun (Total Spending) */}
         <motion.div
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
-          animate={{ 
+          animate={{
             rotate: 360,
-            scale: [1, 1.05, 1]
+            scale: [1, 1.05, 1],
           }}
-          transition={{ 
+          transition={{
             rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-            scale: { duration: 3, repeat: Infinity }
+            scale: { duration: 3, repeat: Infinity },
           }}
         >
           <div className="relative">
@@ -99,14 +99,16 @@ export function SpendingGalaxy({
             <div className="w-24 h-24 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-2xl">
               <span className="text-2xl">💰</span>
             </div>
-            
+
             {/* Sun Glow */}
             <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/40 to-orange-500/40 rounded-full animate-ping" />
             <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-orange-500/20 rounded-full animate-pulse" />
-            
+
             {/* Total Amount */}
             <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-center">
-              <div className="text-white font-bold text-lg">฿{totalSpent.toLocaleString()}</div>
+              <div className="text-white font-bold text-lg">
+                ฿{totalSpent.toLocaleString()}
+              </div>
               <div className="text-white/60 text-xs">Total Spent</div>
             </div>
           </div>
@@ -122,10 +124,10 @@ export function SpendingGalaxy({
               height: (150 + ringIndex * 80) * 2,
             }}
             animate={{ rotate: 360 }}
-            transition={{ 
-              duration: 60 + ringIndex * 20, 
-              repeat: Infinity, 
-              ease: "linear" 
+            transition={{
+              duration: 60 + ringIndex * 20,
+              repeat: Infinity,
+              ease: "linear",
             }}
           />
         ))}
@@ -143,19 +145,19 @@ export function SpendingGalaxy({
               key={category.id}
               className="absolute top-1/2 left-1/2 cursor-pointer z-20"
               style={{
-                transform: `translate(${position.x - planetSize/2}px, ${position.y - planetSize/2}px)`,
+                transform: `translate(${position.x - planetSize / 2}px, ${position.y - planetSize / 2}px)`,
               }}
               animate={{
                 rotate: 360,
                 scale: isHovered ? 1.2 : 1,
               }}
               transition={{
-                rotate: { 
-                  duration: 30 / getOrbitSpeed(category.frequency), 
-                  repeat: Infinity, 
-                  ease: "linear" 
+                rotate: {
+                  duration: 30 / getOrbitSpeed(category.frequency),
+                  repeat: Infinity,
+                  ease: "linear",
                 },
-                scale: { duration: 0.2 }
+                scale: { duration: 0.2 },
               }}
               onHoverStart={() => setHoveredCategory(category.id)}
               onHoverEnd={() => setHoveredCategory(null)}
@@ -164,32 +166,32 @@ export function SpendingGalaxy({
               whileTap={{ scale: 0.95 }}
             >
               {/* Planet */}
-              <div 
+              <div
                 className="relative rounded-full flex items-center justify-center shadow-2xl border-2"
-                style={{ 
+                style={{
                   width: planetSize,
                   height: planetSize,
                   backgroundColor: category.color,
                   borderColor: healthColor,
-                  boxShadow: `0 0 30px ${category.color}60, 0 0 60px ${healthColor}40`
+                  boxShadow: `0 0 30px ${category.color}60, 0 0 60px ${healthColor}40`,
                 }}
               >
                 {/* Planet Surface */}
                 <div className="absolute inset-2 rounded-full bg-gradient-to-br from-white/20 to-transparent" />
-                
+
                 {/* Category Icon */}
                 <span className="text-2xl relative z-10">{category.icon}</span>
-                
+
                 {/* Health Status Ring */}
                 <motion.div
                   className="absolute inset-0 rounded-full border-2"
                   style={{ borderColor: healthColor }}
-                  animate={{ 
+                  animate={{
                     boxShadow: [
                       `0 0 0 0 ${healthColor}40`,
                       `0 0 0 10px ${healthColor}00`,
-                      `0 0 0 0 ${healthColor}40`
-                    ]
+                      `0 0 0 0 ${healthColor}40`,
+                    ],
                   }}
                   transition={{ duration: 2, repeat: Infinity }}
                 />
@@ -228,14 +230,15 @@ export function SpendingGalaxy({
                         {category.name}
                       </div>
                       <div className="text-white/80 text-sm mb-2">
-                        ฿{category.amount.toLocaleString()} / ฿{category.budget.toLocaleString()}
+                        ฿{category.amount.toLocaleString()} / ฿
+                        {category.budget.toLocaleString()}
                       </div>
                       <div className="flex items-center justify-center gap-2 text-xs">
-                        <span 
+                        <span
                           className="px-2 py-1 rounded-full"
-                          style={{ 
+                          style={{
                             backgroundColor: healthColor + "20",
-                            color: healthColor
+                            color: healthColor,
                           }}
                         >
                           {category.healthStatus.toUpperCase()}
@@ -244,19 +247,21 @@ export function SpendingGalaxy({
                           {category.transactions} transactions
                         </span>
                       </div>
-                      
+
                       {/* Progress Bar */}
                       <div className="mt-3 w-full bg-white/20 rounded-full h-2">
                         <motion.div
                           className="h-full rounded-full"
                           style={{ backgroundColor: healthColor }}
                           initial={{ width: 0 }}
-                          animate={{ width: `${Math.min((category.amount / category.budget) * 100, 100)}%` }}
+                          animate={{
+                            width: `${Math.min((category.amount / category.budget) * 100, 100)}%`,
+                          }}
                           transition={{ duration: 0.5 }}
                         />
                       </div>
                     </div>
-                    
+
                     {/* Tooltip Arrow */}
                     <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900/95" />
                   </motion.div>
@@ -306,7 +311,9 @@ export function SpendingGalaxy({
 
         {/* Galaxy Legend */}
         <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-sm rounded-lg p-3">
-          <div className="text-white text-sm font-bold mb-2">Spending Galaxy</div>
+          <div className="text-white text-sm font-bold mb-2">
+            Spending Galaxy
+          </div>
           <div className="space-y-1 text-xs text-white/70">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-green-500 rounded-full" />
@@ -345,10 +352,36 @@ export function SpendingGalaxy({
       {/* Galaxy Stats */}
       <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
-          { label: "Largest Planet", value: categories.reduce((max, cat) => cat.amount > max.amount ? cat : max, categories[0])?.name || "N/A", icon: "🪐" },
-          { label: "Most Active", value: categories.reduce((max, cat) => cat.frequency > max.frequency ? cat : max, categories[0])?.name || "N/A", icon: "⚡" },
-          { label: "Healthiest", value: categories.filter(cat => cat.healthStatus === "healthy").length, icon: "💚" },
-          { label: "Need Attention", value: categories.filter(cat => cat.healthStatus === "critical").length, icon: "⚠️" }
+          {
+            label: "Largest Planet",
+            value:
+              categories.reduce(
+                (max, cat) => (cat.amount > max.amount ? cat : max),
+                categories[0],
+              )?.name || "N/A",
+            icon: "🪐",
+          },
+          {
+            label: "Most Active",
+            value:
+              categories.reduce(
+                (max, cat) => (cat.frequency > max.frequency ? cat : max),
+                categories[0],
+              )?.name || "N/A",
+            icon: "⚡",
+          },
+          {
+            label: "Healthiest",
+            value: categories.filter((cat) => cat.healthStatus === "healthy")
+              .length,
+            icon: "💚",
+          },
+          {
+            label: "Need Attention",
+            value: categories.filter((cat) => cat.healthStatus === "critical")
+              .length,
+            icon: "⚠️",
+          },
         ].map((stat, index) => (
           <motion.div
             key={stat.label}
@@ -356,7 +389,10 @@ export function SpendingGalaxy({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.1)" }}
+            whileHover={{
+              scale: 1.02,
+              backgroundColor: "rgba(255,255,255,0.1)",
+            }}
           >
             <div className="text-2xl mb-2">{stat.icon}</div>
             <div className="text-white font-bold text-lg">{stat.value}</div>

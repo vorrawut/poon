@@ -1,6 +1,19 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Plus, Minus, Calendar, DollarSign, Target, Zap, TrendingUp, Clock, Star, Trophy, Edit3 } from "lucide-react";
+import {
+  ArrowLeft,
+  Plus,
+  Minus,
+  Calendar,
+  DollarSign,
+  Target,
+  Zap,
+  TrendingUp,
+  Clock,
+  Star,
+  Trophy,
+  Edit3,
+} from "lucide-react";
 
 interface Mission {
   id: string;
@@ -9,7 +22,13 @@ interface Mission {
   targetAmount: number;
   currentAmount: number;
   deadline: Date;
-  category: "travel" | "emergency" | "debt" | "investment" | "purchase" | "custom";
+  category:
+    | "travel"
+    | "emergency"
+    | "debt"
+    | "investment"
+    | "purchase"
+    | "custom";
   theme: "rocket" | "planet" | "station" | "constellation";
   icon: string;
   color: string;
@@ -55,11 +74,21 @@ export function MissionDetailView({
   const [showNoteInput, setShowNoteInput] = useState(false);
   const [newNote, setNewNote] = useState("");
 
-  const progress = Math.min((mission.currentAmount / mission.targetAmount) * 100, 100);
+  const progress = Math.min(
+    (mission.currentAmount / mission.targetAmount) * 100,
+    100,
+  );
   const remaining = mission.targetAmount - mission.currentAmount;
-  const daysRemaining = Math.max(0, Math.ceil((mission.deadline.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)));
-  
-  const dailyTarget = remaining > 0 && daysRemaining > 0 ? remaining / daysRemaining : 0;
+  const daysRemaining = Math.max(
+    0,
+    Math.ceil(
+      (mission.deadline.getTime() - new Date().getTime()) /
+        (1000 * 60 * 60 * 24),
+    ),
+  );
+
+  const dailyTarget =
+    remaining > 0 && daysRemaining > 0 ? remaining / daysRemaining : 0;
   const monthlyTarget = dailyTarget * 30;
 
   const formatCurrency = (amount: number) => {
@@ -74,30 +103,32 @@ export function MissionDetailView({
   };
 
   const getCurrentMilestone = () => {
-    return mission.milestones.find(m => progress >= m.percentage && !m.achieved) || 
-           mission.milestones.find(m => !m.achieved);
+    return (
+      mission.milestones.find((m) => progress >= m.percentage && !m.achieved) ||
+      mission.milestones.find((m) => !m.achieved)
+    );
   };
 
   const getNextMilestone = () => {
-    return mission.milestones.find(m => progress < m.percentage);
+    return mission.milestones.find((m) => progress < m.percentage);
   };
 
   const handleAddFunds = () => {
     if (!fundAmount || parseFloat(fundAmount) <= 0) return;
-    
+
     const amount = parseFloat(fundAmount);
     const newTransaction: Transaction = {
       id: Date.now().toString(),
       amount,
       date: new Date(),
       type: "deposit",
-      description: fundDescription || "Manual deposit"
+      description: fundDescription || "Manual deposit",
     };
 
     const updatedMission = {
       ...mission,
       currentAmount: mission.currentAmount + amount,
-      transactions: [...mission.transactions, newTransaction]
+      transactions: [...mission.transactions, newTransaction],
     };
 
     onUpdate(updatedMission);
@@ -108,10 +139,10 @@ export function MissionDetailView({
 
   const handleAddNote = () => {
     if (!newNote.trim()) return;
-    
+
     const updatedMission = {
       ...mission,
-      notes: [...mission.notes, newNote.trim()]
+      notes: [...mission.notes, newNote.trim()],
     };
 
     onUpdate(updatedMission);
@@ -125,13 +156,15 @@ export function MissionDetailView({
 
   const getSpeedIndicator = () => {
     const recentTransactions = mission.transactions
-      .filter(t => t.type === "deposit")
+      .filter((t) => t.type === "deposit")
       .slice(-5);
-    
+
     if (recentTransactions.length === 0) return "🐌";
-    
-    const avgAmount = recentTransactions.reduce((sum, t) => sum + t.amount, 0) / recentTransactions.length;
-    
+
+    const avgAmount =
+      recentTransactions.reduce((sum, t) => sum + t.amount, 0) /
+      recentTransactions.length;
+
     if (avgAmount >= monthlyTarget) return "🚀";
     if (avgAmount >= monthlyTarget * 0.7) return "✈️";
     if (avgAmount >= monthlyTarget * 0.4) return "🚗";
@@ -154,11 +187,14 @@ export function MissionDetailView({
         >
           <ArrowLeft className="w-5 h-5" />
         </motion.button>
-        
+
         <div className="flex items-center gap-3">
-          <div 
+          <div
             className="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
-            style={{ backgroundColor: mission.color + "20", border: `2px solid ${mission.color}40` }}
+            style={{
+              backgroundColor: mission.color + "20",
+              border: `2px solid ${mission.color}40`,
+            }}
           >
             {mission.icon}
           </div>
@@ -179,7 +215,7 @@ export function MissionDetailView({
         <div className="relative h-32 mb-6">
           {/* Background Path */}
           <div className="absolute top-1/2 left-0 right-0 h-2 bg-white/10 rounded-full transform -translate-y-1/2" />
-          
+
           {/* Progress Path */}
           <motion.div
             className="absolute top-1/2 left-0 h-2 rounded-full transform -translate-y-1/2"
@@ -199,19 +235,25 @@ export function MissionDetailView({
               animate={{ scale: 1 }}
               transition={{ delay: index * 0.2 }}
             >
-              <div 
+              <div
                 className={`w-4 h-4 rounded-full border-2 ${
-                  milestone.achieved 
-                    ? `bg-${mission.color} border-${mission.color}` 
+                  milestone.achieved
+                    ? `bg-${mission.color} border-${mission.color}`
                     : progress >= milestone.percentage
                       ? `bg-yellow-400 border-yellow-400`
                       : "bg-white/20 border-white/40"
                 }`}
                 style={{
-                  backgroundColor: milestone.achieved ? mission.color : 
-                                 progress >= milestone.percentage ? "#F59E0B" : "rgba(255,255,255,0.2)",
-                  borderColor: milestone.achieved ? mission.color : 
-                              progress >= milestone.percentage ? "#F59E0B" : "rgba(255,255,255,0.4)"
+                  backgroundColor: milestone.achieved
+                    ? mission.color
+                    : progress >= milestone.percentage
+                      ? "#F59E0B"
+                      : "rgba(255,255,255,0.2)",
+                  borderColor: milestone.achieved
+                    ? mission.color
+                    : progress >= milestone.percentage
+                      ? "#F59E0B"
+                      : "rgba(255,255,255,0.4)",
                 }}
               />
               <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-center">
@@ -229,14 +271,14 @@ export function MissionDetailView({
           <motion.div
             className="absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2"
             style={{ left: `${getRocketPosition()}%` }}
-            animate={{ 
+            animate={{
               y: [0, -5, 0],
-              rotate: [0, 2, 0, -2, 0]
+              rotate: [0, 2, 0, -2, 0],
             }}
-            transition={{ 
-              duration: 2, 
+            transition={{
+              duration: 2,
               repeat: Infinity,
-              ease: "easeInOut"
+              ease: "easeInOut",
             }}
           >
             <div className="relative">
@@ -244,14 +286,14 @@ export function MissionDetailView({
               {/* Rocket Trail */}
               <motion.div
                 className="absolute top-1/2 right-full w-8 h-1 bg-gradient-to-r from-orange-500 to-transparent rounded-full transform -translate-y-1/2"
-                animate={{ 
+                animate={{
                   scaleX: [0.5, 1, 0.5],
-                  opacity: [0.5, 1, 0.5]
+                  opacity: [0.5, 1, 0.5],
                 }}
-                transition={{ 
-                  duration: 1, 
+                transition={{
+                  duration: 1,
                   repeat: Infinity,
-                  ease: "easeInOut"
+                  ease: "easeInOut",
                 }}
               />
             </div>
@@ -260,17 +302,17 @@ export function MissionDetailView({
           {/* Destination Star */}
           <motion.div
             className="absolute top-1/2 right-0 transform -translate-y-1/2 translate-x-4"
-            animate={{ 
+            animate={{
               scale: [1, 1.2, 1],
-              rotate: [0, 360]
+              rotate: [0, 360],
             }}
-            transition={{ 
+            transition={{
               scale: { duration: 2, repeat: Infinity },
-              rotate: { duration: 10, repeat: Infinity, ease: "linear" }
+              rotate: { duration: 10, repeat: Infinity, ease: "linear" },
             }}
           >
             <div className="text-3xl">⭐</div>
-            <div 
+            <div
               className="absolute inset-0 rounded-full animate-ping"
               style={{ backgroundColor: mission.color + "40" }}
             />
@@ -281,25 +323,31 @@ export function MissionDetailView({
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-white/5 rounded-xl p-4 text-center">
             <div className="text-2xl mb-2">🎯</div>
-            <div className="text-white text-lg font-bold">{progress.toFixed(1)}%</div>
+            <div className="text-white text-lg font-bold">
+              {progress.toFixed(1)}%
+            </div>
             <div className="text-white/60 text-sm">Progress</div>
           </div>
-          
+
           <div className="bg-white/5 rounded-xl p-4 text-center">
             <div className="text-2xl mb-2">⛽</div>
-            <div className="text-white text-lg font-bold">{formatCurrency(mission.currentAmount)}</div>
+            <div className="text-white text-lg font-bold">
+              {formatCurrency(mission.currentAmount)}
+            </div>
             <div className="text-white/60 text-sm">Fuel Level</div>
           </div>
-          
+
           <div className="bg-white/5 rounded-xl p-4 text-center">
             <div className="text-2xl mb-2">⏰</div>
             <div className="text-white text-lg font-bold">{daysRemaining}</div>
             <div className="text-white/60 text-sm">Days Left</div>
           </div>
-          
+
           <div className="bg-white/5 rounded-xl p-4 text-center">
             <div className="text-2xl mb-2">{getSpeedIndicator()}</div>
-            <div className="text-white text-lg font-bold">{formatCurrency(remaining)}</div>
+            <div className="text-white text-lg font-bold">
+              {formatCurrency(remaining)}
+            </div>
             <div className="text-white/60 text-sm">Remaining</div>
           </div>
         </div>
@@ -322,11 +370,15 @@ export function MissionDetailView({
           <div className="space-y-4">
             <div className="flex justify-between items-center">
               <span className="text-white/70">Daily Target</span>
-              <span className="text-white font-bold">{formatCurrency(dailyTarget)}</span>
+              <span className="text-white font-bold">
+                {formatCurrency(dailyTarget)}
+              </span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-white/70">Monthly Target</span>
-              <span className="text-white font-bold">{formatCurrency(monthlyTarget)}</span>
+              <span className="text-white font-bold">
+                {formatCurrency(monthlyTarget)}
+              </span>
             </div>
           </div>
 
@@ -360,7 +412,7 @@ export function MissionDetailView({
                 Target Date: {mission.deadline.toLocaleDateString()}
               </span>
             </div>
-            
+
             <div className="flex items-center gap-2">
               <DollarSign className="w-4 h-4 text-white/60" />
               <span className="text-white/70 text-sm">
@@ -372,7 +424,8 @@ export function MissionDetailView({
               <div className="flex items-center gap-2">
                 <Star className="w-4 h-4 text-yellow-400" />
                 <span className="text-white/70 text-sm">
-                  Next: {getCurrentMilestone()?.label} at {getCurrentMilestone()?.percentage}%
+                  Next: {getCurrentMilestone()?.label} at{" "}
+                  {getCurrentMilestone()?.percentage}%
                 </span>
               </div>
             )}
@@ -425,31 +478,41 @@ export function MissionDetailView({
         {/* Recent Transactions */}
         {mission.transactions.length > 0 && (
           <div>
-            <h4 className="text-white font-medium mb-3">Recent Fuel Deposits</h4>
+            <h4 className="text-white font-medium mb-3">
+              Recent Fuel Deposits
+            </h4>
             <div className="space-y-2 max-h-40 overflow-y-auto">
-              {mission.transactions.slice(-5).reverse().map((transaction, index) => (
-                <motion.div
-                  key={transaction.id}
-                  className="flex justify-between items-center bg-white/5 rounded-lg p-3"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <div>
-                    <div className="text-white text-sm font-medium">
-                      {transaction.description}
+              {mission.transactions
+                .slice(-5)
+                .reverse()
+                .map((transaction, index) => (
+                  <motion.div
+                    key={transaction.id}
+                    className="flex justify-between items-center bg-white/5 rounded-lg p-3"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <div>
+                      <div className="text-white text-sm font-medium">
+                        {transaction.description}
+                      </div>
+                      <div className="text-white/60 text-xs">
+                        {transaction.date.toLocaleDateString()}
+                      </div>
                     </div>
-                    <div className="text-white/60 text-xs">
-                      {transaction.date.toLocaleDateString()}
+                    <div
+                      className={`font-bold ${
+                        transaction.type === "deposit"
+                          ? "text-green-400"
+                          : "text-red-400"
+                      }`}
+                    >
+                      {transaction.type === "deposit" ? "+" : "-"}
+                      {formatCurrency(transaction.amount)}
                     </div>
-                  </div>
-                  <div className={`font-bold ${
-                    transaction.type === "deposit" ? "text-green-400" : "text-red-400"
-                  }`}>
-                    {transaction.type === "deposit" ? "+" : "-"}{formatCurrency(transaction.amount)}
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                ))}
             </div>
           </div>
         )}
@@ -470,11 +533,15 @@ export function MissionDetailView({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
             >
-              <h3 className="text-xl font-bold text-white mb-4">Add Fuel to Mission</h3>
-              
+              <h3 className="text-xl font-bold text-white mb-4">
+                Add Fuel to Mission
+              </h3>
+
               <div className="space-y-4">
                 <div>
-                  <label className="block text-white/70 text-sm mb-2">Amount</label>
+                  <label className="block text-white/70 text-sm mb-2">
+                    Amount
+                  </label>
                   <input
                     type="number"
                     value={fundAmount}
@@ -483,9 +550,11 @@ export function MissionDetailView({
                     placeholder="Enter amount..."
                   />
                 </div>
-                
+
                 <div>
-                  <label className="block text-white/70 text-sm mb-2">Description (optional)</label>
+                  <label className="block text-white/70 text-sm mb-2">
+                    Description (optional)
+                  </label>
                   <input
                     type="text"
                     value={fundDescription}
@@ -530,8 +599,10 @@ export function MissionDetailView({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
             >
-              <h3 className="text-xl font-bold text-white mb-4">Add Mission Note</h3>
-              
+              <h3 className="text-xl font-bold text-white mb-4">
+                Add Mission Note
+              </h3>
+
               <textarea
                 value={newNote}
                 onChange={(e) => setNewNote(e.target.value)}

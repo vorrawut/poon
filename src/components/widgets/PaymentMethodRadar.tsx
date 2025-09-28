@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CreditCard, Smartphone, Banknote, Building2, TrendingUp, AlertTriangle } from "lucide-react";
+import {
+  CreditCard,
+  Smartphone,
+  Banknote,
+  Building2,
+  TrendingUp,
+  AlertTriangle,
+} from "lucide-react";
 
 interface PaymentMethod {
   id: string;
@@ -32,13 +39,16 @@ export function PaymentMethodRadar({
   // Radar sweep animation
   useEffect(() => {
     const interval = setInterval(() => {
-      setRadarSweep(prev => (prev + 2) % 360);
+      setRadarSweep((prev) => (prev + 2) % 360);
     }, 50);
     return () => clearInterval(interval);
   }, []);
 
-  const totalAmount = paymentMethods.reduce((sum, method) => sum + method.amount, 0);
-  const maxAmount = Math.max(...paymentMethods.map(method => method.amount));
+  const totalAmount = paymentMethods.reduce(
+    (sum, method) => sum + method.amount,
+    0,
+  );
+  const maxAmount = Math.max(...paymentMethods.map((method) => method.amount));
 
   const getMethodIcon = (type: string) => {
     switch (type) {
@@ -57,7 +67,7 @@ export function PaymentMethodRadar({
   };
 
   const getRadarPosition = (index: number, radius: number) => {
-    const angle = (index * (360 / paymentMethods.length)) * (Math.PI / 180);
+    const angle = index * (360 / paymentMethods.length) * (Math.PI / 180);
     return {
       x: Math.cos(angle) * radius,
       y: Math.sin(angle) * radius,
@@ -74,9 +84,11 @@ export function PaymentMethodRadar({
       <div className="flex items-center justify-between mb-6">
         <div>
           <h3 className="text-2xl font-bold text-white mb-2">Payment Radar</h3>
-          <p className="text-white/70">Track spending across all payment methods</p>
+          <p className="text-white/70">
+            Track spending across all payment methods
+          </p>
         </div>
-        
+
         <motion.button
           onClick={() => setShowComparison(!showComparison)}
           className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-white font-medium transition-colors"
@@ -133,7 +145,9 @@ export function PaymentMethodRadar({
                       transform: `translate(${position.x - 12}px, ${position.y - 12}px)`,
                     }}
                     whileHover={{ scale: 1.3 }}
-                    onClick={() => setSelectedMethod(isSelected ? null : method.id)}
+                    onClick={() =>
+                      setSelectedMethod(isSelected ? null : method.id)
+                    }
                   >
                     {/* Signal Pulse */}
                     <motion.div
@@ -153,9 +167,9 @@ export function PaymentMethodRadar({
                     {/* Method Blip */}
                     <div
                       className="relative w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-xs"
-                      style={{ 
+                      style={{
                         backgroundColor: method.color,
-                        boxShadow: `0 0 20px ${method.color}60`
+                        boxShadow: `0 0 20px ${method.color}60`,
                       }}
                     >
                       {method.icon}
@@ -188,9 +202,11 @@ export function PaymentMethodRadar({
                               <div style={{ color: method.color }}>
                                 {getMethodIcon(method.type)}
                               </div>
-                              <div className="text-white font-bold">{method.name}</div>
+                              <div className="text-white font-bold">
+                                {method.name}
+                              </div>
                             </div>
-                            
+
                             <div className="space-y-2 text-sm">
                               <div className="text-white/80">
                                 Total: ฿{method.amount.toLocaleString()}
@@ -202,18 +218,29 @@ export function PaymentMethodRadar({
                                 Avg: ฿{method.avgTransaction.toLocaleString()}
                               </div>
                               <div className="flex items-center justify-center gap-1">
-                                {method.trend === "up" && <TrendingUp className="w-3 h-3 text-red-400" />}
-                                {method.trend === "down" && <TrendingUp className="w-3 h-3 text-green-400 rotate-180" />}
-                                <span className={`text-xs ${
-                                  method.trend === "up" ? "text-red-400" : 
-                                  method.trend === "down" ? "text-green-400" : "text-white/60"
-                                }`}>
-                                  {method.trend === "stable" ? "Stable" : `${method.trendPercent}%`}
+                                {method.trend === "up" && (
+                                  <TrendingUp className="w-3 h-3 text-red-400" />
+                                )}
+                                {method.trend === "down" && (
+                                  <TrendingUp className="w-3 h-3 text-green-400 rotate-180" />
+                                )}
+                                <span
+                                  className={`text-xs ${
+                                    method.trend === "up"
+                                      ? "text-red-400"
+                                      : method.trend === "down"
+                                        ? "text-green-400"
+                                        : "text-white/60"
+                                  }`}
+                                >
+                                  {method.trend === "stable"
+                                    ? "Stable"
+                                    : `${method.trendPercent}%`}
                                 </span>
                               </div>
                             </div>
                           </div>
-                          
+
                           {/* Tooltip Arrow */}
                           <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900/95" />
                         </motion.div>
@@ -242,7 +269,9 @@ export function PaymentMethodRadar({
                 animate={{ opacity: [1, 0.3, 1] }}
                 transition={{ duration: 1, repeat: Infinity }}
               />
-              <span className="text-green-400 text-sm font-medium">SCANNING</span>
+              <span className="text-green-400 text-sm font-medium">
+                SCANNING
+              </span>
             </div>
           </div>
         </div>
@@ -251,24 +280,28 @@ export function PaymentMethodRadar({
         <div className="space-y-4">
           {paymentMethods.map((method, index) => {
             const percentage = (method.amount / totalAmount) * 100;
-            
+
             return (
               <motion.div
                 key={method.id}
                 className={`bg-white/5 backdrop-blur-sm rounded-xl p-4 border transition-all cursor-pointer ${
-                  selectedMethod === method.id 
-                    ? "border-white/30 bg-white/10" 
+                  selectedMethod === method.id
+                    ? "border-white/30 bg-white/10"
                     : "border-white/10 hover:border-white/20"
                 }`}
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
-                onClick={() => setSelectedMethod(selectedMethod === method.id ? null : method.id)}
+                onClick={() =>
+                  setSelectedMethod(
+                    selectedMethod === method.id ? null : method.id,
+                  )
+                }
                 whileHover={{ scale: 1.02 }}
               >
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div 
+                    <div
                       className="w-10 h-10 rounded-full flex items-center justify-center"
                       style={{ backgroundColor: method.color + "20" }}
                     >
@@ -277,11 +310,15 @@ export function PaymentMethodRadar({
                       </div>
                     </div>
                     <div>
-                      <div className="text-white font-medium">{method.name}</div>
-                      <div className="text-white/60 text-sm">{method.type.toUpperCase()}</div>
+                      <div className="text-white font-medium">
+                        {method.name}
+                      </div>
+                      <div className="text-white/60 text-sm">
+                        {method.type.toUpperCase()}
+                      </div>
                     </div>
                   </div>
-                  
+
                   <div className="text-right">
                     <div className="text-white font-bold">
                       ฿{method.amount.toLocaleString()}
@@ -307,21 +344,36 @@ export function PaymentMethodRadar({
                 <div className="grid grid-cols-3 gap-4 text-sm">
                   <div>
                     <div className="text-white/60">Transactions</div>
-                    <div className="text-white font-medium">{method.transactions}</div>
+                    <div className="text-white font-medium">
+                      {method.transactions}
+                    </div>
                   </div>
                   <div>
                     <div className="text-white/60">Avg Amount</div>
-                    <div className="text-white font-medium">฿{method.avgTransaction.toLocaleString()}</div>
+                    <div className="text-white font-medium">
+                      ฿{method.avgTransaction.toLocaleString()}
+                    </div>
                   </div>
                   <div>
                     <div className="text-white/60">Trend</div>
-                    <div className={`font-medium flex items-center gap-1 ${
-                      method.trend === "up" ? "text-red-400" : 
-                      method.trend === "down" ? "text-green-400" : "text-white"
-                    }`}>
-                      {method.trend === "up" && <TrendingUp className="w-3 h-3" />}
-                      {method.trend === "down" && <TrendingUp className="w-3 h-3 rotate-180" />}
-                      {method.trend === "stable" ? "Stable" : `${method.trendPercent}%`}
+                    <div
+                      className={`font-medium flex items-center gap-1 ${
+                        method.trend === "up"
+                          ? "text-red-400"
+                          : method.trend === "down"
+                            ? "text-green-400"
+                            : "text-white"
+                      }`}
+                    >
+                      {method.trend === "up" && (
+                        <TrendingUp className="w-3 h-3" />
+                      )}
+                      {method.trend === "down" && (
+                        <TrendingUp className="w-3 h-3 rotate-180" />
+                      )}
+                      {method.trend === "stable"
+                        ? "Stable"
+                        : `${method.trendPercent}%`}
                     </div>
                   </div>
                 </div>
@@ -340,45 +392,49 @@ export function PaymentMethodRadar({
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
           >
-            <h4 className="text-xl font-bold text-white mb-4">Payment Method Analysis</h4>
-            
+            <h4 className="text-xl font-bold text-white mb-4">
+              Payment Method Analysis
+            </h4>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
                 {
                   title: "Most Used",
-                  method: paymentMethods.reduce((max, method) => 
-                    method.transactions > max.transactions ? method : max
+                  method: paymentMethods.reduce((max, method) =>
+                    method.transactions > max.transactions ? method : max,
                   ),
                   icon: "🏆",
-                  color: "#F59E0B"
+                  color: "#F59E0B",
                 },
                 {
                   title: "Highest Spending",
-                  method: paymentMethods.reduce((max, method) => 
-                    method.amount > max.amount ? method : max
+                  method: paymentMethods.reduce((max, method) =>
+                    method.amount > max.amount ? method : max,
                   ),
                   icon: "💰",
-                  color: "#EF4444"
+                  color: "#EF4444",
                 },
                 {
                   title: "Largest Transactions",
-                  method: paymentMethods.reduce((max, method) => 
-                    method.avgTransaction > max.avgTransaction ? method : max
+                  method: paymentMethods.reduce((max, method) =>
+                    method.avgTransaction > max.avgTransaction ? method : max,
                   ),
                   icon: "📊",
-                  color: "#8B5CF6"
+                  color: "#8B5CF6",
                 },
                 {
                   title: "Growing Fast",
                   method: paymentMethods
-                    .filter(m => m.trend === "up")
-                    .reduce((max, method) => 
-                      method.trendPercent > max.trendPercent ? method : max, 
-                      paymentMethods.find(m => m.trend === "up") || paymentMethods[0]
+                    .filter((m) => m.trend === "up")
+                    .reduce(
+                      (max, method) =>
+                        method.trendPercent > max.trendPercent ? method : max,
+                      paymentMethods.find((m) => m.trend === "up") ||
+                        paymentMethods[0],
                     ),
                   icon: "🚀",
-                  color: "#10B981"
-                }
+                  color: "#10B981",
+                },
               ].map((insight, index) => (
                 <motion.div
                   key={insight.title}
@@ -388,8 +444,12 @@ export function PaymentMethodRadar({
                   transition={{ delay: index * 0.1 }}
                 >
                   <div className="text-2xl mb-2">{insight.icon}</div>
-                  <div className="text-white font-bold text-sm mb-1">{insight.title}</div>
-                  <div className="text-white/80 text-xs">{insight.method.name}</div>
+                  <div className="text-white font-bold text-sm mb-1">
+                    {insight.title}
+                  </div>
+                  <div className="text-white/80 text-xs">
+                    {insight.method.name}
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -400,9 +460,11 @@ export function PaymentMethodRadar({
                 <AlertTriangle className="w-4 h-4 text-yellow-400" />
                 Smart Alerts
               </h5>
-              
+
               {paymentMethods
-                .filter(method => method.trend === "up" && method.trendPercent > 20)
+                .filter(
+                  (method) => method.trend === "up" && method.trendPercent > 20,
+                )
                 .map((method, index) => (
                   <motion.div
                     key={method.id}
@@ -412,8 +474,9 @@ export function PaymentMethodRadar({
                     transition={{ delay: index * 0.1 }}
                   >
                     <div className="text-yellow-400 text-sm">
-                      <strong>{method.name}</strong> spending increased by {method.trendPercent}% this month. 
-                      Consider reviewing recent transactions.
+                      <strong>{method.name}</strong> spending increased by{" "}
+                      {method.trendPercent}% this month. Consider reviewing
+                      recent transactions.
                     </div>
                   </motion.div>
                 ))}

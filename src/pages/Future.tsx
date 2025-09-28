@@ -17,7 +17,13 @@ interface Mission {
   targetAmount: number;
   currentAmount: number;
   deadline: Date;
-  category: "travel" | "emergency" | "debt" | "investment" | "purchase" | "custom";
+  category:
+    | "travel"
+    | "emergency"
+    | "debt"
+    | "investment"
+    | "purchase"
+    | "custom";
   theme: "rocket" | "planet" | "station" | "constellation";
   icon: string;
   color: string;
@@ -46,7 +52,9 @@ interface Milestone {
 
 export function Future() {
   const [viewMode, setViewMode] = useState<"play" | "clarity">("play");
-  const [accessibilityMode, setAccessibilityMode] = useState<"elder" | "youth" | "standard">("standard");
+  const [accessibilityMode, setAccessibilityMode] = useState<
+    "elder" | "youth" | "standard"
+  >("standard");
   const [selectedMission, setSelectedMission] = useState<Mission | null>(null);
   const [missions, setMissions] = useState<Mission[]>([]);
 
@@ -73,30 +81,44 @@ export function Future() {
             amount: 15000,
             date: new Date("2024-01-15"),
             type: "deposit",
-            description: "Initial savings"
+            description: "Initial savings",
           },
           {
             id: "t2",
             amount: 12500,
             date: new Date("2024-02-01"),
             type: "deposit",
-            description: "Monthly savings"
+            description: "Monthly savings",
           },
           {
             id: "t3",
             amount: 10000,
             date: new Date("2024-03-01"),
             type: "deposit",
-            description: "Bonus allocation"
-          }
+            description: "Bonus allocation",
+          },
         ],
-        notes: ["Save ฿10,000 per month", "Book flights by December", "Research best travel season"],
+        notes: [
+          "Save ฿10,000 per month",
+          "Book flights by December",
+          "Research best travel season",
+        ],
         milestones: [
-          { percentage: 25, label: "Launch", achieved: true, achievedDate: new Date("2024-03-01") },
-          { percentage: 50, label: "In Orbit", achieved: true, achievedDate: new Date("2024-06-15") },
+          {
+            percentage: 25,
+            label: "Launch",
+            achieved: true,
+            achievedDate: new Date("2024-03-01"),
+          },
+          {
+            percentage: 50,
+            label: "In Orbit",
+            achieved: true,
+            achievedDate: new Date("2024-06-15"),
+          },
           { percentage: 75, label: "Deep Space", achieved: false },
-          { percentage: 100, label: "Arrival", achieved: false }
-        ]
+          { percentage: 100, label: "Arrival", achieved: false },
+        ],
       },
       {
         id: "emergency-fund",
@@ -118,23 +140,27 @@ export function Future() {
             amount: 50000,
             date: new Date("2024-02-01"),
             type: "deposit",
-            description: "Emergency fund start"
+            description: "Emergency fund start",
           },
           {
             id: "e2",
             amount: 25000,
             date: new Date("2024-03-01"),
             type: "deposit",
-            description: "Monthly contribution"
-          }
+            description: "Monthly contribution",
+          },
         ],
-        notes: ["Critical for financial stability", "Target: 6 months expenses", "Keep in high-yield savings"],
+        notes: [
+          "Critical for financial stability",
+          "Target: 6 months expenses",
+          "Keep in high-yield savings",
+        ],
         milestones: [
           { percentage: 25, label: "Foundation", achieved: true },
           { percentage: 50, label: "Secure Base", achieved: true },
           { percentage: 75, label: "Strong Defense", achieved: false },
-          { percentage: 100, label: "Fortress Complete", achieved: false }
-        ]
+          { percentage: 100, label: "Fortress Complete", achieved: false },
+        ],
       },
       {
         id: "debt-free",
@@ -156,24 +182,28 @@ export function Future() {
             amount: 20000,
             date: new Date("2024-03-01"),
             type: "deposit",
-            description: "Initial debt payment"
+            description: "Initial debt payment",
           },
           {
             id: "d2",
             amount: 15000,
             date: new Date("2024-04-01"),
             type: "deposit",
-            description: "Credit card payment"
-          }
+            description: "Credit card payment",
+          },
         ],
-        notes: ["Pay off credit cards first", "Focus on high-interest debt", "Snowball method"],
+        notes: [
+          "Pay off credit cards first",
+          "Focus on high-interest debt",
+          "Snowball method",
+        ],
         milestones: [
           { percentage: 25, label: "Escape Velocity", achieved: true },
           { percentage: 50, label: "Breaking Free", achieved: true },
           { percentage: 75, label: "Almost There", achieved: true },
-          { percentage: 100, label: "Freedom Achieved", achieved: false }
-        ]
-      }
+          { percentage: 100, label: "Freedom Achieved", achieved: false },
+        ],
+      },
     ];
 
     setMissions(initialMissions);
@@ -184,7 +214,9 @@ export function Future() {
   };
 
   const handleMissionUpdate = (updatedMission: Mission) => {
-    setMissions(prev => prev.map(m => m.id === updatedMission.id ? updatedMission : m));
+    setMissions((prev) =>
+      prev.map((m) => (m.id === updatedMission.id ? updatedMission : m)),
+    );
     setSelectedMission(updatedMission);
   };
 
@@ -192,8 +224,12 @@ export function Future() {
     setSelectedMission(null);
   };
 
-  const activeMissions = missions.filter(m => !m.isCompleted);
-  const totalProgress = missions.reduce((sum, m) => sum + (m.currentAmount / m.targetAmount) * 100, 0) / missions.length;
+  const activeMissions = missions.filter((m) => !m.isCompleted);
+  const totalProgress =
+    missions.reduce(
+      (sum, m) => sum + (m.currentAmount / m.targetAmount) * 100,
+      0,
+    ) / missions.length;
 
   return (
     <div
@@ -205,7 +241,7 @@ export function Future() {
     >
       {viewMode === "play" && <UniverseBackground starCount={80} />}
       <DualLensToggle viewMode={viewMode} onToggle={setViewMode} />
-      
+
       {/* Accessibility Mode Toggle */}
       <div className="fixed top-6 right-2 sm:top-6 sm:right-4 lg:top-6 lg:right-8 z-50">
         <AccessibilityModeToggle
@@ -217,7 +253,11 @@ export function Future() {
       <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pb-8 sm:pb-12 pt-20 sm:pt-24 lg:pt-32 relative z-10">
         {/* Hero Section */}
         {!selectedMission && (
-          <FadeIn direction="down" delay={0.1} className="text-center py-4 sm:py-8 mb-8">
+          <FadeIn
+            direction="down"
+            delay={0.1}
+            className="text-center py-4 sm:py-8 mb-8"
+          >
             <div className="mb-8">
               <div
                 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 ${
@@ -232,7 +272,7 @@ export function Future() {
                   }}
                   transition={{
                     rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-                    scale: { duration: 3, repeat: Infinity }
+                    scale: { duration: 3, repeat: Infinity },
                   }}
                 >
                   🚀
@@ -254,10 +294,18 @@ export function Future() {
               {/* Quick Stats */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
                 {[
-                  { label: "Active Missions", value: activeMissions.length, icon: "🚀" },
-                  { label: "Total Progress", value: `${totalProgress.toFixed(0)}%`, icon: "📊" },
+                  {
+                    label: "Active Missions",
+                    value: activeMissions.length,
+                    icon: "🚀",
+                  },
+                  {
+                    label: "Total Progress",
+                    value: `${totalProgress.toFixed(0)}%`,
+                    icon: "📊",
+                  },
                   { label: "This Month", value: "฿45K", icon: "💰" },
-                  { label: "Next Deadline", value: "28 days", icon: "⏰" }
+                  { label: "Next Deadline", value: "28 days", icon: "⏰" },
                 ].map((stat, index) => (
                   <motion.div
                     key={stat.label}
@@ -273,7 +321,9 @@ export function Future() {
                   >
                     <div className="text-2xl mb-2">{stat.icon}</div>
                     <div className="text-xl font-bold">{stat.value}</div>
-                    <div className={`text-sm ${viewMode === "play" ? "text-white/70" : "text-gray-600"}`}>
+                    <div
+                      className={`text-sm ${viewMode === "play" ? "text-white/70" : "text-gray-600"}`}
+                    >
                       {stat.label}
                     </div>
                   </motion.div>
@@ -315,9 +365,7 @@ export function Future() {
               transition={{ duration: 0.5 }}
             >
               <FadeIn direction="up" delay={0.4}>
-                <FutureMissionBoard
-                  onMissionClick={handleMissionClick}
-                />
+                <FutureMissionBoard onMissionClick={handleMissionClick} />
               </FadeIn>
             </motion.div>
           )}
@@ -336,14 +384,17 @@ export function Future() {
             transition={{ delay: 0.8 }}
           >
             <div className="text-3xl sm:text-4xl mb-4">🌟</div>
-            <h3 className="text-xl sm:text-2xl font-bold mb-4">Your Dreams Await</h3>
+            <h3 className="text-xl sm:text-2xl font-bold mb-4">
+              Your Dreams Await
+            </h3>
             <p
               className={`text-base sm:text-lg mb-6 max-w-2xl mx-auto px-4 ${
                 viewMode === "play" ? "text-white/80" : "text-gray-600"
               }`}
             >
-              Every mission you complete brings you closer to the life you've always imagined. 
-              Your future self is counting on the decisions you make today. Launch your next mission and reach for the stars! 
+              Every mission you complete brings you closer to the life you've
+              always imagined. Your future self is counting on the decisions you
+              make today. Launch your next mission and reach for the stars!
             </p>
             <div
               className={`text-sm ${

@@ -1,6 +1,16 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bot, Zap, TrendingUp, AlertTriangle, Target, Star, Rocket, Clock, X } from "lucide-react";
+import {
+  Bot,
+  Zap,
+  TrendingUp,
+  AlertTriangle,
+  Target,
+  Star,
+  Rocket,
+  Clock,
+  X,
+} from "lucide-react";
 
 interface Mission {
   id: string;
@@ -28,10 +38,7 @@ interface AICoPilotProps {
   className?: string;
 }
 
-export function AICoPilot({
-  missions,
-  className = "",
-}: AICoPilotProps) {
+export function AICoPilot({ missions, className = "" }: AICoPilotProps) {
   const [messages, setMessages] = useState<CoPilotMessage[]>([]);
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -42,10 +49,19 @@ export function AICoPilot({
     const generateMessages = () => {
       const newMessages: CoPilotMessage[] = [];
 
-      missions.forEach(mission => {
+      missions.forEach((mission) => {
         const progress = (mission.currentAmount / mission.targetAmount) * 100;
-        const daysRemaining = Math.max(0, Math.ceil((mission.deadline.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)));
-        const dailyTarget = daysRemaining > 0 ? (mission.targetAmount - mission.currentAmount) / daysRemaining : 0;
+        const daysRemaining = Math.max(
+          0,
+          Math.ceil(
+            (mission.deadline.getTime() - new Date().getTime()) /
+              (1000 * 60 * 60 * 24),
+          ),
+        );
+        const dailyTarget =
+          daysRemaining > 0
+            ? (mission.targetAmount - mission.currentAmount) / daysRemaining
+            : 0;
 
         // Progress-based messages
         if (progress >= 90) {
@@ -58,7 +74,7 @@ export function AICoPilot({
             icon: "🎯",
             color: "#10B981",
             priority: 10,
-            timestamp: new Date()
+            timestamp: new Date(),
           });
         } else if (progress >= 75) {
           newMessages.push({
@@ -70,7 +86,7 @@ export function AICoPilot({
             icon: "🚀",
             color: "#3B82F6",
             priority: 8,
-            timestamp: new Date()
+            timestamp: new Date(),
           });
         } else if (progress >= 50) {
           newMessages.push({
@@ -82,7 +98,7 @@ export function AICoPilot({
             icon: "🛰️",
             color: "#8B5CF6",
             priority: 6,
-            timestamp: new Date()
+            timestamp: new Date(),
           });
         } else if (progress >= 25) {
           newMessages.push({
@@ -94,7 +110,7 @@ export function AICoPilot({
             icon: "🚀",
             color: "#F59E0B",
             priority: 4,
-            timestamp: new Date()
+            timestamp: new Date(),
           });
         }
 
@@ -109,7 +125,7 @@ export function AICoPilot({
             icon: "⚠️",
             color: "#EF4444",
             priority: 15,
-            timestamp: new Date()
+            timestamp: new Date(),
           });
         } else if (daysRemaining <= 60 && progress < 60) {
           newMessages.push({
@@ -121,7 +137,7 @@ export function AICoPilot({
             icon: "🔔",
             color: "#F59E0B",
             priority: 12,
-            timestamp: new Date()
+            timestamp: new Date(),
           });
         }
 
@@ -136,34 +152,41 @@ export function AICoPilot({
             icon: "🏆",
             color: "#10B981",
             priority: 20,
-            timestamp: new Date()
+            timestamp: new Date(),
           });
         }
 
         // Optimization tips
         if (progress > 0 && progress < 100) {
           const monthsRemaining = Math.ceil(daysRemaining / 30);
-          const monthlyNeeded = monthsRemaining > 0 ? (mission.targetAmount - mission.currentAmount) / monthsRemaining : 0;
-          
+          const monthlyNeeded =
+            monthsRemaining > 0
+              ? (mission.targetAmount - mission.currentAmount) / monthsRemaining
+              : 0;
+
           if (monthlyNeeded > 0) {
             newMessages.push({
               id: `${mission.id}-tip`,
               type: "tip",
               title: "💡 Navigation Tip",
-              message: `To reach ${mission.name} on time, save ฿${monthlyNeeded.toLocaleString()} per month. Small daily deposits of ฿${(monthlyNeeded/30).toLocaleString()} add up fast!`,
+              message: `To reach ${mission.name} on time, save ฿${monthlyNeeded.toLocaleString()} per month. Small daily deposits of ฿${(monthlyNeeded / 30).toLocaleString()} add up fast!`,
               action: "Set auto-save",
               icon: "💡",
               color: "#06B6D4",
               priority: 5,
-              timestamp: new Date()
+              timestamp: new Date(),
             });
           }
         }
       });
 
       // General motivational messages
-      const totalProgress = missions.reduce((sum, m) => sum + (m.currentAmount / m.targetAmount) * 100, 0) / missions.length;
-      
+      const totalProgress =
+        missions.reduce(
+          (sum, m) => sum + (m.currentAmount / m.targetAmount) * 100,
+          0,
+        ) / missions.length;
+
       if (totalProgress > 50) {
         newMessages.push({
           id: "general-progress",
@@ -174,18 +197,18 @@ export function AICoPilot({
           icon: "🌟",
           color: "#8B5CF6",
           priority: 7,
-          timestamp: new Date()
+          timestamp: new Date(),
         });
       }
 
       // Sort by priority (highest first)
       newMessages.sort((a, b) => b.priority - a.priority);
-      
+
       setMessages(newMessages.slice(0, 10)); // Keep top 10 messages
     };
 
     generateMessages();
-    
+
     // Regenerate messages every 5 minutes
     const interval = setInterval(generateMessages, 5 * 60 * 1000);
     return () => clearInterval(interval);
@@ -194,9 +217,9 @@ export function AICoPilot({
   // Auto-cycle through messages
   useEffect(() => {
     if (messages.length <= 1) return;
-    
+
     const interval = setInterval(() => {
-      setCurrentMessageIndex(prev => (prev + 1) % messages.length);
+      setCurrentMessageIndex((prev) => (prev + 1) % messages.length);
     }, 8000); // Change message every 8 seconds
 
     return () => clearInterval(interval);
@@ -205,30 +228,37 @@ export function AICoPilot({
   // Handle escape key to close modal
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isExpanded) {
+      if (e.key === "Escape" && isExpanded) {
         setIsExpanded(false);
       }
     };
 
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
   }, [isExpanded]);
 
   const currentMessage = messages[currentMessageIndex];
 
   // Filter messages based on active filter
-  const filteredMessages = activeFilter === "all" 
-    ? messages 
-    : messages.filter(message => message.type === activeFilter);
+  const filteredMessages =
+    activeFilter === "all"
+      ? messages
+      : messages.filter((message) => message.type === activeFilter);
 
   const getMessageIcon = (type: string) => {
     switch (type) {
-      case "motivation": return <Rocket className="w-5 h-5" />;
-      case "warning": return <AlertTriangle className="w-5 h-5" />;
-      case "achievement": return <Star className="w-5 h-5" />;
-      case "tip": return <Zap className="w-5 h-5" />;
-      case "milestone": return <Target className="w-5 h-5" />;
-      default: return <Bot className="w-5 h-5" />;
+      case "motivation":
+        return <Rocket className="w-5 h-5" />;
+      case "warning":
+        return <AlertTriangle className="w-5 h-5" />;
+      case "achievement":
+        return <Star className="w-5 h-5" />;
+      case "tip":
+        return <Zap className="w-5 h-5" />;
+      case "milestone":
+        return <Target className="w-5 h-5" />;
+      default:
+        return <Bot className="w-5 h-5" />;
     }
   };
 
@@ -249,7 +279,9 @@ export function AICoPilot({
           </motion.div>
           <div>
             <div className="text-white font-medium">AI Co-Pilot Ready</div>
-            <div className="text-white/60 text-sm">Monitoring your missions...</div>
+            <div className="text-white/60 text-sm">
+              Monitoring your missions...
+            </div>
           </div>
         </div>
       </motion.div>
@@ -271,12 +303,12 @@ export function AICoPilot({
             {/* AI Avatar */}
             <motion.div
               className="p-2 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex-shrink-0"
-              animate={{ 
+              animate={{
                 boxShadow: [
                   "0 0 20px rgba(59, 130, 246, 0.5)",
                   "0 0 30px rgba(139, 92, 246, 0.7)",
-                  "0 0 20px rgba(59, 130, 246, 0.5)"
-                ]
+                  "0 0 20px rgba(59, 130, 246, 0.5)",
+                ],
               }}
               transition={{ duration: 2, repeat: Infinity }}
             >
@@ -297,11 +329,11 @@ export function AICoPilot({
                 <div className="text-white font-medium text-sm">
                   AI Co-Pilot
                 </div>
-                <div 
+                <div
                   className="px-2 py-0.5 rounded-full text-xs font-medium"
-                  style={{ 
+                  style={{
                     backgroundColor: currentMessage.color + "20",
-                    color: currentMessage.color
+                    color: currentMessage.color,
                   }}
                 >
                   {currentMessage.type.toUpperCase()}
@@ -329,14 +361,14 @@ export function AICoPilot({
               {currentMessage.action && (
                 <motion.button
                   className="mt-3 px-3 py-1 rounded-lg text-xs font-medium transition-colors"
-                  style={{ 
+                  style={{
                     backgroundColor: currentMessage.color + "20",
                     color: currentMessage.color,
-                    border: `1px solid ${currentMessage.color}40`
+                    border: `1px solid ${currentMessage.color}40`,
                   }}
-                  whileHover={{ 
+                  whileHover={{
                     backgroundColor: currentMessage.color + "30",
-                    scale: 1.05 
+                    scale: 1.05,
                   }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -355,8 +387,8 @@ export function AICoPilot({
                   <div
                     key={index}
                     className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                      index === currentMessageIndex % 3 
-                        ? "bg-white" 
+                      index === currentMessageIndex % 3
+                        ? "bg-white"
                         : "bg-white/30"
                     }`}
                   />
@@ -388,7 +420,7 @@ export function AICoPilot({
               exit={{ opacity: 0 }}
               onClick={() => setIsExpanded(false)}
             />
-            
+
             {/* Enhanced Modal */}
             <motion.div
               className="fixed inset-x-2 sm:inset-x-4 lg:inset-x-8 top-1/2 transform -translate-y-1/2 bg-gradient-to-br from-gray-900/98 via-blue-900/95 to-purple-900/98 backdrop-blur-xl rounded-2xl border border-white/30 shadow-2xl z-[60] max-h-[85vh] overflow-hidden max-w-4xl mx-auto"
@@ -404,20 +436,24 @@ export function AICoPilot({
                   <div className="flex items-center gap-4">
                     <motion.div
                       className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500"
-                      animate={{ 
+                      animate={{
                         boxShadow: [
                           "0 0 20px rgba(59, 130, 246, 0.5)",
                           "0 0 30px rgba(139, 92, 246, 0.7)",
-                          "0 0 20px rgba(59, 130, 246, 0.5)"
-                        ]
+                          "0 0 20px rgba(59, 130, 246, 0.5)",
+                        ],
                       }}
                       transition={{ duration: 2, repeat: Infinity }}
                     >
                       <Bot className="w-6 h-6 text-white" />
                     </motion.div>
                     <div>
-                      <h2 className="text-2xl font-bold text-white">AI Co-Pilot Command Center</h2>
-                      <p className="text-white/70 text-sm">Mission intelligence and guidance system</p>
+                      <h2 className="text-2xl font-bold text-white">
+                        AI Co-Pilot Command Center
+                      </h2>
+                      <p className="text-white/70 text-sm">
+                        Mission intelligence and guidance system
+                      </p>
                     </div>
                   </div>
                   <motion.button
@@ -433,10 +469,32 @@ export function AICoPilot({
                 {/* Stats Bar */}
                 <div className="relative mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {[
-                    { label: "Active Alerts", value: messages.filter(m => m.type === "warning").length, icon: "⚠️", color: "#F59E0B" },
-                    { label: "Achievements", value: messages.filter(m => m.type === "achievement").length, icon: "🏆", color: "#10B981" },
-                    { label: "Tips Shared", value: messages.filter(m => m.type === "tip").length, icon: "💡", color: "#06B6D4" },
-                    { label: "Total Messages", value: messages.length, icon: "📊", color: "#8B5CF6" }
+                    {
+                      label: "Active Alerts",
+                      value: messages.filter((m) => m.type === "warning")
+                        .length,
+                      icon: "⚠️",
+                      color: "#F59E0B",
+                    },
+                    {
+                      label: "Achievements",
+                      value: messages.filter((m) => m.type === "achievement")
+                        .length,
+                      icon: "🏆",
+                      color: "#10B981",
+                    },
+                    {
+                      label: "Tips Shared",
+                      value: messages.filter((m) => m.type === "tip").length,
+                      icon: "💡",
+                      color: "#06B6D4",
+                    },
+                    {
+                      label: "Total Messages",
+                      value: messages.length,
+                      icon: "📊",
+                      color: "#8B5CF6",
+                    },
                   ].map((stat, index) => (
                     <motion.div
                       key={stat.label}
@@ -446,7 +504,9 @@ export function AICoPilot({
                       transition={{ delay: index * 0.1 }}
                     >
                       <div className="text-lg mb-1">{stat.icon}</div>
-                      <div className="text-white font-bold text-lg">{stat.value}</div>
+                      <div className="text-white font-bold text-lg">
+                        {stat.value}
+                      </div>
                       <div className="text-white/60 text-xs">{stat.label}</div>
                     </motion.div>
                   ))}
@@ -457,7 +517,14 @@ export function AICoPilot({
               <div className="p-6">
                 {/* Filter Tabs */}
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {["all", "motivation", "warning", "achievement", "tip", "milestone"].map((filter) => (
+                  {[
+                    "all",
+                    "motivation",
+                    "warning",
+                    "achievement",
+                    "tip",
+                    "milestone",
+                  ].map((filter) => (
                     <motion.button
                       key={filter}
                       onClick={() => setActiveFilter(filter)}
@@ -469,9 +536,13 @@ export function AICoPilot({
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      {filter === "all" ? "All Messages" : filter.charAt(0).toUpperCase() + filter.slice(1)}
+                      {filter === "all"
+                        ? "All Messages"
+                        : filter.charAt(0).toUpperCase() + filter.slice(1)}
                       <span className="ml-2 px-1.5 py-0.5 bg-white/20 rounded-full text-xs">
-                        {filter === "all" ? messages.length : messages.filter(m => m.type === filter).length}
+                        {filter === "all"
+                          ? messages.length
+                          : messages.filter((m) => m.type === filter).length}
                       </span>
                     </motion.button>
                   ))}
@@ -482,115 +553,124 @@ export function AICoPilot({
                   {filteredMessages.length === 0 ? (
                     <div className="text-center py-12">
                       <div className="text-4xl mb-4">🤖</div>
-                      <div className="text-white/60 text-lg mb-2">No messages in this category</div>
-                      <div className="text-white/40 text-sm">Try a different filter or check back later</div>
+                      <div className="text-white/60 text-lg mb-2">
+                        No messages in this category
+                      </div>
+                      <div className="text-white/40 text-sm">
+                        Try a different filter or check back later
+                      </div>
                     </div>
                   ) : (
                     filteredMessages.map((message, index) => (
-                    <motion.div
-                      key={message.id}
-                      className={`group relative p-4 rounded-xl border transition-all cursor-pointer overflow-hidden ${
-                        index === currentMessageIndex
-                          ? "bg-white/15 border-white/40 shadow-lg"
-                          : "bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20"
-                      }`}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                      onClick={() => setCurrentMessageIndex(index)}
-                      whileHover={{ scale: 1.02, y: -2 }}
-                    >
-                      {/* Background Glow */}
-                      <div 
-                        className="absolute inset-0 opacity-10 rounded-xl"
-                        style={{ backgroundColor: message.color }}
-                      />
-                      
-                      <div className="relative flex items-start gap-4">
-                        {/* Message Icon */}
-                        <motion.div
-                          className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center text-lg"
-                          style={{ 
-                            backgroundColor: message.color + "20",
-                            border: `2px solid ${message.color}40`
-                          }}
-                          animate={{ 
-                            boxShadow: index === currentMessageIndex 
-                              ? [`0 0 0 ${message.color}00`, `0 0 20px ${message.color}60`, `0 0 0 ${message.color}00`]
-                              : "0 0 0 transparent"
-                          }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                        >
-                          {message.icon}
-                        </motion.div>
+                      <motion.div
+                        key={message.id}
+                        className={`group relative p-4 rounded-xl border transition-all cursor-pointer overflow-hidden ${
+                          index === currentMessageIndex
+                            ? "bg-white/15 border-white/40 shadow-lg"
+                            : "bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20"
+                        }`}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                        onClick={() => setCurrentMessageIndex(index)}
+                        whileHover={{ scale: 1.02, y: -2 }}
+                      >
+                        {/* Background Glow */}
+                        <div
+                          className="absolute inset-0 opacity-10 rounded-xl"
+                          style={{ backgroundColor: message.color }}
+                        />
 
-                        {/* Message Content */}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-2">
-                            <div className="text-white font-bold text-base">
-                              {message.title}
-                            </div>
-                            <div 
-                              className="px-2 py-1 rounded-full text-xs font-medium"
-                              style={{ 
-                                backgroundColor: message.color + "20",
-                                color: message.color
-                              }}
-                            >
-                              {message.type.toUpperCase()}
-                            </div>
-                            {index === currentMessageIndex && (
-                              <motion.div
-                                className="px-2 py-1 bg-green-500/20 text-green-400 rounded-full text-xs font-medium"
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                              >
-                                ACTIVE
-                              </motion.div>
-                            )}
-                          </div>
-                          
-                          <div className="text-white/80 text-sm leading-relaxed mb-3">
-                            {message.message}
-                          </div>
+                        <div className="relative flex items-start gap-4">
+                          {/* Message Icon */}
+                          <motion.div
+                            className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center text-lg"
+                            style={{
+                              backgroundColor: message.color + "20",
+                              border: `2px solid ${message.color}40`,
+                            }}
+                            animate={{
+                              boxShadow:
+                                index === currentMessageIndex
+                                  ? [
+                                      `0 0 0 ${message.color}00`,
+                                      `0 0 20px ${message.color}60`,
+                                      `0 0 0 ${message.color}00`,
+                                    ]
+                                  : "0 0 0 transparent",
+                            }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                          >
+                            {message.icon}
+                          </motion.div>
 
-                          <div className="flex items-center justify-between">
-                            <div className="text-white/50 text-xs">
-                              {message.timestamp.toLocaleString()}
-                            </div>
-                            
-                            {message.action && (
-                              <motion.button
-                                className="px-3 py-1 rounded-lg text-xs font-medium transition-colors"
-                                style={{ 
+                          {/* Message Content */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-2">
+                              <div className="text-white font-bold text-base">
+                                {message.title}
+                              </div>
+                              <div
+                                className="px-2 py-1 rounded-full text-xs font-medium"
+                                style={{
                                   backgroundColor: message.color + "20",
                                   color: message.color,
-                                  border: `1px solid ${message.color}40`
                                 }}
-                                whileHover={{ 
-                                  backgroundColor: message.color + "30",
-                                  scale: 1.05 
-                                }}
-                                whileTap={{ scale: 0.95 }}
                               >
-                                {message.action}
-                              </motion.button>
-                            )}
+                                {message.type.toUpperCase()}
+                              </div>
+                              {index === currentMessageIndex && (
+                                <motion.div
+                                  className="px-2 py-1 bg-green-500/20 text-green-400 rounded-full text-xs font-medium"
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                >
+                                  ACTIVE
+                                </motion.div>
+                              )}
+                            </div>
+
+                            <div className="text-white/80 text-sm leading-relaxed mb-3">
+                              {message.message}
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                              <div className="text-white/50 text-xs">
+                                {message.timestamp.toLocaleString()}
+                              </div>
+
+                              {message.action && (
+                                <motion.button
+                                  className="px-3 py-1 rounded-lg text-xs font-medium transition-colors"
+                                  style={{
+                                    backgroundColor: message.color + "20",
+                                    color: message.color,
+                                    border: `1px solid ${message.color}40`,
+                                  }}
+                                  whileHover={{
+                                    backgroundColor: message.color + "30",
+                                    scale: 1.05,
+                                  }}
+                                  whileTap={{ scale: 0.95 }}
+                                >
+                                  {message.action}
+                                </motion.button>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Priority Indicator */}
+                          <div className="flex-shrink-0">
+                            <div
+                              className="w-2 h-16 rounded-full"
+                              style={{
+                                backgroundColor: message.color,
+                                opacity: message.priority / 20,
+                              }}
+                            />
                           </div>
                         </div>
-
-                        {/* Priority Indicator */}
-                        <div className="flex-shrink-0">
-                          <div 
-                            className="w-2 h-16 rounded-full"
-                            style={{ 
-                              backgroundColor: message.color,
-                              opacity: message.priority / 20
-                            }}
-                          />
-                        </div>
-                      </div>
-                    </motion.div>
+                      </motion.div>
                     ))
                   )}
                 </div>
@@ -598,7 +678,8 @@ export function AICoPilot({
                 {/* Footer Actions */}
                 <div className="mt-6 pt-4 border-t border-white/20 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="text-white/60 text-sm text-center sm:text-left">
-                    {filteredMessages.length} of {messages.length} messages • Last update: {new Date().toLocaleTimeString()}
+                    {filteredMessages.length} of {messages.length} messages •
+                    Last update: {new Date().toLocaleTimeString()}
                   </div>
                   <div className="flex gap-2">
                     <motion.button

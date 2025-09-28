@@ -10,7 +10,14 @@ import {
   UniverseBackground,
   AccessibilityModeToggle,
 } from "../components/widgets";
-import { Radar, Calendar, CreditCard, BarChart3, Sparkles, TrendingUp } from "lucide-react";
+import {
+  Radar,
+  Calendar,
+  CreditCard,
+  BarChart3,
+  Sparkles,
+  TrendingUp,
+} from "lucide-react";
 
 // Enhanced Mock Data for Ultimate Spending Experience
 const mockSpendingCategories = [
@@ -151,31 +158,108 @@ const mockPaymentMethods = [
 
 const mockSpendingData = [
   // Essential items
-  { id: "1", name: "Rent", amount: 15000, category: "Housing", type: "essential" as const, date: new Date(), merchant: "Property Management" },
-  { id: "2", name: "Groceries", amount: 4500, category: "Food", type: "essential" as const, date: new Date(), merchant: "Supermarket" },
-  { id: "3", name: "Utilities", amount: 2800, category: "Utilities", type: "essential" as const, date: new Date(), merchant: "Electric Company" },
-  { id: "4", name: "Insurance", amount: 1200, category: "Insurance", type: "essential" as const, date: new Date(), merchant: "Insurance Co" },
-  
+  {
+    id: "1",
+    name: "Rent",
+    amount: 15000,
+    category: "Housing",
+    type: "essential" as const,
+    date: new Date(),
+    merchant: "Property Management",
+  },
+  {
+    id: "2",
+    name: "Groceries",
+    amount: 4500,
+    category: "Food",
+    type: "essential" as const,
+    date: new Date(),
+    merchant: "Supermarket",
+  },
+  {
+    id: "3",
+    name: "Utilities",
+    amount: 2800,
+    category: "Utilities",
+    type: "essential" as const,
+    date: new Date(),
+    merchant: "Electric Company",
+  },
+  {
+    id: "4",
+    name: "Insurance",
+    amount: 1200,
+    category: "Insurance",
+    type: "essential" as const,
+    date: new Date(),
+    merchant: "Insurance Co",
+  },
+
   // Lifestyle items
-  { id: "5", name: "Dining Out", amount: 3200, category: "Food", type: "lifestyle" as const, date: new Date(), merchant: "Restaurants" },
-  { id: "6", name: "Entertainment", amount: 1800, category: "Entertainment", type: "lifestyle" as const, date: new Date(), merchant: "Cinema" },
-  { id: "7", name: "Shopping", amount: 2500, category: "Shopping", type: "lifestyle" as const, date: new Date(), merchant: "Mall" },
-  { id: "8", name: "Travel", amount: 4000, category: "Travel", type: "lifestyle" as const, date: new Date(), merchant: "Airlines" },
+  {
+    id: "5",
+    name: "Dining Out",
+    amount: 3200,
+    category: "Food",
+    type: "lifestyle" as const,
+    date: new Date(),
+    merchant: "Restaurants",
+  },
+  {
+    id: "6",
+    name: "Entertainment",
+    amount: 1800,
+    category: "Entertainment",
+    type: "lifestyle" as const,
+    date: new Date(),
+    merchant: "Cinema",
+  },
+  {
+    id: "7",
+    name: "Shopping",
+    amount: 2500,
+    category: "Shopping",
+    type: "lifestyle" as const,
+    date: new Date(),
+    merchant: "Mall",
+  },
+  {
+    id: "8",
+    name: "Travel",
+    amount: 4000,
+    category: "Travel",
+    type: "lifestyle" as const,
+    date: new Date(),
+    merchant: "Airlines",
+  },
 ];
 
 export function Spending() {
   const [viewMode, setViewMode] = useState<"play" | "clarity">("play");
-  const [accessibilityMode, setAccessibilityMode] = useState<"elder" | "youth" | "standard">("standard");
-  const [activeSection, setActiveSection] = useState<"galaxy" | "timeline" | "radar" | "balance">("galaxy");
+  const [accessibilityMode, setAccessibilityMode] = useState<
+    "elder" | "youth" | "standard"
+  >("standard");
+  const [activeSection, setActiveSection] = useState<
+    "galaxy" | "timeline" | "radar" | "balance"
+  >("galaxy");
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
 
   // Calculate totals
   const totals = useMemo(() => {
-    const totalSpent = mockSpendingCategories.reduce((sum, cat) => sum + cat.amount, 0);
-    const totalBudget = mockSpendingCategories.reduce((sum, cat) => sum + cat.budget, 0);
-    const totalPayments = mockPaymentMethods.reduce((sum, method) => sum + method.amount, 0);
+    const totalSpent = mockSpendingCategories.reduce(
+      (sum, cat) => sum + cat.amount,
+      0,
+    );
+    const totalBudget = mockSpendingCategories.reduce(
+      (sum, cat) => sum + cat.budget,
+      0,
+    );
+    const totalPayments = mockPaymentMethods.reduce(
+      (sum, method) => sum + method.amount,
+      0,
+    );
     const monthlyIncome = 50000; // Mock monthly income
-    
+
     return {
       totalSpent,
       totalBudget,
@@ -200,7 +284,7 @@ export function Spending() {
     >
       {viewMode === "play" && <UniverseBackground starCount={60} />}
       <DualLensToggle viewMode={viewMode} onToggle={setViewMode} />
-      
+
       {/* Accessibility Mode Toggle */}
       <div className="fixed top-6 right-2 sm:top-6 sm:right-4 lg:top-6 lg:right-8 z-50">
         <AccessibilityModeToggle
@@ -211,7 +295,11 @@ export function Spending() {
 
       <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pb-8 sm:pb-12 pt-20 sm:pt-24 lg:pt-32 relative z-10">
         {/* Hero Section */}
-        <FadeIn direction="down" delay={0.1} className="text-center py-4 sm:py-8 mb-8">
+        <FadeIn
+          direction="down"
+          delay={0.1}
+          className="text-center py-4 sm:py-8 mb-8"
+        >
           <div className="mb-8">
             <div
               className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 ${
@@ -226,7 +314,7 @@ export function Spending() {
                 }}
                 transition={{
                   rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-                  scale: { duration: 3, repeat: Infinity }
+                  scale: { duration: 3, repeat: Infinity },
                 }}
               >
                 🌌
@@ -248,10 +336,30 @@ export function Spending() {
             {/* Quick Stats */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto">
               {[
-                { label: "Total Spent", value: `฿${totals.totalSpent.toLocaleString()}`, icon: "💰", color: "#FF6B6B" },
-                { label: "Budget Used", value: `${totals.budgetUsed.toFixed(1)}%`, icon: "🎯", color: "#4ECDC4" },
-                { label: "Income Used", value: `${totals.incomeUsed.toFixed(1)}%`, icon: "📊", color: "#45B7D1" },
-                { label: "Categories", value: mockSpendingCategories.length, icon: "🌟", color: "#F9CA24" }
+                {
+                  label: "Total Spent",
+                  value: `฿${totals.totalSpent.toLocaleString()}`,
+                  icon: "💰",
+                  color: "#FF6B6B",
+                },
+                {
+                  label: "Budget Used",
+                  value: `${totals.budgetUsed.toFixed(1)}%`,
+                  icon: "🎯",
+                  color: "#4ECDC4",
+                },
+                {
+                  label: "Income Used",
+                  value: `${totals.incomeUsed.toFixed(1)}%`,
+                  icon: "📊",
+                  color: "#45B7D1",
+                },
+                {
+                  label: "Categories",
+                  value: mockSpendingCategories.length,
+                  icon: "🌟",
+                  color: "#F9CA24",
+                },
               ].map((stat, index) => (
                 <motion.div
                   key={stat.label}
@@ -267,7 +375,9 @@ export function Spending() {
                 >
                   <div className="text-2xl mb-2">{stat.icon}</div>
                   <div className="text-xl font-bold">{stat.value}</div>
-                  <div className={`text-sm ${viewMode === "play" ? "text-white/70" : "text-gray-600"}`}>
+                  <div
+                    className={`text-sm ${viewMode === "play" ? "text-white/70" : "text-gray-600"}`}
+                  >
                     {stat.label}
                   </div>
                 </motion.div>
@@ -281,10 +391,30 @@ export function Spending() {
           <div className="flex justify-center">
             <div className="flex overflow-x-auto scrollbar-hide gap-1 sm:gap-2 p-2 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 w-full max-w-4xl">
               {[
-                { id: "galaxy", label: "Spending Galaxy", icon: <Radar className="w-4 h-4" />, desc: "Planet View" },
-                { id: "timeline", label: "Timeline Radar", icon: <Calendar className="w-4 h-4" />, desc: "When You Spend" },
-                { id: "radar", label: "Payment Radar", icon: <CreditCard className="w-4 h-4" />, desc: "Method Analysis" },
-                { id: "balance", label: "Life Balance", icon: <BarChart3 className="w-4 h-4" />, desc: "Needs vs Wants" }
+                {
+                  id: "galaxy",
+                  label: "Spending Galaxy",
+                  icon: <Radar className="w-4 h-4" />,
+                  desc: "Planet View",
+                },
+                {
+                  id: "timeline",
+                  label: "Timeline Radar",
+                  icon: <Calendar className="w-4 h-4" />,
+                  desc: "When You Spend",
+                },
+                {
+                  id: "radar",
+                  label: "Payment Radar",
+                  icon: <CreditCard className="w-4 h-4" />,
+                  desc: "Method Analysis",
+                },
+                {
+                  id: "balance",
+                  label: "Life Balance",
+                  icon: <BarChart3 className="w-4 h-4" />,
+                  desc: "Needs vs Wants",
+                },
               ].map((tab) => (
                 <motion.button
                   key={tab.id}
@@ -300,8 +430,12 @@ export function Spending() {
                   <div className="flex items-center gap-1 sm:gap-2">
                     {tab.icon}
                     <div>
-                      <div className="text-xs sm:text-sm font-semibold leading-tight">{tab.label}</div>
-                      <div className="text-xs opacity-70 hidden sm:block mt-1">{tab.desc}</div>
+                      <div className="text-xs sm:text-sm font-semibold leading-tight">
+                        {tab.label}
+                      </div>
+                      <div className="text-xs opacity-70 hidden sm:block mt-1">
+                        {tab.desc}
+                      </div>
                     </div>
                   </div>
                 </motion.button>
@@ -339,10 +473,7 @@ export function Spending() {
               transition={{ duration: 0.5 }}
             >
               <FadeIn direction="up" delay={0.4}>
-                <SpendingTimelineHeatmap
-                  spendingData={[]}
-                  className="mb-8"
-                />
+                <SpendingTimelineHeatmap spendingData={[]} className="mb-8" />
               </FadeIn>
             </motion.div>
           )}
@@ -398,7 +529,9 @@ export function Spending() {
             {viewMode === "play" ? "🌟" : "💡"}
           </div>
           <h3 className="text-xl sm:text-2xl font-bold mb-4">
-            {viewMode === "play" ? "Master Your Financial Galaxy" : "Smart Spending Insights"}
+            {viewMode === "play"
+              ? "Master Your Financial Galaxy"
+              : "Smart Spending Insights"}
           </h3>
           <p
             className={`text-base sm:text-lg mb-6 max-w-2xl mx-auto px-4 ${
@@ -414,10 +547,9 @@ export function Spending() {
               viewMode === "play" ? "text-white/60" : "text-gray-500"
             }`}
           >
-            {viewMode === "play" 
+            {viewMode === "play"
               ? "🌌 Explore • 📊 Analyze • 🎯 Optimize • 🚀 Achieve"
-              : "📈 Monitor trends • ⚡ Set alerts • 🎯 Meet budgets • 💰 Save more"
-            }
+              : "📈 Monitor trends • ⚡ Set alerts • 🎯 Meet budgets • 💰 Save more"}
           </div>
         </motion.div>
       </div>

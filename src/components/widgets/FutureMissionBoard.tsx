@@ -1,6 +1,16 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Rocket, Star, Target, Calendar, DollarSign, Zap, Trophy, Map } from "lucide-react";
+import {
+  Plus,
+  Rocket,
+  Star,
+  Target,
+  Calendar,
+  DollarSign,
+  Zap,
+  Trophy,
+  Map,
+} from "lucide-react";
 
 interface Mission {
   id: string;
@@ -9,7 +19,13 @@ interface Mission {
   targetAmount: number;
   currentAmount: number;
   deadline: Date;
-  category: "travel" | "emergency" | "debt" | "investment" | "purchase" | "custom";
+  category:
+    | "travel"
+    | "emergency"
+    | "debt"
+    | "investment"
+    | "purchase"
+    | "custom";
   theme: "rocket" | "planet" | "station" | "constellation";
   icon: string;
   color: string;
@@ -70,11 +86,21 @@ export function FutureMissionBoard({
         transactions: [],
         notes: ["Save ฿10,000 per month", "Book flights by December"],
         milestones: [
-          { percentage: 25, label: "Launch", achieved: true, achievedDate: new Date("2024-03-01") },
-          { percentage: 50, label: "In Orbit", achieved: true, achievedDate: new Date("2024-06-15") },
+          {
+            percentage: 25,
+            label: "Launch",
+            achieved: true,
+            achievedDate: new Date("2024-03-01"),
+          },
+          {
+            percentage: 50,
+            label: "In Orbit",
+            achieved: true,
+            achievedDate: new Date("2024-06-15"),
+          },
           { percentage: 75, label: "Deep Space", achieved: false },
-          { percentage: 100, label: "Arrival", achieved: false }
-        ]
+          { percentage: 100, label: "Arrival", achieved: false },
+        ],
       },
       {
         id: "emergency-fund",
@@ -91,13 +117,16 @@ export function FutureMissionBoard({
         isCompleted: false,
         createdAt: new Date("2024-02-01"),
         transactions: [],
-        notes: ["Critical for financial stability", "Target: 6 months expenses"],
+        notes: [
+          "Critical for financial stability",
+          "Target: 6 months expenses",
+        ],
         milestones: [
           { percentage: 25, label: "Foundation", achieved: true },
           { percentage: 50, label: "Secure Base", achieved: true },
           { percentage: 75, label: "Strong Defense", achieved: false },
-          { percentage: 100, label: "Fortress Complete", achieved: false }
-        ]
+          { percentage: 100, label: "Fortress Complete", achieved: false },
+        ],
       },
       {
         id: "debt-free",
@@ -119,8 +148,8 @@ export function FutureMissionBoard({
           { percentage: 25, label: "Escape Velocity", achieved: true },
           { percentage: 50, label: "Breaking Free", achieved: true },
           { percentage: 75, label: "Almost There", achieved: true },
-          { percentage: 100, label: "Freedom Achieved", achieved: false }
-        ]
+          { percentage: 100, label: "Freedom Achieved", achieved: false },
+        ],
       },
       {
         id: "new-laptop",
@@ -142,9 +171,9 @@ export function FutureMissionBoard({
           { percentage: 25, label: "First Star", achieved: true },
           { percentage: 50, label: "Constellation Forming", achieved: false },
           { percentage: 75, label: "Nearly Complete", achieved: false },
-          { percentage: 100, label: "Constellation Unlocked", achieved: false }
-        ]
-      }
+          { percentage: 100, label: "Constellation Unlocked", achieved: false },
+        ],
+      },
     ];
     setMissions(mockMissions);
   }, []);
@@ -172,20 +201,28 @@ export function FutureMissionBoard({
 
   const getPriorityGlow = (priority: string) => {
     switch (priority) {
-      case "critical": return "shadow-red-500/50";
-      case "high": return "shadow-orange-500/40";
-      case "medium": return "shadow-blue-500/30";
-      case "low": return "shadow-gray-500/20";
-      default: return "shadow-gray-500/20";
+      case "critical":
+        return "shadow-red-500/50";
+      case "high":
+        return "shadow-orange-500/40";
+      case "medium":
+        return "shadow-blue-500/30";
+      case "low":
+        return "shadow-gray-500/20";
+      default:
+        return "shadow-gray-500/20";
     }
   };
 
-  const filteredMissions = missions.filter(mission => 
-    selectedCategory === "all" || mission.category === selectedCategory
+  const filteredMissions = missions.filter(
+    (mission) =>
+      selectedCategory === "all" || mission.category === selectedCategory,
   );
 
-  const completedMissions = missions.filter(m => m.isCompleted).length;
-  const totalProgress = missions.reduce((sum, m) => sum + getProgressPercentage(m), 0) / missions.length;
+  const completedMissions = missions.filter((m) => m.isCompleted).length;
+  const totalProgress =
+    missions.reduce((sum, m) => sum + getProgressPercentage(m), 0) /
+    missions.length;
 
   return (
     <div className={`relative ${className}`}>
@@ -199,20 +236,24 @@ export function FutureMissionBoard({
           <div className="flex items-center gap-4">
             <motion.div
               className="p-4 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500"
-              animate={{ 
+              animate={{
                 rotate: [0, 360],
-                scale: [1, 1.1, 1]
+                scale: [1, 1.1, 1],
               }}
-              transition={{ 
+              transition={{
                 rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-                scale: { duration: 3, repeat: Infinity }
+                scale: { duration: 3, repeat: Infinity },
               }}
             >
               <Rocket className="w-8 h-8 text-white" />
             </motion.div>
             <div>
-              <h1 className="text-3xl font-bold text-white mb-2">Future Mission Board</h1>
-              <p className="text-white/70">Your financial dreams as space missions</p>
+              <h1 className="text-3xl font-bold text-white mb-2">
+                Future Mission Board
+              </h1>
+              <p className="text-white/70">
+                Your financial dreams as space missions
+              </p>
             </div>
           </div>
 
@@ -250,10 +291,30 @@ export function FutureMissionBoard({
         {/* Mission Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
           {[
-            { label: "Active Missions", value: missions.filter(m => !m.isCompleted).length, icon: "🚀", color: "#4ECDC4" },
-            { label: "Completed", value: completedMissions, icon: "🏆", color: "#FFD93D" },
-            { label: "Total Progress", value: `${totalProgress.toFixed(0)}%`, icon: "📊", color: "#FF6B6B" },
-            { label: "This Month", value: "฿25K", icon: "💰", color: "#96CEB4" }
+            {
+              label: "Active Missions",
+              value: missions.filter((m) => !m.isCompleted).length,
+              icon: "🚀",
+              color: "#4ECDC4",
+            },
+            {
+              label: "Completed",
+              value: completedMissions,
+              icon: "🏆",
+              color: "#FFD93D",
+            },
+            {
+              label: "Total Progress",
+              value: `${totalProgress.toFixed(0)}%`,
+              icon: "📊",
+              color: "#FF6B6B",
+            },
+            {
+              label: "This Month",
+              value: "฿25K",
+              icon: "💰",
+              color: "#96CEB4",
+            },
           ].map((stat, index) => (
             <motion.div
               key={stat.label}
@@ -261,7 +322,10 @@ export function FutureMissionBoard({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.1)" }}
+              whileHover={{
+                scale: 1.02,
+                backgroundColor: "rgba(255,255,255,0.1)",
+              }}
             >
               <div className="text-2xl mb-2">{stat.icon}</div>
               <div className="text-xl font-bold text-white">{stat.value}</div>
@@ -272,7 +336,15 @@ export function FutureMissionBoard({
 
         {/* Category Filter */}
         <div className="flex flex-wrap gap-2 mb-4">
-          {["all", "travel", "emergency", "debt", "investment", "purchase", "custom"].map((category) => (
+          {[
+            "all",
+            "travel",
+            "emergency",
+            "debt",
+            "investment",
+            "purchase",
+            "custom",
+          ].map((category) => (
             <motion.button
               key={category}
               onClick={() => setSelectedCategory(category)}
@@ -283,7 +355,9 @@ export function FutureMissionBoard({
               }`}
               whileHover={{ scale: 1.05 }}
             >
-              {category === "all" ? "All Missions" : category.charAt(0).toUpperCase() + category.slice(1)}
+              {category === "all"
+                ? "All Missions"
+                : category.charAt(0).toUpperCase() + category.slice(1)}
             </motion.button>
           ))}
         </div>
@@ -314,7 +388,7 @@ export function FutureMissionBoard({
               const progress = getProgressPercentage(mission);
               const daysRemaining = getDaysRemaining(mission.deadline);
               const urgencyColor = getUrgencyColor(daysRemaining);
-              
+
               return (
                 <motion.div
                   key={mission.id}
@@ -322,37 +396,44 @@ export function FutureMissionBoard({
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  whileHover={{ 
-                    scale: 1.02, 
+                  whileHover={{
+                    scale: 1.02,
                     y: -5,
-                    backgroundColor: "rgba(255,255,255,0.1)"
+                    backgroundColor: "rgba(255,255,255,0.1)",
                   }}
                   onClick={() => onMissionClick(mission)}
                   style={{
-                    boxShadow: `0 0 30px ${mission.color}20`
+                    boxShadow: `0 0 30px ${mission.color}20`,
                   }}
                 >
                   {/* Mission Header */}
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <div 
+                      <div
                         className="w-12 h-12 rounded-full flex items-center justify-center text-xl"
-                        style={{ backgroundColor: mission.color + "20", border: `2px solid ${mission.color}40` }}
+                        style={{
+                          backgroundColor: mission.color + "20",
+                          border: `2px solid ${mission.color}40`,
+                        }}
                       >
                         {mission.icon}
                       </div>
                       <div>
-                        <h3 className="font-bold text-white text-lg">{mission.name}</h3>
-                        <p className="text-white/60 text-sm">{mission.description}</p>
+                        <h3 className="font-bold text-white text-lg">
+                          {mission.name}
+                        </h3>
+                        <p className="text-white/60 text-sm">
+                          {mission.description}
+                        </p>
                       </div>
                     </div>
-                    
+
                     {/* Priority Badge */}
-                    <div 
+                    <div
                       className="px-2 py-1 rounded-full text-xs font-medium"
-                      style={{ 
+                      style={{
                         backgroundColor: mission.color + "20",
-                        color: mission.color
+                        color: mission.color,
                       }}
                     >
                       {mission.priority.toUpperCase()}
@@ -362,10 +443,14 @@ export function FutureMissionBoard({
                   {/* Progress Section */}
                   <div className="mb-4">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-white/70 text-sm">Mission Progress</span>
-                      <span className="text-white font-bold">{progress.toFixed(1)}%</span>
+                      <span className="text-white/70 text-sm">
+                        Mission Progress
+                      </span>
+                      <span className="text-white font-bold">
+                        {progress.toFixed(1)}%
+                      </span>
                     </div>
-                    
+
                     {/* Animated Progress Bar */}
                     <div className="relative h-3 bg-white/10 rounded-full overflow-hidden">
                       <motion.div
@@ -375,19 +460,19 @@ export function FutureMissionBoard({
                         animate={{ width: `${progress}%` }}
                         transition={{ duration: 1, delay: index * 0.1 }}
                       />
-                      
+
                       {/* Rocket Animation */}
                       <motion.div
                         className="absolute top-1/2 transform -translate-y-1/2 text-white text-xs"
                         style={{ left: `${Math.max(progress - 2, 0)}%` }}
-                        animate={{ 
+                        animate={{
                           x: [0, 2, 0],
-                          rotate: [0, 5, 0]
+                          rotate: [0, 5, 0],
                         }}
-                        transition={{ 
-                          duration: 2, 
+                        transition={{
+                          duration: 2,
                           repeat: Infinity,
-                          ease: "easeInOut"
+                          ease: "easeInOut",
                         }}
                       >
                         🚀
@@ -399,11 +484,15 @@ export function FutureMissionBoard({
                   <div className="flex justify-between items-center mb-4">
                     <div>
                       <div className="text-white/60 text-xs">Saved</div>
-                      <div className="text-white font-bold">{formatCurrency(mission.currentAmount)}</div>
+                      <div className="text-white font-bold">
+                        {formatCurrency(mission.currentAmount)}
+                      </div>
                     </div>
                     <div className="text-right">
                       <div className="text-white/60 text-xs">Target</div>
-                      <div className="text-white font-bold">{formatCurrency(mission.targetAmount)}</div>
+                      <div className="text-white font-bold">
+                        {formatCurrency(mission.targetAmount)}
+                      </div>
                     </div>
                   </div>
 
@@ -415,11 +504,11 @@ export function FutureMissionBoard({
                         {mission.deadline.toLocaleDateString()}
                       </span>
                     </div>
-                    <div 
+                    <div
                       className="px-3 py-1 rounded-full text-sm font-bold"
-                      style={{ 
+                      style={{
                         backgroundColor: urgencyColor + "20",
-                        color: urgencyColor
+                        color: urgencyColor,
                       }}
                     >
                       {daysRemaining === 0 ? "Today!" : `${daysRemaining} days`}
@@ -429,7 +518,10 @@ export function FutureMissionBoard({
                   {/* Current Milestone */}
                   <div className="mt-4 pt-4 border-t border-white/10">
                     {mission.milestones.map((milestone, idx) => {
-                      if (progress >= milestone.percentage && !milestone.achieved) {
+                      if (
+                        progress >= milestone.percentage &&
+                        !milestone.achieved
+                      ) {
                         return (
                           <motion.div
                             key={idx}
@@ -439,7 +531,8 @@ export function FutureMissionBoard({
                           >
                             <Star className="w-4 h-4 text-yellow-400" />
                             <span className="text-white/80">
-                              Next: <strong>{milestone.label}</strong> at {milestone.percentage}%
+                              Next: <strong>{milestone.label}</strong> at{" "}
+                              {milestone.percentage}%
                             </span>
                           </motion.div>
                         );
@@ -449,10 +542,14 @@ export function FutureMissionBoard({
                   </div>
 
                   {/* Glow Effect Based on Progress */}
-                  <div 
+                  <div
                     className="absolute inset-0 rounded-2xl pointer-events-none"
                     style={{
-                      background: `radial-gradient(circle at center, ${mission.color}${Math.floor(progress * 0.3).toString(16).padStart(2, '0')} 0%, transparent 70%)`,
+                      background: `radial-gradient(circle at center, ${mission.color}${Math.floor(
+                        progress * 0.3,
+                      )
+                        .toString(16)
+                        .padStart(2, "0")} 0%, transparent 70%)`,
                     }}
                   />
                 </motion.div>
@@ -497,7 +594,7 @@ export function FutureMissionBoard({
               const progress = getProgressPercentage(mission);
               const x = 20 + (index % 4) * 20;
               const y = 20 + Math.floor(index / 4) * 25;
-              
+
               return (
                 <motion.div
                   key={mission.id}
@@ -511,26 +608,26 @@ export function FutureMissionBoard({
                 >
                   <motion.div
                     className="relative w-8 h-8 rounded-full flex items-center justify-center"
-                    style={{ 
+                    style={{
                       backgroundColor: mission.color,
-                      boxShadow: `0 0 20px ${mission.color}80`
+                      boxShadow: `0 0 20px ${mission.color}80`,
                     }}
                     animate={{
                       boxShadow: [
                         `0 0 20px ${mission.color}80`,
                         `0 0 40px ${mission.color}`,
-                        `0 0 20px ${mission.color}80`
-                      ]
+                        `0 0 20px ${mission.color}80`,
+                      ],
                     }}
                     transition={{ duration: 2, repeat: Infinity }}
                   >
                     <span className="text-white text-sm">{mission.icon}</span>
                   </motion.div>
-                  
+
                   {/* Mission Name */}
                   <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-center">
                     <div className="text-white text-xs font-medium whitespace-nowrap">
-                      {mission.name.split(' ')[0]}
+                      {mission.name.split(" ")[0]}
                     </div>
                     <div className="text-white/60 text-xs">
                       {progress.toFixed(0)}%
@@ -542,7 +639,9 @@ export function FutureMissionBoard({
 
             {/* Star Map Legend */}
             <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-sm rounded-lg p-3">
-              <div className="text-white text-sm font-bold mb-2">Galaxy Progress</div>
+              <div className="text-white text-sm font-bold mb-2">
+                Galaxy Progress
+              </div>
               <div className="text-white/70 text-xs">
                 Each star represents a mission. Brighter stars = more progress!
               </div>

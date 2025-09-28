@@ -19,44 +19,49 @@ export function SpendingTimelineHeatmap({
   spendingData,
   className = "",
 }: SpendingTimelineHeatmapProps) {
-  const [timeRange, setTimeRange] = useState<"week" | "month" | "3months">("month");
+  const [timeRange, setTimeRange] = useState<"week" | "month" | "3months">(
+    "month",
+  );
   const [viewMode, setViewMode] = useState<"daily" | "hourly">("daily");
-  const [hoveredCell, setHoveredCell] = useState<{ date: string; amount: number } | null>(null);
+  const [hoveredCell, setHoveredCell] = useState<{
+    date: string;
+    amount: number;
+  } | null>(null);
 
   // Generate mock data for demonstration
   const mockData = useMemo(() => {
     const data: SpendingData[] = [];
     const now = new Date();
     const daysBack = timeRange === "week" ? 7 : timeRange === "month" ? 30 : 90;
-    
+
     for (let i = 0; i < daysBack; i++) {
       const date = new Date(now);
       date.setDate(date.getDate() - i);
-      
+
       // Generate realistic spending patterns
       const dayOfWeek = date.getDay();
       const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
       const isFriday = dayOfWeek === 5;
-      
+
       // Weekend and Friday spending tends to be higher
       const baseAmount = isWeekend ? 800 : isFriday ? 1200 : 400;
       const randomVariation = Math.random() * 600;
       const amount = baseAmount + randomVariation;
-      
+
       data.push({
-        date: date.toISOString().split('T')[0],
+        date: date.toISOString().split("T")[0],
         amount: Math.round(amount),
         category: "mixed",
         dayOfWeek,
         hour: Math.floor(Math.random() * 24),
       });
     }
-    
+
     return data.reverse();
   }, [timeRange]);
 
   // Calculate intensity for heatmap colors
-  const maxAmount = Math.max(...mockData.map(d => d.amount));
+  const maxAmount = Math.max(...mockData.map((d) => d.amount));
   const getIntensity = (amount: number) => amount / maxAmount;
 
   // Get color based on intensity
@@ -73,23 +78,23 @@ export function SpendingTimelineHeatmap({
   const weeklyData = useMemo(() => {
     const weeks: SpendingData[][] = [];
     let currentWeek: SpendingData[] = [];
-    
+
     mockData.forEach((data, index) => {
       const date = new Date(data.date);
       const dayOfWeek = date.getDay();
-      
+
       if (dayOfWeek === 0 && currentWeek.length > 0) {
         weeks.push(currentWeek);
         currentWeek = [];
       }
-      
+
       currentWeek.push(data);
-      
+
       if (index === mockData.length - 1) {
         weeks.push(currentWeek);
       }
     });
-    
+
     return weeks;
   }, [mockData]);
 
@@ -97,12 +102,12 @@ export function SpendingTimelineHeatmap({
   const hourlyPattern = useMemo(() => {
     const hourlySpending = Array(24).fill(0);
     const hourlyCounts = Array(24).fill(0);
-    
-    mockData.forEach(data => {
+
+    mockData.forEach((data) => {
       hourlySpending[data.hour] += data.amount;
       hourlyCounts[data.hour]++;
     });
-    
+
     return hourlySpending.map((total, hour) => ({
       hour,
       average: hourlyCounts[hour] > 0 ? total / hourlyCounts[hour] : 0,
@@ -112,17 +117,34 @@ export function SpendingTimelineHeatmap({
   }, [mockData]);
 
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
 
   return (
     <div className={`${className}`}>
       {/* Header Controls */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
         <div>
-          <h3 className="text-2xl font-bold text-white mb-2">Spending Timeline</h3>
-          <p className="text-white/70">Discover when you spend the most money</p>
+          <h3 className="text-2xl font-bold text-white mb-2">
+            Spending Timeline
+          </h3>
+          <p className="text-white/70">
+            Discover when you spend the most money
+          </p>
         </div>
-        
+
         <div className="flex flex-wrap gap-2">
           {/* Time Range Selector */}
           <div className="flex bg-white/10 rounded-lg p-1">
@@ -138,7 +160,9 @@ export function SpendingTimelineHeatmap({
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {range === "3months" ? "3 Months" : range.charAt(0).toUpperCase() + range.slice(1)}
+                {range === "3months"
+                  ? "3 Months"
+                  : range.charAt(0).toUpperCase() + range.slice(1)}
               </motion.button>
             ))}
           </div>
@@ -158,7 +182,11 @@ export function SpendingTimelineHeatmap({
                 whileTap={{ scale: 0.95 }}
               >
                 <div className="flex items-center gap-1">
-                  {mode === "daily" ? <Calendar className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
+                  {mode === "daily" ? (
+                    <Calendar className="w-3 h-3" />
+                  ) : (
+                    <Clock className="w-3 h-3" />
+                  )}
                   {mode.charAt(0).toUpperCase() + mode.slice(1)}
                 </div>
               </motion.button>
@@ -182,7 +210,10 @@ export function SpendingTimelineHeatmap({
               <div className="grid grid-cols-8 gap-1 mb-2">
                 <div></div> {/* Empty cell for week number */}
                 {dayNames.map((day) => (
-                  <div key={day} className="text-center text-white/60 text-xs font-medium py-2">
+                  <div
+                    key={day}
+                    className="text-center text-white/60 text-xs font-medium py-2"
+                  >
                     {day}
                   </div>
                 ))}
@@ -196,24 +227,30 @@ export function SpendingTimelineHeatmap({
                     <div className="flex items-center justify-center text-white/40 text-xs">
                       W{weekIndex + 1}
                     </div>
-                    
+
                     {/* Fill empty cells at the start of the week */}
-                    {week.length > 0 && Array.from({ length: week[0].dayOfWeek }).map((_, i) => (
-                      <div key={`empty-${i}`} className="w-8 h-8" />
-                    ))}
-                    
+                    {week.length > 0 &&
+                      Array.from({ length: week[0].dayOfWeek }).map((_, i) => (
+                        <div key={`empty-${i}`} className="w-8 h-8" />
+                      ))}
+
                     {/* Week days */}
                     {week.map((data) => {
                       const intensity = getIntensity(data.amount);
                       const color = getHeatmapColor(intensity);
-                      
+
                       return (
                         <motion.div
                           key={data.date}
                           className="w-8 h-8 rounded cursor-pointer border border-white/20"
                           style={{ backgroundColor: color }}
                           whileHover={{ scale: 1.2, zIndex: 10 }}
-                          onHoverStart={() => setHoveredCell({ date: data.date, amount: data.amount })}
+                          onHoverStart={() =>
+                            setHoveredCell({
+                              date: data.date,
+                              amount: data.amount,
+                            })
+                          }
                           onHoverEnd={() => setHoveredCell(null)}
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
@@ -236,10 +273,12 @@ export function SpendingTimelineHeatmap({
               {/* Hourly Pattern */}
               <div className="grid grid-cols-12 gap-2">
                 {hourlyPattern.map((data, hour) => {
-                  const maxHourly = Math.max(...hourlyPattern.map(h => h.average));
+                  const maxHourly = Math.max(
+                    ...hourlyPattern.map((h) => h.average),
+                  );
                   const intensity = data.average / maxHourly;
                   const height = Math.max(20, intensity * 100);
-                  
+
                   return (
                     <motion.div
                       key={hour}
@@ -250,19 +289,21 @@ export function SpendingTimelineHeatmap({
                     >
                       <motion.div
                         className="w-full rounded-t cursor-pointer"
-                        style={{ 
+                        style={{
                           height: `${height}px`,
-                          backgroundColor: getHeatmapColor(intensity)
+                          backgroundColor: getHeatmapColor(intensity),
                         }}
                         whileHover={{ scale: 1.1 }}
-                        onHoverStart={() => setHoveredCell({ 
-                          date: `${hour}:00`, 
-                          amount: Math.round(data.average) 
-                        })}
+                        onHoverStart={() =>
+                          setHoveredCell({
+                            date: `${hour}:00`,
+                            amount: Math.round(data.average),
+                          })
+                        }
                         onHoverEnd={() => setHoveredCell(null)}
                       />
                       <div className="text-white/60 text-xs mt-1">
-                        {hour.toString().padStart(2, '0')}
+                        {hour.toString().padStart(2, "0")}
                       </div>
                     </motion.div>
                   );
@@ -272,30 +313,49 @@ export function SpendingTimelineHeatmap({
               {/* Hourly Insights */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
                 {[
-                  { 
-                    label: "Peak Hour", 
-                    value: `${hourlyPattern.reduce((max, curr, index) => 
-                      curr.average > hourlyPattern[max].average ? index : max, 0
-                    ).toString().padStart(2, '0')}:00`,
+                  {
+                    label: "Peak Hour",
+                    value: `${hourlyPattern
+                      .reduce(
+                        (max, curr, index) =>
+                          curr.average > hourlyPattern[max].average
+                            ? index
+                            : max,
+                        0,
+                      )
+                      .toString()
+                      .padStart(2, "0")}:00`,
                     icon: "🔥",
-                    color: "#EF4444"
+                    color: "#EF4444",
                   },
-                  { 
-                    label: "Quiet Hour", 
-                    value: `${hourlyPattern.reduce((min, curr, index) => 
-                      curr.average < hourlyPattern[min].average ? index : min, 0
-                    ).toString().padStart(2, '0')}:00`,
+                  {
+                    label: "Quiet Hour",
+                    value: `${hourlyPattern
+                      .reduce(
+                        (min, curr, index) =>
+                          curr.average < hourlyPattern[min].average
+                            ? index
+                            : min,
+                        0,
+                      )
+                      .toString()
+                      .padStart(2, "0")}:00`,
                     icon: "😴",
-                    color: "#10B981"
+                    color: "#10B981",
                   },
-                  { 
-                    label: "Most Active", 
-                    value: `${hourlyPattern.reduce((max, curr, index) => 
-                      curr.count > hourlyPattern[max].count ? index : max, 0
-                    ).toString().padStart(2, '0')}:00`,
+                  {
+                    label: "Most Active",
+                    value: `${hourlyPattern
+                      .reduce(
+                        (max, curr, index) =>
+                          curr.count > hourlyPattern[max].count ? index : max,
+                        0,
+                      )
+                      .toString()
+                      .padStart(2, "0")}:00`,
                     icon: "⚡",
-                    color: "#F59E0B"
-                  }
+                    color: "#F59E0B",
+                  },
                 ].map((insight, index) => (
                   <motion.div
                     key={insight.label}
@@ -305,7 +365,9 @@ export function SpendingTimelineHeatmap({
                     transition={{ delay: index * 0.1 }}
                   >
                     <div className="text-2xl mb-2">{insight.icon}</div>
-                    <div className="text-white font-bold text-lg">{insight.value}</div>
+                    <div className="text-white font-bold text-lg">
+                      {insight.value}
+                    </div>
                     <div className="text-white/60 text-sm">{insight.label}</div>
                   </motion.div>
                 ))}
@@ -329,10 +391,9 @@ export function SpendingTimelineHeatmap({
               exit={{ opacity: 0, scale: 0.8 }}
             >
               <div className="text-white font-medium">
-                {viewMode === "daily" 
+                {viewMode === "daily"
                   ? new Date(hoveredCell.date).toLocaleDateString()
-                  : hoveredCell.date
-                }
+                  : hoveredCell.date}
               </div>
               <div className="text-white/80">
                 ฿{hoveredCell.amount.toLocaleString()}
@@ -356,9 +417,11 @@ export function SpendingTimelineHeatmap({
             </div>
             <span>More</span>
           </div>
-          
+
           <div className="text-white/60 text-sm">
-            {viewMode === "daily" ? "Daily spending intensity" : "Hourly spending pattern"}
+            {viewMode === "daily"
+              ? "Daily spending intensity"
+              : "Hourly spending pattern"}
           </div>
         </div>
       </div>
@@ -396,7 +459,9 @@ export function SpendingTimelineHeatmap({
         >
           <div className="flex items-center gap-3 mb-4">
             <Filter className="w-6 h-6 text-blue-400" />
-            <h4 className="text-lg font-bold text-white">Smart Recommendations</h4>
+            <h4 className="text-lg font-bold text-white">
+              Smart Recommendations
+            </h4>
           </div>
           <div className="space-y-3 text-sm">
             <div className="text-white/80">
