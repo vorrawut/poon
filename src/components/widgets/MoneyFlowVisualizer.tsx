@@ -106,7 +106,7 @@ export function MoneyFlowVisualizer({
           </motion.h3>
         </div>
         
-        <div className="flex flex-wrap justify-center gap-2 sm:gap-4 px-2 sm:px-4">
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 px-2 sm:px-4 mb-6">
           {incomeStreams.map((stream, index) => (
             <motion.div
               key={stream.id}
@@ -158,7 +158,7 @@ export function MoneyFlowVisualizer({
       {/* Central Balance Bubble */}
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
         <motion.div
-          className={`relative rounded-full p-8 border-4 ${
+          className={`relative rounded-full p-6 sm:p-8 border-4 ${
             netBalance >= 0 
               ? "border-green-400 bg-green-400/20" 
               : "border-red-400 bg-red-400/20"
@@ -184,7 +184,7 @@ export function MoneyFlowVisualizer({
             <div className={`text-sm font-medium mb-2 ${viewMode === "play" ? "text-white" : "text-gray-900"}`}>
               Net Balance
             </div>
-            <div className={`text-3xl font-bold mb-1 ${
+            <div className={`text-2xl sm:text-3xl font-bold mb-1 ${
               netBalance >= 0 ? "text-green-400" : "text-red-400"
             }`}>
               {netBalance >= 0 ? "+" : ""}{formatCurrency(netBalance)}
@@ -218,7 +218,7 @@ export function MoneyFlowVisualizer({
 
       {/* Spending Categories (Bottom) */}
       <div className="absolute bottom-0 left-0 right-0 z-10">
-        <div className="flex flex-wrap justify-center gap-4 px-4 mb-4">
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 px-2 sm:px-4 mb-4">
           {spendingCategories.map((category, index) => (
             <motion.div
               key={category.id}
@@ -233,11 +233,11 @@ export function MoneyFlowVisualizer({
               whileHover={{ scale: 1.05, y: 5 }}
             >
               <div className="text-center">
-                <div className="text-2xl mb-2">{category.icon}</div>
+                <div className="text-xl sm:text-2xl mb-2">{category.icon}</div>
                 <div className={`text-sm font-medium mb-1 ${viewMode === "play" ? "text-white" : "text-gray-900"}`}>
                   {category.name}
                 </div>
-                <div className="text-lg font-bold text-red-400">
+                <div className="text-base sm:text-lg font-bold text-red-400">
                   -{formatCurrency(category.amount)}
                 </div>
                 <div className={`text-xs ${viewMode === "play" ? "text-white/70" : "text-gray-600"}`}>

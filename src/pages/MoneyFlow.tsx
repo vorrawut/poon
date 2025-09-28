@@ -597,7 +597,7 @@ export function MoneyFlow() {
       <DualLensToggle viewMode={viewMode} onToggle={setViewMode} />
       
       {/* Accessibility Mode Toggle */}
-      <div className="fixed top-24 right-4 sm:right-8 lg:right-24 z-50">
+      <div className="fixed top-20 right-2 sm:top-24 sm:right-8 lg:right-24 z-50">
         <AccessibilityModeToggle
           mode={accessibilityMode}
           onModeChange={setAccessibilityMode}
@@ -606,7 +606,7 @@ export function MoneyFlow() {
 
       <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pb-8 sm:pb-12 relative z-10">
         {/* Ultimate Hero Section */}
-        <FadeIn direction="down" delay={0.1} className="text-center py-12">
+        <FadeIn direction="down" delay={0.1} className="text-center py-8 sm:py-12">
           <div className="mb-8">
             <div
               className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 ${
@@ -717,8 +717,8 @@ export function MoneyFlow() {
         </FadeIn>
 
         {/* Navigation Tabs */}
-        <div className="flex justify-center mb-12 px-2 sm:px-4">
-          <div className="flex flex-wrap justify-center gap-1 sm:gap-2 p-2 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 max-w-full overflow-x-auto scrollbar-hide">
+        <div className="flex justify-center mb-8 sm:mb-12 px-2 sm:px-4">
+          <div className="flex overflow-x-auto scrollbar-hide gap-1 sm:gap-2 p-2 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 w-full max-w-4xl">
             {[
               { id: "flow", label: "💫 Money Flow", desc: "Live visualization" },
               { id: "income", label: "💰 Income Hub", desc: "Earnings breakdown" },
@@ -731,7 +731,7 @@ export function MoneyFlow() {
               <button
                 key={tab.id}
                 onClick={() => setActiveSection(tab.id as any)}
-                className={`px-3 sm:px-4 lg:px-6 py-2 sm:py-3 rounded-xl font-medium transition-all text-xs sm:text-sm ${
+                className={`px-2 sm:px-4 lg:px-6 py-2 sm:py-3 rounded-xl font-medium transition-all text-xs sm:text-sm whitespace-nowrap flex-shrink-0 ${
                   activeSection === tab.id
                     ? viewMode === "play"
                       ? "bg-white/20 text-white border border-white/30"
@@ -742,8 +742,8 @@ export function MoneyFlow() {
                 }`}
               >
                 <div className="text-center">
-                  <div className="text-xs sm:text-sm font-semibold">{tab.label}</div>
-                  <div className="text-xs opacity-70 hidden sm:block">{tab.desc}</div>
+                  <div className="text-xs sm:text-sm font-semibold leading-tight">{tab.label}</div>
+                  <div className="text-xs opacity-70 hidden sm:block mt-1">{tab.desc}</div>
                 </div>
               </button>
             ))}
