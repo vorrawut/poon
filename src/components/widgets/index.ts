@@ -26,3 +26,7 @@ export { TimeCapsule } from "./TimeCapsule";
 export { FutureMissionBoard } from "./FutureMissionBoard";
 export { MissionDetailView } from "./MissionDetailView";
 export { AICoPilot } from "./AICoPilot";
+export { SpendingGalaxy } from "./SpendingGalaxy";
+export { SpendingTimelineHeatmap } from "./SpendingTimelineHeatmap";
+export { PaymentMethodRadar } from "./PaymentMethodRadar";
+export { LifestyleEssentialsBreakdown } from "./LifestyleEssentialsBreakdown";
