@@ -12,6 +12,7 @@ import {
   GlobeAltIcon,
   CurrencyDollarIcon,
   ClockIcon,
+  RocketLaunchIcon,
 } from "@heroicons/react/24/outline";
 
 const navigation = [
@@ -21,6 +22,7 @@ const navigation = [
   { name: "Portfolio", href: "/portfolio", icon: ChartPieIcon },
   { name: "Money Flow", href: "/money-flow", icon: CurrencyDollarIcon },
   { name: "Time Machine", href: "/time-machine", icon: ClockIcon },
+  { name: "Future", href: "/future", icon: RocketLaunchIcon },
   { name: "Spending", href: "/spending", icon: CreditCardIcon },
   { name: "Import", href: "/imports", icon: DocumentArrowUpIcon },
   { name: "Settings", href: "/settings", icon: Cog6ToothIcon },

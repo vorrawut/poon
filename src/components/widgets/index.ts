@@ -23,3 +23,6 @@ export { MoneyGalaxy } from "./MoneyGalaxy";
 export { MoneyFlowRiver } from "./MoneyFlowRiver";
 export { AIFinancialHistorian } from "./AIFinancialHistorian";
 export { TimeCapsule } from "./TimeCapsule";
+export { FutureMissionBoard } from "./FutureMissionBoard";
+export { MissionDetailView } from "./MissionDetailView";
+export { AICoPilot } from "./AICoPilot";
