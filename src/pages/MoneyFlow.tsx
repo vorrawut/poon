@@ -11,6 +11,8 @@ import {
   UniverseBackground,
   SpendingWheel,
   MoneyJars,
+  AccessibilityModeToggle,
+  AIFinancialCoach,
 } from "../components/widgets";
 
 // Mock Data - Ultimate Money Flow Experience
@@ -502,9 +504,76 @@ const mockMoneyJars = [
   },
 ];
 
+// Mock AI Coaching Data
+const mockCoachingInsights = [
+  {
+    id: "1",
+    type: "prediction" as const,
+    title: "Savings Milestone Alert",
+    message: "At your current pace, you'll reach $50K in savings by March 2025. Consider increasing your emergency fund contribution by $200/month to hit this goal 2 months earlier.",
+    impact: "high" as const,
+    category: "saving" as const,
+    actionable: true,
+    data: {
+      currentValue: 35000,
+      targetValue: 50000,
+      percentage: 70,
+      timeframe: "March 2025",
+    },
+    actions: [
+      { label: "Increase Savings", type: "primary" as const, action: () => console.log("Increase savings") },
+      { label: "View Timeline", type: "secondary" as const, action: () => console.log("View timeline") },
+    ],
+  },
+  {
+    id: "2",
+    type: "recommendation" as const,
+    title: "Investment Opportunity",
+    message: "Your cash reserves are growing! With $15K+ in savings, consider investing $5K in a diversified index fund to boost long-term growth.",
+    impact: "medium" as const,
+    category: "investing" as const,
+    actionable: true,
+    actions: [
+      { label: "Explore Investments", type: "primary" as const, action: () => console.log("Explore investments") },
+      { label: "Learn More", type: "secondary" as const, action: () => console.log("Learn more") },
+    ],
+  },
+  {
+    id: "3",
+    type: "celebration" as const,
+    title: "Budget Champion!",
+    message: "Congratulations! You've stayed under budget for 3 months straight. Your disciplined approach is paying off with $1,770 in monthly savings.",
+    impact: "high" as const,
+    category: "budgeting" as const,
+    actionable: false,
+  },
+  {
+    id: "4",
+    type: "tip" as const,
+    title: "Smart Spending Insight",
+    message: "Your food spending peaks on weekends. Meal prepping on Sundays could save you $120/month while maintaining your lifestyle.",
+    impact: "medium" as const,
+    category: "spending" as const,
+    actionable: true,
+    actions: [
+      { label: "Create Meal Plan", type: "primary" as const, action: () => console.log("Create meal plan") },
+    ],
+  },
+];
+
+const mockUserProfile = {
+  name: "Alex",
+  age: 28,
+  riskTolerance: "moderate" as const,
+  primaryGoals: ["Emergency Fund", "House Down Payment", "Retirement"],
+  monthlyIncome: 12650,
+  monthlyExpenses: 10880,
+};
+
 export function MoneyFlow() {
   const [viewMode, setViewMode] = useState<"play" | "clarity">("play");
-  const [activeSection, setActiveSection] = useState<"flow" | "income" | "spending" | "goals" | "story" | "game">("flow");
+  const [accessibilityMode, setAccessibilityMode] = useState<"elder" | "youth" | "standard">("standard");
+  const [activeSection, setActiveSection] = useState<"flow" | "income" | "spending" | "goals" | "story" | "game" | "coach">("flow");
 
   const totalIncome = mockIncomeStreams.reduce((sum, stream) => sum + stream.amount, 0);
   const totalSpending = mockSpendingCategories.reduce((sum, cat) => sum + cat.amount, 0);
@@ -526,6 +595,14 @@ export function MoneyFlow() {
     >
       {viewMode === "play" && <UniverseBackground starCount={40} />}
       <DualLensToggle viewMode={viewMode} onToggle={setViewMode} />
+      
+      {/* Accessibility Mode Toggle */}
+      <div className="fixed top-24 right-24 z-50">
+        <AccessibilityModeToggle
+          mode={accessibilityMode}
+          onModeChange={setAccessibilityMode}
+        />
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 relative z-10">
         {/* Ultimate Hero Section */}
@@ -647,6 +724,7 @@ export function MoneyFlow() {
               { id: "income", label: "💰 Income Hub", desc: "Earnings breakdown" },
               { id: "spending", label: "🎡 Spending Wheel", desc: "Interactive categories" },
               { id: "goals", label: "🏺 Money Jars", desc: "Savings goals" },
+              { id: "coach", label: "🤖 AI Coach", desc: "Personal mentor" },
               { id: "story", label: "📖 Your Story", desc: "Monthly wrapped" },
               { id: "game", label: "🎮 Achievements", desc: "Gamification" },
             ].map((tab) => (
@@ -742,6 +820,23 @@ export function MoneyFlow() {
               <MoneyJars
                 jars={mockMoneyJars}
                 viewMode={viewMode}
+                className="mb-12"
+              />
+            </motion.div>
+          )}
+
+          {activeSection === "coach" && (
+            <motion.div
+              key="coach"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+            >
+              <AIFinancialCoach
+                insights={mockCoachingInsights}
+                userProfile={mockUserProfile}
+                viewMode={viewMode}
+                accessibilityMode={accessibilityMode}
                 className="mb-12"
               />
             </motion.div>

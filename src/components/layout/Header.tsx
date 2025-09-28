@@ -4,9 +4,12 @@ import { Button } from "../ui/Button";
 import { Bars3Icon, PlusIcon, BellIcon } from "@heroicons/react/24/outline";
 
 const pageTitle: Record<string, string> = {
-  "/": "Dashboard",
+  "/": "Universe",
+  "/universe": "Universe",
+  "/dashboard": "Dashboard",
   "/accounts": "Accounts",
   "/portfolio": "Portfolio",
+  "/money-flow": "Money Flow",
   "/spending": "Spending",
   "/imports": "Import Data",
   "/settings": "Settings",
@@ -16,7 +19,7 @@ export function Header() {
   const location = useLocation();
   const { isMobile, toggleSidebar, openModal } = useUIStore();
 
-  const title = pageTitle[location.pathname] || "Dashboard";
+  const title = pageTitle[location.pathname] || "Universe";
 
   const handleQuickAction = () => {
     // Quick add transaction
