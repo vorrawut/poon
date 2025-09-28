@@ -66,7 +66,8 @@ class QuickActionsService {
     return this.actions.filter(
       (action) =>
         action.label.toLowerCase().includes(lowercaseQuery) ||
-        (action.description && action.description.toLowerCase().includes(lowercaseQuery)),
+        (action.description &&
+          action.description.toLowerCase().includes(lowercaseQuery)),
     );
   }
 
