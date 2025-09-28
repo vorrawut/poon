@@ -34,66 +34,7 @@ import {
   generateMockSpendingData,
 } from "../../../../mockData/features/spending";
 
-// Using imported mock data
-const generateMockSpendingData = () => {
-  const monthlyIncome = 50000;
-
-  // Select representative categories from each type
-  const selectedCategories = [
-    SpendingCategory.HOUSING,
-    SpendingCategory.GROCERIES,
-    SpendingCategory.TRANSPORTATION,
-    SpendingCategory.FOOD_DRINK,
-    SpendingCategory.SHOPPING,
-    SpendingCategory.ENTERTAINMENT,
-    SpendingCategory.HEALTH_FITNESS,
-    SpendingCategory.SUBSCRIPTIONS,
-    SpendingCategory.BILLS_SERVICES,
-    SpendingCategory.SAVINGS_INVESTMENTS,
-  ];
-
-  return selectedCategories.map((categoryId) => {
-    const categoryConfig = getCategoryById(categoryId);
-    const recommendedPercentage = getRecommendedBudgetPercentage(categoryId);
-    const budgetAmount = Math.round(
-      (monthlyIncome * recommendedPercentage) / 100,
-    );
-
-    // Generate realistic spending amounts with some variation
-    const spentAmount = Math.round(budgetAmount * (0.6 + Math.random() * 0.8));
-    const healthStatus =
-      spentAmount > budgetAmount * 1.1
-        ? ("critical" as const)
-        : spentAmount > budgetAmount * 0.9
-          ? ("warning" as const)
-          : ("healthy" as const);
-
-    const trend =
-      Math.random() > 0.5
-        ? ("up" as const)
-        : Math.random() > 0.5
-          ? ("down" as const)
-          : ("stable" as const);
-
-    return {
-      id: categoryId,
-      name: categoryConfig.name,
-      amount: spentAmount,
-      budget: budgetAmount,
-      color: categoryConfig.color,
-      icon: categoryConfig.icon,
-      trend,
-      trendPercent: Math.round(Math.random() * 30),
-      transactions: Math.round(Math.random() * 50) + 5,
-      frequency: Math.round(Math.random() * 10) + 1,
-      healthStatus,
-      type: categoryConfig.type,
-      description: categoryConfig.description,
-      subcategories: categoryConfig.subcategories,
-    };
-  });
-};
-
+// Using imported mock data from centralized location
 const mockSpendingCategories = generateMockSpendingData();
 
 const mockPaymentMethods = [

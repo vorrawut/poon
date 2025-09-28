@@ -51,3 +51,15 @@ export const mockFinancialUniverseGoals: Goal[] = [
     isCompleted: false,
   },
 ];
+
+export const mockSpendingData = {
+  monthlySpending: 3450,
+  previousMonthSpending: 3200,
+  spendingChange: 7.8,
+  topCategories: [
+    { name: "Food", amount: 890, color: "#F59E0B" },
+    { name: "Transport", amount: 450, color: "#3B82F6" },
+    { name: "Entertainment", amount: 320, color: "#8B5CF6" },
+    { name: "Shopping", amount: 280, color: "#EF4444" },
+  ],
+};

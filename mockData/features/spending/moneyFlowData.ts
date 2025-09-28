@@ -319,3 +319,58 @@ export const mockCoachingInsights = [
     ],
   },
 ];
+
+export const mockMonthlyStats = {
+  totalSpent: 10880,
+  totalIncome: 12650,
+  topCategory: {
+    name: "Necessities",
+    amount: 4200,
+    percentage: 39,
+    icon: "🏠",
+  },
+  cheapestDay: {
+    date: "2024-09-15",
+    amount: 12,
+  },
+  mostExpensiveDay: {
+    date: "2024-09-22",
+    amount: 450,
+  },
+  comparisonLastMonth: {
+    spending: -8,
+    income: 15,
+    savings: 35,
+  },
+  achievements: ["Budget Master 🏆", "Savings Streak 💰", "Investment Hero 📈"],
+  streaks: {
+    budgetCompliance: 12,
+    savingsGoal: 8,
+    noSpendDays: 3,
+  },
+  predictions: {
+    monthEndSpending: 11200,
+    yearEndSavings: 21600,
+    nextMilestone: {
+      name: "Emergency Fund Goal",
+      progress: 68,
+      target: 25000,
+    },
+  },
+};
+
+export const mockUserProfile = {
+  name: "Alex",
+  monthlyIncome: 12650,
+  monthlyExpenses: 10880,
+  savingsGoal: 25000,
+  currentSavings: 17000,
+  riskTolerance: "moderate" as const,
+  financialGoals: [
+    "Build emergency fund",
+    "Save for house down payment",
+    "Increase investment portfolio",
+  ],
+  spendingPersonality: "mindful_spender" as const,
+  preferredCategories: ["necessities", "investment", "lifestyle"],
+};

@@ -71,13 +71,25 @@ Testing Library
 │  ├─ playwright.config.ts
 │  └─ tests/
 ├─ .husky/ .github/ etc.
-├─ mockData/          # All mock data of local data that use in local build 
-│  ├─ common/                 # All common things, like configurations, etc which load only once.
-│  ├─ features/                      # feature-based domains (recommended)
-│  │  ├─ dashboard/
-│  │  │  ├─ dashboard.ts         # based on domain which widget that calling the API, give 
-│  │  │  └─ summary.tsx
-│  │  └─ money-flow/
+└─ mockData/                         # 🚨 CRITICAL: ALL mock data MUST be here, NEVER in /src
+   ├─ common/                        # Shared data (accounts, transactions, assets)
+   │  └─ data.ts
+   ├─ features/                      # Feature-specific mock data (organized by domain)
+   │  ├─ dashboard/
+   │  │  ├─ dashboardData.ts         # Financial universe goals, spending data
+   │  │  └─ index.ts                 # Feature exports
+   │  ├─ portfolio/
+   │  │  ├─ portfolioData.ts         # Portfolio assets, timeline, highlights
+   │  │  ├─ portfolioDetailData.ts   # Asset details, achievements
+   │  │  └─ index.ts
+   │  ├─ spending/
+   │  │  ├─ moneyFlowData.ts         # Income streams, categories, insights
+   │  │  ├─ spendingData.ts          # Payment methods, analysis
+   │  │  └─ index.ts
+   │  └─ widgets/
+   │     ├─ widgetsData.ts           # Missions, achievements, challenges
+   │     └─ index.ts
+   └─ index.ts                       # Main mock data exports
 
 
 
@@ -199,4 +211,41 @@ If you add new UI patterns used elsewhere, move them to components/ and add Stor
 
 Add Playwright E2E test only for the full checkout happy path.
 
-13 -- For all mock data, we keep it seperate by grouping based on features and commons which can be share and download when they open the web app.
+13 — Mock Data Organization Rules (MANDATORY)
+
+🚨 **CRITICAL MOCK DATA RULES:**
+
+**Rule 1: NO Mock Data in `/src`**
+- NEVER create mock data inside the `/src` directory
+- ALL mock data MUST be in `/mockData` folder
+- This is a MANDATORY project rule that must be enforced
+
+**Rule 2: Feature-Based Organization**
+- Organize mock data by features in `/mockData/features/`
+- Each feature has its own mock data folder
+- Common/shared data goes in `/mockData/common/`
+
+**Rule 3: Centralized Imports**
+```typescript
+// ✅ CORRECT - Import from centralized mockData
+import { mockPortfolioAssets } from "../../../../mockData/features/portfolio";
+
+// ❌ WRONG - Local mock data in components
+const mockData = [...]; // NEVER DO THIS IN /src
+```
+
+**Rule 4: Export Structure**
+- Each feature mock data folder has an `index.ts` for exports
+- Main `/mockData/index.ts` exports all mock data
+- Clean import paths from centralized location
+
+**Rule 5: Development Workflow**
+1. Create mock data in appropriate `/mockData/features/[feature]/`
+2. Export from feature index file
+3. Import in components from centralized location
+4. NEVER create local mock data in components
+
+**Enforcement:**
+- Code reviews must check for mock data in `/src`
+- Linting rules should prevent mock data in `/src`
+- All mock data must follow this structure for consistency
