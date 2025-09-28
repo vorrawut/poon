@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { SplitText, FadeIn, TimeRangeSelector } from "../components/ui";
-import { EnhancedNetWorthWidget } from "../features/networth/components/EnhancedNetWorthWidget";
-import { EnhancedAccountsWidget } from "../features/accounts/components/EnhancedAccountsWidget";
-import { RecentTransactionsWidget } from "../features/transactions";
+import { SplitText, FadeIn, TimeRangeSelector } from "../../../components/ui";
+import { EnhancedNetWorthWidget } from "../../networth/components/EnhancedNetWorthWidget";
+import { EnhancedAccountsWidget } from "../../accounts/components/EnhancedAccountsWidget";
+import { RecentTransactionsWidget } from "../../transactions";
 import {
   SmartHighlights,
   DualLensToggle,
   UniverseBackground,
-} from "../components/widgets";
+} from "../../../components/widgets";
 
 // Dashboard Smart Highlights
 const dashboardHighlights = [

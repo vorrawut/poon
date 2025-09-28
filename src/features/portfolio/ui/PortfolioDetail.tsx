@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
-import { FadeIn, SplitText } from "../components/ui";
+import { FadeIn, SplitText } from "../../../components/ui";
 import {
   DualLensToggle,
   UniverseBackground,
@@ -10,7 +10,7 @@ import {
   WealthWheel,
   AchievementBadges,
   CategoryDetailView,
-} from "../components/widgets";
+} from "../../../components/widgets";
 
 // Enhanced Mock Data with Category-Specific Details
 const mockAssetData = {

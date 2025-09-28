@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { FinancialUniverse } from "../components/financial-universe";
-import { DailyMoodStoryCard } from "../components/financial-universe/DailyMoodStoryCard";
-import { useNetWorth } from "../features/networth/hooks/useNetWorth";
+import { FinancialUniverse } from "../../../components/financial-universe";
+import { DailyMoodStoryCard } from "../../../components/financial-universe/DailyMoodStoryCard";
+import { useNetWorth } from "../../networth/hooks/useNetWorth";
 
 export function UniverseDashboard() {
   const [showDetailedView, setShowDetailedView] = useState(false);

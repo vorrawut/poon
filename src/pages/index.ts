@@ -1,11 +1,10 @@
-export { default as Dashboard } from "./Dashboard";
-export { UniverseDashboard } from "./UniverseDashboard";
-export { AccountsPage } from "./AccountsPage";
-export { Portfolio } from "./Portfolio";
-export { PortfolioDetail } from "./PortfolioDetail";
-export { Spending } from "./Spending";
-export { MoneyFlow } from "./MoneyFlow";
-export { MoneyTimeMachine } from "./MoneyTimeMachine";
-export { Future } from "./Future";
+// Feature-based exports
+export { Dashboard, UniverseDashboard } from "../features/dashboard";
+export { Accounts } from "../features/accounts";
+export { Portfolio, PortfolioDetail } from "../features/portfolio";
+export { Spending, MoneyFlow, MoneyTimeMachine } from "../features/spending";
+export { Future } from "../features/future";
+
+// Standalone pages (to be moved to features later)
 export { Imports } from "./Imports";
 export { Settings } from "./Settings";

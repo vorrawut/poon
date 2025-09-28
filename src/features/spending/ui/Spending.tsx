@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FadeIn } from "../components/ui";
+import { FadeIn } from "../../../components/ui";
 import {
   SpendingGalaxy,
   SpendingTimelineHeatmap,
@@ -13,7 +13,7 @@ import {
   DualLensToggle,
   UniverseBackground,
   AccessibilityModeToggle,
-} from "../components/widgets";
+} from "../../../components/widgets";
 import {
   Radar,
   Calendar,
@@ -28,7 +28,7 @@ import {
   SpendingCategoryType,
   getCategoryById,
   getRecommendedBudgetPercentage,
-} from "../types/spending";
+} from "../../../types/spending";
 
 // Enhanced Mock Data using Universal Category System
 const generateMockSpendingData = () => {

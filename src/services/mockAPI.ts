@@ -7,7 +7,7 @@ import {
   mockPortfolioPositions,
   mockPriceData,
   mockCSVData,
-} from "./data";
+} from "../../mockData/common/data";
 import type {
   Account,
   Transaction,

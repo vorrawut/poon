@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FadeIn } from "../components/ui";
+import { FadeIn } from "../../../components/ui";
 import {
   TimeMachineTimeline,
   MoneyGalaxy,
@@ -10,7 +10,7 @@ import {
   DualLensToggle,
   UniverseBackground,
   AccessibilityModeToggle,
-} from "../components/widgets";
+} from "../../../components/widgets";
 
 export function MoneyTimeMachine() {
   const [viewMode, setViewMode] = useState<"play" | "clarity">("play");

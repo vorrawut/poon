@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FadeIn } from "../components/ui";
+import { FadeIn } from "../../../components/ui";
 import {
   FutureMissionBoard,
   MissionDetailView,
@@ -8,7 +8,7 @@ import {
   DualLensToggle,
   UniverseBackground,
   AccessibilityModeToggle,
-} from "../components/widgets";
+} from "../../../components/widgets";
 
 interface Mission {
   id: string;

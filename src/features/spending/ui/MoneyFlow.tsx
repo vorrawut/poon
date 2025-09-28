@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FadeIn, SplitText } from "../components/ui";
+import { FadeIn, SplitText } from "../../../components/ui";
 import {
   MoneyFlowVisualizer,
   IncomeBreakdownCard,
@@ -13,7 +13,7 @@ import {
   MoneyJars,
   AccessibilityModeToggle,
   AIFinancialCoach,
-} from "../components/widgets";
+} from "../../../components/widgets";
 
 // Mock Data - Ultimate Money Flow Experience
 const mockIncomeStreams = [

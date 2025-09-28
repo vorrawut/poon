@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FadeIn, SplitText } from "../components/ui";
+import { FadeIn, SplitText } from "../../../components/ui";
 import {
   WealthSolarSystem,
   SmartHighlights,
@@ -8,7 +8,7 @@ import {
   DualLensToggle,
   UniverseBackground,
   CategoryOverlay,
-} from "../components/widgets";
+} from "../../../components/widgets";
 
 // Mock Portfolio Data - Wealth Universe Assets 🌍
 const mockPortfolioAssets = [

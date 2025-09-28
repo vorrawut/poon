@@ -2,6 +2,9 @@
 export { AccountsOverviewWidget } from "./components/AccountsOverviewWidget";
 export { EnhancedAccountsWidget } from "./components/EnhancedAccountsWidget";
 
+// Pages
+export { AccountsPage as Accounts } from "./ui/AccountsPage";
+
 // Hooks
 export {
   useAccounts,

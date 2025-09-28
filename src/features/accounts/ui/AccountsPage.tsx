@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { SplitText, FadeIn, TimeRangeSelector } from "../components/ui";
-import { EnhancedNetWorthWidget } from "../features/networth/components/EnhancedNetWorthWidget";
-import { EnhancedAccountsWidget } from "../features/accounts/components/EnhancedAccountsWidget";
-import { RecentTransactionsWidget } from "../features/transactions";
+import { SplitText, FadeIn, TimeRangeSelector } from "../../../components/ui";
+import { EnhancedNetWorthWidget } from "../../../features/networth/components/EnhancedNetWorthWidget";
+import { EnhancedAccountsWidget } from "../../../features/accounts/components/EnhancedAccountsWidget";
+import { RecentTransactionsWidget } from "../../../features/transactions";
 import {
   SmartHighlights,
   DualLensToggle,
   UniverseBackground,
-} from "../components/widgets";
+} from "../../../components/widgets";
 
 // Accounts Smart Highlights
 const accountsHighlights = [

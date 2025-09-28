@@ -2,7 +2,11 @@ import { useEffect } from "react";
 import { useAccountStore } from "../store/useAccountStore";
 import { useTransactionStore } from "../store/useTransactionStore";
 import { usePortfolioStore } from "../store/usePortfolioStore";
-import { mockAccounts, mockTransactions, mockAssets } from "../mock/data";
+import {
+  mockAccounts,
+  mockTransactions,
+  mockAssets,
+} from "../../mockData/common/data";
 
 export function useInitializeData() {
   const setAccounts = useAccountStore((state) => state.setAccounts);
