@@ -24,11 +24,6 @@ import {
 } from "lucide-react";
 
 import {
-  SpendingCategory,
-  SpendingCategoryType,
-  getCategoryById,
-} from "../../../types/spending";
-import {
   mockPaymentMethods,
   generateMockSpendingData,
   generateMockTransactionData,

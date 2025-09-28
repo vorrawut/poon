@@ -1,43 +1,49 @@
 // Universal Spending Categories System
 // Based on spending_categories.md - covers all human spending without over-complication
 
-export enum SpendingCategoryType {
-  ESSENTIALS = "essentials",
-  LIFESTYLE = "lifestyle",
-  OBLIGATIONS = "obligations",
-  EXTRAS = "extras",
-  FINANCIAL_FLOW = "financial_flow",
-}
+export const SpendingCategoryType = {
+  ESSENTIALS: "essentials",
+  LIFESTYLE: "lifestyle",
+  OBLIGATIONS: "obligations",
+  EXTRAS: "extras",
+  FINANCIAL_FLOW: "financial_flow",
+} as const;
 
-export enum SpendingCategory {
+export type SpendingCategoryType =
+  (typeof SpendingCategoryType)[keyof typeof SpendingCategoryType];
+
+export const SpendingCategory = {
   // 🏠 ESSENTIALS
-  HOUSING = "housing",
-  GROCERIES = "groceries",
-  TRANSPORTATION = "transportation",
-  BILLS_SERVICES = "bills_services",
+  HOUSING: "housing",
+  GROCERIES: "groceries",
+  TRANSPORTATION: "transportation",
+  BILLS_SERVICES: "bills_services",
 
   // 🍜 LIFESTYLE
-  FOOD_DRINK = "food_drink",
-  SHOPPING = "shopping",
-  ENTERTAINMENT = "entertainment",
-  TRAVEL = "travel",
-  HEALTH_FITNESS = "health_fitness",
+  FOOD_DRINK: "food_drink",
+  SHOPPING: "shopping",
+  ENTERTAINMENT: "entertainment",
+  TRAVEL: "travel",
+  HEALTH_FITNESS: "health_fitness",
 
   // 💼 OBLIGATIONS
-  EDUCATION = "education",
-  FAMILY_CHILDREN = "family_children",
-  PETS = "pets",
-  DEBT_LOANS = "debt_loans",
+  EDUCATION: "education",
+  FAMILY_CHILDREN: "family_children",
+  PETS: "pets",
+  DEBT_LOANS: "debt_loans",
 
   // 🎉 EXTRAS
-  GIFTS_DONATIONS = "gifts_donations",
-  EVENTS_CELEBRATIONS = "events_celebrations",
-  SUBSCRIPTIONS = "subscriptions",
+  GIFTS_DONATIONS: "gifts_donations",
+  EVENTS_CELEBRATIONS: "events_celebrations",
+  SUBSCRIPTIONS: "subscriptions",
 
   // 💳 FINANCIAL FLOW
-  SAVINGS_INVESTMENTS = "savings_investments",
-  MISCELLANEOUS = "miscellaneous",
-}
+  SAVINGS_INVESTMENTS: "savings_investments",
+  MISCELLANEOUS: "miscellaneous",
+} as const;
+
+export type SpendingCategory =
+  (typeof SpendingCategory)[keyof typeof SpendingCategory];
 
 export interface SpendingCategoryConfig {
   id: SpendingCategory;

@@ -81,16 +81,18 @@ class NetWorthService {
 
   private transformApiResponse(data: Record<string, unknown>): NetWorthData {
     return {
-      totalNetWorth: data.total_net_worth || 0,
-      netWorthChange: data.net_worth_change || 0,
-      netWorthChangePercent: data.net_worth_change_percent || 0,
-      previousNetWorth: data.previous_net_worth || 0,
-      lastUpdated: new Date(data.last_updated || Date.now()),
+      totalNetWorth: (data.total_net_worth as number) || 0,
+      netWorthChange: (data.net_worth_change as number) || 0,
+      netWorthChangePercent: (data.net_worth_change_percent as number) || 0,
+      previousNetWorth: (data.previous_net_worth as number) || 0,
+      lastUpdated: new Date(
+        (data.last_updated as string | number | Date) || Date.now(),
+      ),
       breakdown: {
-        cash: data.breakdown?.cash || 0,
-        investments: data.breakdown?.investments || 0,
-        realEstate: data.breakdown?.real_estate || 0,
-        other: data.breakdown?.other || 0,
+        cash: (data.breakdown as any)?.cash || 0,
+        investments: (data.breakdown as any)?.investments || 0,
+        realEstate: (data.breakdown as any)?.real_estate || 0,
+        other: (data.breakdown as any)?.other || 0,
       },
     };
   }

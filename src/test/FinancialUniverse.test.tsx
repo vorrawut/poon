@@ -202,7 +202,7 @@ describe("FinancialUniverse Component", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    (useNetWorth as jest.Mock).mockReturnValue({
+    (useNetWorth as any).mockReturnValue({
       netWorthData: mockNetWorthData,
       loading: false,
       error: null,
@@ -324,7 +324,7 @@ describe("FinancialUniverse Component", () => {
 
   describe("Loading State", () => {
     it("renders loading state when net worth data is loading", () => {
-      (useNetWorth as jest.Mock).mockReturnValue({
+      (useNetWorth as any).mockReturnValue({
         netWorthData: null,
         loading: true,
         error: null,
@@ -340,7 +340,7 @@ describe("FinancialUniverse Component", () => {
 
   describe("Error State", () => {
     it("renders error state when net worth data fails to load", () => {
-      (useNetWorth as jest.Mock).mockReturnValue({
+      (useNetWorth as any).mockReturnValue({
         netWorthData: null,
         loading: false,
         error: "Failed to load net worth data",

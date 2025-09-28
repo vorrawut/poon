@@ -2,7 +2,7 @@ export interface QuickAction {
   id: string;
   label: string;
   description?: string;
-  icon: React.ReactNode;
+  icon: React.ComponentType<{ className?: string }>;
   color: string;
   shortcut?: string;
   category: "transaction" | "account" | "analysis" | "import" | "settings";

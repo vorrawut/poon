@@ -94,7 +94,13 @@ export function BigNumber({
       <div className={`font-bold text-gray-900 ${sizeClasses[size]} mb-2`}>
         <AnimatedNumber
           value={value}
-          format={(num) => formatValue(num)}
+          format={
+            format === "currency"
+              ? "currency"
+              : format === "percentage"
+                ? "percent"
+                : "decimal"
+          }
           duration={1500}
           className="animate-count"
         />

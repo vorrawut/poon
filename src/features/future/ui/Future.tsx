@@ -27,10 +27,6 @@ export function Future() {
     setMissions(initialMissions);
   }, []);
 
-  const handleMissionClick = (mission: Mission) => {
-    setSelectedMission(mission);
-  };
-
   const handleMissionUpdate = (updatedMission: Mission) => {
     setMissions((prev) =>
       prev.map((m) => (m.id === updatedMission.id ? updatedMission : m)),
@@ -103,7 +99,7 @@ export function Future() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
           <DualLensToggle
             viewMode={viewMode}
-            onViewModeChange={setViewMode}
+            onToggle={setViewMode}
             className="order-2 sm:order-1"
           />
 
@@ -128,8 +124,6 @@ export function Future() {
                 mission={selectedMission}
                 onBack={handleBackToBoard}
                 onUpdate={handleMissionUpdate}
-                viewMode={viewMode}
-                accessibilityMode={accessibilityMode}
               />
             </motion.div>
           ) : (
@@ -140,20 +134,14 @@ export function Future() {
               exit={{ opacity: 0, x: 100 }}
               transition={{ duration: 0.3 }}
             >
-              <FutureMissionBoard
-                missions={missions}
-                onMissionClick={handleMissionClick}
-                viewMode={viewMode}
-                accessibilityMode={accessibilityMode}
-              />
+              <FutureMissionBoard />
             </motion.div>
           )}
         </AnimatePresence>
 
         {/* AI Co-Pilot */}
         <AICoPilot
-          context="future-planning"
-          viewMode={viewMode}
+          missions={missions}
           className="fixed bottom-6 right-6 z-50"
         />
       </div>

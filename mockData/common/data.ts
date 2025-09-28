@@ -5,7 +5,7 @@ import type {
   Portfolio,
   PortfolioPosition,
   PriceData,
-} from "../types";
+} from "../../src/types";
 import { subDays, format } from "date-fns";
 
 // Mock user data

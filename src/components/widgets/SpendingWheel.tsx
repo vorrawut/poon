@@ -40,7 +40,6 @@ export function SpendingWheel({
   const radius = 120;
   const centerX = 150;
   const centerY = 150;
-  const _strokeWidth = 40;
 
   // Calculate angles for each category
   let currentAngle = 0;
@@ -146,9 +145,8 @@ export function SpendingWheel({
             <motion.svg
               width="250"
               height="250"
-              className="sm:w-[300px] sm:h-[300px]"
+              className="sm:w-[300px] sm:h-[300px] drop-shadow-lg"
               viewBox="0 0 300 300"
-              className="drop-shadow-lg"
               animate={isSpinning ? { rotate: 360 } : {}}
               transition={{ duration: 2, ease: "easeOut" }}
             >

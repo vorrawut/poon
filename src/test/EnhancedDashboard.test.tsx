@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import Dashboard from "../pages/Dashboard";
+import Dashboard from "../features/dashboard/ui/Dashboard";
 
 // Mock the service modules
 vi.mock("../features/networth/services/netWorthService", () => ({

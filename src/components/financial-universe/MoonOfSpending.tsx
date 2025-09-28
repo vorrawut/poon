@@ -124,7 +124,7 @@ export function MoonOfSpending({
           {/* Moon Craters (Spending Categories) */}
           {topCategories.slice(0, 4).map((category, i) => (
             <div
-              key={category.name}
+              key={`crater-${category.name}`}
               className="absolute rounded-full bg-black/20"
               style={{
                 width: `${8 + (category.amount / monthlySpending) * 15}px`,
@@ -223,7 +223,7 @@ export function MoonOfSpending({
         <div className="absolute inset-0 pointer-events-none">
           {[...Array(6)].map((_, i) => (
             <motion.div
-              key={i}
+              key={`particle-${i}`}
               className="absolute w-1 h-1 bg-amber-400 rounded-full"
               style={{
                 top: "30%",

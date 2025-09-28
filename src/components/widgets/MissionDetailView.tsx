@@ -11,46 +11,7 @@ import {
   Trophy,
   Edit3,
 } from "lucide-react";
-
-interface Mission {
-  id: string;
-  name: string;
-  description: string;
-  targetAmount: number;
-  currentAmount: number;
-  deadline: Date;
-  category:
-    | "travel"
-    | "emergency"
-    | "debt"
-    | "investment"
-    | "purchase"
-    | "custom";
-  theme: "rocket" | "planet" | "station" | "constellation";
-  icon: string;
-  color: string;
-  priority: "low" | "medium" | "high" | "critical";
-  isCompleted: boolean;
-  createdAt: Date;
-  transactions: Transaction[];
-  notes: string[];
-  milestones: Milestone[];
-}
-
-interface Transaction {
-  id: string;
-  amount: number;
-  date: Date;
-  type: "deposit" | "withdrawal";
-  description: string;
-}
-
-interface Milestone {
-  percentage: number;
-  label: string;
-  achieved: boolean;
-  achievedDate?: Date;
-}
+import type { Mission, Transaction } from "../../../mockData/features/future";
 
 interface MissionDetailViewProps {
   mission: Mission;

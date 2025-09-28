@@ -1,9 +1,6 @@
 ---
-description: React Development Rules & Project Structure Guide
-globs: ["**/*.tsx", "**/*.ts", "**/*.jsx", "**/*.js"]
 alwaysApply: true
 ---
-
 # React Development Rules & Project Structure Guide
 
 ## 🏗️ **MANDATORY PROJECT STRUCTURE**
@@ -41,12 +38,19 @@ mockData/                 # ALL mock data MUST be here, NEVER in /src
 ├── common/              # Shared configurations, accounts, transactions
 │   └── data.ts
 └── features/           # Feature-specific mock data
+    ├── accounts/
+    │   ├── accountsData.ts
+    │   └── index.ts
     ├── dashboard/
     │   ├── dashboardData.ts
+    │   └── index.ts
+    ├── future/
+    │   ├── futureData.ts
     │   └── index.ts
     ├── portfolio/
     │   ├── portfolioData.ts
     │   ├── portfolioDetailData.ts
+    │   ├── portfolioCategoryData.ts
     │   └── index.ts
     ├── spending/
     │   ├── moneyFlowData.ts
@@ -54,14 +58,35 @@ mockData/                 # ALL mock data MUST be here, NEVER in /src
     │   └── index.ts
     └── widgets/
         ├── widgetsData.ts
+        ├── gamificationData.ts
+        ├── insightsData.ts
+        ├── categoryData.ts
         └── index.ts
 ```
 
-**🚨 CRITICAL RULES:**
+## 🚨 **CRITICAL BUILD & QUALITY RULES (MANDATORY)**
+
+### **Build Verification Rule**
+- **ALWAYS run `npm run build` after any code changes**
+- **FIX ALL TypeScript errors immediately** - Zero tolerance for build failures
+- **Test the build before committing** - Ensure production readiness
+- **Update this file with any new build requirements**
+
+### **Error Resolution Priority**
+1. **TypeScript compilation errors** - Fix immediately
+2. **Lint warnings** - Address systematically  
+3. **Test failures** - Resolve before deployment
+4. **Runtime errors** - Debug and fix promptly
+
+**🚨 CRITICAL MOCK DATA RULES:**
 - **NO mock data allowed in `/src` directory**
 - **ALL mock data MUST be in `/mockData` organized by features**
 - **Use centralized imports from `/mockData` only**
 - **Each feature has its own mock data folder**
+- **No local mock data definitions in components**
+- **No `const mockXxx = [...]` in `/src` files**
+- **No `generateXxxData()` functions in `/src` files**
+- **No `initialXxx`, `dummyXxx`, `sampleXxx` data in `/src`**
 
 ## 📦 **COMPONENT TAXONOMY**
 
@@ -103,7 +128,357 @@ export type { PortfolioAsset } from "./types";
 import { mockPortfolioAssets } from "../../../../mockData/features/portfolio";
 
 // ❌ WRONG - Local mock data in components
-const mockData = [...]; // NEVER DO THIS
+const mockData = [...]; // NEVER DO THIS IN /src
+```
+
+### **Import Patterns**
+- **Within features**: Use relative imports
+- **Cross-feature**: Use absolute imports from feature index
+- **Mock data**: Always from `/mockData` structure
+
+## 🧪 **TESTING STRATEGY**
+
+### **Unit Tests (Vitest + RTL)**
+- **Location**: Co-locate with components
+- **Pattern**: `Component.test.tsx` next to `Component.tsx`
+- **Focus**: Component behavior, props, rendering
+
+### **Integration Tests**
+- **Purpose**: Multiple components together
+- **Tools**: RTL + Vitest + MSW for API mocking
+- **Focus**: Feature workflows, user interactions
+
+### **E2E Tests (Playwright)**
+- **Location**: `/e2e` directory
+- **Focus**: Critical user flows, auth, payments
+- **Strategy**: Minimal but high-value coverage
+
+## 🎨 **STYLING PATTERNS**
+
+### **Tailwind Usage**
+```typescript
+// ✅ GOOD - Semantic wrapper classes
+.btn-primary { @apply px-4 py-2 rounded-md font-medium bg-blue-500; }
+
+// ✅ GOOD - Design tokens
+const colors = {
+  primary: "#6366F1",
+  secondary: "#8B5CF6",
+};
+
+// ❌ AVOID - Long utility chains in JSX
+<div className="px-4 py-2 bg-blue-500 text-white rounded-md font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+```
+
+### **Component Styling**
+- Use semantic CSS classes for repeated patterns
+- Keep design tokens in `/src/styles/tokens/`
+- Prefer component-level styling over global styles
+
+## 🔧 **TYPESCRIPT RULES**
+
+### **Type Organization**
+```typescript
+// ✅ GOOD - Feature-specific types
+// features/portfolio/types/index.ts
+export interface PortfolioAsset {
+  id: string;
+  name: string;
+  value: number;
+}
+
+// ✅ GOOD - String unions over enums
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost';
+
+// ❌ AVOID - Runtime enums (use const assertions)
+enum ButtonVariant { Primary, Secondary } // Avoid
+```
+
+### **Type Safety**
+- Keep types close to domain (in feature folders)
+- Export common types from `types/` sparingly
+- Use string unions over enums for cross-bundle safety
+
+## 🗂️ **STATE MANAGEMENT**
+
+### **Global State**
+- **Server State**: React Query (TanStack Query)
+- **UI State**: Zustand or React Context
+- **Location**: Co-locate with features
+
+### **State Patterns**
+```typescript
+// ✅ GOOD - Feature-specific store
+// features/portfolio/hooks/usePortfolio.ts
+export const usePortfolio = () => {
+  // Feature-specific state logic
+};
+
+// ✅ GOOD - Query keys with features
+// features/portfolio/hooks/usePortfolioQuery.ts
+const portfolioKeys = {
+  all: ['portfolio'] as const,
+  lists: () => [...portfolioKeys.all, 'list'] as const,
+};
+```
+
+## 📁 **FILE NAMING CONVENTIONS**
+
+### **Components**
+- **React Components**: PascalCase (`PortfolioCard.tsx`)
+- **Utilities**: camelCase (`formatCurrency.ts`)
+- **Types**: PascalCase (`PortfolioTypes.ts`)
+- **Tests**: Match component name (`PortfolioCard.test.tsx`)
+
+### **Features**
+- **Feature folders**: lowercase with hyphens (`money-flow/`)
+- **Feature exports**: PascalCase (`MoneyFlow.tsx`)
+- **Services**: camelCase (`portfolioService.ts`)
+
+## 🚀 **DEVELOPMENT WORKFLOW**
+
+### **Adding New Features**
+1. Create feature folder: `src/features/feature-name/`
+2. Add subfolders: `ui/`, `components/`, `hooks/`, `services/`, `types/`
+3. Create mock data: `mockData/features/feature-name/`
+4. Export from feature index: `src/features/feature-name/index.ts`
+5. Add tests co-located with components
+6. Update routes in `src/app/routes.tsx`
+
+### **Mock Data Workflow**
+1. **NEVER** create mock data in `/src`
+2. Add to appropriate `/mockData/features/[feature]/`
+3. Export from feature mock data index
+4. Import in components from centralized location
+5. Update main `/mockData/index.ts` if needed
+
+## 🔍 **CODE QUALITY RULES**
+
+### **Component Rules**
+```typescript
+// ✅ GOOD - Clean component structure
+export function PortfolioCard({ asset }: PortfolioCardProps) {
+  const { data, isLoading } = usePortfolioQuery();
+  
+  if (isLoading) return <Skeleton />;
+  
+  return (
+    <Card>
+      <CardHeader>{asset.name}</CardHeader>
+      <CardContent>{formatCurrency(asset.value)}</CardContent>
+    </Card>
+  );
+}
+
+// ❌ AVOID - Inline styles, complex logic in render
+export function BadComponent() {
+  return (
+    <div style={{ padding: '16px' }}> {/* Use Tailwind/CSS classes */}
+      {/* Complex logic here */}
+    </div>
+  );
+}
+```
+
+### **Performance Rules**
+- Use `React.memo()` for expensive components
+- Implement proper loading states
+- Use `useMemo()` and `useCallback()` judiciously
+- Lazy load routes and heavy components
+
+### **Accessibility Rules**
+- Always include proper ARIA labels
+- Ensure keyboard navigation works
+- Use semantic HTML elements
+- Test with screen readers
+
+## 📋 **MANDATORY CHECKLIST**
+
+### **Before Creating Components**
+- [ ] Is this an atom, molecule, widget, or feature UI?
+- [ ] Where should it live in the component taxonomy?
+- [ ] Does it need mock data? (Add to `/mockData`)
+- [ ] What tests does it need?
+
+### **Before Adding Mock Data**
+- [ ] Is it in `/mockData` (NOT `/src`)?
+- [ ] Is it organized by feature?
+- [ ] Is it exported from feature index?
+- [ ] Are imports updated to use centralized location?
+
+### **Before Committing**
+- [ ] All tests pass (`npm test`)
+- [ ] Linting passes (`npm run lint`)
+- [ ] TypeScript compiles (`npm run build`)
+- [ ] No mock data in `/src` directory
+- [ ] Components follow taxonomy rules
+- [ ] Proper imports/exports structure
+
+## 🎯 **PERFORMANCE & UX**
+
+### **Loading States**
+- Always show skeleton loaders
+- Implement proper error boundaries
+- Use Suspense for code splitting
+- Handle offline states gracefully
+
+### **User Experience**
+- Implement optimistic updates
+- Provide immediate feedback
+- Use animations for state transitions
+- Ensure responsive design works on all devices
+
+## 🔒 **SECURITY & BEST PRACTICES**
+
+### **Data Handling**
+- Sanitize user inputs
+- Validate props with TypeScript
+- Handle API errors gracefully
+- Never expose sensitive data in client code
+
+### **Code Organization**
+- Keep components focused and single-purpose
+- Extract custom hooks for reusable logic
+- Use proper error boundaries
+- Implement proper logging for debugging
+
+---
+
+**🚨 CRITICAL REMINDERS:**
+1. **NO MOCK DATA IN `/src`** - Always use `/mockData` structure
+2. **Feature-based organization** - Group by domain, not file type
+3. **Co-locate tests** - Keep tests next to components
+4. **Export through index files** - Clean public APIs
+5. **Follow component taxonomy** - Atoms → Molecules → Widgets → Features
+
+This structure ensures maintainability, testability, and scalability for long-term development success.# React Development Rules & Project Structure Guide
+
+## 🏗️ **MANDATORY PROJECT STRUCTURE**
+
+### **1. Feature-Based Architecture (REQUIRED)**
+```
+src/
+├── app/                    # App-level bootstrap, routes, providers
+│   ├── App.tsx
+│   ├── routes.tsx
+│   └── providers/          # ThemeProvider, AuthProvider, i18n
+├── features/              # Feature-based domains (MAIN ORGANIZATION)
+│   ├── dashboard/
+│   │   ├── ui/           # Pages and route containers
+│   │   ├── components/   # Feature-specific components
+│   │   ├── hooks/        # Feature-specific hooks
+│   │   ├── services/     # Feature API clients
+│   │   ├── types/        # Feature types
+│   │   └── index.ts      # Feature exports
+├── components/           # Global atomic components (Button, Input)
+├── widgets/             # Composite components (Charts, Cards)
+├── services/            # Global API clients and adapters
+├── styles/              # Design tokens, themes, global CSS
+│   ├── tokens/          # Color, spacing, typography tokens
+│   └── index.css
+├── libs/                # Pure utilities (no React dependencies)
+├── hooks/               # Cross-feature hooks
+├── types/               # Global app types (use sparingly)
+└── tests/               # Common test fixtures
+```
+
+### **2. Mock Data Organization (CRITICAL RULE)**
+```
+mockData/                 # ALL mock data MUST be here, NEVER in /src
+├── common/              # Shared configurations, accounts, transactions
+│   └── data.ts
+└── features/           # Feature-specific mock data
+    ├── accounts/
+    │   ├── accountsData.ts
+    │   └── index.ts
+    ├── dashboard/
+    │   ├── dashboardData.ts
+    │   └── index.ts
+    ├── future/
+    │   ├── futureData.ts
+    │   └── index.ts
+    ├── portfolio/
+    │   ├── portfolioData.ts
+    │   ├── portfolioDetailData.ts
+    │   ├── portfolioCategoryData.ts
+    │   └── index.ts
+    ├── spending/
+    │   ├── moneyFlowData.ts
+    │   ├── spendingData.ts
+    │   └── index.ts
+    └── widgets/
+        ├── widgetsData.ts
+        ├── gamificationData.ts
+        ├── insightsData.ts
+        ├── categoryData.ts
+        └── index.ts
+```
+
+## 🚨 **CRITICAL BUILD & QUALITY RULES (MANDATORY)**
+
+### **Build Verification Rule**
+- **ALWAYS run `npm run build` after any code changes**
+- **FIX ALL TypeScript errors immediately** - Zero tolerance for build failures
+- **Test the build before committing** - Ensure production readiness
+- **Update this file with any new build requirements**
+
+### **Error Resolution Priority**
+1. **TypeScript compilation errors** - Fix immediately
+2. **Lint warnings** - Address systematically  
+3. **Test failures** - Resolve before deployment
+4. **Runtime errors** - Debug and fix promptly
+
+**🚨 CRITICAL MOCK DATA RULES:**
+- **NO mock data allowed in `/src` directory**
+- **ALL mock data MUST be in `/mockData` organized by features**
+- **Use centralized imports from `/mockData` only**
+- **Each feature has its own mock data folder**
+- **No local mock data definitions in components**
+- **No `const mockXxx = [...]` in `/src` files**
+- **No `generateXxxData()` functions in `/src` files**
+- **No `initialXxx`, `dummyXxx`, `sampleXxx` data in `/src`**
+
+## 📦 **COMPONENT TAXONOMY**
+
+### **Atoms (components/)**
+- **Purpose**: Tiny presentational components (Button, Icon, Typography)
+- **Rules**: No side effects, highly reusable
+- **Tests**: Unit + snapshot
+- **Example**: `<Button>`, `<Input>`, `<Icon>`
+
+### **Molecules (components/widgets/)**
+- **Purpose**: Small compositions (InputWithLabel, SearchBox)
+- **Rules**: Combine atoms, minimal logic
+- **Tests**: Unit + integration
+
+### **Widgets (widgets/)**
+- **Purpose**: Complex composites with logic (Charts, DataTables)
+- **Rules**: Business logic, API interactions, state management
+- **Tests**: Integration tests
+
+### **Feature UI (features/*/ui)**
+- **Purpose**: Pages, route containers, feature orchestration
+- **Rules**: Wire services/state together, handle routing
+- **Tests**: Integration & E2E
+
+## 🎯 **IMPORT/EXPORT RULES**
+
+### **Feature Exports**
+```typescript
+// features/portfolio/index.ts
+export { Portfolio } from "./ui/Portfolio";
+export { PortfolioDetail } from "./ui/PortfolioDetail";
+export { usePortfolio } from "./hooks/usePortfolio";
+export type { PortfolioAsset } from "./types";
+```
+
+### **Mock Data Imports**
+```typescript
+// ✅ CORRECT - Import from centralized mockData
+import { mockPortfolioAssets } from "../../../../mockData/features/portfolio";
+
+// ❌ WRONG - Local mock data in components
+const mockData = [...]; // NEVER DO THIS IN /src
 ```
 
 ### **Import Patterns**

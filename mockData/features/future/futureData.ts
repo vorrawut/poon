@@ -1,6 +1,6 @@
 // Future Mock Data
 
-interface Transaction {
+export interface Transaction {
   id: string;
   amount: number;
   date: Date;
@@ -15,7 +15,7 @@ interface Milestone {
   achievedDate?: Date;
 }
 
-interface Mission {
+export interface Mission {
   id: string;
   name: string;
   description: string;
@@ -213,5 +213,4 @@ export const initialMissions: Mission[] = [
   },
 ];
 
-// Export types for use in components
-export type { Mission, Transaction, Milestone };
+// Types are already exported above as interfaces

@@ -238,7 +238,7 @@ export class MockAPI {
 
     return {
       success: true,
-      data: { prices: Object.values(filteredPrices) } as { prices: unknown[] },
+      data: filteredPrices,
       message: "Prices fetched successfully",
     };
   }

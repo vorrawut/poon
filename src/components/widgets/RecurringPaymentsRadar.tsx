@@ -17,7 +17,7 @@ interface RecurringPayment {
   nextDue: Date;
   category: string;
   provider: string;
-  status: "active" | "paused" | "cancelled";
+  status: "active" | "inactive" | "paused" | "cancelled";
   autoRenew: boolean;
   icon: string;
   color: string;
@@ -58,7 +58,11 @@ export function RecurringPaymentsRadar({
     nextDue: new Date(payment.nextPayment),
     category: payment.category,
     provider: payment.name,
-    status: payment.isActive ? ("active" as const) : ("inactive" as const),
+    status: payment.isActive
+      ? ("active" as const)
+      : Math.random() > 0.5
+        ? ("paused" as const)
+        : ("cancelled" as const),
     autoRenew: payment.canCancel,
     icon: payment.icon,
     color: payment.color,

@@ -62,45 +62,48 @@ export const mockPaymentMethods = [
 
 // Generate mock spending data using Universal Category System
 export const generateMockSpendingData = () => {
-  const monthlyIncome = 50000;
-  
-  return [
-    // Housing & Utilities
-    { categoryId: "HOUSING_RENT", amount: 12000, transactions: 1, avgAmount: 12000 },
-    { categoryId: "UTILITIES_ELECTRICITY", amount: 2500, transactions: 1, avgAmount: 2500 },
-    { categoryId: "UTILITIES_WATER", amount: 800, transactions: 1, avgAmount: 800 },
-    { categoryId: "UTILITIES_INTERNET", amount: 1200, transactions: 1, avgAmount: 1200 },
+  const categories = [
+    // Housing & Utilities (combined)
+    { categoryId: "housing", amount: 16500, transactions: 4, avgAmount: 4125 },
     
     // Food & Dining
-    { categoryId: "FOOD_GROCERIES", amount: 8000, transactions: 15, avgAmount: 533 },
-    { categoryId: "FOOD_DINING_OUT", amount: 4500, transactions: 12, avgAmount: 375 },
-    { categoryId: "FOOD_COFFEE_SHOPS", amount: 1800, transactions: 24, avgAmount: 75 },
+    { categoryId: "groceries", amount: 8000, transactions: 15, avgAmount: 533 },
+    { categoryId: "food_drink", amount: 6300, transactions: 36, avgAmount: 175 },
     
-    // Transportation
-    { categoryId: "TRANSPORT_FUEL", amount: 3200, transactions: 8, avgAmount: 400 },
-    { categoryId: "TRANSPORT_PUBLIC", amount: 1500, transactions: 20, avgAmount: 75 },
-    { categoryId: "TRANSPORT_RIDE_SHARING", amount: 2200, transactions: 15, avgAmount: 147 },
+    // Transportation (combined)
+    { categoryId: "transportation", amount: 6900, transactions: 43, avgAmount: 160 },
     
-    // Healthcare
-    { categoryId: "HEALTHCARE_MEDICAL", amount: 2500, transactions: 3, avgAmount: 833 },
-    { categoryId: "HEALTHCARE_PHARMACY", amount: 800, transactions: 5, avgAmount: 160 },
-    { categoryId: "HEALTHCARE_INSURANCE", amount: 3500, transactions: 1, avgAmount: 3500 },
+    // Healthcare (combined)
+    { categoryId: "health_fitness", amount: 6800, transactions: 9, avgAmount: 756 },
     
-    // Entertainment & Lifestyle
-    { categoryId: "ENTERTAINMENT_STREAMING", amount: 1200, transactions: 4, avgAmount: 300 },
-    { categoryId: "ENTERTAINMENT_MOVIES", amount: 800, transactions: 6, avgAmount: 133 },
-    { categoryId: "ENTERTAINMENT_GAMING", amount: 1500, transactions: 3, avgAmount: 500 },
+    // Entertainment & Lifestyle (combined)
+    { categoryId: "entertainment", amount: 3500, transactions: 13, avgAmount: 269 },
     
-    // Shopping
-    { categoryId: "SHOPPING_CLOTHING", amount: 3500, transactions: 8, avgAmount: 438 },
-    { categoryId: "SHOPPING_ELECTRONICS", amount: 2800, transactions: 2, avgAmount: 1400 },
-    { categoryId: "SHOPPING_HOME_GARDEN", amount: 1200, transactions: 4, avgAmount: 300 },
+    // Shopping (combined)
+    { categoryId: "shopping", amount: 7500, transactions: 14, avgAmount: 536 },
     
-    // Financial
-    { categoryId: "FINANCIAL_INVESTMENTS", amount: 8000, transactions: 2, avgAmount: 4000 },
-    { categoryId: "FINANCIAL_SAVINGS", amount: 5000, transactions: 1, avgAmount: 5000 },
-    { categoryId: "FINANCIAL_INSURANCE", amount: 2200, transactions: 2, avgAmount: 1100 },
+    // Financial (combined)
+    { categoryId: "savings_investments", amount: 13000, transactions: 3, avgAmount: 4333 },
+    { categoryId: "miscellaneous", amount: 2200, transactions: 2, avgAmount: 1100 },
   ];
+
+  // Convert to proper SpendingCategory format
+  return categories.map((cat) => {
+    const categoryConfig = getCategoryById(cat.categoryId as SpendingCategory);
+    return {
+      id: cat.categoryId,
+      name: categoryConfig.name,
+      amount: cat.amount,
+      budget: Math.round(cat.amount * 1.2), // 20% buffer for budget
+      color: categoryConfig.color,
+      icon: categoryConfig.icon,
+      trend: cat.amount > 5000 ? ("up" as const) : ("stable" as const),
+      trendPercent: cat.amount > 5000 ? Math.round(Math.random() * 10) : 0,
+      transactions: cat.transactions,
+      frequency: cat.transactions,
+      healthStatus: cat.amount <= cat.amount * 1.2 ? ("healthy" as const) : ("warning" as const),
+    };
+  });
 };
 
 // Generate comprehensive mock transaction data using the universal category system

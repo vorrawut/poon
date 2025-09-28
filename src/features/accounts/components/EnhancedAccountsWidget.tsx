@@ -5,6 +5,7 @@ import {
   InfoTooltip,
 } from "../../../components/ui";
 import { useAccountsOverview, useAccountSync } from "../hooks/useAccounts";
+import type { Account } from "../types";
 import {
   CheckCircleIcon,
   CreditCardIcon,
@@ -93,11 +94,11 @@ export function EnhancedAccountsWidget({
   // Group accounts by type for easier understanding
   const accounts = overview.accounts || [];
   const accountsByType = {
-    checking: accounts.filter((acc) => acc.type === "checking"),
-    savings: accounts.filter((acc) => acc.type === "savings"),
-    investment: accounts.filter((acc) => acc.type === "investment"),
-    credit: accounts.filter((acc) => acc.type === "credit"),
-    loan: accounts.filter((acc) => acc.type === "loan"),
+    checking: accounts.filter((acc: Account) => acc.type === "checking"),
+    savings: accounts.filter((acc: Account) => acc.type === "savings"),
+    investment: accounts.filter((acc: Account) => acc.type === "investment"),
+    credit: accounts.filter((acc: Account) => acc.type === "credit"),
+    loan: accounts.filter((acc: Account) => acc.type === "loan"),
   };
 
   const getAccountTypeLabel = (type: string) => {
@@ -219,7 +220,7 @@ export function EnhancedAccountsWidget({
             if (accounts.length === 0) return null;
 
             const totalBalance = accounts.reduce(
-              (sum, acc) => sum + acc.balance,
+              (sum: number, acc: Account) => sum + acc.balance,
               0,
             );
 
@@ -251,7 +252,7 @@ export function EnhancedAccountsWidget({
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {accounts.map((account) => (
+                  {accounts.map((account: Account) => (
                     <div
                       key={account.id}
                       className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors cursor-pointer"
@@ -267,7 +268,6 @@ export function EnhancedAccountsWidget({
                           <SyncStatus
                             lastSyncAt={account.lastSyncAt}
                             isStale={false}
-                            showLabel={false}
                           />
                         )}
                       </div>

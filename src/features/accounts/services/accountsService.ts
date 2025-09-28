@@ -3,6 +3,8 @@ import {
   type AccountSyncResult,
   type AccountsOverview,
   type AccountType,
+  type AccountStatus,
+  type SyncStatus,
 } from "../types";
 import { config, shouldUseMockData } from "../../../../config/environments";
 
@@ -88,6 +90,7 @@ class AccountsService {
     const netWorth = totalAssets - totalLiabilities;
 
     return {
+      totalBalance: totalAssets, // Total balance is same as total assets
       totalAssets,
       totalLiabilities,
       netWorth,
@@ -164,18 +167,22 @@ class AccountsService {
 
   private transformAccountResponse(data: Record<string, unknown>): Account {
     return {
-      id: data.id,
-      name: data.name || `${data.provider} ${data.type}`,
-      type: data.type,
-      provider: data.provider || "Manual",
-      providerAccountId: data.provider_account_id,
-      balance: parseFloat(data.balance) || 0,
-      currency: data.currency || "USD",
-      lastSyncAt: data.last_sync_at ? new Date(data.last_sync_at) : undefined,
-      status: data.status || "active",
-      syncStatus: data.sync_status || (data.provider ? "synced" : "manual"),
+      id: data.id as string,
+      name: (data.name as string) || `${data.provider} ${data.type}`,
+      type: data.type as AccountType,
+      provider: (data.provider as string) || "Manual",
+      providerAccountId: data.provider_account_id as string | undefined,
+      balance: parseFloat((data.balance as string) || "0") || 0,
+      currency: (data.currency as string) || "USD",
+      lastSyncAt: data.last_sync_at
+        ? new Date(data.last_sync_at as string | number | Date)
+        : undefined,
+      status: (data.status as AccountStatus) || "active",
+      syncStatus:
+        (data.sync_status as SyncStatus) ||
+        (data.provider ? "synced" : "manual"),
       isManual: !data.provider || data.provider === "Manual",
-      metadata: data.metadata,
+      metadata: data.metadata as Account["metadata"],
     };
   }
 

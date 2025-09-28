@@ -1,11 +1,15 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import Dashboard from "../pages/Dashboard";
+import Dashboard from "../features/dashboard/ui/Dashboard";
 import { useAccountStore } from "../store/useAccountStore";
 import { useTransactionStore } from "../store/useTransactionStore";
 import { usePortfolioStore } from "../store/usePortfolioStore";
-import { mockAccounts, mockTransactions, mockAssets } from "../mock/data";
+import {
+  mockAccounts,
+  mockTransactions,
+  mockAssets,
+} from "../../mockData/common/data";
 
 // Mock the stores
 vi.mock("../store/useAccountStore");

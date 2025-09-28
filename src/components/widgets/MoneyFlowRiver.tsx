@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface FlowStream {
@@ -39,83 +39,92 @@ export function MoneyFlowRiver({
   const [particles, setParticles] = useState<FlowParticle[]>([]);
 
   // Mock flow data
-  const incomeStreams: FlowStream[] = [
-    {
-      id: "salary",
-      name: "Salary",
-      type: "income",
-      amount: 85000,
-      icon: "💼",
-      color: "#3B82F6",
-      path: "M 50 50 Q 200 100 350 150",
-      particles: [],
-    },
-    {
-      id: "freelance",
-      name: "Freelance",
-      type: "income",
-      amount: 22000,
-      icon: "💻",
-      color: "#8B5CF6",
-      path: "M 100 50 Q 200 80 350 150",
-      particles: [],
-    },
-    {
-      id: "investments",
-      name: "Investment Returns",
-      type: "income",
-      amount: 8500,
-      icon: "📈",
-      color: "#10B981",
-      path: "M 150 50 Q 200 60 350 150",
-      particles: [],
-    },
-  ];
+  const incomeStreams: FlowStream[] = useMemo(
+    () => [
+      {
+        id: "salary",
+        name: "Salary",
+        type: "income",
+        amount: 85000,
+        icon: "💼",
+        color: "#3B82F6",
+        path: "M 50 50 Q 200 100 350 150",
+        particles: [],
+      },
+      {
+        id: "freelance",
+        name: "Freelance",
+        type: "income",
+        amount: 22000,
+        icon: "💻",
+        color: "#8B5CF6",
+        path: "M 100 50 Q 200 80 350 150",
+        particles: [],
+      },
+      {
+        id: "investments",
+        name: "Investment Returns",
+        type: "income",
+        amount: 8500,
+        icon: "📈",
+        color: "#10B981",
+        path: "M 150 50 Q 200 60 350 150",
+        particles: [],
+      },
+    ],
+    [],
+  );
 
-  const expenseStreams: FlowStream[] = [
-    {
-      id: "rent",
-      name: "Rent",
-      type: "expense",
-      amount: 35000,
-      icon: "🏠",
-      color: "#EF4444",
-      path: "M 350 200 Q 200 250 50 300",
-      particles: [],
-    },
-    {
-      id: "food",
-      name: "Food & Dining",
-      type: "expense",
-      amount: 12000,
-      icon: "🍔",
-      color: "#F59E0B",
-      path: "M 350 200 Q 200 280 100 300",
-      particles: [],
-    },
-    {
-      id: "transport",
-      name: "Transportation",
-      type: "expense",
-      amount: 8500,
-      icon: "🚗",
-      color: "#EC4899",
-      path: "M 350 200 Q 200 310 150 300",
-      particles: [],
-    },
-    {
-      id: "entertainment",
-      name: "Entertainment",
-      type: "expense",
-      amount: 6000,
-      icon: "🎬",
-      color: "#8B5CF6",
-      path: "M 350 200 Q 200 340 200 300",
-      particles: [],
-    },
-  ];
+  const expenseStreams: FlowStream[] = useMemo(
+    () => [
+      {
+        id: "rent",
+        name: "Rent",
+        type: "expense",
+        amount: 35000,
+        icon: "🏠",
+        color: "#EF4444",
+        path: "M 350 200 Q 200 250 50 300",
+        particles: [],
+      },
+      {
+        id: "food",
+        name: "Food & Dining",
+        type: "expense",
+        amount: 12000,
+        icon: "🍔",
+        color: "#F59E0B",
+        path: "M 350 200 Q 200 280 100 300",
+        particles: [],
+      },
+      {
+        id: "transport",
+        name: "Transportation",
+        type: "expense",
+        amount: 8500,
+        icon: "🚗",
+        color: "#EC4899",
+        path: "M 350 200 Q 200 310 150 300",
+        particles: [],
+      },
+      {
+        id: "entertainment",
+        name: "Entertainment",
+        type: "expense",
+        amount: 6000,
+        icon: "🎬",
+        color: "#8B5CF6",
+        path: "M 350 200 Q 200 340 200 300",
+        particles: [],
+      },
+    ],
+    [],
+  );
 
-  const allStreams = [...incomeStreams, ...expenseStreams];
+  const allStreams = useMemo(
+    () => [...incomeStreams, ...expenseStreams],
+    [incomeStreams, expenseStreams],
+  );
 
   // Generate flowing particles
   useEffect(() => {
@@ -152,7 +161,7 @@ export function MoneyFlowRiver({
     const interval = setInterval(generateParticles, 2000);
 
     return () => clearInterval(interval);
-  }, [flowAnimation, timelinePosition]);
+  }, [flowAnimation, timelinePosition, allStreams]);
 
   // Animate particles
   useEffect(() => {

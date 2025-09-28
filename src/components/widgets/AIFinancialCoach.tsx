@@ -145,7 +145,12 @@ export function AIFinancialCoach({
       };
       setChatMessages([welcomeMessage]);
     }
-  }, []);
+  }, [
+    chatMessages.length,
+    userProfile.name,
+    userProfile.monthlyIncome,
+    userProfile.monthlyExpenses,
+  ]);
 
   const fontSize =
     accessibilityMode === "elder"

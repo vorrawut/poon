@@ -22,7 +22,6 @@ import {
   mockStreaks,
   mockChallenges,
   mockInsights,
-  mockSpendingWheel,
   mockMoneyJars,
   mockCoachingInsights,
   mockMonthlyStats,
@@ -38,15 +37,10 @@ export function MoneyFlow() {
     "flow" | "income" | "spending" | "goals" | "story" | "game" | "coach"
   >("flow");
 
-  const totalIncome = mockIncomeStreams.reduce(
-    (sum, stream) => sum + stream.amount,
-    0,
-  );
   const totalSpending = mockSpendingCategories.reduce(
     (sum, cat) => sum + cat.amount,
     0,
   );
-  const netFlow = totalIncome - totalSpending;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white overflow-hidden relative">
@@ -61,12 +55,9 @@ export function MoneyFlow() {
 
       {/* Dual Lens Toggle */}
       <DualLensToggle
-        mode={viewMode}
-        onModeChange={setViewMode}
-        className="fixed top-4 right-4 z-50"
-        style={{
-          transform: accessibilityMode !== "standard" ? "translateY(60px)" : "",
-        }}
+        viewMode={viewMode}
+        onToggle={setViewMode}
+        className={`fixed top-4 right-4 z-50 ${accessibilityMode !== "standard" ? "translate-y-[60px]" : ""}`}
       />
 
       {/* Header */}
@@ -133,9 +124,6 @@ export function MoneyFlow() {
               className="space-y-12"
             >
               <MoneyFlowVisualizer
-                income={totalIncome}
-                spending={totalSpending}
-                netFlow={netFlow}
                 incomeStreams={mockIncomeStreams}
                 spendingCategories={mockSpendingCategories}
                 viewMode={viewMode}
@@ -152,9 +140,28 @@ export function MoneyFlow() {
               className="space-y-12"
             >
               <IncomeBreakdownCard
-                incomeDetails={mockIncomeDetails}
-                totalIncome={totalIncome}
-                monthlyStats={mockMonthlyStats}
+                incomes={mockIncomeDetails.map((income) => ({
+                  ...income,
+                  type:
+                    income.type === "bonus"
+                      ? "other"
+                      : (income.type as
+                          | "other"
+                          | "investment"
+                          | "salary"
+                          | "freelance"
+                          | "business"),
+                  frequency:
+                    income.frequency === "quarterly"
+                      ? "monthly"
+                      : (income.frequency as
+                          | "one-time"
+                          | "monthly"
+                          | "weekly"
+                          | "bi-weekly"
+                          | "yearly"),
+                }))}
+                viewMode={viewMode}
               />
             </motion.div>
           )}
@@ -168,8 +175,27 @@ export function MoneyFlow() {
               className="space-y-12"
             >
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <SpendingWheel data={mockSpendingWheel} />
-                <MoneyJars jars={mockMoneyJars} />
+                <SpendingWheel
+                  categories={mockSpendingCategories.map((cat) => ({
+                    ...cat,
+                    budget: (cat as any).budget || cat.amount * 1.2,
+                    percentage: (cat.amount / totalSpending) * 100,
+                    trend: (cat as any).trend || ("stable" as const),
+                    trendPercent: (cat as any).trendPercent || 0,
+                  }))}
+                  totalSpent={totalSpending}
+                  totalBudget={totalSpending * 1.2}
+                  viewMode={viewMode}
+                />
+                <MoneyJars
+                  jars={mockMoneyJars.map((jar) => ({
+                    ...jar,
+                    currentAmount: jar.current,
+                    targetAmount: jar.target,
+                    category: "savings" as const,
+                    monthlyContribution: Math.round(jar.target / 12),
+                  }))}
+                />
               </div>
             </motion.div>
           )}
@@ -182,7 +208,15 @@ export function MoneyFlow() {
               exit={{ opacity: 0, x: -100 }}
               className="space-y-12"
             >
-              <MoneyJars jars={mockMoneyJars} />
+              <MoneyJars
+                jars={mockMoneyJars.map((jar) => ({
+                  ...jar,
+                  currentAmount: jar.current,
+                  targetAmount: jar.target,
+                  category: "savings" as const,
+                  monthlyContribution: Math.round(jar.target / 12),
+                }))}
+              />
             </motion.div>
           )}
 
@@ -194,10 +228,7 @@ export function MoneyFlow() {
               exit={{ opacity: 0, x: -100 }}
               className="space-y-12"
             >
-              <MonthlyReportCard
-                monthlyStats={mockMonthlyStats}
-                insights={mockInsights}
-              />
+              <MonthlyReportCard stats={mockMonthlyStats} viewMode={viewMode} />
             </motion.div>
           )}
 
@@ -210,12 +241,26 @@ export function MoneyFlow() {
               className="space-y-12"
             >
               <GamificationLayer
-                badges={mockBadges}
-                streaks={mockStreaks}
-                challenges={mockChallenges}
+                badges={mockBadges.map((badge) => ({
+                  ...badge,
+                  requirement: badge.description,
+                }))}
+                streaks={mockStreaks.map((streak) => ({
+                  ...streak,
+                  currentCount: streak.count,
+                  bestCount: streak.count + 5,
+                  isActive: true,
+                  lastUpdated: new Date().toISOString(),
+                }))}
+                challenges={mockChallenges.map((challenge) => ({
+                  ...challenge,
+                  icon: "🎯",
+                  isCompleted: challenge.progress >= challenge.target,
+                }))}
+                totalPoints={2847}
                 level={12}
-                xp={2847}
-                nextLevelXp={3000}
+                nextLevelPoints={3000}
+                viewMode={viewMode}
               />
             </motion.div>
           )}
@@ -229,9 +274,27 @@ export function MoneyFlow() {
               className="space-y-12"
             >
               <AIFinancialCoach
-                insights={mockCoachingInsights}
-                userProfile={mockUserProfile}
-                monthlyStats={mockMonthlyStats}
+                insights={mockCoachingInsights.map((insight) => ({
+                  ...insight,
+                  type:
+                    insight.type === "optimization"
+                      ? "recommendation"
+                      : (insight.type as
+                          | "prediction"
+                          | "recommendation"
+                          | "warning"
+                          | "celebration"
+                          | "tip"),
+                  impact: "medium" as const,
+                  category: "spending" as const,
+                  actionable: true,
+                }))}
+                userProfile={{
+                  ...mockUserProfile,
+                  age: 30,
+                  primaryGoals: mockUserProfile.financialGoals,
+                }}
+                viewMode={viewMode}
               />
             </motion.div>
           )}
@@ -246,7 +309,7 @@ export function MoneyFlow() {
             title: insight.title,
             message: insight.message,
             icon: insight.icon,
-            type: insight.type,
+            type: insight.type === "opportunity" ? "insight" : insight.type,
           }))}
           title="Smart Money Insights"
           subtitle="Your personal financial newsfeed — AI-powered insights with actionable recommendations."

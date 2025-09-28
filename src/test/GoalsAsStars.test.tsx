@@ -10,10 +10,10 @@ vi.mock("framer-motion", () => ({
       children,
       className,
       onClick,
-      whileHover,
-      animate,
-      initial,
-      transition,
+      whileHover: _whileHover,
+      animate: _animate,
+      initial: _initial,
+      transition: _transition,
       style,
       ...props
     }: {
@@ -54,9 +54,9 @@ vi.mock("framer-motion", () => ({
       stroke,
       strokeWidth,
       strokeDasharray,
-      initial,
-      animate,
-      transition,
+      initial: _initial,
+      animate: _animate,
+      transition: _transition,
       ...props
     }: {
       x1?: number;
@@ -171,7 +171,7 @@ describe("GoalsAsStars Component", () => {
 
   describe("Goal Stars Rendering", () => {
     it("renders correct number of goal stars", () => {
-      const { container } = render(<GoalsAsStars goals={mockGoals} />);
+      render(<GoalsAsStars goals={mockGoals} />);
 
       // Each goal should have a clickable star element
       // Should render 4 goal stars (one for each goal)

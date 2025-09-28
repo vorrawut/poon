@@ -95,17 +95,17 @@ class TransactionsService {
     data: Record<string, unknown>,
   ): Transaction {
     return {
-      id: data.id,
-      accountId: data.account_id,
-      amount: parseFloat(data.amount) || 0,
-      type: data.type,
-      category: data.category,
-      merchant: data.merchant,
-      description: data.description,
-      posted_at: new Date(data.posted_at),
-      pending: data.pending || false,
-      location: data.location,
-      tags: data.tags || [],
+      id: data.id as string,
+      accountId: data.account_id as string,
+      amount: parseFloat((data.amount as string) || "0") || 0,
+      type: data.type as TransactionType,
+      category: data.category as TransactionCategory,
+      merchant: data.merchant as string | undefined,
+      description: data.description as string,
+      posted_at: new Date(data.posted_at as string | number | Date),
+      pending: (data.pending as boolean) || false,
+      location: data.location as string | undefined,
+      tags: (data.tags as string[]) || [],
     };
   }
 

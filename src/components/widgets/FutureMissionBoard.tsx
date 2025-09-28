@@ -2,30 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { mockFutureMissions } from "../../../mockData/features/widgets";
 import { Plus, Rocket, Target, Calendar, Map } from "lucide-react";
-
-interface Mission {
-  id: string;
-  name: string;
-  description: string;
-  targetAmount: number;
-  currentAmount: number;
-  deadline: Date;
-  category: string;
-  theme: string;
-  icon: string;
-  color: string;
-  priority: string;
-  isCompleted: boolean;
-  createdAt: Date;
-  transactions: any[];
-  notes: string[];
-  milestones: {
-    percentage: number;
-    label: string;
-    achieved: boolean;
-    achievedDate?: Date;
-  }[];
-}
+import type { Mission } from "../../../mockData/features/future";
 
 interface FutureMissionBoardProps {
   className?: string;

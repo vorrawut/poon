@@ -329,7 +329,7 @@ export function PortfolioDetail() {
                   {
                     icon: "🏆",
                     title: "Achievements",
-                    value: `${mockPortfolioAchievements.filter((a) => a.earned).length}/${mockAchievements.length}`,
+                    value: `${mockPortfolioAchievements.filter((a) => a.earned).length}/${mockPortfolioAchievements.length}`,
                     subtitle: "Unlocked",
                     color: "text-yellow-400",
                   },

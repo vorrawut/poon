@@ -170,9 +170,9 @@ export function CategoryExplorer({
       subcategories,
       merchants,
       timePatterns,
-      budgetUsed: (totalSpent / category.budget) * 100,
+      budgetUsed: category ? (totalSpent / category.budget) * 100 : 0,
     };
-  }, [mockTransactions, category?.budget]);
+  }, [mockTransactions, category]);
 
   if (!category) return null;
 

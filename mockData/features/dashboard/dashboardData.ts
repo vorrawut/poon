@@ -32,7 +32,7 @@ export const dashboardHighlights = [
     message:
       "You have $2,500 sitting in low-yield checking. Consider moving it to your high-yield savings or investment account.",
     icon: "💡",
-    type: "suggestion" as const,
+    type: "insight" as const,
   },
   {
     id: "5",
@@ -40,7 +40,7 @@ export const dashboardHighlights = [
     message:
       "You're 73% towards your emergency fund goal! Just $1,350 more to reach your 6-month target.",
     icon: "🎯",
-    type: "progress" as const,
+    type: "info" as const,
   },
 ];
 
@@ -55,6 +55,7 @@ export const mockFinancialUniverseGoals = [
     color: "#4ECDC4",
     priority: "high",
     category: "security",
+    isCompleted: false,
   },
   {
     id: "vacation-fund",
@@ -65,6 +66,7 @@ export const mockFinancialUniverseGoals = [
     color: "#FF6B6B",
     priority: "medium",
     category: "lifestyle",
+    isCompleted: false,
   },
   {
     id: "investment-growth",
@@ -75,6 +77,7 @@ export const mockFinancialUniverseGoals = [
     color: "#45B7D1",
     priority: "high",
     category: "wealth",
+    isCompleted: false,
   },
   {
     id: "house-fund",
@@ -85,16 +88,25 @@ export const mockFinancialUniverseGoals = [
     color: "#96CEB4",
     priority: "medium",
     category: "major-purchase",
+    isCompleted: false,
   },
 ];
 
 // Spending Data (existing)
-export const mockSpendingData = [
-  { category: "Housing", amount: 15000, budget: 18000, color: "#FF6B6B" },
-  { category: "Food", amount: 8500, budget: 10000, color: "#4ECDC4" },
-  { category: "Transportation", amount: 3200, budget: 4000, color: "#45B7D1" },
-  { category: "Entertainment", amount: 2800, budget: 3500, color: "#F9CA24" },
-  { category: "Shopping", amount: 4200, budget: 3000, color: "#F0932B" },
-  { category: "Healthcare", amount: 1500, budget: 2000, color: "#EB4D4B" },
-  { category: "Utilities", amount: 2200, budget: 2500, color: "#6C5CE7" },
-];
+export const mockSpendingData = {
+  monthlySpending: 37400,
+  previousMonthSpending: 34200,
+  spendingChange: 9.4,
+  topCategories: [
+    { category: "Housing", amount: 15000, budget: 18000, color: "#FF6B6B" },
+    { category: "Food", amount: 8500, budget: 10000, color: "#4ECDC4" },
+    { category: "Transportation", amount: 3200, budget: 4000, color: "#45B7D1" },
+    { category: "Entertainment", amount: 2800, budget: 3500, color: "#F9CA24" },
+    { category: "Shopping", amount: 4200, budget: 3000, color: "#F0932B" },
+    { category: "Healthcare", amount: 1500, budget: 2000, color: "#EB4D4B" },
+    { category: "Utilities", amount: 2200, budget: 2500, color: "#6C5CE7" },
+  ],
+};
+
+// Export mockGoals as alias for compatibility
+export const mockGoals = mockFinancialUniverseGoals;

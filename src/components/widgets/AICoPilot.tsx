@@ -1,15 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bot, Zap, AlertTriangle, Target, Star, Rocket, X } from "lucide-react";
-
-interface Mission {
-  id: string;
-  name: string;
-  targetAmount: number;
-  currentAmount: number;
-  deadline: Date;
-  priority: "low" | "medium" | "high" | "critical";
-}
+import type { Mission } from "../../../mockData/features/future";
 
 interface CoPilotMessage {
   id: string;

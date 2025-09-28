@@ -50,6 +50,8 @@ export interface AccountsOverview {
   totalBalance: number;
   totalAssets: number;
   totalLiabilities: number;
+  netWorth: number;
+  accounts: Account[];
   accountsByType: Record<AccountType, Account[]>;
   lastSyncAt?: Date;
 }

@@ -6,6 +6,7 @@ import { useNetWorth } from "../../features/networth/hooks/useNetWorth";
 import {
   mockFinancialUniverseGoals,
   mockSpendingData,
+  mockGoals,
 } from "../../../mockData/features/dashboard";
 
 // Using centralized mock data
@@ -160,7 +161,10 @@ export function FinancialUniverse({
                 monthlySpending={mockSpendingData.monthlySpending}
                 previousMonthSpending={mockSpendingData.previousMonthSpending}
                 spendingChange={mockSpendingData.spendingChange}
-                topCategories={mockSpendingData.topCategories}
+                topCategories={mockSpendingData.topCategories.map((cat) => ({
+                  ...cat,
+                  name: cat.category,
+                }))}
               />
             </motion.div>
           </div>
@@ -202,7 +206,10 @@ export function FinancialUniverse({
                   monthlySpending={mockSpendingData.monthlySpending}
                   previousMonthSpending={mockSpendingData.previousMonthSpending}
                   spendingChange={mockSpendingData.spendingChange}
-                  topCategories={mockSpendingData.topCategories}
+                  topCategories={mockSpendingData.topCategories.map((data) => ({
+                    ...data,
+                    name: data.category,
+                  }))}
                 />
               </motion.div>
             </div>

@@ -139,13 +139,13 @@ export function AIFinancialHistorian({
     setIsGenerating(true);
 
     const timer = setTimeout(() => {
-      const story = generateStory(timelinePosition, selectedRange);
+      const story = generateStory(timelinePosition, _selectedRange);
       setCurrentStory(story);
       setIsGenerating(false);
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [timelinePosition, selectedRange]);
+  }, [timelinePosition, _selectedRange]);
 
   const getMoodColor = (mood: string) => {
     switch (mood) {
