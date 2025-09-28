@@ -8,6 +8,7 @@ import {
   PortfolioDetail,
   Spending,
   MoneyFlow,
+  MoneyTimeMachine,
   Imports,
   Settings,
   UniverseDashboard,
@@ -36,6 +37,7 @@ function App() {
           <Route path="portfolio/:assetId" element={<PortfolioDetail />} />
           <Route path="spending" element={<Spending />} />
           <Route path="money-flow" element={<MoneyFlow />} />
+          <Route path="time-machine" element={<MoneyTimeMachine />} />
           <Route path="imports" element={<Imports />} />
           <Route path="settings" element={<Settings />} />
         </Route>

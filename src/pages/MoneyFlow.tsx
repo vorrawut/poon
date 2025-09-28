@@ -169,11 +169,7 @@ const mockMonthlyStats = {
     income: 15,
     savings: 35,
   },
-  achievements: [
-    "Budget Master 🏆",
-    "Savings Streak 💰",
-    "Investment Hero 📈",
-  ],
+  achievements: ["Budget Master 🏆", "Savings Streak 💰", "Investment Hero 📈"],
   streaks: {
     budgetCompliance: 12,
     savingsGoal: 8,
@@ -510,7 +506,8 @@ const mockCoachingInsights = [
     id: "1",
     type: "prediction" as const,
     title: "Savings Milestone Alert",
-    message: "At your current pace, you'll reach $50K in savings by March 2025. Consider increasing your emergency fund contribution by $200/month to hit this goal 2 months earlier.",
+    message:
+      "At your current pace, you'll reach $50K in savings by March 2025. Consider increasing your emergency fund contribution by $200/month to hit this goal 2 months earlier.",
     impact: "high" as const,
     category: "saving" as const,
     actionable: true,
@@ -521,28 +518,46 @@ const mockCoachingInsights = [
       timeframe: "March 2025",
     },
     actions: [
-      { label: "Increase Savings", type: "primary" as const, action: () => console.log("Increase savings") },
-      { label: "View Timeline", type: "secondary" as const, action: () => console.log("View timeline") },
+      {
+        label: "Increase Savings",
+        type: "primary" as const,
+        action: () => console.log("Increase savings"),
+      },
+      {
+        label: "View Timeline",
+        type: "secondary" as const,
+        action: () => console.log("View timeline"),
+      },
     ],
   },
   {
     id: "2",
     type: "recommendation" as const,
     title: "Investment Opportunity",
-    message: "Your cash reserves are growing! With $15K+ in savings, consider investing $5K in a diversified index fund to boost long-term growth.",
+    message:
+      "Your cash reserves are growing! With $15K+ in savings, consider investing $5K in a diversified index fund to boost long-term growth.",
     impact: "medium" as const,
     category: "investing" as const,
     actionable: true,
     actions: [
-      { label: "Explore Investments", type: "primary" as const, action: () => console.log("Explore investments") },
-      { label: "Learn More", type: "secondary" as const, action: () => console.log("Learn more") },
+      {
+        label: "Explore Investments",
+        type: "primary" as const,
+        action: () => console.log("Explore investments"),
+      },
+      {
+        label: "Learn More",
+        type: "secondary" as const,
+        action: () => console.log("Learn more"),
+      },
     ],
   },
   {
     id: "3",
     type: "celebration" as const,
     title: "Budget Champion!",
-    message: "Congratulations! You've stayed under budget for 3 months straight. Your disciplined approach is paying off with $1,770 in monthly savings.",
+    message:
+      "Congratulations! You've stayed under budget for 3 months straight. Your disciplined approach is paying off with $1,770 in monthly savings.",
     impact: "high" as const,
     category: "budgeting" as const,
     actionable: false,
@@ -551,12 +566,17 @@ const mockCoachingInsights = [
     id: "4",
     type: "tip" as const,
     title: "Smart Spending Insight",
-    message: "Your food spending peaks on weekends. Meal prepping on Sundays could save you $120/month while maintaining your lifestyle.",
+    message:
+      "Your food spending peaks on weekends. Meal prepping on Sundays could save you $120/month while maintaining your lifestyle.",
     impact: "medium" as const,
     category: "spending" as const,
     actionable: true,
     actions: [
-      { label: "Create Meal Plan", type: "primary" as const, action: () => console.log("Create meal plan") },
+      {
+        label: "Create Meal Plan",
+        type: "primary" as const,
+        action: () => console.log("Create meal plan"),
+      },
     ],
   },
 ];
@@ -572,11 +592,21 @@ const mockUserProfile = {
 
 export function MoneyFlow() {
   const [viewMode, setViewMode] = useState<"play" | "clarity">("play");
-  const [accessibilityMode, setAccessibilityMode] = useState<"elder" | "youth" | "standard">("standard");
-  const [activeSection, setActiveSection] = useState<"flow" | "income" | "spending" | "goals" | "story" | "game" | "coach">("flow");
+  const [accessibilityMode, setAccessibilityMode] = useState<
+    "elder" | "youth" | "standard"
+  >("standard");
+  const [activeSection, setActiveSection] = useState<
+    "flow" | "income" | "spending" | "goals" | "story" | "game" | "coach"
+  >("flow");
 
-  const totalIncome = mockIncomeStreams.reduce((sum, stream) => sum + stream.amount, 0);
-  const totalSpending = mockSpendingCategories.reduce((sum, cat) => sum + cat.amount, 0);
+  const totalIncome = mockIncomeStreams.reduce(
+    (sum, stream) => sum + stream.amount,
+    0,
+  );
+  const totalSpending = mockSpendingCategories.reduce(
+    (sum, cat) => sum + cat.amount,
+    0,
+  );
   const netBalance = totalIncome - totalSpending;
 
   const formatCurrency = (amount: number) => {
@@ -595,7 +625,7 @@ export function MoneyFlow() {
     >
       {viewMode === "play" && <UniverseBackground starCount={40} />}
       <DualLensToggle viewMode={viewMode} onToggle={setViewMode} />
-      
+
       {/* Accessibility Mode Toggle */}
       <div className="fixed top-25 right-2 sm:top-25 sm:right-2 lg:top-25 lg:right-2 z-50">
         <AccessibilityModeToggle
@@ -606,7 +636,11 @@ export function MoneyFlow() {
 
       <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pb-8 sm:pb-12 pt-20 sm:pt-24 lg:pt-32 relative z-10">
         {/* Ultimate Hero Section */}
-        <FadeIn direction="down" delay={0.1} className="text-center py-4 sm:py-8">
+        <FadeIn
+          direction="down"
+          delay={0.1}
+          className="text-center py-4 sm:py-8"
+        >
           <div className="mb-8">
             <div
               className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 ${
@@ -704,7 +738,8 @@ export function MoneyFlow() {
                     netBalance >= 0 ? "text-blue-400" : "text-orange-400"
                   }`}
                 >
-                  {netBalance >= 0 ? "+" : ""}{formatCurrency(netBalance)}
+                  {netBalance >= 0 ? "+" : ""}
+                  {formatCurrency(netBalance)}
                 </div>
                 <div
                   className={`text-sm ${viewMode === "play" ? "text-white/70" : "text-gray-600"}`}
@@ -720,9 +755,21 @@ export function MoneyFlow() {
         <div className="flex justify-center mb-6 sm:mb-8 lg:mb-12 px-2 sm:px-4">
           <div className="flex overflow-x-auto scrollbar-hide gap-1 sm:gap-2 p-2 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 w-full max-w-4xl">
             {[
-              { id: "flow", label: "💫 Money Flow", desc: "Live visualization" },
-              { id: "income", label: "💰 Income Hub", desc: "Earnings breakdown" },
-              { id: "spending", label: "🎡 Spending Wheel", desc: "Interactive categories" },
+              {
+                id: "flow",
+                label: "💫 Money Flow",
+                desc: "Live visualization",
+              },
+              {
+                id: "income",
+                label: "💰 Income Hub",
+                desc: "Earnings breakdown",
+              },
+              {
+                id: "spending",
+                label: "🎡 Spending Wheel",
+                desc: "Interactive categories",
+              },
               { id: "goals", label: "🏺 Money Jars", desc: "Savings goals" },
               { id: "coach", label: "🤖 AI Coach", desc: "Personal mentor" },
               { id: "story", label: "📖 Your Story", desc: "Monthly wrapped" },
@@ -742,8 +789,12 @@ export function MoneyFlow() {
                 }`}
               >
                 <div className="text-center">
-                  <div className="text-xs sm:text-sm font-semibold leading-tight">{tab.label}</div>
-                  <div className="text-xs opacity-70 hidden sm:block mt-1">{tab.desc}</div>
+                  <div className="text-xs sm:text-sm font-semibold leading-tight">
+                    {tab.label}
+                  </div>
+                  <div className="text-xs opacity-70 hidden sm:block mt-1">
+                    {tab.desc}
+                  </div>
                 </div>
               </button>
             ))}
@@ -802,8 +853,14 @@ export function MoneyFlow() {
             >
               <SpendingWheel
                 categories={mockSpendingWheel}
-                totalSpent={mockSpendingWheel.reduce((sum, cat) => sum + cat.amount, 0)}
-                totalBudget={mockSpendingWheel.reduce((sum, cat) => sum + cat.budget, 0)}
+                totalSpent={mockSpendingWheel.reduce(
+                  (sum, cat) => sum + cat.amount,
+                  0,
+                )}
+                totalBudget={mockSpendingWheel.reduce(
+                  (sum, cat) => sum + cat.budget,
+                  0,
+                )}
                 viewMode={viewMode}
                 className="mb-12"
               />
@@ -888,21 +945,25 @@ export function MoneyFlow() {
             }`}
           >
             <div className="text-3xl sm:text-4xl mb-4">✨</div>
-            <h3 className="text-xl sm:text-2xl font-bold mb-4">Your Financial Journey Continues</h3>
+            <h3 className="text-xl sm:text-2xl font-bold mb-4">
+              Your Financial Journey Continues
+            </h3>
             <p
               className={`text-base sm:text-lg mb-6 max-w-2xl mx-auto px-4 ${
                 viewMode === "play" ? "text-white/80" : "text-gray-600"
               }`}
             >
-              Every dollar you earn, save, and invest is a step toward your dreams. 
-              Keep building, keep growing, keep believing in your financial future!
+              Every dollar you earn, save, and invest is a step toward your
+              dreams. Keep building, keep growing, keep believing in your
+              financial future!
             </p>
             <div
               className={`text-sm ${
                 viewMode === "play" ? "text-white/60" : "text-gray-500"
               }`}
             >
-              🌟 Dream big • 💪 Stay consistent • 🎯 Track progress • 🚀 Achieve greatness
+              🌟 Dream big • 💪 Stay consistent • 🎯 Track progress • 🚀 Achieve
+              greatness
             </div>
           </div>
         </FadeIn>

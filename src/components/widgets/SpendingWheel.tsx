@@ -53,20 +53,20 @@ export function SpendingWheel({
     // Calculate arc path
     const startAngleRad = (startAngle * Math.PI) / 180;
     const endAngleRad = (endAngle * Math.PI) / 180;
-    
+
     const x1 = centerX + radius * Math.cos(startAngleRad);
     const y1 = centerY + radius * Math.sin(startAngleRad);
     const x2 = centerX + radius * Math.cos(endAngleRad);
     const y2 = centerY + radius * Math.sin(endAngleRad);
-    
+
     const largeArcFlag = angle > 180 ? 1 : 0;
-    
+
     const pathData = [
       `M ${centerX} ${centerY}`,
       `L ${x1} ${y1}`,
       `A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2}`,
-      'Z'
-    ].join(' ');
+      "Z",
+    ].join(" ");
 
     // Calculate label position
     const labelAngle = (startAngle + endAngle) / 2;
@@ -143,10 +143,10 @@ export function SpendingWheel({
         <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-8">
           {/* Wheel Visualization */}
           <div className="relative">
-          <motion.svg
-            width="250"
-            height="250"
-            className="sm:w-[300px] sm:h-[300px]"
+            <motion.svg
+              width="250"
+              height="250"
+              className="sm:w-[300px] sm:h-[300px]"
               viewBox="0 0 300 300"
               className="drop-shadow-lg"
               animate={isSpinning ? { rotate: 360 } : {}}
@@ -158,21 +158,27 @@ export function SpendingWheel({
                   <motion.path
                     d={category.pathData}
                     fill={category.color}
-                    stroke={viewMode === "play" ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.1)"}
+                    stroke={
+                      viewMode === "play"
+                        ? "rgba(255,255,255,0.2)"
+                        : "rgba(0,0,0,0.1)"
+                    }
                     strokeWidth="2"
                     className="cursor-pointer"
                     initial={{ opacity: 0, scale: 0 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: index * 0.1, duration: 0.5 }}
-                    whileHover={{ 
+                    whileHover={{
                       scale: 1.05,
-                      filter: "brightness(1.2)"
+                      filter: "brightness(1.2)",
                     }}
-                    onClick={() => setSelectedCategory(
-                      selectedCategory === category.id ? null : category.id
-                    )}
+                    onClick={() =>
+                      setSelectedCategory(
+                        selectedCategory === category.id ? null : category.id,
+                      )
+                    }
                   />
-                  
+
                   {/* Category icon */}
                   <text
                     x={category.labelX}
@@ -192,15 +198,23 @@ export function SpendingWheel({
                 cx={centerX}
                 cy={centerY}
                 r="50"
-                fill={viewMode === "play" ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.05)"}
-                stroke={viewMode === "play" ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.2)"}
+                fill={
+                  viewMode === "play"
+                    ? "rgba(255,255,255,0.1)"
+                    : "rgba(0,0,0,0.05)"
+                }
+                stroke={
+                  viewMode === "play"
+                    ? "rgba(255,255,255,0.3)"
+                    : "rgba(0,0,0,0.2)"
+                }
                 strokeWidth="2"
                 animate={{
                   scale: [1, 1.05, 1],
                 }}
                 transition={{ duration: 2, repeat: Infinity }}
               />
-              
+
               {/* Center text */}
               <text
                 x={centerX}
@@ -219,7 +233,11 @@ export function SpendingWheel({
                 textAnchor="middle"
                 dominantBaseline="central"
                 fontSize="12"
-                fill={viewMode === "play" ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.7)"}
+                fill={
+                  viewMode === "play"
+                    ? "rgba(255,255,255,0.7)"
+                    : "rgba(0,0,0,0.7)"
+                }
               >
                 Total Spent
               </text>
@@ -229,9 +247,9 @@ export function SpendingWheel({
             {isSpinning && (
               <motion.div
                 className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl"
-                animate={{ 
+                animate={{
                   scale: [1, 1.5, 1],
-                  rotate: [0, 360]
+                  rotate: [0, 360],
                 }}
                 transition={{ duration: 0.5, repeat: 4 }}
               >
@@ -258,9 +276,11 @@ export function SpendingWheel({
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ scale: 1.02 }}
-                onClick={() => setSelectedCategory(
-                  selectedCategory === category.id ? null : category.id
-                )}
+                onClick={() =>
+                  setSelectedCategory(
+                    selectedCategory === category.id ? null : category.id,
+                  )
+                }
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -279,7 +299,9 @@ export function SpendingWheel({
                       </div>
                       <div
                         className={`text-sm ${
-                          viewMode === "play" ? "text-white/70" : "text-gray-600"
+                          viewMode === "play"
+                            ? "text-white/70"
+                            : "text-gray-600"
                         }`}
                       >
                         {category.percentage}% of spending
@@ -305,7 +327,11 @@ export function SpendingWheel({
                               : "text-gray-400"
                         }`}
                       >
-                        {category.trend === "up" ? "↗️" : category.trend === "down" ? "↘️" : "➡️"}
+                        {category.trend === "up"
+                          ? "↗️"
+                          : category.trend === "down"
+                            ? "↘️"
+                            : "➡️"}
                         {category.trendPercent}%
                       </span>
                     </div>
@@ -332,9 +358,11 @@ export function SpendingWheel({
                       {((category.amount / category.budget) * 100).toFixed(0)}%
                     </span>
                   </div>
-                  <div className={`w-full h-2 rounded-full ${
-                    viewMode === "play" ? "bg-white/20" : "bg-gray-200"
-                  }`}>
+                  <div
+                    className={`w-full h-2 rounded-full ${
+                      viewMode === "play" ? "bg-white/20" : "bg-gray-200"
+                    }`}
+                  >
                     <motion.div
                       className={`h-full rounded-full ${
                         category.amount > category.budget
@@ -342,7 +370,9 @@ export function SpendingWheel({
                           : "bg-green-400"
                       }`}
                       initial={{ width: 0 }}
-                      animate={{ width: `${Math.min((category.amount / category.budget) * 100, 100)}%` }}
+                      animate={{
+                        width: `${Math.min((category.amount / category.budget) * 100, 100)}%`,
+                      }}
                       transition={{ duration: 1, delay: index * 0.1 }}
                     />
                   </div>
@@ -361,7 +391,9 @@ export function SpendingWheel({
                         <div>
                           <span
                             className={`${
-                              viewMode === "play" ? "text-white/70" : "text-gray-600"
+                              viewMode === "play"
+                                ? "text-white/70"
+                                : "text-gray-600"
                             }`}
                           >
                             Over/Under Budget:
@@ -380,7 +412,9 @@ export function SpendingWheel({
                         <div>
                           <span
                             className={`${
-                              viewMode === "play" ? "text-white/70" : "text-gray-600"
+                              viewMode === "play"
+                                ? "text-white/70"
+                                : "text-gray-600"
                             }`}
                           >
                             Monthly Trend:
@@ -394,7 +428,11 @@ export function SpendingWheel({
                                   : "text-gray-400"
                             }`}
                           >
-                            {category.trend === "up" ? "Increasing" : category.trend === "down" ? "Decreasing" : "Stable"}
+                            {category.trend === "up"
+                              ? "Increasing"
+                              : category.trend === "down"
+                                ? "Decreasing"
+                                : "Stable"}
                           </div>
                         </div>
                       </div>
@@ -426,7 +464,7 @@ export function SpendingWheel({
                 Total Spent
               </div>
             </div>
-            
+
             <div className="text-center">
               <div className="text-2xl mb-1">🎯</div>
               <div
@@ -444,7 +482,7 @@ export function SpendingWheel({
                 Total Budget
               </div>
             </div>
-            
+
             <div className="text-center">
               <div className="text-2xl mb-1">
                 {totalSpent <= totalBudget ? "✅" : "⚠️"}
@@ -454,7 +492,8 @@ export function SpendingWheel({
                   totalSpent <= totalBudget ? "text-green-400" : "text-red-400"
                 }`}
               >
-                {totalSpent <= totalBudget ? "-" : "+"}{formatCurrency(Math.abs(totalBudget - totalSpent))}
+                {totalSpent <= totalBudget ? "-" : "+"}
+                {formatCurrency(Math.abs(totalBudget - totalSpent))}
               </div>
               <div
                 className={`text-sm ${

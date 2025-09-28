@@ -40,20 +40,29 @@ export function MoneyJars({
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case "high": return "border-red-400";
-      case "medium": return "border-yellow-400";
-      case "low": return "border-green-400";
-      default: return "border-gray-400";
+      case "high":
+        return "border-red-400";
+      case "medium":
+        return "border-yellow-400";
+      case "low":
+        return "border-green-400";
+      default:
+        return "border-gray-400";
     }
   };
 
   const getCategoryEmoji = (category: string) => {
     switch (category) {
-      case "necessity": return "🏠";
-      case "savings": return "💰";
-      case "fun": return "🎉";
-      case "investment": return "📈";
-      default: return "💰";
+      case "necessity":
+        return "🏠";
+      case "savings":
+        return "💰";
+      case "fun":
+        return "🎉";
+      case "investment":
+        return "📈";
+      default:
+        return "💰";
     }
   };
 
@@ -77,9 +86,9 @@ export function MoneyJars({
           <div className="flex items-center gap-3">
             <motion.div
               className="text-3xl"
-              animate={{ 
+              animate={{
                 rotate: [0, 5, -5, 0],
-                scale: [1, 1.1, 1]
+                scale: [1, 1.1, 1],
               }}
               transition={{ duration: 3, repeat: Infinity }}
             >
@@ -116,7 +125,8 @@ export function MoneyJars({
                 viewMode === "play" ? "text-white/70" : "text-gray-600"
               }`}
             >
-              ${jars.reduce((sum, jar) => sum + jar.monthlyContribution, 0)}/month
+              ${jars.reduce((sum, jar) => sum + jar.monthlyContribution, 0)}
+              /month
             </div>
           </div>
         </div>
@@ -124,9 +134,12 @@ export function MoneyJars({
         {/* Jars Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 lg:gap-6 mb-6 px-2">
           {jars.map((jar, index) => {
-            const fillPercentage = getJarHeight(jar.currentAmount, jar.targetAmount);
+            const fillPercentage = getJarHeight(
+              jar.currentAmount,
+              jar.targetAmount,
+            );
             const isComplete = jar.currentAmount >= jar.targetAmount;
-            
+
             return (
               <motion.div
                 key={jar.id}
@@ -135,23 +148,25 @@ export function MoneyJars({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ scale: 1.05, y: -5 }}
-                onClick={() => setSelectedJar(selectedJar === jar.id ? null : jar.id)}
+                onClick={() =>
+                  setSelectedJar(selectedJar === jar.id ? null : jar.id)
+                }
               >
                 {/* Jar Container */}
                 <div className="relative">
                   {/* Jar Shape */}
                   <div
                     className={`relative w-24 h-32 mx-auto rounded-b-2xl border-4 ${getPriorityColor(jar.priority)} overflow-hidden ${
-                      viewMode === "play" 
-                        ? "bg-white/10 backdrop-blur-sm" 
+                      viewMode === "play"
+                        ? "bg-white/10 backdrop-blur-sm"
                         : "bg-gray-50"
                     }`}
                   >
                     {/* Jar Neck */}
                     <div
                       className={`absolute -top-2 left-1/2 transform -translate-x-1/2 w-12 h-4 rounded-t-lg border-4 ${getPriorityColor(jar.priority)} ${
-                        viewMode === "play" 
-                          ? "bg-white/10 backdrop-blur-sm" 
+                        viewMode === "play"
+                          ? "bg-white/10 backdrop-blur-sm"
                           : "bg-gray-50"
                       }`}
                     />
@@ -159,9 +174,9 @@ export function MoneyJars({
                     {/* Money Fill */}
                     <motion.div
                       className="absolute bottom-0 left-0 right-0 rounded-b-xl"
-                      style={{ 
+                      style={{
                         backgroundColor: jar.color,
-                        opacity: 0.8
+                        opacity: 0.8,
                       }}
                       initial={{ height: 0 }}
                       animate={{ height: `${fillPercentage}%` }}
@@ -171,9 +186,9 @@ export function MoneyJars({
                       {fillPercentage > 20 && (
                         <motion.div
                           className="absolute top-2 left-1/2 transform -translate-x-1/2 text-yellow-300"
-                          animate={{ 
+                          animate={{
                             y: [0, -5, 0],
-                            scale: [1, 1.1, 1]
+                            scale: [1, 1.1, 1],
                           }}
                           transition={{ duration: 2, repeat: Infinity }}
                         >
@@ -186,9 +201,9 @@ export function MoneyJars({
                     {isComplete && (
                       <motion.div
                         className="absolute inset-0 flex items-center justify-center"
-                        animate={{ 
+                        animate={{
                           scale: [1, 1.2, 1],
-                          rotate: [0, 360]
+                          rotate: [0, 360],
                         }}
                         transition={{ duration: 2, repeat: Infinity }}
                       >
@@ -217,7 +232,8 @@ export function MoneyJars({
                         viewMode === "play" ? "text-white/70" : "text-gray-600"
                       }`}
                     >
-                      {formatCurrency(jar.currentAmount)} / {formatCurrency(jar.targetAmount)}
+                      {formatCurrency(jar.currentAmount)} /{" "}
+                      {formatCurrency(jar.targetAmount)}
                     </div>
                   </div>
 
@@ -239,10 +255,15 @@ export function MoneyJars({
                   </motion.button>
 
                   {/* Priority Indicator */}
-                  <div className={`absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-3 h-3 rounded-full ${
-                    jar.priority === "high" ? "bg-red-400" :
-                    jar.priority === "medium" ? "bg-yellow-400" : "bg-green-400"
-                  }`} />
+                  <div
+                    className={`absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-3 h-3 rounded-full ${
+                      jar.priority === "high"
+                        ? "bg-red-400"
+                        : jar.priority === "medium"
+                          ? "bg-yellow-400"
+                          : "bg-green-400"
+                    }`}
+                  />
                 </div>
               </motion.div>
             );
@@ -259,7 +280,7 @@ export function MoneyJars({
               className="border-t border-white/10 pt-6"
             >
               {(() => {
-                const jar = jars.find(j => j.id === selectedJar);
+                const jar = jars.find((j) => j.id === selectedJar);
                 if (!jar) return null;
 
                 return (
@@ -282,10 +303,15 @@ export function MoneyJars({
                         </h4>
                         <p
                           className={`text-sm ${
-                            viewMode === "play" ? "text-white/70" : "text-gray-600"
+                            viewMode === "play"
+                              ? "text-white/70"
+                              : "text-gray-600"
                           }`}
                         >
-                          {getCategoryEmoji(jar.category)} {jar.category.charAt(0).toUpperCase() + jar.category.slice(1)} Goal
+                          {getCategoryEmoji(jar.category)}{" "}
+                          {jar.category.charAt(0).toUpperCase() +
+                            jar.category.slice(1)}{" "}
+                          Goal
                         </p>
                       </div>
                     </div>
@@ -294,7 +320,9 @@ export function MoneyJars({
                       <div>
                         <div
                           className={`text-sm ${
-                            viewMode === "play" ? "text-white/70" : "text-gray-600"
+                            viewMode === "play"
+                              ? "text-white/70"
+                              : "text-gray-600"
                           }`}
                         >
                           Current Amount
@@ -311,7 +339,9 @@ export function MoneyJars({
                       <div>
                         <div
                           className={`text-sm ${
-                            viewMode === "play" ? "text-white/70" : "text-gray-600"
+                            viewMode === "play"
+                              ? "text-white/70"
+                              : "text-gray-600"
                           }`}
                         >
                           Target Amount
@@ -328,14 +358,14 @@ export function MoneyJars({
                       <div>
                         <div
                           className={`text-sm ${
-                            viewMode === "play" ? "text-white/70" : "text-gray-600"
+                            viewMode === "play"
+                              ? "text-white/70"
+                              : "text-gray-600"
                           }`}
                         >
                           Monthly Contribution
                         </div>
-                        <div
-                          className={`text-lg font-bold text-blue-400`}
-                        >
+                        <div className={`text-lg font-bold text-blue-400`}>
                           {formatCurrency(jar.monthlyContribution)}
                         </div>
                       </div>
@@ -343,14 +373,18 @@ export function MoneyJars({
                       <div>
                         <div
                           className={`text-sm ${
-                            viewMode === "play" ? "text-white/70" : "text-gray-600"
+                            viewMode === "play"
+                              ? "text-white/70"
+                              : "text-gray-600"
                           }`}
                         >
                           Completion
                         </div>
                         <div
                           className={`text-lg font-bold ${
-                            jar.estimatedCompletion ? "text-green-400" : "text-yellow-400"
+                            jar.estimatedCompletion
+                              ? "text-green-400"
+                              : "text-yellow-400"
                           }`}
                         >
                           {jar.estimatedCompletion || "Ongoing"}
@@ -363,27 +397,40 @@ export function MoneyJars({
                       <div className="flex justify-between text-sm mb-2">
                         <span
                           className={`${
-                            viewMode === "play" ? "text-white/80" : "text-gray-700"
+                            viewMode === "play"
+                              ? "text-white/80"
+                              : "text-gray-700"
                           }`}
                         >
-                          Progress: {Math.round(getJarHeight(jar.currentAmount, jar.targetAmount))}%
+                          Progress:{" "}
+                          {Math.round(
+                            getJarHeight(jar.currentAmount, jar.targetAmount),
+                          )}
+                          %
                         </span>
                         <span
                           className={`${
-                            viewMode === "play" ? "text-white/80" : "text-gray-700"
+                            viewMode === "play"
+                              ? "text-white/80"
+                              : "text-gray-700"
                           }`}
                         >
-                          Remaining: {formatCurrency(jar.targetAmount - jar.currentAmount)}
+                          Remaining:{" "}
+                          {formatCurrency(jar.targetAmount - jar.currentAmount)}
                         </span>
                       </div>
-                      <div className={`w-full h-3 rounded-full ${
-                        viewMode === "play" ? "bg-white/20" : "bg-gray-200"
-                      }`}>
+                      <div
+                        className={`w-full h-3 rounded-full ${
+                          viewMode === "play" ? "bg-white/20" : "bg-gray-200"
+                        }`}
+                      >
                         <motion.div
                           className="h-full rounded-full"
                           style={{ backgroundColor: jar.color }}
                           initial={{ width: 0 }}
-                          animate={{ width: `${getJarHeight(jar.currentAmount, jar.targetAmount)}%` }}
+                          animate={{
+                            width: `${getJarHeight(jar.currentAmount, jar.targetAmount)}%`,
+                          }}
                           transition={{ duration: 1 }}
                         />
                       </div>
@@ -417,7 +464,7 @@ export function MoneyJars({
                 onClick={(e) => e.stopPropagation()}
               >
                 {(() => {
-                  const jar = jars.find(j => j.id === showAddMoney);
+                  const jar = jars.find((j) => j.id === showAddMoney);
                   if (!jar) return null;
 
                   return (
@@ -433,10 +480,13 @@ export function MoneyJars({
                         </h3>
                         <p
                           className={`text-sm ${
-                            viewMode === "play" ? "text-white/70" : "text-gray-600"
+                            viewMode === "play"
+                              ? "text-white/70"
+                              : "text-gray-600"
                           }`}
                         >
-                          Current: {formatCurrency(jar.currentAmount)} / {formatCurrency(jar.targetAmount)}
+                          Current: {formatCurrency(jar.currentAmount)} /{" "}
+                          {formatCurrency(jar.targetAmount)}
                         </p>
                       </div>
 
@@ -480,7 +530,9 @@ export function MoneyJars({
                   viewMode === "play" ? "text-white" : "text-gray-900"
                 }`}
               >
-                {formatCurrency(jars.reduce((sum, jar) => sum + jar.currentAmount, 0))}
+                {formatCurrency(
+                  jars.reduce((sum, jar) => sum + jar.currentAmount, 0),
+                )}
               </div>
               <div
                 className={`text-sm ${
@@ -490,7 +542,7 @@ export function MoneyJars({
                 Total Saved
               </div>
             </div>
-            
+
             <div className="text-center">
               <div className="text-2xl mb-1">🎯</div>
               <div
@@ -498,7 +550,9 @@ export function MoneyJars({
                   viewMode === "play" ? "text-white" : "text-gray-900"
                 }`}
               >
-                {formatCurrency(jars.reduce((sum, jar) => sum + jar.targetAmount, 0))}
+                {formatCurrency(
+                  jars.reduce((sum, jar) => sum + jar.targetAmount, 0),
+                )}
               </div>
               <div
                 className={`text-sm ${
@@ -508,13 +562,16 @@ export function MoneyJars({
                 Total Goals
               </div>
             </div>
-            
+
             <div className="text-center">
               <div className="text-2xl mb-1">📈</div>
-              <div
-                className={`text-lg font-bold text-blue-400`}
-              >
-                {Math.round((jars.reduce((sum, jar) => sum + jar.currentAmount, 0) / jars.reduce((sum, jar) => sum + jar.targetAmount, 0)) * 100)}%
+              <div className={`text-lg font-bold text-blue-400`}>
+                {Math.round(
+                  (jars.reduce((sum, jar) => sum + jar.currentAmount, 0) /
+                    jars.reduce((sum, jar) => sum + jar.targetAmount, 0)) *
+                    100,
+                )}
+                %
               </div>
               <div
                 className={`text-sm ${

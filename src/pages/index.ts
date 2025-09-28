@@ -5,5 +5,6 @@ export { Portfolio } from "./Portfolio";
 export { PortfolioDetail } from "./PortfolioDetail";
 export { Spending } from "./Spending";
 export { MoneyFlow } from "./MoneyFlow";
+export { MoneyTimeMachine } from "./MoneyTimeMachine";
 export { Imports } from "./Imports";
 export { Settings } from "./Settings";

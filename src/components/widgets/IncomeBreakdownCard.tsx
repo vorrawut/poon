@@ -31,7 +31,7 @@ export function IncomeBreakdownCard({
 
   const totalIncome = incomes.reduce((sum, income) => sum + income.amount, 0);
   const recurringIncome = incomes
-    .filter(income => income.isRecurring)
+    .filter((income) => income.isRecurring)
     .reduce((sum, income) => sum + income.amount, 0);
   const oneTimeIncome = totalIncome - recurringIncome;
 
@@ -43,22 +43,33 @@ export function IncomeBreakdownCard({
 
   const getFrequencyEmoji = (frequency: string) => {
     switch (frequency) {
-      case "monthly": return "📅";
-      case "weekly": return "🗓️";
-      case "bi-weekly": return "📋";
-      case "yearly": return "🎯";
-      case "one-time": return "⚡";
-      default: return "💰";
+      case "monthly":
+        return "📅";
+      case "weekly":
+        return "🗓️";
+      case "bi-weekly":
+        return "📋";
+      case "yearly":
+        return "🎯";
+      case "one-time":
+        return "⚡";
+      default:
+        return "💰";
     }
   };
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case "salary": return "text-blue-400";
-      case "freelance": return "text-purple-400";
-      case "business": return "text-green-400";
-      case "investment": return "text-yellow-400";
-      default: return "text-gray-400";
+      case "salary":
+        return "text-blue-400";
+      case "freelance":
+        return "text-purple-400";
+      case "business":
+        return "text-green-400";
+      case "investment":
+        return "text-yellow-400";
+      default:
+        return "text-gray-400";
     }
   };
 
@@ -69,36 +80,42 @@ export function IncomeBreakdownCard({
     const currentYear = today.getFullYear();
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
     const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
-    
+
     const days = [];
-    
+
     // Empty cells for days before month starts
     for (let i = 0; i < firstDayOfMonth; i++) {
       days.push(null);
     }
-    
+
     // Days of the month
     for (let day = 1; day <= daysInMonth; day++) {
-      const isPayday = incomes.some(income => {
+      const isPayday = incomes.some((income) => {
         if (!income.nextPayment) return false;
         const paymentDate = new Date(income.nextPayment);
-        return paymentDate.getDate() === day && paymentDate.getMonth() === currentMonth;
+        return (
+          paymentDate.getDate() === day &&
+          paymentDate.getMonth() === currentMonth
+        );
       });
-      
-      const paydayIncomes = incomes.filter(income => {
+
+      const paydayIncomes = incomes.filter((income) => {
         if (!income.nextPayment) return false;
         const paymentDate = new Date(income.nextPayment);
-        return paymentDate.getDate() === day && paymentDate.getMonth() === currentMonth;
+        return (
+          paymentDate.getDate() === day &&
+          paymentDate.getMonth() === currentMonth
+        );
       });
-      
+
       days.push({
         day,
         isPayday,
         paydayIncomes,
-        isToday: day === today.getDate()
+        isToday: day === today.getDate(),
       });
     }
-    
+
     return days;
   };
 
@@ -257,7 +274,9 @@ export function IncomeBreakdownCard({
               transition={{ delay: index * 0.1 }}
               whileHover={{ scale: 1.01 }}
               onClick={() =>
-                setSelectedIncome(selectedIncome === income.id ? null : income.id)
+                setSelectedIncome(
+                  selectedIncome === income.id ? null : income.id,
+                )
               }
             >
               <div className="flex items-center justify-between">
@@ -278,18 +297,23 @@ export function IncomeBreakdownCard({
                     </div>
                     <div className="flex items-center gap-2">
                       <span className={getTypeColor(income.type)}>
-                        {income.type.charAt(0).toUpperCase() + income.type.slice(1)}
+                        {income.type.charAt(0).toUpperCase() +
+                          income.type.slice(1)}
                       </span>
                       <span
                         className={`text-sm ${
-                          viewMode === "play" ? "text-white/60" : "text-gray-500"
+                          viewMode === "play"
+                            ? "text-white/60"
+                            : "text-gray-500"
                         }`}
                       >
                         •
                       </span>
                       <span
                         className={`text-sm ${
-                          viewMode === "play" ? "text-white/60" : "text-gray-500"
+                          viewMode === "play"
+                            ? "text-white/60"
+                            : "text-gray-500"
                         }`}
                       >
                         {getFrequencyEmoji(income.frequency)} {income.frequency}
@@ -315,7 +339,8 @@ export function IncomeBreakdownCard({
                         income.growth > 0 ? "text-green-400" : "text-red-400"
                       }`}
                     >
-                      {income.growth > 0 ? "+" : ""}{income.growth}% growth
+                      {income.growth > 0 ? "+" : ""}
+                      {income.growth}% growth
                     </div>
                   )}
                 </div>
@@ -334,7 +359,9 @@ export function IncomeBreakdownCard({
                       <div>
                         <div
                           className={`text-sm font-medium mb-1 ${
-                            viewMode === "play" ? "text-white/80" : "text-gray-700"
+                            viewMode === "play"
+                              ? "text-white/80"
+                              : "text-gray-700"
                           }`}
                         >
                           Next Payment
@@ -350,7 +377,9 @@ export function IncomeBreakdownCard({
                       <div>
                         <div
                           className={`text-sm font-medium mb-1 ${
-                            viewMode === "play" ? "text-white/80" : "text-gray-700"
+                            viewMode === "play"
+                              ? "text-white/80"
+                              : "text-gray-700"
                           }`}
                         >
                           Status
@@ -358,12 +387,16 @@ export function IncomeBreakdownCard({
                         <div className="flex items-center gap-2">
                           <div
                             className={`w-2 h-2 rounded-full ${
-                              income.isRecurring ? "bg-green-400" : "bg-yellow-400"
+                              income.isRecurring
+                                ? "bg-green-400"
+                                : "bg-yellow-400"
                             }`}
                           />
                           <span
                             className={`text-sm ${
-                              viewMode === "play" ? "text-white" : "text-gray-900"
+                              viewMode === "play"
+                                ? "text-white"
+                                : "text-gray-900"
                             }`}
                           >
                             {income.isRecurring ? "Active" : "One-time"}
@@ -394,19 +427,21 @@ export function IncomeBreakdownCard({
               >
                 📅 Payday Calendar
               </h4>
-              
+
               <div className="grid grid-cols-7 gap-2">
-                {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-                  <div
-                    key={day}
-                    className={`text-center text-sm font-medium p-2 ${
-                      viewMode === "play" ? "text-white/70" : "text-gray-600"
-                    }`}
-                  >
-                    {day}
-                  </div>
-                ))}
-                
+                {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
+                  (day) => (
+                    <div
+                      key={day}
+                      className={`text-center text-sm font-medium p-2 ${
+                        viewMode === "play" ? "text-white/70" : "text-gray-600"
+                      }`}
+                    >
+                      {day}
+                    </div>
+                  ),
+                )}
+
                 {generateCalendarDays().map((dayData, index) => (
                   <div
                     key={index}
@@ -435,14 +470,15 @@ export function IncomeBreakdownCard({
                   </div>
                 ))}
               </div>
-              
+
               <div className="mt-4 text-center">
                 <p
                   className={`text-sm ${
                     viewMode === "play" ? "text-white/70" : "text-gray-600"
                   }`}
                 >
-                  💡 Green days are paydays • Blue is today • 💰 indicates income
+                  💡 Green days are paydays • Blue is today • 💰 indicates
+                  income
                 </p>
               </div>
             </motion.div>

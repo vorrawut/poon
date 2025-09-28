@@ -30,7 +30,12 @@ export function AccessibilityModeToggle({
       description: "Simplified, clear, and accessible",
       icon: <Users size={20} />,
       color: "bg-green-500",
-      features: ["Large fonts", "High contrast", "Simplified layout", "Essential features only"],
+      features: [
+        "Large fonts",
+        "High contrast",
+        "Simplified layout",
+        "Essential features only",
+      ],
     },
     {
       id: "youth",
@@ -38,11 +43,16 @@ export function AccessibilityModeToggle({
       description: "Vibrant, gamified, and engaging",
       icon: <Gamepad2 size={20} />,
       color: "bg-purple-500",
-      features: ["Vibrant colors", "Animations", "Gamification", "Interactive elements"],
+      features: [
+        "Vibrant colors",
+        "Animations",
+        "Gamification",
+        "Interactive elements",
+      ],
     },
   ];
 
-  const currentMode = modes.find(m => m.id === mode) || modes[0];
+  const currentMode = modes.find((m) => m.id === mode) || modes[0];
 
   return (
     <div className={`relative ${className}`}>
@@ -56,7 +66,13 @@ export function AccessibilityModeToggle({
         <Settings size={14} className="sm:w-4 sm:h-4" />
         <span className="text-xs sm:text-sm font-medium">
           <span className="hidden sm:inline">{currentMode.name}</span>
-          <span className="sm:hidden">{currentMode.name === "Standard" ? "Std" : currentMode.name === "Elder Mode" ? "Elder" : "Youth"}</span>
+          <span className="sm:hidden">
+            {currentMode.name === "Standard"
+              ? "Std"
+              : currentMode.name === "Elder Mode"
+                ? "Elder"
+                : "Youth"}
+          </span>
         </span>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
@@ -109,7 +125,9 @@ export function AccessibilityModeToggle({
                       whileTap={{ scale: 0.98 }}
                     >
                       <div className="flex items-start gap-3">
-                        <div className={`p-2 rounded-lg ${modeOption.color} text-white`}>
+                        <div
+                          className={`p-2 rounded-lg ${modeOption.color} text-white`}
+                        >
                           {modeOption.icon}
                         </div>
                         <div className="flex-1">
@@ -148,7 +166,8 @@ export function AccessibilityModeToggle({
                     </span>
                   </div>
                   <p className="text-xs text-white/70">
-                    You can switch modes anytime. Your preferences are saved automatically.
+                    You can switch modes anytime. Your preferences are saved
+                    automatically.
                   </p>
                 </div>
               </div>

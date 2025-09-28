@@ -47,26 +47,33 @@ export function AIFinancialCoach({
 }: AIFinancialCoachProps) {
   const [activeInsight, setActiveInsight] = useState<string | null>(null);
   const [chatMode, setChatMode] = useState(false);
-  const [chatMessages, setChatMessages] = useState<Array<{
-    id: string;
-    type: "user" | "ai";
-    message: string;
-    timestamp: Date;
-  }>>([]);
+  const [chatMessages, setChatMessages] = useState<
+    Array<{
+      id: string;
+      type: "user" | "ai";
+      message: string;
+      timestamp: Date;
+    }>
+  >([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
   const getInsightIcon = (type: string) => {
     switch (type) {
-      case "prediction": return "🔮";
-      case "recommendation": return "💡";
-      case "warning": return "⚠️";
-      case "celebration": return "🎉";
-      case "tip": return "💭";
-      default: return "🤖";
+      case "prediction":
+        return "🔮";
+      case "recommendation":
+        return "💡";
+      case "warning":
+        return "⚠️";
+      case "celebration":
+        return "🎉";
+      case "tip":
+        return "💭";
+      default:
+        return "🤖";
     }
   };
-
 
   const formatCurrency = (amount: number) => {
     if (amount >= 1000000) return `$${(amount / 1000000).toFixed(1)}M`;
@@ -84,7 +91,7 @@ export function AIFinancialCoach({
       timestamp: new Date(),
     };
 
-    setChatMessages(prev => [...prev, userMessage]);
+    setChatMessages((prev) => [...prev, userMessage]);
     setInputMessage("");
     setIsTyping(true);
 
@@ -97,21 +104,30 @@ export function AIFinancialCoach({
         message: aiResponse,
         timestamp: new Date(),
       };
-      setChatMessages(prev => [...prev, aiMessage]);
+      setChatMessages((prev) => [...prev, aiMessage]);
       setIsTyping(false);
     }, 1500);
   };
 
   const generateAIResponse = (userMessage: string): string => {
     const lowerMessage = userMessage.toLowerCase();
-    
+
     if (lowerMessage.includes("save") || lowerMessage.includes("saving")) {
       return `Great question about saving! Based on your current income of ${formatCurrency(userProfile.monthlyIncome)}, I recommend following the 50/30/20 rule. You're currently saving ${formatCurrency(userProfile.monthlyIncome - userProfile.monthlyExpenses)} per month, which is fantastic! Consider automating your savings to make it even easier.`;
-    } else if (lowerMessage.includes("invest") || lowerMessage.includes("investment")) {
+    } else if (
+      lowerMessage.includes("invest") ||
+      lowerMessage.includes("investment")
+    ) {
       return `For someone with ${userProfile.riskTolerance} risk tolerance like you, I'd suggest starting with index funds if you're new to investing. Given your age of ${userProfile.age}, you have time for growth. Consider allocating 10-15% of your income to investments initially.`;
-    } else if (lowerMessage.includes("budget") || lowerMessage.includes("spending")) {
+    } else if (
+      lowerMessage.includes("budget") ||
+      lowerMessage.includes("spending")
+    ) {
       return `Looking at your spending patterns, you're doing well! Your monthly expenses of ${formatCurrency(userProfile.monthlyExpenses)} leave you with a healthy surplus. I notice you could optimize your discretionary spending by about 10% to boost your savings rate even more.`;
-    } else if (lowerMessage.includes("goal") || lowerMessage.includes("target")) {
+    } else if (
+      lowerMessage.includes("goal") ||
+      lowerMessage.includes("target")
+    ) {
       return `Your primary goals of ${userProfile.primaryGoals.join(", ")} are achievable! Based on your current savings rate, you're on track to meet most of them. Let's create a timeline and break them down into smaller, actionable steps.`;
     } else {
       return `Thanks for your question! As your AI financial coach, I'm here to help you make smart money decisions. Based on your profile, you're doing great with a ${formatCurrency(userProfile.monthlyIncome - userProfile.monthlyExpenses)} monthly surplus. What specific area would you like to focus on: saving, investing, budgeting, or goal planning?`;
@@ -131,7 +147,12 @@ export function AIFinancialCoach({
     }
   }, []);
 
-  const fontSize = accessibilityMode === "elder" ? "text-lg" : accessibilityMode === "youth" ? "text-sm" : "text-base";
+  const fontSize =
+    accessibilityMode === "elder"
+      ? "text-lg"
+      : accessibilityMode === "youth"
+        ? "text-sm"
+        : "text-base";
   const spacing = accessibilityMode === "elder" ? "p-6" : "p-4";
 
   return (
@@ -148,9 +169,9 @@ export function AIFinancialCoach({
           <div className="flex items-center gap-3">
             <motion.div
               className="text-3xl"
-              animate={{ 
+              animate={{
                 scale: [1, 1.1, 1],
-                rotate: [0, 5, -5, 0]
+                rotate: [0, 5, -5, 0],
               }}
               transition={{ duration: 3, repeat: Infinity }}
             >
@@ -227,7 +248,7 @@ export function AIFinancialCoach({
                       </div>
                     </motion.div>
                   ))}
-                  
+
                   {isTyping && (
                     <motion.div
                       initial={{ opacity: 0 }}
@@ -262,7 +283,9 @@ export function AIFinancialCoach({
                       type="text"
                       value={inputMessage}
                       onChange={(e) => setInputMessage(e.target.value)}
-                      onKeyPress={(e) => e.key === "Enter" && sendMessage(inputMessage)}
+                      onKeyPress={(e) =>
+                        e.key === "Enter" && sendMessage(inputMessage)
+                      }
                       placeholder="Ask me anything about your finances..."
                       className={`flex-1 px-4 py-2 rounded-xl border ${fontSize} ${
                         viewMode === "play"
@@ -302,7 +325,11 @@ export function AIFinancialCoach({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
               whileHover={{ scale: 1.02 }}
-              onClick={() => setActiveInsight(activeInsight === insight.id ? null : insight.id)}
+              onClick={() =>
+                setActiveInsight(
+                  activeInsight === insight.id ? null : insight.id,
+                )
+              }
             >
               <div className="flex items-start gap-3">
                 <div className="text-2xl">{getInsightIcon(insight.type)}</div>
@@ -340,29 +367,46 @@ export function AIFinancialCoach({
                     <div className="mt-3">
                       {insight.data.percentage !== undefined && (
                         <div className="flex items-center gap-2">
-                          <div className={`flex-1 h-2 rounded-full ${
-                            viewMode === "play" ? "bg-white/20" : "bg-gray-200"
-                          }`}>
+                          <div
+                            className={`flex-1 h-2 rounded-full ${
+                              viewMode === "play"
+                                ? "bg-white/20"
+                                : "bg-gray-200"
+                            }`}
+                          >
                             <div
                               className="h-full rounded-full bg-blue-500"
                               style={{ width: `${insight.data.percentage}%` }}
                             />
                           </div>
-                          <span className={`text-sm font-medium ${
-                            viewMode === "play" ? "text-white" : "text-gray-900"
-                          }`}>
+                          <span
+                            className={`text-sm font-medium ${
+                              viewMode === "play"
+                                ? "text-white"
+                                : "text-gray-900"
+                            }`}
+                          >
                             {insight.data.percentage}%
                           </span>
                         </div>
                       )}
-                      
-                      {insight.data.currentValue && insight.data.targetValue && (
-                        <div className="text-sm mt-2">
-                          <span className={viewMode === "play" ? "text-white/70" : "text-gray-600"}>
-                            Progress: {formatCurrency(insight.data.currentValue)} / {formatCurrency(insight.data.targetValue)}
-                          </span>
-                        </div>
-                      )}
+
+                      {insight.data.currentValue &&
+                        insight.data.targetValue && (
+                          <div className="text-sm mt-2">
+                            <span
+                              className={
+                                viewMode === "play"
+                                  ? "text-white/70"
+                                  : "text-gray-600"
+                              }
+                            >
+                              Progress:{" "}
+                              {formatCurrency(insight.data.currentValue)} /{" "}
+                              {formatCurrency(insight.data.targetValue)}
+                            </span>
+                          </div>
+                        )}
                     </div>
                   )}
                 </div>
@@ -370,35 +414,37 @@ export function AIFinancialCoach({
 
               {/* Expanded Actions */}
               <AnimatePresence>
-                {activeInsight === insight.id && insight.actionable && insight.actions && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="mt-4 pt-4 border-t border-white/10"
-                  >
-                    <div className="flex gap-2">
-                      {insight.actions.map((action, actionIndex) => (
-                        <button
-                          key={actionIndex}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            action.action();
-                          }}
-                          className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                            action.type === "primary"
-                              ? "bg-blue-500 text-white hover:bg-blue-600"
-                              : viewMode === "play"
-                                ? "bg-white/10 text-white hover:bg-white/20"
-                                : "bg-gray-100 text-gray-900 hover:bg-gray-200"
-                          }`}
-                        >
-                          {action.label}
-                        </button>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
+                {activeInsight === insight.id &&
+                  insight.actionable &&
+                  insight.actions && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="mt-4 pt-4 border-t border-white/10"
+                    >
+                      <div className="flex gap-2">
+                        {insight.actions.map((action, actionIndex) => (
+                          <button
+                            key={actionIndex}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              action.action();
+                            }}
+                            className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                              action.type === "primary"
+                                ? "bg-blue-500 text-white hover:bg-blue-600"
+                                : viewMode === "play"
+                                  ? "bg-white/10 text-white hover:bg-white/20"
+                                  : "bg-gray-100 text-gray-900 hover:bg-gray-200"
+                            }`}
+                          >
+                            {action.label}
+                          </button>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
               </AnimatePresence>
             </motion.div>
           ))}
@@ -407,10 +453,26 @@ export function AIFinancialCoach({
         {/* Quick Actions */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
-            { icon: "💰", label: "Optimize Savings", action: () => console.log("Optimize savings") },
-            { icon: "📈", label: "Investment Tips", action: () => console.log("Investment tips") },
-            { icon: "🎯", label: "Set New Goal", action: () => console.log("Set goal") },
-            { icon: "📊", label: "Budget Review", action: () => console.log("Budget review") },
+            {
+              icon: "💰",
+              label: "Optimize Savings",
+              action: () => console.log("Optimize savings"),
+            },
+            {
+              icon: "📈",
+              label: "Investment Tips",
+              action: () => console.log("Investment tips"),
+            },
+            {
+              icon: "🎯",
+              label: "Set New Goal",
+              action: () => console.log("Set goal"),
+            },
+            {
+              icon: "📊",
+              label: "Budget Review",
+              action: () => console.log("Budget review"),
+            },
           ].map((quickAction, index) => (
             <motion.button
               key={index}
@@ -447,7 +509,8 @@ export function AIFinancialCoach({
                 viewMode === "play" ? "text-white/70" : "text-gray-600"
               }`}
             >
-              You're doing great! Keep up the momentum and you'll reach your goals ahead of schedule.
+              You're doing great! Keep up the momentum and you'll reach your
+              goals ahead of schedule.
             </p>
           </div>
         </div>

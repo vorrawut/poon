@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { TrendingUp, TrendingDown, Calendar, Award, Target, Zap } from "lucide-react";
+import {
+  TrendingUp,
+  TrendingDown,
+  Calendar,
+  Award,
+  Target,
+  Zap,
+} from "lucide-react";
 
 interface MonthlyStats {
   totalSpent: number;
@@ -63,10 +70,10 @@ export function MonthlyReportCard({
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      weekday: 'long', 
-      month: 'short', 
-      day: 'numeric' 
+    return date.toLocaleDateString("en-US", {
+      weekday: "long",
+      month: "short",
+      day: "numeric",
     });
   };
 
@@ -89,7 +96,7 @@ export function MonthlyReportCard({
       icon: "🏆",
       content: `This month you spent most on ${stats.topCategory.icon} ${stats.topCategory.name} (${stats.topCategory.percentage}%)`,
       highlight: formatCurrency(stats.topCategory.amount),
-      color: "from-purple-500 to-pink-500"
+      color: "from-purple-500 to-pink-500",
     },
     {
       id: "cheapest-day",
@@ -97,7 +104,7 @@ export function MonthlyReportCard({
       icon: "🧘",
       content: `Your cheapest day was ${formatDate(stats.cheapestDay.date)}`,
       highlight: formatCurrency(stats.cheapestDay.amount),
-      color: "from-green-500 to-emerald-500"
+      color: "from-green-500 to-emerald-500",
     },
     {
       id: "expensive-day",
@@ -105,16 +112,19 @@ export function MonthlyReportCard({
       icon: "💸",
       content: `Your biggest spending day was ${formatDate(stats.mostExpensiveDay.date)}`,
       highlight: formatCurrency(stats.mostExpensiveDay.amount),
-      color: "from-red-500 to-orange-500"
+      color: "from-red-500 to-orange-500",
     },
     {
       id: "comparison",
       title: "Month-over-Month",
       icon: "📊",
-      content: `Compared to last month, you ${stats.comparisonLastMonth.spending > 0 ? 'increased' : 'reduced'} spending by ${Math.abs(stats.comparisonLastMonth.spending)}%`,
-      highlight: `${stats.comparisonLastMonth.spending > 0 ? '+' : ''}${stats.comparisonLastMonth.spending}%`,
-      color: stats.comparisonLastMonth.spending > 0 ? "from-red-500 to-pink-500" : "from-green-500 to-blue-500"
-    }
+      content: `Compared to last month, you ${stats.comparisonLastMonth.spending > 0 ? "increased" : "reduced"} spending by ${Math.abs(stats.comparisonLastMonth.spending)}%`,
+      highlight: `${stats.comparisonLastMonth.spending > 0 ? "+" : ""}${stats.comparisonLastMonth.spending}%`,
+      color:
+        stats.comparisonLastMonth.spending > 0
+          ? "from-red-500 to-pink-500"
+          : "from-green-500 to-blue-500",
+    },
   ];
 
   return (
@@ -131,9 +141,9 @@ export function MonthlyReportCard({
           <div className="flex items-center gap-3">
             <motion.div
               className="text-3xl"
-              animate={{ 
+              animate={{
                 rotate: [0, 10, -10, 0],
-                scale: [1, 1.1, 1]
+                scale: [1, 1.1, 1],
               }}
               transition={{ duration: 3, repeat: Infinity }}
             >
@@ -179,15 +189,18 @@ export function MonthlyReportCard({
                 activeCard === card.id ? "ring-2 ring-white/50" : ""
               }`}
               style={{
-                background: viewMode === "play" 
-                  ? `linear-gradient(135deg, ${card.color.split(' ')[1]} 0%, ${card.color.split(' ')[3]} 100%)`
-                  : "white"
+                background:
+                  viewMode === "play"
+                    ? `linear-gradient(135deg, ${card.color.split(" ")[1]} 0%, ${card.color.split(" ")[3]} 100%)`
+                    : "white",
               }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
               whileHover={{ scale: 1.02, y: -5 }}
-              onClick={() => setActiveCard(activeCard === card.id ? null : card.id)}
+              onClick={() =>
+                setActiveCard(activeCard === card.id ? null : card.id)
+              }
             >
               {/* Background Pattern */}
               {viewMode === "play" && (
@@ -201,15 +214,13 @@ export function MonthlyReportCard({
               <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="text-2xl">{card.icon}</div>
-                  <h4 className="text-lg font-bold text-white">
-                    {card.title}
-                  </h4>
+                  <h4 className="text-lg font-bold text-white">{card.title}</h4>
                 </div>
-                
+
                 <p className="text-white/90 mb-3 text-sm leading-relaxed">
                   {card.content}
                 </p>
-                
+
                 <div className="text-2xl font-bold text-white">
                   {card.highlight}
                 </div>
@@ -248,7 +259,7 @@ export function MonthlyReportCard({
                 New Achievements
               </h4>
             </div>
-            
+
             <div className="space-y-2">
               {stats.achievements.map((achievement, index) => (
                 <motion.div
@@ -292,7 +303,7 @@ export function MonthlyReportCard({
                 Current Streaks
               </h4>
             </div>
-            
+
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <span
@@ -306,7 +317,7 @@ export function MonthlyReportCard({
                   {stats.streaks.budgetCompliance} days
                 </span>
               </div>
-              
+
               <div className="flex justify-between items-center">
                 <span
                   className={`text-sm ${
@@ -319,7 +330,7 @@ export function MonthlyReportCard({
                   {stats.streaks.savingsGoal} days
                 </span>
               </div>
-              
+
               <div className="flex justify-between items-center">
                 <span
                   className={`text-sm ${
@@ -357,7 +368,7 @@ export function MonthlyReportCard({
               Crystal Ball Predictions
             </h4>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="text-center">
               <div className="text-2xl mb-1">🔮</div>
@@ -372,7 +383,7 @@ export function MonthlyReportCard({
                 Predicted month-end spending
               </div>
             </div>
-            
+
             <div className="text-center">
               <div className="text-2xl mb-1">💎</div>
               <div className="text-lg font-bold text-green-400">
@@ -386,7 +397,7 @@ export function MonthlyReportCard({
                 Year-end savings projection
               </div>
             </div>
-            
+
             <div className="text-center">
               <div className="text-2xl mb-1">🎯</div>
               <div className="text-lg font-bold text-purple-400">
@@ -422,52 +433,73 @@ export function MonthlyReportCard({
                   >
                     📈 Month-over-Month Analysis
                   </h5>
-                  
+
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
                       <span
                         className={`text-sm ${
-                          viewMode === "play" ? "text-white/80" : "text-gray-700"
+                          viewMode === "play"
+                            ? "text-white/80"
+                            : "text-gray-700"
                         }`}
                       >
                         Spending Change
                       </span>
                       <div className="flex items-center gap-1">
                         {getComparisonIcon(stats.comparisonLastMonth.spending)}
-                        <span className={getComparisonColor(stats.comparisonLastMonth.spending)}>
-                          {stats.comparisonLastMonth.spending > 0 ? "+" : ""}{stats.comparisonLastMonth.spending}%
+                        <span
+                          className={getComparisonColor(
+                            stats.comparisonLastMonth.spending,
+                          )}
+                        >
+                          {stats.comparisonLastMonth.spending > 0 ? "+" : ""}
+                          {stats.comparisonLastMonth.spending}%
                         </span>
                       </div>
                     </div>
-                    
+
                     <div className="flex justify-between items-center">
                       <span
                         className={`text-sm ${
-                          viewMode === "play" ? "text-white/80" : "text-gray-700"
+                          viewMode === "play"
+                            ? "text-white/80"
+                            : "text-gray-700"
                         }`}
                       >
                         Income Change
                       </span>
                       <div className="flex items-center gap-1">
                         {getComparisonIcon(stats.comparisonLastMonth.income)}
-                        <span className={getComparisonColor(stats.comparisonLastMonth.income)}>
-                          {stats.comparisonLastMonth.income > 0 ? "+" : ""}{stats.comparisonLastMonth.income}%
+                        <span
+                          className={getComparisonColor(
+                            stats.comparisonLastMonth.income,
+                          )}
+                        >
+                          {stats.comparisonLastMonth.income > 0 ? "+" : ""}
+                          {stats.comparisonLastMonth.income}%
                         </span>
                       </div>
                     </div>
-                    
+
                     <div className="flex justify-between items-center">
                       <span
                         className={`text-sm ${
-                          viewMode === "play" ? "text-white/80" : "text-gray-700"
+                          viewMode === "play"
+                            ? "text-white/80"
+                            : "text-gray-700"
                         }`}
                       >
                         Savings Change
                       </span>
                       <div className="flex items-center gap-1">
                         {getComparisonIcon(stats.comparisonLastMonth.savings)}
-                        <span className={getComparisonColor(stats.comparisonLastMonth.savings)}>
-                          {stats.comparisonLastMonth.savings > 0 ? "+" : ""}{stats.comparisonLastMonth.savings}%
+                        <span
+                          className={getComparisonColor(
+                            stats.comparisonLastMonth.savings,
+                          )}
+                        >
+                          {stats.comparisonLastMonth.savings > 0 ? "+" : ""}
+                          {stats.comparisonLastMonth.savings}%
                         </span>
                       </div>
                     </div>
@@ -483,28 +515,40 @@ export function MonthlyReportCard({
                   >
                     🎉 Fun Money Facts
                   </h5>
-                  
+
                   <div className="space-y-2">
                     <div
                       className={`text-sm ${
                         viewMode === "play" ? "text-white/80" : "text-gray-700"
                       }`}
                     >
-                      💡 You saved {formatCurrency(stats.totalIncome - stats.totalSpent)} this month
+                      💡 You saved{" "}
+                      {formatCurrency(stats.totalIncome - stats.totalSpent)}{" "}
+                      this month
                     </div>
                     <div
                       className={`text-sm ${
                         viewMode === "play" ? "text-white/80" : "text-gray-700"
                       }`}
                     >
-                      🎯 That's {(((stats.totalIncome - stats.totalSpent) / stats.totalIncome) * 100).toFixed(1)}% of your income
+                      🎯 That's{" "}
+                      {(
+                        ((stats.totalIncome - stats.totalSpent) /
+                          stats.totalIncome) *
+                        100
+                      ).toFixed(1)}
+                      % of your income
                     </div>
                     <div
                       className={`text-sm ${
                         viewMode === "play" ? "text-white/80" : "text-gray-700"
                       }`}
                     >
-                      🚀 At this rate, you'll save {formatCurrency((stats.totalIncome - stats.totalSpent) * 12)} this year
+                      🚀 At this rate, you'll save{" "}
+                      {formatCurrency(
+                        (stats.totalIncome - stats.totalSpent) * 12,
+                      )}{" "}
+                      this year
                     </div>
                   </div>
                 </div>

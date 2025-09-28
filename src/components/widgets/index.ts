@@ -18,3 +18,8 @@ export { RiskGauge } from "./RiskGauge";
 export { WealthWheel } from "./WealthWheel";
 export { AchievementBadges } from "./AchievementBadges";
 export { CategoryDetailView } from "./CategoryDetailView";
+export { TimeMachineTimeline } from "./TimeMachineTimeline";
+export { MoneyGalaxy } from "./MoneyGalaxy";
+export { MoneyFlowRiver } from "./MoneyFlowRiver";
+export { AIFinancialHistorian } from "./AIFinancialHistorian";
+export { TimeCapsule } from "./TimeCapsule";

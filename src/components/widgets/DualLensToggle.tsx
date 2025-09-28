@@ -18,7 +18,7 @@ export function DualLensToggle({
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.5 }}
     >
-        <div className="bg-black/30 backdrop-blur-sm rounded-full p-0.5 sm:p-1 border border-white/20">
+      <div className="bg-black/30 backdrop-blur-sm rounded-full p-0.5 sm:p-1 border border-white/20">
         <button
           onClick={() => onToggle("play")}
           className={`px-1.5 sm:px-4 py-0.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all ${
@@ -27,7 +27,8 @@ export function DualLensToggle({
               : "text-white/70 hover:text-white"
           }`}
         >
-          <span className="hidden sm:inline">🎮 Play Mode</span><span className="sm:hidden">🎮 Play</span>
+          <span className="hidden sm:inline">🎮 Play Mode</span>
+          <span className="sm:hidden">🎮 Play</span>
         </button>
         <button
           onClick={() => onToggle("clarity")}
@@ -37,7 +38,8 @@ export function DualLensToggle({
               : "text-white/70 hover:text-white"
           }`}
         >
-          <span className="hidden sm:inline">📊 Clarity Mode</span><span className="sm:hidden">📊 Clarity</span>
+          <span className="hidden sm:inline">📊 Clarity Mode</span>
+          <span className="sm:hidden">📊 Clarity</span>
         </button>
       </div>
     </motion.div>

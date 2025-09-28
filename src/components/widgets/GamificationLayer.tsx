@@ -59,32 +59,45 @@ export function GamificationLayer({
   viewMode = "play",
   className = "",
 }: GamificationLayerProps) {
-  const [activeTab, setActiveTab] = useState<"badges" | "streaks" | "challenges">("badges");
+  const [activeTab, setActiveTab] = useState<
+    "badges" | "streaks" | "challenges"
+  >("badges");
   const [selectedBadge, setSelectedBadge] = useState<string | null>(null);
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
-      case "common": return "from-gray-400 to-gray-600";
-      case "rare": return "from-blue-400 to-blue-600";
-      case "epic": return "from-purple-400 to-purple-600";
-      case "legendary": return "from-yellow-400 to-orange-500";
-      default: return "from-gray-400 to-gray-600";
+      case "common":
+        return "from-gray-400 to-gray-600";
+      case "rare":
+        return "from-blue-400 to-blue-600";
+      case "epic":
+        return "from-purple-400 to-purple-600";
+      case "legendary":
+        return "from-yellow-400 to-orange-500";
+      default:
+        return "from-gray-400 to-gray-600";
     }
   };
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case "easy": return "text-green-400";
-      case "medium": return "text-yellow-400";
-      case "hard": return "text-red-400";
-      default: return "text-gray-400";
+      case "easy":
+        return "text-green-400";
+      case "medium":
+        return "text-yellow-400";
+      case "hard":
+        return "text-red-400";
+      default:
+        return "text-gray-400";
     }
   };
 
-  const earnedBadges = badges.filter(badge => badge.earned);
-  const unearnedBadges = badges.filter(badge => !badge.earned);
-  const activeStreaks = streaks.filter(streak => streak.isActive);
-  const activeChallenges = challenges.filter(challenge => !challenge.isCompleted);
+  const earnedBadges = badges.filter((badge) => badge.earned);
+  const unearnedBadges = badges.filter((badge) => !badge.earned);
+  const activeStreaks = streaks.filter((streak) => streak.isActive);
+  const activeChallenges = challenges.filter(
+    (challenge) => !challenge.isCompleted,
+  );
 
   const levelProgress = (totalPoints % 1000) / 10; // Assuming 1000 points per level
 
@@ -106,19 +119,22 @@ export function GamificationLayer({
                   ? "bg-gradient-to-br from-yellow-400 to-orange-500 border-yellow-300"
                   : "bg-gradient-to-br from-blue-400 to-purple-500 border-blue-300"
               }`}
-              animate={{ 
+              animate={{
                 boxShadow: [
                   "0 0 20px rgba(255, 215, 0, 0.3)",
                   "0 0 30px rgba(255, 215, 0, 0.6)",
-                  "0 0 20px rgba(255, 215, 0, 0.3)"
-                ]
+                  "0 0 20px rgba(255, 215, 0, 0.3)",
+                ],
               }}
               transition={{ duration: 2, repeat: Infinity }}
             >
               {level}
-              
+
               {/* Level Progress Ring */}
-              <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 64 64">
+              <svg
+                className="absolute inset-0 w-full h-full -rotate-90"
+                viewBox="0 0 64 64"
+              >
                 <circle
                   cx="32"
                   cy="32"
@@ -138,7 +154,10 @@ export function GamificationLayer({
                   strokeDasharray={`${2 * Math.PI * 28}`}
                   strokeDashoffset={`${2 * Math.PI * 28 * (1 - levelProgress / 100)}`}
                   initial={{ strokeDashoffset: 2 * Math.PI * 28 }}
-                  animate={{ strokeDashoffset: 2 * Math.PI * 28 * (1 - levelProgress / 100) }}
+                  animate={{
+                    strokeDashoffset:
+                      2 * Math.PI * 28 * (1 - levelProgress / 100),
+                  }}
                   transition={{ duration: 1, ease: "easeOut" }}
                 />
               </svg>
@@ -157,13 +176,17 @@ export function GamificationLayer({
                   viewMode === "play" ? "text-white/70" : "text-gray-600"
                 }`}
               >
-                {totalPoints.toLocaleString()} points • {(nextLevelPoints - (totalPoints % 1000)).toLocaleString()} to next level
+                {totalPoints.toLocaleString()} points •{" "}
+                {(nextLevelPoints - (totalPoints % 1000)).toLocaleString()} to
+                next level
               </p>
-              
+
               {/* Progress Bar */}
-              <div className={`w-48 h-2 rounded-full mt-2 ${
-                viewMode === "play" ? "bg-white/20" : "bg-gray-200"
-              }`}>
+              <div
+                className={`w-48 h-2 rounded-full mt-2 ${
+                  viewMode === "play" ? "bg-white/20" : "bg-gray-200"
+                }`}
+              >
                 <motion.div
                   className="h-full rounded-full bg-gradient-to-r from-yellow-400 to-orange-500"
                   initial={{ width: 0 }}
@@ -222,7 +245,11 @@ export function GamificationLayer({
           {[
             { id: "badges", label: "🏆 Badges", count: earnedBadges.length },
             { id: "streaks", label: "🔥 Streaks", count: activeStreaks.length },
-            { id: "challenges", label: "🎯 Challenges", count: activeChallenges.length }
+            {
+              id: "challenges",
+              label: "🎯 Challenges",
+              count: activeChallenges.length,
+            },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -264,7 +291,7 @@ export function GamificationLayer({
                 >
                   🎉 Earned Badges ({earnedBadges.length})
                 </h4>
-                
+
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                   {earnedBadges.map((badge, index) => (
                     <motion.div
@@ -275,15 +302,20 @@ export function GamificationLayer({
                           : ""
                       }`}
                       style={{
-                        background: viewMode === "play" 
-                          ? `linear-gradient(135deg, ${getRarityColor(badge.rarity).split(' ')[1]}, ${getRarityColor(badge.rarity).split(' ')[3]})`
-                          : "white"
+                        background:
+                          viewMode === "play"
+                            ? `linear-gradient(135deg, ${getRarityColor(badge.rarity).split(" ")[1]}, ${getRarityColor(badge.rarity).split(" ")[3]})`
+                            : "white",
                       }}
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: index * 0.1 }}
                       whileHover={{ scale: 1.05, y: -5 }}
-                      onClick={() => setSelectedBadge(selectedBadge === badge.id ? null : badge.id)}
+                      onClick={() =>
+                        setSelectedBadge(
+                          selectedBadge === badge.id ? null : badge.id,
+                        )
+                      }
                     >
                       <div className="text-center">
                         <div className="text-3xl mb-2">{badge.icon}</div>
@@ -297,11 +329,17 @@ export function GamificationLayer({
 
                       {/* Rarity Indicator */}
                       <div className="absolute top-1 right-1">
-                        <div className={`w-2 h-2 rounded-full ${
-                          badge.rarity === "legendary" ? "bg-yellow-400" :
-                          badge.rarity === "epic" ? "bg-purple-400" :
-                          badge.rarity === "rare" ? "bg-blue-400" : "bg-gray-400"
-                        }`} />
+                        <div
+                          className={`w-2 h-2 rounded-full ${
+                            badge.rarity === "legendary"
+                              ? "bg-yellow-400"
+                              : badge.rarity === "epic"
+                                ? "bg-purple-400"
+                                : badge.rarity === "rare"
+                                  ? "bg-blue-400"
+                                  : "bg-gray-400"
+                          }`}
+                        />
                       </div>
                     </motion.div>
                   ))}
@@ -317,7 +355,7 @@ export function GamificationLayer({
                 >
                   🎯 In Progress ({unearnedBadges.length})
                 </h4>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {unearnedBadges.map((badge, index) => (
                     <motion.div
@@ -336,40 +374,52 @@ export function GamificationLayer({
                         <div className="flex-1">
                           <div
                             className={`font-semibold ${
-                              viewMode === "play" ? "text-white" : "text-gray-900"
+                              viewMode === "play"
+                                ? "text-white"
+                                : "text-gray-900"
                             }`}
                           >
                             {badge.name}
                           </div>
                           <div
                             className={`text-sm ${
-                              viewMode === "play" ? "text-white/70" : "text-gray-600"
+                              viewMode === "play"
+                                ? "text-white/70"
+                                : "text-gray-600"
                             }`}
                           >
                             {badge.description}
                           </div>
-                          
+
                           {badge.progress !== undefined && (
                             <div className="mt-2">
                               <div className="flex justify-between text-xs mb-1">
                                 <span
                                   className={`${
-                                    viewMode === "play" ? "text-white/60" : "text-gray-500"
+                                    viewMode === "play"
+                                      ? "text-white/60"
+                                      : "text-gray-500"
                                   }`}
                                 >
                                   Progress
                                 </span>
                                 <span
                                   className={`${
-                                    viewMode === "play" ? "text-white/60" : "text-gray-500"
+                                    viewMode === "play"
+                                      ? "text-white/60"
+                                      : "text-gray-500"
                                   }`}
                                 >
                                   {badge.progress}%
                                 </span>
                               </div>
-                              <div className={`w-full h-2 rounded-full ${
-                                viewMode === "play" ? "bg-white/20" : "bg-gray-200"
-                              }`}>
+                              <div
+                                className={`w-full h-2 rounded-full ${
+                                  viewMode === "play"
+                                    ? "bg-white/20"
+                                    : "bg-gray-200"
+                                }`}
+                              >
                                 <div
                                   className="h-full rounded-full bg-gradient-to-r from-blue-400 to-purple-500"
                                   style={{ width: `${badge.progress}%` }}
@@ -434,7 +484,9 @@ export function GamificationLayer({
                         </div>
                         <div
                           className={`text-sm ${
-                            viewMode === "play" ? "text-white/70" : "text-gray-600"
+                            viewMode === "play"
+                              ? "text-white/70"
+                              : "text-gray-600"
                           }`}
                         >
                           {streak.description}
@@ -448,7 +500,9 @@ export function GamificationLayer({
                       </div>
                       <div
                         className={`text-xs ${
-                          viewMode === "play" ? "text-white/60" : "text-gray-500"
+                          viewMode === "play"
+                            ? "text-white/60"
+                            : "text-gray-500"
                         }`}
                       >
                         Best: {streak.bestCount}
@@ -497,7 +551,9 @@ export function GamificationLayer({
                         </div>
                         <div
                           className={`text-sm ${
-                            viewMode === "play" ? "text-white/70" : "text-gray-600"
+                            viewMode === "play"
+                              ? "text-white/70"
+                              : "text-gray-600"
                           }`}
                         >
                           {challenge.description}
@@ -506,12 +562,16 @@ export function GamificationLayer({
                     </div>
 
                     <div className="text-right">
-                      <div className={`text-sm font-medium ${getDifficultyColor(challenge.difficulty)}`}>
+                      <div
+                        className={`text-sm font-medium ${getDifficultyColor(challenge.difficulty)}`}
+                      >
                         {challenge.difficulty.toUpperCase()}
                       </div>
                       <div
                         className={`text-xs ${
-                          viewMode === "play" ? "text-white/60" : "text-gray-500"
+                          viewMode === "play"
+                            ? "text-white/60"
+                            : "text-gray-500"
                         }`}
                       >
                         {challenge.timeLeft}
@@ -524,26 +584,37 @@ export function GamificationLayer({
                     <div className="flex justify-between text-sm mb-1">
                       <span
                         className={`${
-                          viewMode === "play" ? "text-white/80" : "text-gray-700"
+                          viewMode === "play"
+                            ? "text-white/80"
+                            : "text-gray-700"
                         }`}
                       >
                         Progress: {challenge.progress}/{challenge.target}
                       </span>
                       <span
                         className={`${
-                          viewMode === "play" ? "text-white/80" : "text-gray-700"
+                          viewMode === "play"
+                            ? "text-white/80"
+                            : "text-gray-700"
                         }`}
                       >
-                        {Math.round((challenge.progress / challenge.target) * 100)}%
+                        {Math.round(
+                          (challenge.progress / challenge.target) * 100,
+                        )}
+                        %
                       </span>
                     </div>
-                    <div className={`w-full h-2 rounded-full ${
-                      viewMode === "play" ? "bg-white/20" : "bg-gray-200"
-                    }`}>
+                    <div
+                      className={`w-full h-2 rounded-full ${
+                        viewMode === "play" ? "bg-white/20" : "bg-gray-200"
+                      }`}
+                    >
                       <motion.div
                         className="h-full rounded-full bg-gradient-to-r from-blue-400 to-purple-500"
                         initial={{ width: 0 }}
-                        animate={{ width: `${(challenge.progress / challenge.target) * 100}%` }}
+                        animate={{
+                          width: `${(challenge.progress / challenge.target) * 100}%`,
+                        }}
                         transition={{ duration: 1, ease: "easeOut" }}
                       />
                     </div>
@@ -588,9 +659,9 @@ export function GamificationLayer({
                 onClick={(e) => e.stopPropagation()}
               >
                 {(() => {
-                  const badge = badges.find(b => b.id === selectedBadge);
+                  const badge = badges.find((b) => b.id === selectedBadge);
                   if (!badge) return null;
-                  
+
                   return (
                     <>
                       <div className="text-center mb-6">
@@ -604,7 +675,9 @@ export function GamificationLayer({
                         </h3>
                         <p
                           className={`text-sm ${
-                            viewMode === "play" ? "text-white/70" : "text-gray-600"
+                            viewMode === "play"
+                              ? "text-white/70"
+                              : "text-gray-600"
                           }`}
                         >
                           {badge.description}
@@ -615,31 +688,45 @@ export function GamificationLayer({
                         <div className="flex justify-between">
                           <span
                             className={`${
-                              viewMode === "play" ? "text-white/80" : "text-gray-700"
+                              viewMode === "play"
+                                ? "text-white/80"
+                                : "text-gray-700"
                             }`}
                           >
                             Rarity:
                           </span>
-                          <span className={`font-semibold capitalize ${
-                            badge.rarity === "legendary" ? "text-yellow-400" :
-                            badge.rarity === "epic" ? "text-purple-400" :
-                            badge.rarity === "rare" ? "text-blue-400" : "text-gray-400"
-                          }`}>
+                          <span
+                            className={`font-semibold capitalize ${
+                              badge.rarity === "legendary"
+                                ? "text-yellow-400"
+                                : badge.rarity === "epic"
+                                  ? "text-purple-400"
+                                  : badge.rarity === "rare"
+                                    ? "text-blue-400"
+                                    : "text-gray-400"
+                            }`}
+                          >
                             {badge.rarity}
                           </span>
                         </div>
-                        
+
                         <div className="flex justify-between">
                           <span
                             className={`${
-                              viewMode === "play" ? "text-white/80" : "text-gray-700"
+                              viewMode === "play"
+                                ? "text-white/80"
+                                : "text-gray-700"
                             }`}
                           >
                             Status:
                           </span>
-                          <span className={`font-semibold ${
-                            badge.earned ? "text-green-400" : "text-yellow-400"
-                          }`}>
+                          <span
+                            className={`font-semibold ${
+                              badge.earned
+                                ? "text-green-400"
+                                : "text-yellow-400"
+                            }`}
+                          >
                             {badge.earned ? "Earned" : "In Progress"}
                           </span>
                         </div>
@@ -648,14 +735,18 @@ export function GamificationLayer({
                           <div className="flex justify-between">
                             <span
                               className={`${
-                                viewMode === "play" ? "text-white/80" : "text-gray-700"
+                                viewMode === "play"
+                                  ? "text-white/80"
+                                  : "text-gray-700"
                               }`}
                             >
                               Earned:
                             </span>
                             <span
                               className={`${
-                                viewMode === "play" ? "text-white" : "text-gray-900"
+                                viewMode === "play"
+                                  ? "text-white"
+                                  : "text-gray-900"
                               }`}
                             >
                               {badge.earnedDate}
@@ -666,14 +757,18 @@ export function GamificationLayer({
                         <div className="flex justify-between">
                           <span
                             className={`${
-                              viewMode === "play" ? "text-white/80" : "text-gray-700"
+                              viewMode === "play"
+                                ? "text-white/80"
+                                : "text-gray-700"
                             }`}
                           >
                             Requirement:
                           </span>
                           <span
                             className={`text-sm ${
-                              viewMode === "play" ? "text-white/70" : "text-gray-600"
+                              viewMode === "play"
+                                ? "text-white/70"
+                                : "text-gray-600"
                             }`}
                           >
                             {badge.requirement}
