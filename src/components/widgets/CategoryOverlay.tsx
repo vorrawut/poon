@@ -29,11 +29,11 @@ export function CategoryOverlay({
   viewMode = "play",
 }: CategoryOverlayProps) {
   const [selectedCategory, setSelectedCategory] = useState(
-    initialCategory || categories[0]?.id
+    initialCategory || categories[0]?.id,
   );
 
   const currentCategoryIndex = categories.findIndex(
-    (cat) => cat.id === selectedCategory
+    (cat) => cat.id === selectedCategory,
   );
   const currentCategory = categories[currentCategoryIndex];
 
@@ -45,26 +45,26 @@ export function CategoryOverlay({
 
   const navigateCategory = (direction: "prev" | "next") => {
     const currentIndex = categories.findIndex(
-      (cat) => cat.id === selectedCategory
+      (cat) => cat.id === selectedCategory,
     );
     let newIndex;
-    
+
     if (direction === "prev") {
       newIndex = currentIndex > 0 ? currentIndex - 1 : categories.length - 1;
     } else {
       newIndex = currentIndex < categories.length - 1 ? currentIndex + 1 : 0;
     }
-    
+
     setSelectedCategory(categories[newIndex].id);
   };
 
   const overlayVariants = {
-    hidden: { 
+    hidden: {
       opacity: 0,
       scale: 0.95,
-      y: 20
+      y: 20,
     },
-    visible: { 
+    visible: {
       opacity: 1,
       scale: 1,
       y: 0,
@@ -72,21 +72,21 @@ export function CategoryOverlay({
         type: "spring",
         damping: 25,
         stiffness: 300,
-        duration: 0.4
-      }
+        duration: 0.4,
+      },
     },
-    exit: { 
+    exit: {
       opacity: 0,
       scale: 0.95,
       y: 20,
-      transition: { duration: 0.2 }
-    }
+      transition: { duration: 0.2 },
+    },
   };
 
   const backdropVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1 },
-    exit: { opacity: 0 }
+    exit: { opacity: 0 },
   };
 
   return (
@@ -125,7 +125,11 @@ export function CategoryOverlay({
                   <motion.div
                     className="text-2xl"
                     animate={{ rotate: [0, 360] }}
-                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                    transition={{
+                      duration: 20,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
                   >
                     🌌
                   </motion.div>
@@ -202,7 +206,7 @@ export function CategoryOverlay({
                             {formatCurrency(category.value)}
                           </div>
                         </div>
-                        
+
                         {/* Performance Indicator */}
                         <div
                           className={`text-xs font-bold ${
@@ -255,7 +259,9 @@ export function CategoryOverlay({
                     <div className="flex items-center gap-4">
                       <div
                         className="w-12 h-12 rounded-xl flex items-center justify-center text-xl"
-                        style={{ backgroundColor: `${currentCategory.color}20` }}
+                        style={{
+                          backgroundColor: `${currentCategory.color}20`,
+                        }}
                       >
                         {currentCategory.icon}
                       </div>
@@ -269,7 +275,9 @@ export function CategoryOverlay({
                         </h3>
                         <p
                           className={`text-sm ${
-                            viewMode === "play" ? "text-white/70" : "text-gray-600"
+                            viewMode === "play"
+                              ? "text-white/70"
+                              : "text-gray-600"
                           }`}
                         >
                           {currentCategory.allocation}% of portfolio
