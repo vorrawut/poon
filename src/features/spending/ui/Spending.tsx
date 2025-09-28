@@ -97,7 +97,6 @@ export function Spending() {
     >
       {viewMode === "play" && <UniverseBackground starCount={60} />}
 
-
       <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pb-8 sm:pb-12 pt-20 sm:pt-24 lg:pt-32 relative z-10">
         {/* Hero Section */}
         <FadeIn

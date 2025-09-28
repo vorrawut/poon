@@ -1,5 +1,8 @@
 import React from "react";
-import { useAccessibility, useAccessibilityText } from "../../hooks/useAccessibility";
+import {
+  useAccessibility,
+  useAccessibilityText,
+} from "../../hooks/useAccessibility";
 
 interface AccessibleTextProps {
   children: React.ReactNode;
@@ -26,15 +29,15 @@ interface AccessibleButtonTextProps {
  * Accessibility-aware text component that automatically adjusts font size,
  * color, and spacing based on the current accessibility mode
  */
-export function AccessibleText({ 
-  children, 
-  variant = "body", 
+export function AccessibleText({
+  children,
+  variant = "body",
   color = "primary",
   className = "",
-  as: Component = "p"
+  as: Component = "p",
 }: AccessibleTextProps) {
   const { colors, getClasses } = useAccessibility();
-  
+
   const getColorClass = () => {
     switch (color) {
       case "primary":
@@ -62,7 +65,8 @@ export function AccessibleText({
     }
   };
 
-  const combinedClassName = `${getVariantClass()} ${getColorClass()} ${className}`.trim();
+  const combinedClassName =
+    `${getVariantClass()} ${getColorClass()} ${className}`.trim();
 
   return <Component className={combinedClassName}>{children}</Component>;
 }
@@ -70,21 +74,21 @@ export function AccessibleText({
 /**
  * Accessibility-aware heading component with proper sizing for each accessibility mode
  */
-export function AccessibleHeading({ 
-  children, 
-  level, 
+export function AccessibleHeading({
+  children,
+  level,
   color = "primary",
   className = "",
-  gradient = false
+  gradient = false,
 }: AccessibleHeadingProps) {
   const { colors, viewMode } = useAccessibility();
   const headingClasses = useAccessibilityText("heading", level);
-  
+
   const getColorClass = () => {
     if (gradient && viewMode === "play") {
       return "bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent";
     }
-    
+
     switch (color) {
       case "primary":
         return colors.text;
@@ -99,7 +103,8 @@ export function AccessibleHeading({
     }
   };
 
-  const combinedClassName = `${headingClasses} font-bold ${getColorClass()} ${className}`.trim();
+  const combinedClassName =
+    `${headingClasses} font-bold ${getColorClass()} ${className}`.trim();
   const Component = level;
 
   return <Component className={combinedClassName}>{children}</Component>;
@@ -108,9 +113,12 @@ export function AccessibleHeading({
 /**
  * Accessibility-aware button text with proper sizing
  */
-export function AccessibleButtonText({ children, className = "" }: AccessibleButtonTextProps) {
+export function AccessibleButtonText({
+  children,
+  className = "",
+}: AccessibleButtonTextProps) {
   const buttonClasses = useAccessibilityText("button");
-  
+
   return (
     <span className={`${buttonClasses} font-medium ${className}`.trim()}>
       {children}
@@ -121,19 +129,21 @@ export function AccessibleButtonText({ children, className = "" }: AccessibleBut
 /**
  * Accessibility-aware label component
  */
-export function AccessibleLabel({ 
-  children, 
+export function AccessibleLabel({
+  children,
   className = "",
-  required = false 
-}: { 
-  children: React.ReactNode; 
+  required = false,
+}: {
+  children: React.ReactNode;
   className?: string;
   required?: boolean;
 }) {
   const { colors, getClasses } = useAccessibility();
-  
+
   return (
-    <label className={`${getClasses({ fontSize: "text" })} font-medium ${colors.text} ${className}`.trim()}>
+    <label
+      className={`${getClasses({ fontSize: "text" })} font-medium ${colors.text} ${className}`.trim()}
+    >
       {children}
       {required && <span className="text-red-500 ml-1">*</span>}
     </label>
@@ -143,17 +153,19 @@ export function AccessibleLabel({
 /**
  * Accessibility-aware description text
  */
-export function AccessibleDescription({ 
-  children, 
-  className = "" 
-}: { 
-  children: React.ReactNode; 
+export function AccessibleDescription({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
   className?: string;
 }) {
   const { colors, getClasses } = useAccessibility();
-  
+
   return (
-    <div className={`${getClasses({ fontSize: "text" })} ${colors.textSecondary} ${className}`.trim()}>
+    <div
+      className={`${getClasses({ fontSize: "text" })} ${colors.textSecondary} ${className}`.trim()}
+    >
       {children}
     </div>
   );
@@ -162,17 +174,19 @@ export function AccessibleDescription({
 /**
  * Accessibility-aware error text
  */
-export function AccessibleError({ 
-  children, 
-  className = "" 
-}: { 
-  children: React.ReactNode; 
+export function AccessibleError({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
   className?: string;
 }) {
   const { getClasses } = useAccessibility();
-  
+
   return (
-    <div className={`${getClasses({ fontSize: "text" })} text-red-500 ${className}`.trim()}>
+    <div
+      className={`${getClasses({ fontSize: "text" })} text-red-500 ${className}`.trim()}
+    >
       {children}
     </div>
   );
@@ -181,17 +195,19 @@ export function AccessibleError({
 /**
  * Accessibility-aware success text
  */
-export function AccessibleSuccess({ 
-  children, 
-  className = "" 
-}: { 
-  children: React.ReactNode; 
+export function AccessibleSuccess({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
   className?: string;
 }) {
   const { getClasses } = useAccessibility();
-  
+
   return (
-    <div className={`${getClasses({ fontSize: "text" })} text-green-500 ${className}`.trim()}>
+    <div
+      className={`${getClasses({ fontSize: "text" })} text-green-500 ${className}`.trim()}
+    >
       {children}
     </div>
   );

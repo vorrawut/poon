@@ -16,7 +16,10 @@ import {
 } from "../../../../mockData/features/portfolio";
 
 import { useUIStore } from "../../../store/useUIStore";
-import { useAccessibility, useAccessibilityText } from "../../../hooks/useAccessibility";
+import {
+  useAccessibility,
+  useAccessibilityText,
+} from "../../../hooks/useAccessibility";
 
 export function Portfolio() {
   const { viewMode } = useUIStore();
@@ -82,7 +85,9 @@ export function Portfolio() {
               </motion.span>
               <SplitText className="inline">Your Wealth Universe</SplitText>
             </div>
-            <p className={`${getClasses({ fontSize: "text" })} text-white/80 max-w-2xl mx-auto mb-8`}>
+            <p
+              className={`${getClasses({ fontSize: "text" })} text-white/80 max-w-2xl mx-auto mb-8`}
+            >
               {viewMode === "play"
                 ? "Navigate your financial solar system — each planet represents your asset categories orbiting around your portfolio sun!"
                 : "Clear overview of your portfolio performance with exact numbers and plain summaries."}
@@ -94,7 +99,9 @@ export function Portfolio() {
               whileHover={{ scale: 1.02 }}
             >
               <div className="text-center">
-                <div className={`${getClasses({ fontSize: "heading", headingLevel: "h2" })} font-bold text-white`}>
+                <div
+                  className={`${getClasses({ fontSize: "heading", headingLevel: "h2" })} font-bold text-white`}
+                >
                   {formatCurrency(totalValue)}
                 </div>
                 <div className="text-white/70 text-sm">Total Portfolio</div>

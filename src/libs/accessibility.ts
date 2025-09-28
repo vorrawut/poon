@@ -24,7 +24,7 @@ export function getAccessibilityFontSize(mode: AccessibilityMode): string {
  */
 export function getAccessibilityHeadingSize(
   mode: AccessibilityMode,
-  level: "h1" | "h2" | "h3" | "h4" = "h1"
+  level: "h1" | "h2" | "h3" | "h4" = "h1",
 ): string {
   const sizes = {
     elder: {
@@ -85,7 +85,7 @@ export function getAccessibilityButtonSize(mode: AccessibilityMode): string {
  */
 export function getAccessibilityColors(
   mode: AccessibilityMode,
-  viewMode: "play" | "clarity"
+  viewMode: "play" | "clarity",
 ): {
   text: string;
   textSecondary: string;
@@ -160,7 +160,7 @@ export function getAccessibilityClasses(
     headingLevel?: "h1" | "h2" | "h3" | "h4";
     includeSpacing?: boolean;
     includeColors?: boolean;
-  } = {}
+  } = {},
 ): string {
   const {
     fontSize = "text",
@@ -199,27 +199,27 @@ export function getAccessibilityClasses(
  */
 export function getAccessibilityAnimations(mode: AccessibilityMode): {
   duration: number;
-  easing: string;
+  easing: [number, number, number, number];
   reduceMotion: boolean;
 } {
   switch (mode) {
     case "elder":
       return {
         duration: 0.8, // Slower animations
-        easing: "ease-out",
+        easing: [0.25, 0.46, 0.45, 0.94], // ease-out cubic-bezier
         reduceMotion: true, // Reduced motion for elder users
       };
     case "youth":
       return {
         duration: 0.3, // Faster, snappy animations
-        easing: "ease-in-out",
+        easing: [0.42, 0, 0.58, 1], // ease-in-out cubic-bezier
         reduceMotion: false,
       };
     case "standard":
     default:
       return {
         duration: 0.5, // Standard timing
-        easing: "ease-in-out",
+        easing: [0.42, 0, 0.58, 1], // ease-in-out cubic-bezier
         reduceMotion: false,
       };
   }

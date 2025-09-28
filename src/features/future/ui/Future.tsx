@@ -13,7 +13,10 @@ import {
 } from "../../../../mockData/features/future";
 
 import { useUIStore } from "../../../store/useUIStore";
-import { useAccessibility, useAccessibilityText } from "../../../hooks/useAccessibility";
+import {
+  useAccessibility,
+  useAccessibilityText,
+} from "../../../hooks/useAccessibility";
 
 export function Future() {
   const { viewMode, accessibilityMode } = useUIStore();
@@ -51,7 +54,6 @@ export function Future() {
       }`}
     >
       {viewMode === "play" && <UniverseBackground starCount={60} />}
-
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pb-20 sm:pb-24 pt-20 sm:pt-24 lg:pt-32 relative z-10">

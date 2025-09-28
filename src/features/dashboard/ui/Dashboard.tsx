@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { SplitText, FadeIn, TimeRangeSelector } from "../../../components/ui";
-import { 
+import {
   AccessibleHeading,
   AccessibleText,
   AccessibleButton,
   AccessibleQuickAction,
-  AccessibleGrid
+  AccessibleGrid,
 } from "../../../core";
 import { EnhancedNetWorthWidget } from "../../networth/components/EnhancedNetWorthWidget";
 import { EnhancedAccountsWidget } from "../../accounts/components/EnhancedAccountsWidget";
@@ -75,7 +75,10 @@ export default function Dashboard() {
               </motion.span>
               <SplitText className="inline">Welcome back!</SplitText>
             </AccessibleHeading>
-            <AccessibleText color="secondary" className="mb-8 max-w-2xl mx-auto">
+            <AccessibleText
+              color="secondary"
+              className="mb-8 max-w-2xl mx-auto"
+            >
               {viewMode === "play"
                 ? "Navigate your financial universe — where every dollar has its place in your wealth galaxy!"
                 : "Here's your money in plain English. Everything you need to know, nothing you don't."}
@@ -115,7 +118,7 @@ export default function Dashboard() {
                       📋 Recent Activity
                     </AccessibleHeading>
                   </div>
-                  <AccessibleButton 
+                  <AccessibleButton
                     variant="primary"
                     onClick={() => handleQuickAction("view_transactions")}
                   >
@@ -215,7 +218,10 @@ export default function Dashboard() {
             <AccessibleHeading level="h3" className="mb-4">
               You're doing great with your money!
             </AccessibleHeading>
-            <AccessibleText color="secondary" className="mb-6 max-w-2xl mx-auto">
+            <AccessibleText
+              color="secondary"
+              className="mb-6 max-w-2xl mx-auto"
+            >
               Keep track of your finances, and watch your wealth grow over time.
               Remember, every dollar saved is a dollar earned!
             </AccessibleText>

@@ -263,13 +263,15 @@ export function Settings() {
                     {
                       mode: "elder" as const,
                       title: "Elder Friendly",
-                      description: "Larger text, high contrast, slower animations",
+                      description:
+                        "Larger text, high contrast, slower animations",
                       icon: "👴",
                     },
                     {
                       mode: "youth" as const,
                       title: "Youth Mode",
-                      description: "Compact design, vibrant colors, fast animations",
+                      description:
+                        "Compact design, vibrant colors, fast animations",
                       icon: "🧒",
                     },
                   ].map((option) => (
@@ -296,7 +298,9 @@ export function Settings() {
                       </h3>
                       <p
                         className={`text-sm ${
-                          viewMode === "play" ? "text-white/70" : "text-gray-600"
+                          viewMode === "play"
+                            ? "text-white/70"
+                            : "text-gray-600"
                         }`}
                       >
                         {option.description}
@@ -322,10 +326,14 @@ export function Settings() {
                   Preview
                 </h4>
                 <div
-                  className={getAccessibilityClasses(accessibilityMode, viewMode, {
-                    fontSize: "text",
-                    includeColors: true,
-                  })}
+                  className={getAccessibilityClasses(
+                    accessibilityMode,
+                    viewMode,
+                    {
+                      fontSize: "text",
+                      includeColors: true,
+                    },
+                  )}
                 >
                   <p className="mb-2">
                     This is how text will appear with {accessibilityMode} mode.
@@ -334,7 +342,7 @@ export function Settings() {
                     className={`${getAccessibilityClasses(
                       accessibilityMode,
                       viewMode,
-                      { fontSize: "button" }
+                      { fontSize: "button" },
                     )} bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors`}
                   >
                     Sample Button

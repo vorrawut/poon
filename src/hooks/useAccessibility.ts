@@ -72,7 +72,7 @@ export function useAccessibility() {
  */
 export function useAccessibilityText(
   type: "body" | "heading" | "button" | "caption" = "body",
-  headingLevel: "h1" | "h2" | "h3" | "h4" = "h1"
+  headingLevel: "h1" | "h2" | "h3" | "h4" = "h1",
 ) {
   const { getClasses, colors } = useAccessibility();
 
@@ -121,7 +121,7 @@ export function useAccessibilityMotion() {
   return {
     transition: {
       duration: animations.duration,
-      ease: animations.easing as any, // Type assertion for Framer Motion compatibility
+      ease: animations.easing, // Proper cubic-bezier values for Framer Motion
     },
     // Disable animations for elder mode if reduce motion is preferred
     animate: animations.reduceMotion ? false : undefined,

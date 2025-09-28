@@ -1,9 +1,9 @@
 /**
  * Core Design System Components
- * 
+ *
  * These components provide accessibility-aware UI elements that automatically
  * adapt to the user's accessibility mode (standard, elder, youth).
- * 
+ *
  * All widgets and features should use these core components instead of
  * hardcoded styles to ensure consistent accessibility across the application.
  */
@@ -36,4 +36,8 @@ export {
 } from "./AccessibleCard";
 
 // Re-export accessibility hooks for convenience
-export { useAccessibility, useAccessibilityText, useAccessibilityMotion } from "../../hooks/useAccessibility";
+export {
+  useAccessibility,
+  useAccessibilityText,
+  useAccessibilityMotion,
+} from "../../hooks/useAccessibility";

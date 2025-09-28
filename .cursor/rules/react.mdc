@@ -938,6 +938,19 @@ export function MyComponent() {
 6. **REDUCED MOTION SUPPORT** - Elder mode should have slower/reduced animations
 7. **LIVE PREVIEW** - Settings page must show real-time preview
 8. **PERSISTENT PREFERENCES** - User choices saved and restored
+9. **FRAMER MOTION COMPATIBILITY** - Use cubic-bezier easing values, not strings
+
+### **Framer Motion Easing (MANDATORY)**
+```typescript
+// ✅ GOOD - Proper cubic-bezier values for Framer Motion
+const { transition } = useAccessibilityMotion();
+// Returns: { duration: 0.5, ease: [0.42, 0, 0.58, 1] }
+
+<motion.div transition={transition}>
+
+// ❌ BAD - String easing causes runtime errors
+<motion.div transition={{ ease: "ease-in-out" }}>
+```
 
 This ensures the application is accessible to users of all ages and abilities.
 

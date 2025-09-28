@@ -1,6 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { useAccessibility, useAccessibilityMotion } from "../../hooks/useAccessibility";
+import {
+  useAccessibility,
+  useAccessibilityMotion,
+} from "../../hooks/useAccessibility";
 
 interface AccessibleCardProps {
   children: React.ReactNode;
@@ -45,7 +48,7 @@ export function AccessibleCard({
 
   const getVariantClasses = () => {
     const baseClasses = "rounded-2xl transition-all";
-    
+
     switch (variant) {
       case "elevated":
         return `${baseClasses} shadow-lg ${viewMode === "play" ? "bg-white/10 backdrop-blur-sm border border-white/20" : "bg-white border border-gray-200"}`;
@@ -78,7 +81,9 @@ export function AccessibleCard({
     ${getPaddingClasses()}
     ${hover ? "cursor-pointer" : ""}
     ${className}
-  `.trim().replace(/\s+/g, ' ');
+  `
+    .trim()
+    .replace(/\s+/g, " ");
 
   if (isElderMode || !hover) {
     return (
@@ -114,16 +119,22 @@ export function AccessibleSection({
   const { getClasses, colors } = useAccessibility();
 
   return (
-    <section className={`${getClasses({ includeSpacing: true })} ${className}`.trim()}>
+    <section
+      className={`${getClasses({ includeSpacing: true })} ${className}`.trim()}
+    >
       {(title || description) && (
         <div className={`mb-6 ${headerClassName}`.trim()}>
           {title && (
-            <h2 className={`${getClasses({ fontSize: "heading", headingLevel: "h2" })} font-bold ${colors.text} mb-2`}>
+            <h2
+              className={`${getClasses({ fontSize: "heading", headingLevel: "h2" })} font-bold ${colors.text} mb-2`}
+            >
               {title}
             </h2>
           )}
           {description && (
-            <p className={`${getClasses({ fontSize: "text" })} ${colors.textSecondary}`}>
+            <p
+              className={`${getClasses({ fontSize: "text" })} ${colors.textSecondary}`}
+            >
               {description}
             </p>
           )}
@@ -176,23 +187,31 @@ export function AccessibleStatsCard({
     <AccessibleCard variant="elevated" className={className}>
       <div className="text-center">
         {icon && <div className="text-4xl mb-3">{icon}</div>}
-        
-        <div className={`${getClasses({ fontSize: "heading", headingLevel: "h3" })} font-bold ${colors.text} mb-1`}>
+
+        <div
+          className={`${getClasses({ fontSize: "heading", headingLevel: "h3" })} font-bold ${colors.text} mb-1`}
+        >
           {value}
         </div>
-        
-        <div className={`${getClasses({ fontSize: "text" })} ${colors.text} mb-2`}>
+
+        <div
+          className={`${getClasses({ fontSize: "text" })} ${colors.text} mb-2`}
+        >
           {title}
         </div>
-        
+
         {subtitle && (
-          <div className={`${getClasses({ fontSize: "text" })} ${colors.textSecondary} text-sm`}>
+          <div
+            className={`${getClasses({ fontSize: "text" })} ${colors.textSecondary} text-sm`}
+          >
             {subtitle}
           </div>
         )}
-        
+
         {trend && trendValue && (
-          <div className={`flex items-center justify-center gap-1 mt-2 ${getClasses({ fontSize: "text" })} ${getTrendColor()}`}>
+          <div
+            className={`flex items-center justify-center gap-1 mt-2 ${getClasses({ fontSize: "text" })} ${getTrendColor()}`}
+          >
             <span>{getTrendIcon()}</span>
             <span>{trendValue}</span>
           </div>
@@ -223,9 +242,7 @@ export function AccessibleGrid({
   };
 
   return (
-    <div className={`${getGridClasses()} ${className}`.trim()}>
-      {children}
-    </div>
+    <div className={`${getGridClasses()} ${className}`.trim()}>{children}</div>
   );
 }
 
@@ -255,13 +272,11 @@ export function AccessibleFlex({
     const justifyClass = `justify-${justify}`;
     const gapClass = gap === "sm" ? "gap-2" : gap === "lg" ? "gap-6" : "gap-4";
     const wrapClass = wrap ? "flex-wrap" : "";
-    
+
     return `flex ${directionClass} ${alignClass} ${justifyClass} ${gapClass} ${wrapClass}`.trim();
   };
 
   return (
-    <div className={`${getFlexClasses()} ${className}`.trim()}>
-      {children}
-    </div>
+    <div className={`${getFlexClasses()} ${className}`.trim()}>{children}</div>
   );
 }

@@ -1,13 +1,13 @@
 /**
  * Core Design System
- * 
+ *
  * This module contains the core design system components and utilities
  * that provide consistent accessibility and theming across the entire application.
- * 
+ *
  * Usage:
  * ```tsx
  * import { AccessibleHeading, AccessibleButton, AccessibleCard } from "../../core";
- * 
+ *
  * function MyComponent() {
  *   return (
  *     <AccessibleCard>
