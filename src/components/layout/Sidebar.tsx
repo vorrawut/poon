@@ -10,6 +10,7 @@ import {
   Cog6ToothIcon,
   XMarkIcon,
   GlobeAltIcon,
+  CurrencyDollarIcon,
 } from "@heroicons/react/24/outline";
 
 const navigation = [
@@ -17,6 +18,7 @@ const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: HomeIcon },
   { name: "Accounts", href: "/accounts", icon: BanknotesIcon },
   { name: "Portfolio", href: "/portfolio", icon: ChartPieIcon },
+  { name: "Money Flow", href: "/money-flow", icon: CurrencyDollarIcon },
   { name: "Spending", href: "/spending", icon: CreditCardIcon },
   { name: "Import", href: "/imports", icon: DocumentArrowUpIcon },
   { name: "Settings", href: "/settings", icon: Cog6ToothIcon },

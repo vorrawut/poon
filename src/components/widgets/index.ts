@@ -1,6 +1,10 @@
 export { WealthSolarSystem } from "./WealthSolarSystem";
 export { SmartHighlights } from "./SmartHighlights";
 export { CategoryOverlay } from "./CategoryOverlay";
+export { MoneyFlowVisualizer } from "./MoneyFlowVisualizer";
+export { IncomeBreakdownCard } from "./IncomeBreakdownCard";
+export { MonthlyReportCard } from "./MonthlyReportCard";
+export { GamificationLayer } from "./GamificationLayer";
 export { WealthTimeline } from "./WealthTimeline";
 export { DualLensToggle } from "./DualLensToggle";
 export { UniverseBackground } from "./UniverseBackground";
