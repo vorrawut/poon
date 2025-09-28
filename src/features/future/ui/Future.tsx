@@ -69,7 +69,7 @@ export function Future() {
       />
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pb-8 sm:pb-12 pt-20 sm:pt-24 lg:pt-32 relative z-10">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pb-20 sm:pb-24 pt-20 sm:pt-24 lg:pt-32 relative z-10">
         {/* Ultimate Hero Section */}
         <FadeIn direction="down" delay={0.1} className="text-center mb-12">
           <div className="mb-6">
@@ -164,10 +164,10 @@ export function Future() {
           )}
         </AnimatePresence>
 
-        {/* AI Co-Pilot */}
+        {/* AI Co-Pilot - Responsive positioning */}
         <AICoPilot
           missions={missions}
-          className="fixed bottom-6 right-6 z-50"
+          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50"
         />
       </div>
     </div>

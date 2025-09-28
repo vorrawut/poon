@@ -322,7 +322,7 @@ export function FutureMissionBoard({
         </div>
       ) : (
         // Board View (existing grid)
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
           <AnimatePresence>
             {filteredMissions.map((mission) => {
               const progress = getProgressPercentage(mission);
@@ -553,8 +553,22 @@ export function FutureMissionBoard({
                         </motion.p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm text-slate-400">Target</p>
-                        <p className="text-lg font-bold text-slate-300">
+                        <p
+                          className={`text-sm ${
+                            _viewMode === "play"
+                              ? "text-slate-400"
+                              : "text-gray-600"
+                          }`}
+                        >
+                          Target
+                        </p>
+                        <p
+                          className={`text-lg font-bold ${
+                            _viewMode === "play"
+                              ? "text-slate-300"
+                              : "text-gray-700"
+                          }`}
+                        >
                           ฿{mission.targetAmount.toLocaleString()}
                         </p>
                       </div>
@@ -574,13 +588,23 @@ export function FutureMissionBoard({
                       >
                         ⏰
                       </motion.div>
-                      <span className="text-sm text-slate-400">
+                      <span
+                        className={`text-sm ${
+                          _viewMode === "play"
+                            ? "text-slate-400"
+                            : "text-gray-600"
+                        }`}
+                      >
                         {getDaysRemaining(mission.deadline)} days left
                       </span>
                     </div>
 
                     <motion.div
-                      className="text-slate-400 group-hover:text-purple-400 transition-colors"
+                      className={`transition-colors ${
+                        _viewMode === "play"
+                          ? "text-slate-400 group-hover:text-purple-400"
+                          : "text-gray-500 group-hover:text-purple-600"
+                      }`}
                       whileHover={{ scale: 1.1, rotate: 15 }}
                     >
                       <Rocket className="w-5 h-5" />

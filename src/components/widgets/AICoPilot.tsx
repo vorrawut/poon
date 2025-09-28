@@ -274,7 +274,7 @@ export function AICoPilot({ missions, className = "" }: AICoPilotProps) {
     <div className={`relative ${className}`}>
       {/* Main Co-Pilot Display */}
       <motion.div
-        className="bg-gradient-to-r from-blue-900/20 to-purple-900/20 backdrop-blur-md rounded-xl border border-white/10 overflow-hidden cursor-pointer"
+        className="bg-gradient-to-r from-blue-900/20 to-purple-900/20 backdrop-blur-md rounded-xl border border-white/10 overflow-hidden cursor-pointer w-80 sm:w-96 max-w-[calc(100vw-2rem)]"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ scale: 1.02 }}

@@ -350,8 +350,102 @@ export function BadComponent() {
 3. **Co-locate tests** - Keep tests next to components
 4. **Export through index files** - Clean public APIs
 5. **Follow component taxonomy** - Atoms → Molecules → Widgets → Features
+6. **NO COMPONENT OVERLAPPING** - Only modals, popups, alerts, menus allowed to overlap
+7. **MOBILE-FIRST RESPONSIVE** - Always design for mobile first, then enhance for larger screens
+8. **PROPER Z-INDEX HIERARCHY** - Follow the mandatory z-index scale for all fixed elements
 
-This structure ensures maintainability, testability, and scalability for long-term development success.# React Development Rules & Project Structure Guide
+This structure ensures maintainability, testability, and scalability for long-term development success.
+
+## 📱 **RESPONSIVE DESIGN RULES (MANDATORY)**
+
+### **Breakpoint Strategy**
+```typescript
+// ✅ REQUIRED - Use Tailwind's responsive breakpoints consistently
+sm: 640px   // Small devices (phones in landscape)
+md: 768px   // Medium devices (tablets)  
+lg: 1024px  // Large devices (laptops)
+xl: 1280px  // Extra large devices (desktops)
+2xl: 1536px // 2X large devices (large desktops)
+```
+
+### **Grid & Layout Rules**
+```typescript
+// ✅ GOOD - Progressive grid enhancement
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+
+// ✅ GOOD - Responsive spacing
+<div className="px-2 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+
+// ✅ GOOD - Responsive text sizing
+<h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl">
+```
+
+### **Component Overlap Prevention**
+**🚨 CRITICAL RULES:**
+- **NO component overlapping allowed** (except modals, popups, notifications, alerts, menus)
+- **Fixed positioned elements MUST have proper z-index hierarchy**
+- **Bottom spacing MUST account for fixed elements** (AI Co-Pilot, FABs, etc.)
+- **Mobile-first responsive design is MANDATORY**
+
+### **Z-Index Hierarchy (MANDATORY)**
+```typescript
+// ✅ REQUIRED - Consistent z-index scale
+z-0     // Base layer (default)
+z-10    // Content layer (cards, widgets)
+z-20    // Sticky headers, navigation
+z-30    // Dropdowns, tooltips
+z-40    // Overlays, sheets
+z-50    // Modals, dialogs, fixed elements (AI Co-Pilot, toggles)
+z-[60]  // Modal content (inside modals)
+z-[70]  // Toast notifications
+z-[80]  // Critical alerts
+z-[90]  // Debug/dev tools
+z-[100] // Absolute top (emergency)
+```
+
+### **Fixed Element Rules**
+```typescript
+// ✅ GOOD - Responsive fixed positioning
+className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50"
+
+// ✅ GOOD - Account for fixed elements in main content
+className="pb-20 sm:pb-24" // Extra bottom padding for fixed AI Co-Pilot
+
+// ✅ GOOD - Responsive modal sizing
+className="fixed inset-x-2 sm:inset-x-4 lg:inset-x-8 top-1/2 max-w-4xl mx-auto"
+```
+
+### **Mobile-First Responsive Patterns**
+```typescript
+// ✅ GOOD - Mobile-first approach
+<div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+
+// ✅ GOOD - Progressive enhancement
+<div className="w-80 sm:w-96 max-w-[calc(100vw-2rem)]">
+
+// ✅ GOOD - Responsive visibility
+<span className="hidden sm:inline">Desktop Text</span>
+<span className="sm:hidden">Mobile Text</span>
+```
+
+### **Touch & Interaction Rules**
+- **Minimum touch target: 44px × 44px** (iOS/Android guidelines)
+- **Hover states ONLY for non-touch devices** (use `hover:` prefix)
+- **Focus states MUST be visible** for keyboard navigation
+- **Gestures should be intuitive** (swipe, pinch, tap)
+
+### **Performance Considerations**
+```typescript
+// ✅ GOOD - Responsive images
+<img 
+  src="image.jpg" 
+  srcSet="image-sm.jpg 640w, image-md.jpg 768w, image-lg.jpg 1024w"
+  sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+/>
+
+// ✅ GOOD - Conditional rendering for mobile
+{isMobile ? <MobileComponent /> : <DesktopComponent />}
+```# React Development Rules & Project Structure Guide
 
 ## 🏗️ **MANDATORY PROJECT STRUCTURE**
 
@@ -700,5 +794,99 @@ export function BadComponent() {
 3. **Co-locate tests** - Keep tests next to components
 4. **Export through index files** - Clean public APIs
 5. **Follow component taxonomy** - Atoms → Molecules → Widgets → Features
+6. **NO COMPONENT OVERLAPPING** - Only modals, popups, alerts, menus allowed to overlap
+7. **MOBILE-FIRST RESPONSIVE** - Always design for mobile first, then enhance for larger screens
+8. **PROPER Z-INDEX HIERARCHY** - Follow the mandatory z-index scale for all fixed elements
 
 This structure ensures maintainability, testability, and scalability for long-term development success.
+
+## 📱 **RESPONSIVE DESIGN RULES (MANDATORY)**
+
+### **Breakpoint Strategy**
+```typescript
+// ✅ REQUIRED - Use Tailwind's responsive breakpoints consistently
+sm: 640px   // Small devices (phones in landscape)
+md: 768px   // Medium devices (tablets)  
+lg: 1024px  // Large devices (laptops)
+xl: 1280px  // Extra large devices (desktops)
+2xl: 1536px // 2X large devices (large desktops)
+```
+
+### **Grid & Layout Rules**
+```typescript
+// ✅ GOOD - Progressive grid enhancement
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+
+// ✅ GOOD - Responsive spacing
+<div className="px-2 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+
+// ✅ GOOD - Responsive text sizing
+<h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl">
+```
+
+### **Component Overlap Prevention**
+**🚨 CRITICAL RULES:**
+- **NO component overlapping allowed** (except modals, popups, notifications, alerts, menus)
+- **Fixed positioned elements MUST have proper z-index hierarchy**
+- **Bottom spacing MUST account for fixed elements** (AI Co-Pilot, FABs, etc.)
+- **Mobile-first responsive design is MANDATORY**
+
+### **Z-Index Hierarchy (MANDATORY)**
+```typescript
+// ✅ REQUIRED - Consistent z-index scale
+z-0     // Base layer (default)
+z-10    // Content layer (cards, widgets)
+z-20    // Sticky headers, navigation
+z-30    // Dropdowns, tooltips
+z-40    // Overlays, sheets
+z-50    // Modals, dialogs, fixed elements (AI Co-Pilot, toggles)
+z-[60]  // Modal content (inside modals)
+z-[70]  // Toast notifications
+z-[80]  // Critical alerts
+z-[90]  // Debug/dev tools
+z-[100] // Absolute top (emergency)
+```
+
+### **Fixed Element Rules**
+```typescript
+// ✅ GOOD - Responsive fixed positioning
+className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50"
+
+// ✅ GOOD - Account for fixed elements in main content
+className="pb-20 sm:pb-24" // Extra bottom padding for fixed AI Co-Pilot
+
+// ✅ GOOD - Responsive modal sizing
+className="fixed inset-x-2 sm:inset-x-4 lg:inset-x-8 top-1/2 max-w-4xl mx-auto"
+```
+
+### **Mobile-First Responsive Patterns**
+```typescript
+// ✅ GOOD - Mobile-first approach
+<div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+
+// ✅ GOOD - Progressive enhancement
+<div className="w-80 sm:w-96 max-w-[calc(100vw-2rem)]">
+
+// ✅ GOOD - Responsive visibility
+<span className="hidden sm:inline">Desktop Text</span>
+<span className="sm:hidden">Mobile Text</span>
+```
+
+### **Touch & Interaction Rules**
+- **Minimum touch target: 44px × 44px** (iOS/Android guidelines)
+- **Hover states ONLY for non-touch devices** (use `hover:` prefix)
+- **Focus states MUST be visible** for keyboard navigation
+- **Gestures should be intuitive** (swipe, pinch, tap)
+
+### **Performance Considerations**
+```typescript
+// ✅ GOOD - Responsive images
+<img 
+  src="image.jpg" 
+  srcSet="image-sm.jpg 640w, image-md.jpg 768w, image-lg.jpg 1024w"
+  sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+/>
+
+// ✅ GOOD - Conditional rendering for mobile
+{isMobile ? <MobileComponent /> : <DesktopComponent />}
+```
