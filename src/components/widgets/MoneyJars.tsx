@@ -122,7 +122,7 @@ export function MoneyJars({
         </div>
 
         {/* Jars Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 lg:gap-6 mb-6 px-2">
           {jars.map((jar, index) => {
             const fillPercentage = getJarHeight(jar.currentAmount, jar.targetAmount);
             const isComplete = jar.currentAmount >= jar.targetAmount;

@@ -140,12 +140,13 @@ export function SpendingWheel({
           </button>
         </div>
 
-        <div className="flex flex-col lg:flex-row items-center gap-8">
+        <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-8">
           {/* Wheel Visualization */}
           <div className="relative">
-            <motion.svg
-              width="300"
-              height="300"
+          <motion.svg
+            width="250"
+            height="250"
+            className="sm:w-[300px] sm:h-[300px]"
               viewBox="0 0 300 300"
               className="drop-shadow-lg"
               animate={isSpinning ? { rotate: 360 } : {}}

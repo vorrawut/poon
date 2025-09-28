@@ -199,7 +199,7 @@ export function AIFinancialCoach({
               className="mb-6"
             >
               <div
-                className={`rounded-xl border h-80 flex flex-col ${
+                className={`rounded-xl border h-60 sm:h-80 flex flex-col ${
                   viewMode === "play"
                     ? "bg-white/5 border-white/10"
                     : "bg-gray-50 border-gray-100"
@@ -285,7 +285,7 @@ export function AIFinancialCoach({
         </AnimatePresence>
 
         {/* Insights Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
           {insights.slice(0, 4).map((insight, index) => (
             <motion.div
               key={insight.id}
@@ -405,7 +405,7 @@ export function AIFinancialCoach({
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
             { icon: "💰", label: "Optimize Savings", action: () => console.log("Optimize savings") },
             { icon: "📈", label: "Investment Tips", action: () => console.log("Investment tips") },

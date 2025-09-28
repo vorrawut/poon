@@ -75,7 +75,7 @@ export function AccessibilityModeToggle({
 
             {/* Menu */}
             <motion.div
-              className="absolute top-full right-0 mt-2 w-80 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl z-50 overflow-hidden"
+              className="absolute top-full right-0 mt-2 w-72 sm:w-80 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl z-50 overflow-hidden"
               initial={{ opacity: 0, scale: 0.95, y: -10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -10 }}

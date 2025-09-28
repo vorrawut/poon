@@ -597,19 +597,19 @@ export function MoneyFlow() {
       <DualLensToggle viewMode={viewMode} onToggle={setViewMode} />
       
       {/* Accessibility Mode Toggle */}
-      <div className="fixed top-24 right-24 z-50">
+      <div className="fixed top-24 right-4 sm:right-8 lg:right-24 z-50">
         <AccessibilityModeToggle
           mode={accessibilityMode}
           onModeChange={setAccessibilityMode}
         />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 relative z-10">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pb-8 sm:pb-12 relative z-10">
         {/* Ultimate Hero Section */}
         <FadeIn direction="down" delay={0.1} className="text-center py-12">
           <div className="mb-8">
             <div
-              className={`text-5xl md:text-7xl font-bold mb-6 ${
+              className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 ${
                 viewMode === "play" ? "text-white" : "text-gray-900"
               }`}
             >
@@ -630,7 +630,7 @@ export function MoneyFlow() {
               <SplitText className="inline">Your Money Universe</SplitText>
             </div>
             <p
-              className={`text-xl md:text-2xl mb-8 max-w-3xl mx-auto ${
+              className={`text-lg sm:text-xl md:text-2xl mb-8 max-w-3xl mx-auto px-4 ${
                 viewMode === "play" ? "text-white/80" : "text-gray-600"
               }`}
             >
@@ -640,7 +640,7 @@ export function MoneyFlow() {
             </p>
 
             {/* Quick Stats Hero Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 px-4">
               <motion.div
                 className={`rounded-2xl p-6 border ${
                   viewMode === "play"
@@ -652,8 +652,8 @@ export function MoneyFlow() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
               >
-                <div className="text-4xl mb-3">💰</div>
-                <div className="text-3xl font-bold text-green-400">
+                <div className="text-3xl sm:text-4xl mb-3">💰</div>
+                <div className="text-2xl sm:text-3xl font-bold text-green-400">
                   {formatCurrency(totalIncome)}
                 </div>
                 <div
@@ -674,8 +674,8 @@ export function MoneyFlow() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
               >
-                <div className="text-4xl mb-3">💸</div>
-                <div className="text-3xl font-bold text-red-400">
+                <div className="text-3xl sm:text-4xl mb-3">💸</div>
+                <div className="text-2xl sm:text-3xl font-bold text-red-400">
                   {formatCurrency(totalSpending)}
                 </div>
                 <div
@@ -696,11 +696,11 @@ export function MoneyFlow() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
               >
-                <div className="text-4xl mb-3">
+                <div className="text-3xl sm:text-4xl mb-3">
                   {netBalance >= 0 ? "💎" : "⚠️"}
                 </div>
                 <div
-                  className={`text-3xl font-bold ${
+                  className={`text-2xl sm:text-3xl font-bold ${
                     netBalance >= 0 ? "text-blue-400" : "text-orange-400"
                   }`}
                 >
@@ -717,8 +717,8 @@ export function MoneyFlow() {
         </FadeIn>
 
         {/* Navigation Tabs */}
-        <div className="flex justify-center mb-12">
-          <div className="flex gap-2 p-2 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20">
+        <div className="flex justify-center mb-12 px-2 sm:px-4">
+          <div className="flex flex-wrap justify-center gap-1 sm:gap-2 p-2 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 max-w-full overflow-x-auto scrollbar-hide">
             {[
               { id: "flow", label: "💫 Money Flow", desc: "Live visualization" },
               { id: "income", label: "💰 Income Hub", desc: "Earnings breakdown" },
@@ -731,7 +731,7 @@ export function MoneyFlow() {
               <button
                 key={tab.id}
                 onClick={() => setActiveSection(tab.id as any)}
-                className={`px-6 py-3 rounded-xl font-medium transition-all ${
+                className={`px-3 sm:px-4 lg:px-6 py-2 sm:py-3 rounded-xl font-medium transition-all text-xs sm:text-sm ${
                   activeSection === tab.id
                     ? viewMode === "play"
                       ? "bg-white/20 text-white border border-white/30"
@@ -742,8 +742,8 @@ export function MoneyFlow() {
                 }`}
               >
                 <div className="text-center">
-                  <div className="text-sm font-semibold">{tab.label}</div>
-                  <div className="text-xs opacity-70">{tab.desc}</div>
+                  <div className="text-xs sm:text-sm font-semibold">{tab.label}</div>
+                  <div className="text-xs opacity-70 hidden sm:block">{tab.desc}</div>
                 </div>
               </button>
             ))}
@@ -887,10 +887,10 @@ export function MoneyFlow() {
                 : "bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200 text-gray-900"
             }`}
           >
-            <div className="text-4xl mb-4">✨</div>
-            <h3 className="text-2xl font-bold mb-4">Your Financial Journey Continues</h3>
+            <div className="text-3xl sm:text-4xl mb-4">✨</div>
+            <h3 className="text-xl sm:text-2xl font-bold mb-4">Your Financial Journey Continues</h3>
             <p
-              className={`text-lg mb-6 max-w-2xl mx-auto ${
+              className={`text-base sm:text-lg mb-6 max-w-2xl mx-auto px-4 ${
                 viewMode === "play" ? "text-white/80" : "text-gray-600"
               }`}
             >

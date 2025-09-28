@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface IncomeStream {
@@ -71,7 +71,7 @@ export function MoneyFlowVisualizer({
   );
 
   return (
-    <div className={`relative w-full h-[800px] overflow-hidden ${className}`}>
+    <div className={`relative w-full h-[600px] sm:h-[700px] lg:h-[800px] overflow-hidden ${className}`}>
       {/* Background Flow Animation */}
       {flowAnimation && viewMode === "play" && (
         <div className="absolute inset-0 pointer-events-none">
@@ -106,7 +106,7 @@ export function MoneyFlowVisualizer({
           </motion.h3>
         </div>
         
-        <div className="flex flex-wrap justify-center gap-4 px-4">
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-4 px-2 sm:px-4">
           {incomeStreams.map((stream, index) => (
             <motion.div
               key={stream.id}
@@ -114,7 +114,7 @@ export function MoneyFlowVisualizer({
                 viewMode === "play"
                   ? "bg-white/10 backdrop-blur-sm border-white/20"
                   : "bg-white border-gray-200"
-              } rounded-xl p-4 border min-w-[140px]`}
+              } rounded-xl p-3 sm:p-4 border min-w-[120px] sm:min-w-[140px]`}
               initial={{ opacity: 0, y: -50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
@@ -122,11 +122,11 @@ export function MoneyFlowVisualizer({
               onClick={() => setSelectedStream(selectedStream === stream.id ? null : stream.id)}
             >
               <div className="text-center">
-                <div className="text-2xl mb-2">{stream.icon}</div>
+                <div className="text-xl sm:text-2xl mb-2">{stream.icon}</div>
                 <div className={`text-sm font-medium mb-1 ${viewMode === "play" ? "text-white" : "text-gray-900"}`}>
                   {stream.name}
                 </div>
-                <div className="text-lg font-bold text-green-400">
+                <div className="text-base sm:text-lg font-bold text-green-400">
                   {formatCurrency(stream.amount)}
                 </div>
                 <div className={`text-xs ${viewMode === "play" ? "text-white/70" : "text-gray-600"}`}>
@@ -226,7 +226,7 @@ export function MoneyFlowVisualizer({
                 viewMode === "play"
                   ? "bg-white/10 backdrop-blur-sm border-white/20"
                   : "bg-white border-gray-200"
-              } rounded-xl p-4 border min-w-[140px]`}
+              } rounded-xl p-3 sm:p-4 border min-w-[120px] sm:min-w-[140px]`}
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 + 0.5 }}
