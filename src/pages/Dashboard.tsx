@@ -9,11 +9,6 @@ import {
   DualLensToggle,
   UniverseBackground,
 } from "../components/widgets";
-// Debug components - remove in production
-import { EnvironmentDebugger } from "../components/EnvironmentDebugger";
-import { ServiceTester } from "../components/ServiceTester";
-import { DirectServiceTest } from "../components/DirectServiceTest";
-import { MockDataDisplay } from "../components/MockDataDisplay";
 
 // Dashboard Smart Highlights
 const dashboardHighlights = [
@@ -92,14 +87,6 @@ export default function Dashboard() {
     >
       {viewMode === "play" && <UniverseBackground starCount={30} />}
       <DualLensToggle viewMode={viewMode} onToggle={setViewMode} />
-
-      {/* Debug components - remove in production */}
-      <div className="max-w-7xl mx-auto p-4 space-y-4 relative z-10">
-        <EnvironmentDebugger />
-        <MockDataDisplay />
-        <DirectServiceTest />
-        <ServiceTester />
-      </div>
 
       {/* Main Dashboard Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 relative z-10">

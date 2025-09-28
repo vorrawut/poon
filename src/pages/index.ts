@@ -1,6 +1,6 @@
 export { default as Dashboard } from "./Dashboard";
 export { UniverseDashboard } from "./UniverseDashboard";
-export { Accounts } from "./Accounts";
+export { AccountsPage } from "./AccountsPage";
 export { Portfolio } from "./Portfolio";
 export { PortfolioDetail } from "./PortfolioDetail";
 export { Spending } from "./Spending";

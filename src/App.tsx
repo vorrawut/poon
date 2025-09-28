@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Layout } from "./components/layout/Layout";
 import {
   Dashboard,
-  Accounts,
   Portfolio,
   PortfolioDetail,
   Spending,
@@ -16,6 +15,7 @@ import {
 } from "./pages";
 import { setupMockAPI } from "./mock/server";
 import { useInitializeData } from "./hooks/useInitializeData";
+import { AccountsPage } from "./pages/AccountsPage";
 
 function App() {
   // Initialize data and mock API
@@ -33,7 +33,7 @@ function App() {
           <Route index element={<UniverseDashboard />} />
           <Route path="universe" element={<UniverseDashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="accounts" element={<Accounts />} />
+          <Route path="accounts" element={<AccountsPage />} />
           <Route path="portfolio" element={<Portfolio />} />
           <Route path="portfolio/:assetId" element={<PortfolioDetail />} />
           <Route path="spending" element={<Spending />} />
