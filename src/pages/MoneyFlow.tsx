@@ -9,6 +9,8 @@ import {
   SmartHighlights,
   DualLensToggle,
   UniverseBackground,
+  SpendingWheel,
+  MoneyJars,
 } from "../components/widgets";
 
 // Mock Data - Ultimate Money Flow Experience
@@ -354,9 +356,155 @@ const mockInsights = [
   },
 ];
 
+// Mock data for Spending Wheel
+const mockSpendingWheel = [
+  {
+    id: "food",
+    name: "Food & Dining",
+    amount: 1240,
+    budget: 1500,
+    color: "#FF6B6B",
+    icon: "🍽️",
+    percentage: 32,
+    trend: "up" as const,
+    trendPercent: 8,
+  },
+  {
+    id: "transport",
+    name: "Transportation",
+    amount: 680,
+    budget: 800,
+    color: "#4ECDC4",
+    icon: "🚗",
+    percentage: 18,
+    trend: "down" as const,
+    trendPercent: 12,
+  },
+  {
+    id: "entertainment",
+    name: "Entertainment",
+    amount: 420,
+    budget: 600,
+    color: "#45B7D1",
+    icon: "🎬",
+    percentage: 11,
+    trend: "stable" as const,
+    trendPercent: 2,
+  },
+  {
+    id: "shopping",
+    name: "Shopping",
+    amount: 890,
+    budget: 700,
+    color: "#F9CA24",
+    icon: "🛍️",
+    percentage: 23,
+    trend: "up" as const,
+    trendPercent: 27,
+  },
+  {
+    id: "utilities",
+    name: "Utilities",
+    amount: 340,
+    budget: 400,
+    color: "#6C5CE7",
+    icon: "⚡",
+    percentage: 9,
+    trend: "stable" as const,
+    trendPercent: 1,
+  },
+  {
+    id: "healthcare",
+    name: "Healthcare",
+    amount: 280,
+    budget: 300,
+    color: "#A29BFE",
+    icon: "🏥",
+    percentage: 7,
+    trend: "down" as const,
+    trendPercent: 15,
+  },
+];
+
+// Mock data for Money Jars
+const mockMoneyJars = [
+  {
+    id: "emergency",
+    name: "Emergency Fund",
+    currentAmount: 15000,
+    targetAmount: 25000,
+    color: "#10B981",
+    icon: "🛡️",
+    priority: "high" as const,
+    category: "savings" as const,
+    monthlyContribution: 1000,
+    estimatedCompletion: "10 months",
+  },
+  {
+    id: "vacation",
+    name: "Dream Vacation",
+    currentAmount: 3200,
+    targetAmount: 8000,
+    color: "#3B82F6",
+    icon: "🏖️",
+    priority: "medium" as const,
+    category: "fun" as const,
+    monthlyContribution: 400,
+    estimatedCompletion: "12 months",
+  },
+  {
+    id: "house",
+    name: "House Down Payment",
+    currentAmount: 45000,
+    targetAmount: 100000,
+    color: "#8B5CF6",
+    icon: "🏠",
+    priority: "high" as const,
+    category: "necessity" as const,
+    monthlyContribution: 2000,
+    estimatedCompletion: "28 months",
+  },
+  {
+    id: "car",
+    name: "New Car",
+    currentAmount: 8500,
+    targetAmount: 35000,
+    color: "#F59E0B",
+    icon: "🚗",
+    priority: "medium" as const,
+    category: "necessity" as const,
+    monthlyContribution: 800,
+    estimatedCompletion: "33 months",
+  },
+  {
+    id: "investment",
+    name: "Investment Fund",
+    currentAmount: 12000,
+    targetAmount: 50000,
+    color: "#EF4444",
+    icon: "📈",
+    priority: "low" as const,
+    category: "investment" as const,
+    monthlyContribution: 1200,
+    estimatedCompletion: "32 months",
+  },
+  {
+    id: "education",
+    name: "Education Fund",
+    currentAmount: 5500,
+    targetAmount: 20000,
+    color: "#06B6D4",
+    icon: "🎓",
+    priority: "medium" as const,
+    category: "investment" as const,
+    monthlyContribution: 500,
+    estimatedCompletion: "29 months",
+  },
+];
+
 export function MoneyFlow() {
   const [viewMode, setViewMode] = useState<"play" | "clarity">("play");
-  const [activeSection, setActiveSection] = useState<"flow" | "income" | "story" | "game">("flow");
+  const [activeSection, setActiveSection] = useState<"flow" | "income" | "spending" | "goals" | "story" | "game">("flow");
 
   const totalIncome = mockIncomeStreams.reduce((sum, stream) => sum + stream.amount, 0);
   const totalSpending = mockSpendingCategories.reduce((sum, cat) => sum + cat.amount, 0);
@@ -497,6 +645,8 @@ export function MoneyFlow() {
             {[
               { id: "flow", label: "💫 Money Flow", desc: "Live visualization" },
               { id: "income", label: "💰 Income Hub", desc: "Earnings breakdown" },
+              { id: "spending", label: "🎡 Spending Wheel", desc: "Interactive categories" },
+              { id: "goals", label: "🏺 Money Jars", desc: "Savings goals" },
               { id: "story", label: "📖 Your Story", desc: "Monthly wrapped" },
               { id: "game", label: "🎮 Achievements", desc: "Gamification" },
             ].map((tab) => (
@@ -559,6 +709,38 @@ export function MoneyFlow() {
             >
               <IncomeBreakdownCard
                 incomes={mockIncomeDetails}
+                viewMode={viewMode}
+                className="mb-12"
+              />
+            </motion.div>
+          )}
+
+          {activeSection === "spending" && (
+            <motion.div
+              key="spending"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+            >
+              <SpendingWheel
+                categories={mockSpendingWheel}
+                totalSpent={mockSpendingWheel.reduce((sum, cat) => sum + cat.amount, 0)}
+                totalBudget={mockSpendingWheel.reduce((sum, cat) => sum + cat.budget, 0)}
+                viewMode={viewMode}
+                className="mb-12"
+              />
+            </motion.div>
+          )}
+
+          {activeSection === "goals" && (
+            <motion.div
+              key="goals"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+            >
+              <MoneyJars
+                jars={mockMoneyJars}
                 viewMode={viewMode}
                 className="mb-12"
               />

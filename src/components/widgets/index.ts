@@ -5,6 +5,8 @@ export { MoneyFlowVisualizer } from "./MoneyFlowVisualizer";
 export { IncomeBreakdownCard } from "./IncomeBreakdownCard";
 export { MonthlyReportCard } from "./MonthlyReportCard";
 export { GamificationLayer } from "./GamificationLayer";
+export { SpendingWheel } from "./SpendingWheel";
+export { MoneyJars } from "./MoneyJars";
 export { WealthTimeline } from "./WealthTimeline";
 export { DualLensToggle } from "./DualLensToggle";
 export { UniverseBackground } from "./UniverseBackground";
