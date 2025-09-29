@@ -108,7 +108,7 @@ export function hasTranslation(
 
     // Check if at least one language is available
     return !!(translationObj.en || translationObj.th);
-  } catch (error) {
+  } catch (_) {
     return false;
   }
 }
@@ -127,8 +127,8 @@ export function getAvailableLanguages(path: string): SupportedLanguage[] {
     }
 
     const languages: SupportedLanguage[] = [];
-    if ('en' in translationObj && translationObj.en) languages.push("en");
-    if ('th' in translationObj && translationObj.th) languages.push("th");
+    if ("en" in translationObj && translationObj.en) languages.push("en");
+    if ("th" in translationObj && translationObj.th) languages.push("th");
 
     return languages;
   } catch (error) {

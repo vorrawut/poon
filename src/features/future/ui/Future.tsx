@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FadeIn } from "../../../components/ui";
 import { ThemeAwareHeading, ThemeAwareText, useTheme } from "../../../core";
+import { useTranslation } from "../../../libs/i18n";
 import { EnhancedGoalTracker, type EnhancedGoal } from "../../goals";
 import { FutureGoalDetail } from "../components/FutureGoalDetail";
 import { GoalCreationModal } from "../components/GoalCreationModal";
@@ -13,6 +14,7 @@ import { useUIStore } from "../../../store/useUIStore";
 export function Future() {
   const { viewMode, accessibilityMode } = useUIStore();
   const { isPlayMode } = useTheme();
+  const { t } = useTranslation();
   const [selectedGoal, setSelectedGoal] = useState<EnhancedGoal | null>(null);
   const [goals, setGoals] = useState<EnhancedGoal[]>([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -102,7 +104,7 @@ export function Future() {
                 className="mb-4"
                 gradient={isPlayMode}
               >
-                Future Missions
+                {t("features.future.title")}
               </ThemeAwareHeading>
               <motion.div
                 className="text-5xl md:text-7xl"
@@ -126,12 +128,12 @@ export function Future() {
               className="mb-8 max-w-4xl mx-auto px-4"
             >
               {accessibilityMode === "elder"
-                ? "Track your financial goals with clear, simple progress indicators and helpful guidance."
+                ? t("features.future.subtitle.elder")
                 : accessibilityMode === "youth"
-                  ? "Level up your money game! 🎮 Set epic financial quests and unlock achievements as you build your future empire! 💰✨"
+                  ? t("features.future.subtitle.youth")
                   : viewMode === "play"
-                    ? "Navigate your financial universe — where every goal becomes a space mission in your personal galaxy! 🌌"
-                    : "Your financial goals made simple. Track progress, set targets, and achieve your dreams with clear, actionable steps."}
+                    ? t("features.future.subtitle.play")
+                    : t("features.future.subtitle.clarity")}
             </ThemeAwareText>
           </div>
         </FadeIn>

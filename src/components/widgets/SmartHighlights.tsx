@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ThemeAwareHeading, ThemeAwareText, useTheme } from "../../core";
+import { useTranslation } from "../../libs/i18n";
 
 interface Highlight {
   id: string;
@@ -27,11 +28,17 @@ const typeStyles = {
 
 export function SmartHighlights({
   highlights,
-  title = "Smart Highlights",
-  subtitle = "Your personal financial newsfeed — like Spotify Wrapped, but every week!",
+  title,
+  subtitle,
   className = "",
 }: SmartHighlightsProps) {
   const { isPlayMode } = useTheme();
+  const { t } = useTranslation();
+
+  const displayTitle =
+    title || t("features.widgets.smartHighlights.defaultTitle");
+  const displaySubtitle =
+    subtitle || t("features.widgets.smartHighlights.defaultSubtitle");
 
   return (
     <motion.div
@@ -47,13 +54,13 @@ export function SmartHighlights({
           gradient={isPlayMode}
         >
           <span className="mr-3">🧠</span>
-          {title}
+          {displayTitle}
         </ThemeAwareHeading>
         <ThemeAwareText
           color="secondary"
           className="max-w-2xl mx-auto text-base sm:text-lg"
         >
-          {subtitle}
+          {displaySubtitle}
         </ThemeAwareText>
       </div>
 

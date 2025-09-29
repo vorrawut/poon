@@ -114,25 +114,6 @@ export interface CommonTranslations {
 }
 
 export interface FeatureTranslations {
-  dashboard: {
-    title: TranslationKey;
-    subtitle: TranslationKey;
-    welcomeMessage: TranslationKey;
-    quickActions: TranslationKey;
-    recentActivity: TranslationKey;
-    financialSummary: TranslationKey;
-  };
-
-  accounts: {
-    title: TranslationKey;
-    subtitle: TranslationKey;
-    addAccount: TranslationKey;
-    accountBalance: TranslationKey;
-    totalBalance: TranslationKey;
-    accountType: TranslationKey;
-    lastUpdated: TranslationKey;
-  };
-
   goals: {
     title: TranslationKey;
     subtitle: TranslationKey;
@@ -145,17 +126,6 @@ export interface FeatureTranslations {
     completed: TranslationKey;
     inProgress: TranslationKey;
     notStarted: TranslationKey;
-  };
-
-  spending: {
-    title: TranslationKey;
-    subtitle: TranslationKey;
-    totalSpending: TranslationKey;
-    monthlySpending: TranslationKey;
-    categories: TranslationKey;
-    transactions: TranslationKey;
-    patterns: TranslationKey;
-    analysis: TranslationKey;
   };
 
   thaiCulture: {
@@ -199,6 +169,202 @@ export interface FeatureTranslations {
     systemStatus: TranslationKey;
     systemStatusDesc: TranslationKey;
     about: TranslationKey;
+  };
+  dashboard: {
+    title: TranslationKey;
+    subtitle: {
+      play: TranslationKey;
+      clarity: TranslationKey;
+    };
+    recentActivity: {
+      title: TranslationKey;
+      subtitle: TranslationKey;
+      seeAll: TranslationKey;
+    };
+    quickActions: {
+      title: TranslationKey;
+      subtitle: TranslationKey;
+      addTransaction: {
+        title: TranslationKey;
+        description: TranslationKey;
+      };
+      linkAccount: {
+        title: TranslationKey;
+        description: TranslationKey;
+      };
+      importData: {
+        title: TranslationKey;
+        description: TranslationKey;
+      };
+      viewReports: {
+        title: TranslationKey;
+        description: TranslationKey;
+      };
+    };
+    smartHighlights: {
+      title: TranslationKey;
+      subtitle: TranslationKey;
+    };
+    encouragement: {
+      title: TranslationKey;
+      message: TranslationKey;
+      tip: TranslationKey;
+    };
+  };
+  portfolio: {
+    title: TranslationKey;
+    subtitle: {
+      play: TranslationKey;
+      clarity: TranslationKey;
+    };
+    summary: {
+      totalPortfolio: TranslationKey;
+      totalGrowth: TranslationKey;
+      assetClasses: TranslationKey;
+    };
+    navigation: {
+      timeline: TranslationKey;
+      simulate: TranslationKey;
+    };
+    table: {
+      title: TranslationKey;
+      subtitle: TranslationKey;
+      headers: {
+        asset: TranslationKey;
+        value: TranslationKey;
+        performance: TranslationKey;
+        allocation: TranslationKey;
+        growth: TranslationKey;
+      };
+    };
+    simulation: {
+      title: TranslationKey;
+      subtitle: TranslationKey;
+      monthlyInvestment: TranslationKey;
+      expectedReturn: TranslationKey;
+      timeHorizon: TranslationKey;
+      projectedResults: TranslationKey;
+      futureValue: TranslationKey;
+      totalContributions: TranslationKey;
+      investmentGrowth: TranslationKey;
+      financialIndependence: TranslationKey;
+    };
+    smartInsights: {
+      title: TranslationKey;
+      subtitle: TranslationKey;
+    };
+  };
+  accounts: {
+    title: TranslationKey;
+    subtitle: {
+      play: TranslationKey;
+      clarity: TranslationKey;
+    };
+    activity: {
+      title: TranslationKey;
+      subtitle: TranslationKey;
+      seeAll: TranslationKey;
+    };
+    management: {
+      title: TranslationKey;
+      subtitle: TranslationKey;
+      connectNew: {
+        title: TranslationKey;
+        description: TranslationKey;
+      };
+      importStatements: {
+        title: TranslationKey;
+        description: TranslationKey;
+      };
+      manualTransaction: {
+        title: TranslationKey;
+        description: TranslationKey;
+      };
+      accountReports: {
+        title: TranslationKey;
+        description: TranslationKey;
+      };
+      syncAll: {
+        title: TranslationKey;
+        description: TranslationKey;
+      };
+      accountSettings: {
+        title: TranslationKey;
+        description: TranslationKey;
+      };
+    };
+    intelligence: {
+      title: TranslationKey;
+      subtitle: TranslationKey;
+    };
+    security: {
+      title: TranslationKey;
+      message: TranslationKey;
+      features: TranslationKey;
+    };
+  };
+  future: {
+    title: TranslationKey;
+    subtitle: {
+      elder: TranslationKey;
+      youth: TranslationKey;
+      play: TranslationKey;
+      clarity: TranslationKey;
+    };
+  };
+  spending: {
+    title: {
+      play: TranslationKey;
+      clarity: TranslationKey;
+    };
+    subtitle: {
+      play: TranslationKey;
+      clarity: TranslationKey;
+    };
+    stats: {
+      totalSpent: TranslationKey;
+      budgetUsed: TranslationKey;
+      incomeUsed: TranslationKey;
+      categories: TranslationKey;
+    };
+    navigation: {
+      spendingGalaxy: TranslationKey;
+      timelineRadar: TranslationKey;
+      paymentRadar: TranslationKey;
+      lifeBalance: TranslationKey;
+      recurringRadar: TranslationKey;
+      achievements: TranslationKey;
+      aiCoach: TranslationKey;
+    };
+    descriptions: {
+      planetView: TranslationKey;
+      whenYouSpend: TranslationKey;
+      methodAnalysis: TranslationKey;
+      needsVsWants: TranslationKey;
+      subscriptions: TranslationKey;
+      levelUp: TranslationKey;
+      smartTips: TranslationKey;
+    };
+    footer: {
+      title: {
+        play: TranslationKey;
+        clarity: TranslationKey;
+      };
+      message: {
+        play: TranslationKey;
+        clarity: TranslationKey;
+      };
+      tagline: {
+        play: TranslationKey;
+        clarity: TranslationKey;
+      };
+    };
+  };
+  widgets: {
+    smartHighlights: {
+      defaultTitle: TranslationKey;
+      defaultSubtitle: TranslationKey;
+    };
   };
 }
 

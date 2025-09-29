@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { SplitText, FadeIn, TimeRangeSelector } from "../../../components/ui";
+import { useTranslation } from "../../../libs/i18n";
 import { EnhancedNetWorthWidget } from "../../../features/networth/components/EnhancedNetWorthWidget";
 import { EnhancedAccountsWidget } from "../../../features/accounts/components/EnhancedAccountsWidget";
 import { RecentTransactionsWidget } from "../../../features/transactions";
@@ -49,6 +50,7 @@ const accountsHighlights = [
 export function AccountsPage() {
   const [timeRange, setTimeRange] = useState<"7d" | "30d" | "90d">("30d");
   const { viewMode } = useUIStore();
+  const { t } = useTranslation();
 
   const handleQuickAction = (action: string, data?: unknown) => {
     console.log("Quick action:", action, data);
@@ -120,7 +122,9 @@ export function AccountsPage() {
               >
                 🏦
               </motion.span>
-              <SplitText className="inline">Your Accounts</SplitText>
+              <SplitText className="inline">
+                {t("features.accounts.title")}
+              </SplitText>
             </div>
             <p
               className={`text-xl mb-8 max-w-2xl mx-auto ${
@@ -128,8 +132,8 @@ export function AccountsPage() {
               }`}
             >
               {viewMode === "play"
-                ? "Navigate your account constellation — each account is a star in your financial galaxy!"
-                : "Complete overview of all your financial accounts in one place. Track everything from checking to investments."}
+                ? t("features.accounts.subtitle.play")
+                : t("features.accounts.subtitle.clarity")}
             </p>
           </div>
 

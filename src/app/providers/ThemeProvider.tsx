@@ -86,11 +86,11 @@ export function ThemeProvider({
 
     // Debug logging to identify the issue
     if (!colors || !colors.primary) {
-      console.error('ThemeProvider: Colors not properly loaded', {
+      console.error("ThemeProvider: Colors not properly loaded", {
         viewMode,
         effectiveThemeMode,
         colors,
-        colorKeys: colors ? Object.keys(colors) : 'no colors'
+        colorKeys: colors ? Object.keys(colors) : "no colors",
       });
     }
 
@@ -115,7 +115,9 @@ export function ThemeProvider({
 
     // Safety check to prevent runtime errors
     if (!colors || !colors.primary) {
-      console.error('ThemeProvider: Cannot generate CSS variables, colors.primary is undefined');
+      console.error(
+        "ThemeProvider: Cannot generate CSS variables, colors.primary is undefined",
+      );
       return {} as Record<string, string>;
     }
 

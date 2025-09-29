@@ -6,6 +6,7 @@ import {
   AccessibleText,
   AccessibleButton,
 } from "../../../core";
+import { useTranslation } from "../../../libs/i18n";
 import {
   WealthSolarSystem,
   SmartHighlights,
@@ -24,6 +25,7 @@ import { useUIStore } from "../../../store/useUIStore";
 
 export function Portfolio() {
   const { viewMode } = useUIStore();
+  const { t } = useTranslation();
   const [showTimeline, setShowTimeline] = useState(false);
   const [showSimulation, setShowSimulation] = useState(false);
   const [showCategoryOverlay, setShowCategoryOverlay] = useState(false);
@@ -60,14 +62,14 @@ export function Portfolio() {
           size="sm"
           onClick={() => setShowTimeline(!showTimeline)}
         >
-          🕰 Timeline
+          🕰 {t("features.portfolio.navigation.timeline")}
         </AccessibleButton>
         <AccessibleButton
           variant="ghost"
           size="sm"
           onClick={() => setShowSimulation(!showSimulation)}
         >
-          🔮 Simulate
+          🔮 {t("features.portfolio.navigation.simulate")}
         </AccessibleButton>
       </motion.div>
 
@@ -83,15 +85,17 @@ export function Portfolio() {
               >
                 ☀️
               </motion.span>
-              <SplitText className="inline">Your Wealth Universe</SplitText>
+              <SplitText className="inline">
+                {t("features.portfolio.title")}
+              </SplitText>
             </AccessibleHeading>
             <AccessibleText
               color="secondary"
               className="max-w-2xl mx-auto mb-8"
             >
               {viewMode === "play"
-                ? "Navigate your financial solar system — each planet represents your asset categories orbiting around your portfolio sun!"
-                : "Clear overview of your portfolio performance with exact numbers and plain summaries."}
+                ? t("features.portfolio.subtitle.play")
+                : t("features.portfolio.subtitle.clarity")}
             </AccessibleText>
 
             {/* Portfolio Summary */}
@@ -103,7 +107,9 @@ export function Portfolio() {
                 <AccessibleHeading level="h2" className="text-white">
                   {formatCurrency(totalValue)}
                 </AccessibleHeading>
-                <div className="text-white/70 text-sm">Total Portfolio</div>
+                <div className="text-white/70 text-sm">
+                  {t("features.portfolio.summary.totalPortfolio")}
+                </div>
               </div>
               <div className="w-px h-16 bg-white/20"></div>
               <div className="text-center">
@@ -113,14 +119,18 @@ export function Portfolio() {
                   {totalGrowth >= 0 ? "+" : ""}
                   {formatCurrency(totalGrowth)}
                 </div>
-                <div className="text-white/70 text-sm">Total Growth</div>
+                <div className="text-white/70 text-sm">
+                  {t("features.portfolio.summary.totalGrowth")}
+                </div>
               </div>
               <div className="w-px h-16 bg-white/20"></div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-blue-400">
                   {mockPortfolioAssets.length}
                 </div>
-                <div className="text-white/70 text-sm">Asset Classes</div>
+                <div className="text-white/70 text-sm">
+                  {t("features.portfolio.summary.assetClasses")}
+                </div>
               </div>
             </motion.div>
           </div>
@@ -159,10 +169,10 @@ export function Portfolio() {
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 overflow-hidden">
                 <div className="px-6 py-4 border-b border-white/20">
                   <AccessibleHeading level="h3" className="text-white">
-                    Portfolio Assets
+                    {t("features.portfolio.table.title")}
                   </AccessibleHeading>
                   <p className="text-white/70 text-sm">
-                    Clear breakdown of your investments
+                    {t("features.portfolio.table.subtitle")}
                   </p>
                 </div>
                 <div className="overflow-x-auto">
@@ -170,19 +180,19 @@ export function Portfolio() {
                     <thead>
                       <tr className="border-b border-white/10">
                         <th className="text-left px-6 py-4 text-white/70 font-medium">
-                          Asset
+                          {t("features.portfolio.table.headers.asset")}
                         </th>
                         <th className="text-right px-6 py-4 text-white/70 font-medium">
-                          Value
+                          {t("features.portfolio.table.headers.value")}
                         </th>
                         <th className="text-right px-6 py-4 text-white/70 font-medium">
-                          Performance
+                          {t("features.portfolio.table.headers.performance")}
                         </th>
                         <th className="text-right px-6 py-4 text-white/70 font-medium">
-                          Allocation
+                          {t("features.portfolio.table.headers.allocation")}
                         </th>
                         <th className="text-right px-6 py-4 text-white/70 font-medium">
-                          Growth
+                          {t("features.portfolio.table.headers.growth")}
                         </th>
                       </tr>
                     </thead>
@@ -263,11 +273,10 @@ export function Portfolio() {
                 <div className="text-center mb-8">
                   <h2 className="text-3xl font-bold text-white mb-4">
                     <span className="mr-3">🔮</span>
-                    Future Simulation Playground
+                    {t("features.portfolio.simulation.title")}
                   </h2>
                   <p className="text-white/70 max-w-2xl mx-auto">
-                    Drag sliders & see real-time projection — turns boring
-                    finance math into an interactive game!
+                    {t("features.portfolio.simulation.subtitle")}
                   </p>
                 </div>
 
@@ -275,7 +284,7 @@ export function Portfolio() {
                   <div className="space-y-6">
                     <div>
                       <label className="block text-white/70 text-sm mb-2">
-                        Monthly Investment
+                        {t("features.portfolio.simulation.monthlyInvestment")}
                       </label>
                       <input
                         type="range"
@@ -374,8 +383,8 @@ export function Portfolio() {
 
         <SmartHighlights
           highlights={mockPortfolioHighlights}
-          title="Smart Portfolio Insights"
-          subtitle="Your personal portfolio newsfeed — like Spotify Wrapped, but every week! AI-powered insights with a friendly guide tone."
+          title={t("features.portfolio.smartInsights.title")}
+          subtitle={t("features.portfolio.smartInsights.subtitle")}
           className="mb-20"
         />
       </div>

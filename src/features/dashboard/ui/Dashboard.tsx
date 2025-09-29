@@ -9,6 +9,7 @@ import {
   ThemeAwareGrid,
   useTheme,
 } from "../../../core";
+import { useTranslation } from "../../../libs/i18n";
 import { EnhancedNetWorthWidget } from "../../networth/components/EnhancedNetWorthWidget";
 import { EnhancedAccountsWidget } from "../../accounts/components/EnhancedAccountsWidget";
 import { RecentTransactionsWidget } from "../../transactions";
@@ -24,6 +25,7 @@ export default function Dashboard() {
   const [timeRange, setTimeRange] = useState<"7d" | "30d" | "90d">("30d");
   const { viewMode } = useUIStore();
   const { isPlayMode } = useTheme();
+  const { t } = useTranslation();
 
   const handleQuickAction = (action: string, data?: unknown) => {
     console.log("Quick action:", action, data);
@@ -77,15 +79,17 @@ export default function Dashboard() {
               >
                 👋
               </motion.span>
-              <SplitText className="inline">Welcome back!</SplitText>
+              <SplitText className="inline">
+                {t("features.dashboard.title")}
+              </SplitText>
             </ThemeAwareHeading>
             <ThemeAwareText
               color="secondary"
               className="mb-8 max-w-2xl mx-auto text-base sm:text-lg"
             >
               {isPlayMode
-                ? "Navigate your financial universe — where every dollar has its place in your wealth galaxy!"
-                : "Here's your money in plain English. Everything you need to know, nothing you don't."}
+                ? t("features.dashboard.subtitle.play")
+                : t("features.dashboard.subtitle.clarity")}
             </ThemeAwareText>
           </div>
 
@@ -129,7 +133,7 @@ export default function Dashboard() {
                       className="mr-3 text-xl sm:text-2xl"
                       gradient={isPlayMode}
                     >
-                      📋 Recent Activity
+                      📋 {t("features.dashboard.recentActivity.title")}
                     </ThemeAwareHeading>
                   </div>
                   <ThemeAwareButton
@@ -138,14 +142,14 @@ export default function Dashboard() {
                     glow={isPlayMode}
                     className="text-sm sm:text-base"
                   >
-                    See All Activity
+                    {t("features.dashboard.recentActivity.seeAll")}
                   </ThemeAwareButton>
                 </div>
                 <ThemeAwareText
                   color="secondary"
                   className="mt-2 text-sm sm:text-base"
                 >
-                  Your latest money movements
+                  {t("features.dashboard.recentActivity.subtitle")}
                 </ThemeAwareText>
               </div>
 
@@ -179,13 +183,13 @@ export default function Dashboard() {
                     className="mb-2 text-xl sm:text-2xl"
                     gradient={isPlayMode}
                   >
-                    ⚡ Quick Actions
+                    ⚡ {t("features.dashboard.quickActions.title")}
                   </ThemeAwareHeading>
                   <ThemeAwareText
                     color="secondary"
                     className="text-sm sm:text-base"
                   >
-                    Common things you might want to do
+                    {t("features.dashboard.quickActions.subtitle")}
                   </ThemeAwareText>
                 </div>
               </div>
@@ -194,32 +198,48 @@ export default function Dashboard() {
                 <ThemeAwareGrid cols={4} gap="md">
                   <ThemeAwareQuickAction
                     icon="➕"
-                    title="Add Transaction"
-                    description="Record a purchase or payment"
+                    title={t(
+                      "features.dashboard.quickActions.addTransaction.title",
+                    )}
+                    description={t(
+                      "features.dashboard.quickActions.addTransaction.description",
+                    )}
                     color="green"
                     onClick={() => handleQuickAction("add_transaction")}
                   />
 
                   <ThemeAwareQuickAction
                     icon="🔗"
-                    title="Link Account"
-                    description="Connect a new bank account"
+                    title={t(
+                      "features.dashboard.quickActions.linkAccount.title",
+                    )}
+                    description={t(
+                      "features.dashboard.quickActions.linkAccount.description",
+                    )}
                     color="blue"
                     onClick={() => handleQuickAction("link_account")}
                   />
 
                   <ThemeAwareQuickAction
                     icon="📄"
-                    title="Import Data"
-                    description="Upload transactions from file"
+                    title={t(
+                      "features.dashboard.quickActions.importData.title",
+                    )}
+                    description={t(
+                      "features.dashboard.quickActions.importData.description",
+                    )}
                     color="purple"
                     onClick={() => handleQuickAction("import_csv")}
                   />
 
                   <ThemeAwareQuickAction
                     icon="📊"
-                    title="View Reports"
-                    description="See spending patterns"
+                    title={t(
+                      "features.dashboard.quickActions.viewReports.title",
+                    )}
+                    description={t(
+                      "features.dashboard.quickActions.viewReports.description",
+                    )}
                     color="orange"
                     onClick={() => handleQuickAction("view_analytics")}
                   />
@@ -232,8 +252,8 @@ export default function Dashboard() {
         {/* Smart Highlights - Financial Insights */}
         <SmartHighlights
           highlights={dashboardHighlights}
-          title="Your Financial Pulse"
-          subtitle="Smart insights about your money — like having a personal finance coach in your pocket!"
+          title={t("features.dashboard.smartHighlights.title")}
+          subtitle={t("features.dashboard.smartHighlights.subtitle")}
           className="mb-12"
         />
 
@@ -252,18 +272,16 @@ export default function Dashboard() {
               className="mb-4 text-xl sm:text-2xl"
               gradient={isPlayMode}
             >
-              You're doing great with your money!
+              {t("features.dashboard.encouragement.title")}
             </ThemeAwareHeading>
             <ThemeAwareText
               color="secondary"
               className="mb-6 max-w-2xl mx-auto text-sm sm:text-base"
             >
-              Keep track of your finances, and watch your wealth grow over time.
-              Remember, every dollar saved is a dollar earned!
+              {t("features.dashboard.encouragement.message")}
             </ThemeAwareText>
             <ThemeAwareText className="text-xs sm:text-sm" color="secondary">
-              💡 Tip: Check your dashboard regularly to stay on top of your
-              financial health
+              {t("features.dashboard.encouragement.tip")}
             </ThemeAwareText>
           </div>
         </FadeIn>

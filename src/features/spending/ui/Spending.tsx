@@ -9,6 +9,7 @@ import {
   AccessibleStatsCard,
   AccessibleGrid,
 } from "../../../core";
+import { useTranslation } from "../../../libs/i18n";
 import {
   SpendingGalaxy,
   SpendingTimelineHeatmap,
@@ -49,6 +50,7 @@ import { useAccessibilityMotion } from "../../../hooks/useAccessibility";
 export function Spending() {
   const { viewMode } = useUIStore();
   const { transition } = useAccessibilityMotion();
+  const { t } = useTranslation();
   const [activeSection, setActiveSection] = useState<
     | "galaxy"
     | "timeline"
@@ -129,40 +131,42 @@ export function Spending() {
               >
                 🌌
               </motion.span>
-              {viewMode === "play" ? "Spending Galaxy" : "Spending Radar"}
+              {viewMode === "play"
+                ? t("features.spending.title.play")
+                : t("features.spending.title.clarity")}
             </AccessibleHeading>
             <AccessibleText
               color="secondary"
               className="mb-8 max-w-4xl mx-auto px-4"
             >
               {viewMode === "play"
-                ? "Navigate your financial universe! Every category is a planet, every transaction tells a story in your personal spending galaxy. 🚀✨"
-                : "Professional spending analysis with advanced radar technology, timeline patterns, and intelligent insights for optimal financial management."}
+                ? t("features.spending.subtitle.play")
+                : t("features.spending.subtitle.clarity")}
             </AccessibleText>
 
             {/* Quick Stats */}
             <AccessibleGrid cols={4} gap="md" className="max-w-4xl mx-auto">
               {[
                 {
-                  label: "Total Spent",
+                  label: t("features.spending.stats.totalSpent"),
                   value: `฿${totals.totalSpent.toLocaleString()}`,
                   icon: "💰",
                   color: "#FF6B6B",
                 },
                 {
-                  label: "Budget Used",
+                  label: t("features.spending.stats.budgetUsed"),
                   value: `${totals.budgetUsed.toFixed(1)}%`,
                   icon: "🎯",
                   color: "#4ECDC4",
                 },
                 {
-                  label: "Income Used",
+                  label: t("features.spending.stats.incomeUsed"),
                   value: `${totals.incomeUsed.toFixed(1)}%`,
                   icon: "📊",
                   color: "#45B7D1",
                 },
                 {
-                  label: "Categories",
+                  label: t("features.spending.stats.categories"),
                   value: mockSpendingCategories.length,
                   icon: "🌟",
                   color: "#F9CA24",

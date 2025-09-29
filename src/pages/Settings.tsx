@@ -43,8 +43,9 @@ export function Settings() {
   const { t } = useTranslation();
   const { language, setLanguage } = useLanguage();
   const { currency, setCurrency } = useCurrency();
-  const { theme, viewMode, accessibilityMode, setTheme, setAccessibilityMode } = useUIStore();
-  
+  const { theme, viewMode, accessibilityMode, setTheme, setAccessibilityMode } =
+    useUIStore();
+
   const [notifications, setNotifications] = useState({
     email: true,
     push: true,
@@ -69,15 +70,15 @@ export function Settings() {
   };
 
   const handleCurrencyChange = (newCurrency: string) => {
-    setCurrency(newCurrency as 'USD' | 'EUR' | 'GBP' | 'THB');
+    setCurrency(newCurrency as "USD" | "EUR" | "GBP" | "THB");
   };
 
   const handleThemeChange = (newTheme: string) => {
-    setTheme(newTheme as 'light' | 'dark' | 'system');
+    setTheme(newTheme as "light" | "dark");
   };
 
   const handleLanguageChange = (newLanguage: string) => {
-    setLanguage(newLanguage as 'en' | 'th');
+    setLanguage(newLanguage as "en" | "th");
   };
 
   return (
@@ -113,7 +114,9 @@ export function Settings() {
               >
                 ⚙️
               </motion.span>
-              <SplitText className="inline">{t("features.settings.title")}</SplitText>
+              <SplitText className="inline">
+                {t("features.settings.title")}
+              </SplitText>
             </div>
             <p
               className={`text-xl mb-8 max-w-2xl mx-auto ${
@@ -509,9 +512,12 @@ export function Settings() {
                       : "bg-white border-gray-300 text-gray-900"
                   }`}
                 >
-                  <option value="system">{t("common.accessibility.auto")}</option>
-                  <option value="light">{t("common.accessibility.lightMode")}</option>
-                  <option value="dark">{t("common.accessibility.darkMode")}</option>
+                  <option value="light">
+                    {t("common.accessibility.lightMode")}
+                  </option>
+                  <option value="dark">
+                    {t("common.accessibility.darkMode")}
+                  </option>
                 </select>
               </div>
 
