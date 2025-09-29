@@ -8,6 +8,8 @@ import {
   mockSpendingData,
   mockGoals,
 } from "../../../mockData/features/dashboard";
+import { UniverseLoading } from "../ui/LoadingStates";
+import { ThemeAwareButton, ThemeAwareHeading, ThemeAwareText } from "../../core";
 
 // Using centralized mock data
 
@@ -24,19 +26,10 @@ export function FinancialUniverse({
 
   if (loading) {
     return (
-      <div
-        className={`relative h-full bg-gradient-to-b from-slate-900 via-purple-900 to-indigo-900 overflow-hidden ${className}`}
-      >
-        <div className="flex items-center justify-center h-full">
-          <motion.div
-            className="text-white text-xl"
-            animate={{ opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            🌌 Loading your financial universe...
-          </motion.div>
-        </div>
-      </div>
+      <UniverseLoading 
+        className={className}
+        message="🌌 Loading your financial universe..."
+      />
     );
   }
 
@@ -48,14 +41,19 @@ export function FinancialUniverse({
         <div className="flex items-center justify-center h-full text-center">
           <div className="text-white">
             <div className="text-6xl mb-4">🌌</div>
-            <h2 className="text-2xl font-bold mb-2">Universe Loading Error</h2>
-            <p className="text-white/70">Unable to load your financial data</p>
-            <button
+            <ThemeAwareHeading level="h2" className="text-2xl font-bold mb-2">
+              Universe Loading Error
+            </ThemeAwareHeading>
+            <ThemeAwareText className="text-white/70 mb-4">
+              Unable to load your financial data
+            </ThemeAwareText>
+            <ThemeAwareButton
+              variant="primary"
               onClick={() => window.location.reload()}
-              className="mt-4 bg-purple-600 hover:bg-purple-700 px-6 py-2 rounded-lg font-medium transition-colors"
+              className="mt-4"
             >
               Reload Universe
-            </button>
+            </ThemeAwareButton>
           </div>
         </div>
       </div>

@@ -5,6 +5,7 @@ import {
   SyncStatus,
   InfoTooltip,
 } from "../../../components/ui";
+import { CardSkeleton } from "../../../components/ui/LoadingStates";
 import {
   AccessibleHeading,
   AccessibleText,
@@ -55,11 +56,7 @@ export function EnhancedNetWorthWidget({
       <FadeIn
         className={`bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl p-8 ${className}`}
       >
-        <div className="animate-pulse text-center">
-          <div className="h-8 bg-gray-300 rounded w-48 mx-auto mb-4"></div>
-          <div className="h-16 bg-gray-300 rounded w-64 mx-auto mb-4"></div>
-          <div className="h-4 bg-gray-300 rounded w-96 mx-auto"></div>
-        </div>
+        <CardSkeleton showAvatar={false} lines={3} />
       </FadeIn>
     );
   }

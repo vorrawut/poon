@@ -4,6 +4,7 @@ import {
   SyncStatus,
   InfoTooltip,
 } from "../../../components/ui";
+import { CardSkeleton } from "../../../components/ui/LoadingStates";
 import { useAccountsOverview, useAccountSync } from "../hooks/useAccounts";
 import type { Account } from "../types";
 import {
@@ -44,13 +45,11 @@ export function EnhancedAccountsWidget({
       <FadeIn
         className={`bg-white rounded-2xl shadow-card border border-gray-200 p-8 ${className}`}
       >
-        <div className="animate-pulse">
-          <div className="h-8 bg-gray-300 rounded w-48 mb-6"></div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-gray-200 rounded-lg h-32"></div>
-            ))}
-          </div>
+        <CardSkeleton showAvatar={false} lines={4} />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+          {[1, 2, 3].map((i) => (
+            <CardSkeleton key={i} lines={2} />
+          ))}
         </div>
       </FadeIn>
     );

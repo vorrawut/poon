@@ -95,8 +95,8 @@ export function UniverseDashboard() {
   }
 
   return (
-    <div className="relative">
-      <FinancialUniverse onQuickAction={handleQuickAction} />
+    <div className="relative h-full">
+      <FinancialUniverse onQuickAction={handleQuickAction} className="h-full" />
 
       {/* Floating Navigation */}
       <motion.div
