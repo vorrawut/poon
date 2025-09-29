@@ -1,11 +1,15 @@
 /**
  * 🌌 THEME CONTEXT
- * 
+ *
  * React context for the theme system
  */
 
 import { createContext } from "react";
-import type { ThemeConfig, AccessibilityMode, AdaptiveMood } from "../styles/tokens/theme";
+import type {
+  ThemeConfig,
+  AccessibilityMode,
+  AdaptiveMood,
+} from "../styles/tokens/theme";
 import { spacing, typography } from "../styles/tokens/theme";
 
 export interface ThemeContextValue extends ThemeConfig {
@@ -33,4 +37,6 @@ export interface ThemeContextValue extends ThemeConfig {
   isSystemTheme: boolean;
 }
 
-export const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
+export const ThemeContext = createContext<ThemeContextValue | undefined>(
+  undefined,
+);

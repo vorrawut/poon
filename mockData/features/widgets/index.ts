@@ -22,3 +22,19 @@ export {
   generateMockTimelineData,
   type SpendingData as TimelineSpendingData
 } from './timelineData';
+export { 
+  mockAchievements as spendingGamificationAchievements,
+  mockChallenges as spendingGamificationChallenges,
+  mockStreakData as spendingGamificationStreakData,
+  getRarityColor,
+  getDifficultyColor,
+  getProgressPercentage,
+  type Achievement as SpendingGamificationAchievement,
+  type Challenge as SpendingGamificationChallenge,
+  type StreakData as SpendingGamificationStreakData
+} from './spendingGamificationData';
+export { 
+  mockMilestones,
+  mockTimelineStats,
+  type Milestone
+} from './timeCapsuleData';

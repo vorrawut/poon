@@ -9,6 +9,7 @@ import {
   PieChart,
   Lightbulb,
 } from "lucide-react";
+import { mockCategoryTransactions } from "../../../mockData/features/spending";
 
 interface Transaction {
   id: string;
@@ -50,64 +51,9 @@ export function CategoryExplorer({
     null,
   );
 
-  // Mock detailed transaction data
+  // Using centralized mock data
   const mockTransactions: Transaction[] = useMemo(
-    () => [
-      {
-        id: "1",
-        name: "Starbucks Coffee",
-        amount: 180,
-        date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
-        merchant: "Starbucks",
-        subcategory: "Coffee Shops",
-        paymentMethod: "Credit Card",
-        location: "Siam Paragon",
-        tags: ["morning", "routine"],
-      },
-      {
-        id: "2",
-        name: "Lunch at Food Court",
-        amount: 120,
-        date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
-        merchant: "Food Court",
-        subcategory: "Restaurants",
-        paymentMethod: "Cash",
-        location: "Central World",
-      },
-      {
-        id: "3",
-        name: "Dinner with Friends",
-        amount: 850,
-        date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-        merchant: "After You Dessert Cafe",
-        subcategory: "Fine Dining",
-        paymentMethod: "Credit Card",
-        location: "EmQuartier",
-        tags: ["social", "weekend"],
-      },
-      {
-        id: "4",
-        name: "Food Delivery",
-        amount: 320,
-        date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
-        merchant: "Foodpanda",
-        subcategory: "Food Delivery",
-        paymentMethod: "Digital Wallet",
-        location: "Home",
-        tags: ["convenience", "late night"],
-      },
-      {
-        id: "5",
-        name: "McDonald's",
-        amount: 150,
-        date: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000),
-        merchant: "McDonald's",
-        subcategory: "Fast Food",
-        paymentMethod: "Credit Card",
-        location: "BTS Station",
-        tags: ["quick", "commute"],
-      },
-    ],
+    () => mockCategoryTransactions,
     [],
   );
 

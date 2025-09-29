@@ -29,8 +29,10 @@ import type {
   AdaptiveMood,
 } from "../../styles/tokens/theme";
 
-import { ThemeContext, type ThemeContextValue } from "../../contexts/ThemeContext";
-
+import {
+  ThemeContext,
+  type ThemeContextValue,
+} from "../../contexts/ThemeContext";
 
 interface ThemeProviderProps {
   children: React.ReactNode;
@@ -311,4 +313,3 @@ export function ThemeProvider({
     </ThemeContext.Provider>
   );
 }
-

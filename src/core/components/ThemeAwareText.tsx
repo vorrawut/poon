@@ -158,17 +158,19 @@ export function ThemeAwareText({
         exit={motionSettings.fadeIn.exit}
         transition={motionSettings.fadeIn.transition}
       >
-        <Component className={textClasses} {...props}>
-          {children}
-        </Component>
+        {React.createElement(
+          Component,
+          { className: textClasses, ...props },
+          children,
+        )}
       </motion.div>
     );
   }
 
-  return (
-    <Component className={textClasses} {...props}>
-      {children}
-    </Component>
+  return React.createElement(
+    Component,
+    { className: textClasses, ...props },
+    children,
   );
 }
 

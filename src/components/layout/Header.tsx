@@ -26,7 +26,13 @@ const pageTitle: Record<string, string> = {
 
 export function Header() {
   const location = useLocation();
-  const { isMobile, toggleSidebar, openModal, sidebarCollapsed, setSidebarCollapsed } = useUIStore();
+  const {
+    isMobile,
+    toggleSidebar,
+    openModal,
+    sidebarCollapsed,
+    setSidebarCollapsed,
+  } = useUIStore();
   const { isPlayMode, themeMode } = useTheme();
 
   const title = pageTitle[location.pathname] || "Universe";
@@ -72,7 +78,8 @@ export function Header() {
               className={cn(
                 "p-2 transition-all duration-200 group",
                 // Play mode cosmic effects
-                isPlayMode && "hover:shadow-[0_0_15px_var(--color-mood-glow)]/40",
+                isPlayMode &&
+                  "hover:shadow-[0_0_15px_var(--color-mood-glow)]/40",
               )}
               title="Expand sidebar"
               aria-label="Expand sidebar"

@@ -8,22 +8,12 @@ import {
   Sparkles,
   TrendingUp,
 } from "lucide-react";
+import {
+  mockMilestones,
+  type Milestone,
+} from "../../../mockData/features/widgets";
 
-interface Milestone {
-  id: string;
-  title: string;
-  description: string;
-  date: Date;
-  amount?: number;
-  category: "income" | "savings" | "investment" | "achievement" | "goal";
-  icon: string;
-  color: string;
-  isLocked: boolean;
-  unlockDate?: Date;
-  rarity: "common" | "rare" | "epic" | "legendary";
-  memories: string[];
-  futureValue?: number;
-}
+// Using imported Milestone type from mockData
 
 interface TimeCapsuleProps {
   timelinePosition: number;
@@ -46,117 +36,8 @@ export function TimeCapsule({
   );
   const [filterCategory, setFilterCategory] = useState<string>("all");
 
-  // Mock milestones data
-  const milestones: Milestone[] = [
-    {
-      id: "first-paycheck",
-      title: "First Paycheck 💼",
-      description:
-        "Received your very first salary payment - the beginning of your financial journey!",
-      date: new Date("2024-01-15"),
-      amount: 85000,
-      category: "income",
-      icon: "💼",
-      color: "#3B82F6",
-      isLocked: false,
-      rarity: "legendary",
-      memories: [
-        "Felt incredible to see that first deposit",
-        "Celebrated with a nice dinner",
-        "Started planning your financial future",
-      ],
-    },
-    {
-      id: "emergency-fund",
-      title: "Emergency Fund Complete 🛡️",
-      description:
-        "Built a solid 6-month emergency fund - financial security achieved!",
-      date: new Date("2024-03-20"),
-      amount: 300000,
-      category: "savings",
-      icon: "🛡️",
-      color: "#10B981",
-      isLocked: false,
-      rarity: "epic",
-      memories: [
-        "Slept better knowing you're protected",
-        "Felt proud of your discipline",
-        "Ready for any unexpected expenses",
-      ],
-    },
-    {
-      id: "first-investment",
-      title: "Investment Journey Begins 📈",
-      description: "Made your first investment - money working for money!",
-      date: new Date("2024-04-10"),
-      amount: 50000,
-      category: "investment",
-      icon: "📈",
-      color: "#8B5CF6",
-      isLocked: false,
-      rarity: "rare",
-      memories: [
-        "Nervous but excited about investing",
-        "Researched for weeks before deciding",
-        "First step toward financial independence",
-      ],
-      futureValue: 125000,
-    },
-    {
-      id: "debt-free",
-      title: "Debt-Free Achievement 🎉",
-      description:
-        "Paid off all high-interest debt - financial freedom unlocked!",
-      date: new Date("2024-06-15"),
-      amount: 150000,
-      category: "achievement",
-      icon: "🎉",
-      color: "#F59E0B",
-      isLocked: false,
-      rarity: "epic",
-      memories: [
-        "Huge weight lifted off your shoulders",
-        "Celebrated with friends and family",
-        "Ready to focus on building wealth",
-      ],
-    },
-    {
-      id: "100k-savings",
-      title: "100K Savings Milestone 💰",
-      description: "Reached ฿100,000 in total savings - six figures achieved!",
-      date: new Date("2024-08-30"),
-      amount: 100000,
-      category: "savings",
-      icon: "💰",
-      color: "#06B6D4",
-      isLocked: false,
-      rarity: "legendary",
-      memories: [
-        "Screenshot of the account balance",
-        "Called parents to share the news",
-        "Treated yourself to something special",
-      ],
-    },
-    {
-      id: "million-net-worth",
-      title: "Millionaire Status 👑",
-      description:
-        "Net worth crosses ฿1,000,000 - welcome to the millionaire club!",
-      date: new Date("2025-03-15"),
-      amount: 1000000,
-      category: "achievement",
-      icon: "👑",
-      color: "#EF4444",
-      isLocked: true,
-      unlockDate: new Date("2025-03-15"),
-      rarity: "legendary",
-      memories: [
-        "This milestone awaits your arrival...",
-        "The journey continues...",
-        "Dreams becoming reality...",
-      ],
-    },
-  ];
+  // Using centralized mock data
+  const milestones: Milestone[] = mockMilestones;
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {

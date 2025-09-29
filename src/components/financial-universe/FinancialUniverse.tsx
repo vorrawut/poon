@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { PlanetOfWealth } from "./PlanetOfWealth";
 import { MoonOfSpending } from "./MoonOfSpending";
 import { GoalsAsStars } from "./GoalsAsStars";
+import { InteractiveWealthPlanet } from "./InteractiveWealthPlanet";
 import { useNetWorth } from "../../features/networth/hooks/useNetWorth";
 import {
   mockFinancialUniverseGoals,
@@ -9,7 +9,14 @@ import {
   mockGoals,
 } from "../../../mockData/features/dashboard";
 import { UniverseLoading } from "../ui/LoadingStates";
-import { ThemeAwareButton, ThemeAwareHeading, ThemeAwareText } from "../../core";
+import {
+  ThemeAwareButton,
+  ThemeAwareHeading,
+  ThemeAwareText,
+} from "../../core";
+import { AIInsightsContainer } from "../../features/ai-insights/components/AIInsightCard";
+import { mockAIInsights } from "../../../mockData/features/ai-insights";
+import { useState, useEffect } from "react";
 
 // Using centralized mock data
 
@@ -23,10 +30,19 @@ export function FinancialUniverse({
   onQuickAction,
 }: FinancialUniverseProps) {
   const { netWorthData, loading, error } = useNetWorth();
+  const [aiInsights, setAiInsights] = useState<any[]>([]);
+
+  // Use centralized mock AI insights
+  useEffect(() => {
+    if (netWorthData) {
+      // Use pre-generated mock insights for consistent UI
+      setAiInsights(mockAIInsights);
+    }
+  }, [netWorthData]);
 
   if (loading) {
     return (
-      <UniverseLoading 
+      <UniverseLoading
         className={className}
         message="🌌 Loading your financial universe..."
       />
@@ -120,18 +136,38 @@ export function FinancialUniverse({
           </p>
         </motion.div>
 
+        {/* AI Insights Section */}
+        {aiInsights.length > 0 && (
+          <motion.div
+            className="mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.3 }}
+          >
+            <AIInsightsContainer
+              insights={aiInsights}
+              maxVisible={3}
+              onInsightDismiss={(id) => {
+                setAiInsights((prev) =>
+                  prev.filter((insight) => insight.id !== id),
+                );
+              }}
+            />
+          </motion.div>
+        )}
+
         {/* Main Universe Layout */}
         <div className="space-y-12 lg:space-y-0">
           {/* Desktop Layout */}
           <div className="hidden lg:grid lg:grid-cols-3 gap-16 items-center justify-items-center mb-12 min-h-[700px] overflow-visible">
-            {/* Planet of Wealth - Left */}
+            {/* Interactive Wealth Planet - Left */}
             <motion.div
               className="w-full max-w-lg flex justify-center items-center h-full overflow-visible"
               initial={{ opacity: 0, x: -100 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.5 }}
             >
-              <PlanetOfWealth
+              <InteractiveWealthPlanet
                 netWorth={netWorthData.totalNetWorth}
                 previousNetWorth={netWorthData.previousNetWorth}
                 growth={netWorthData.netWorthChange}
@@ -187,7 +223,7 @@ export function FinancialUniverse({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.6 }}
               >
-                <PlanetOfWealth
+                <InteractiveWealthPlanet
                   netWorth={netWorthData.totalNetWorth}
                   previousNetWorth={netWorthData.previousNetWorth}
                   growth={netWorthData.netWorthChange}

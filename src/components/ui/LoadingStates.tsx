@@ -8,13 +8,16 @@ interface LoadingSpinnerProps {
   className?: string;
 }
 
-export function LoadingSpinner({ size = "md", className }: LoadingSpinnerProps) {
+export function LoadingSpinner({
+  size = "md",
+  className,
+}: LoadingSpinnerProps) {
   const { isPlayMode, themeMode } = useTheme();
   const { accessibilityMode } = useAccessibility();
 
   const sizeClasses = {
     sm: "h-4 w-4",
-    md: "h-8 w-8", 
+    md: "h-8 w-8",
     lg: "h-12 w-12",
     xl: "h-16 w-16",
   };
@@ -23,11 +26,7 @@ export function LoadingSpinner({ size = "md", className }: LoadingSpinnerProps) 
 
   return (
     <motion.div
-      className={cn(
-        "relative inline-block",
-        sizeClasses[size],
-        className
-      )}
+      className={cn("relative inline-block", sizeClasses[size], className)}
       animate={reduceMotion ? {} : { rotate: 360 }}
       transition={
         reduceMotion
@@ -49,7 +48,7 @@ export function LoadingSpinner({ size = "md", className }: LoadingSpinnerProps) 
               themeMode === "dark"
                 ? "border-t-purple-400 border-r-blue-400"
                 : "border-t-purple-600 border-r-blue-600",
-              "animate-spin"
+              "animate-spin",
             )}
           />
           {/* Inner ring */}
@@ -60,7 +59,7 @@ export function LoadingSpinner({ size = "md", className }: LoadingSpinnerProps) 
                 ? "border-b-pink-400 border-l-cyan-400"
                 : "border-b-pink-600 border-l-cyan-600",
               "animate-spin",
-              "animation-direction: reverse"
+              "animation-direction: reverse",
             )}
           />
           {/* Center dot */}
@@ -69,7 +68,7 @@ export function LoadingSpinner({ size = "md", className }: LoadingSpinnerProps) 
               "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2",
               "w-1 h-1 rounded-full",
               themeMode === "dark" ? "bg-white" : "bg-gray-900",
-              "animate-pulse"
+              "animate-pulse",
             )}
           />
         </div>
@@ -78,7 +77,7 @@ export function LoadingSpinner({ size = "md", className }: LoadingSpinnerProps) 
         <div
           className={cn(
             "w-full h-full rounded-full border-2 border-transparent",
-            "border-t-[var(--color-primary-500)] animate-spin"
+            "border-t-[var(--color-primary-500)] animate-spin",
           )}
         />
       )}
@@ -91,9 +90,9 @@ interface UniverseLoadingProps {
   message?: string;
 }
 
-export function UniverseLoading({ 
+export function UniverseLoading({
   className,
-  message = "Loading your financial universe..."
+  message = "Loading your financial universe...",
 }: UniverseLoadingProps) {
   const { isPlayMode, themeMode } = useTheme();
   const { accessibilityMode } = useAccessibility();
@@ -109,7 +108,7 @@ export function UniverseLoading({
           themeMode === "dark"
             ? "bg-gradient-to-br from-slate-900 via-purple-900/90 to-indigo-900"
             : "bg-gradient-to-br from-blue-50 via-purple-50/90 to-indigo-100",
-          className
+          className,
         )}
       >
         {/* Animated cosmic background layers */}
@@ -121,9 +120,9 @@ export function UniverseLoading({
                 key={`nebula-${i}`}
                 className={cn(
                   "absolute rounded-full blur-3xl",
-                  themeMode === "dark" 
+                  themeMode === "dark"
                     ? "bg-gradient-to-r from-purple-500/10 via-pink-500/15 to-blue-500/10"
-                    : "bg-gradient-to-r from-purple-300/20 via-pink-300/25 to-blue-300/20"
+                    : "bg-gradient-to-r from-purple-300/20 via-pink-300/25 to-blue-300/20",
                 )}
                 style={{
                   width: `${200 + Math.random() * 300}px`,
@@ -151,7 +150,7 @@ export function UniverseLoading({
                 key={`star-${i}`}
                 className={cn(
                   "absolute rounded-full",
-                  themeMode === "dark" ? "bg-white" : "bg-purple-600"
+                  themeMode === "dark" ? "bg-white" : "bg-purple-600",
                 )}
                 style={{
                   width: `${1 + Math.random() * 3}px`,
@@ -177,9 +176,9 @@ export function UniverseLoading({
                 key={`shooting-${i}`}
                 className={cn(
                   "absolute h-0.5 rounded-full",
-                  themeMode === "dark" 
+                  themeMode === "dark"
                     ? "bg-gradient-to-r from-transparent via-white to-transparent"
-                    : "bg-gradient-to-r from-transparent via-purple-600 to-transparent"
+                    : "bg-gradient-to-r from-transparent via-purple-600 to-transparent",
                 )}
                 style={{
                   width: "80px",
@@ -229,7 +228,7 @@ export function UniverseLoading({
                   "absolute inset-0 rounded-full border-2 border-transparent",
                   themeMode === "dark"
                     ? "border-t-purple-400 border-r-blue-400"
-                    : "border-t-purple-600 border-r-blue-600"
+                    : "border-t-purple-600 border-r-blue-600",
                 )}
                 animate={reduceMotion ? {} : { rotate: -360 }}
                 transition={
@@ -242,14 +241,14 @@ export function UniverseLoading({
                       }
                 }
               />
-              
+
               {/* Middle ring */}
               <motion.div
                 className={cn(
                   "absolute inset-4 rounded-full border-2 border-transparent",
                   themeMode === "dark"
                     ? "border-b-pink-400 border-l-cyan-400"
-                    : "border-b-pink-600 border-l-cyan-600"
+                    : "border-b-pink-600 border-l-cyan-600",
                 )}
                 animate={reduceMotion ? {} : { rotate: 360 }}
                 transition={
@@ -269,7 +268,7 @@ export function UniverseLoading({
                   "absolute inset-8 rounded-full border border-transparent",
                   themeMode === "dark"
                     ? "border-t-yellow-400 border-b-green-400"
-                    : "border-t-yellow-600 border-b-green-600"
+                    : "border-t-yellow-600 border-b-green-600",
                 )}
                 animate={reduceMotion ? {} : { rotate: -360 }}
                 transition={
@@ -288,7 +287,9 @@ export function UniverseLoading({
                 className={cn(
                   "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2",
                   "text-6xl md:text-7xl filter",
-                  themeMode === "dark" ? "drop-shadow-[0_0_20px_rgba(147,51,234,0.5)]" : "drop-shadow-[0_0_20px_rgba(147,51,234,0.3)]"
+                  themeMode === "dark"
+                    ? "drop-shadow-[0_0_20px_rgba(147,51,234,0.5)]"
+                    : "drop-shadow-[0_0_20px_rgba(147,51,234,0.3)]",
                 )}
                 animate={
                   reduceMotion
@@ -312,30 +313,17 @@ export function UniverseLoading({
               </motion.div>
 
               {/* Orbiting planets */}
-              {!reduceMotion && Array.from({ length: 4 }).map((_, i) => (
-                <motion.div
-                  key={`planet-${i}`}
-                  className="absolute text-lg"
-                  style={{
-                    top: "50%",
-                    left: "50%",
-                  }}
-                  animate={{
-                    rotate: 360,
-                  }}
-                  transition={{
-                    duration: 8 + i * 2,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                >
+              {!reduceMotion &&
+                Array.from({ length: 4 }).map((_, i) => (
                   <motion.div
-                    className="relative"
+                    key={`planet-${i}`}
+                    className="absolute text-lg"
                     style={{
-                      transform: `translate(-50%, -50%) translateX(${60 + i * 15}px)`,
+                      top: "50%",
+                      left: "50%",
                     }}
                     animate={{
-                      rotate: -360,
+                      rotate: 360,
                     }}
                     transition={{
                       duration: 8 + i * 2,
@@ -343,19 +331,33 @@ export function UniverseLoading({
                       ease: "linear",
                     }}
                   >
-                    {["💰", "📈", "🎯", "⭐"][i]}
+                    <motion.div
+                      className="relative"
+                      style={{
+                        transform: `translate(-50%, -50%) translateX(${60 + i * 15}px)`,
+                      }}
+                      animate={{
+                        rotate: -360,
+                      }}
+                      transition={{
+                        duration: 8 + i * 2,
+                        repeat: Infinity,
+                        ease: "linear",
+                      }}
+                    >
+                      {["💰", "📈", "🎯", "⭐"][i]}
+                    </motion.div>
                   </motion.div>
-                </motion.div>
-              ))}
+                ))}
             </motion.div>
 
             {/* Enhanced loading text */}
             <motion.div
               className={cn(
                 "text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r bg-clip-text text-transparent",
-                themeMode === "dark" 
+                themeMode === "dark"
                   ? "from-purple-400 via-pink-400 to-blue-400"
-                  : "from-purple-600 via-pink-600 to-blue-600"
+                  : "from-purple-600 via-pink-600 to-blue-600",
               )}
               animate={
                 reduceMotion
@@ -380,7 +382,7 @@ export function UniverseLoading({
             <motion.div
               className={cn(
                 "text-lg md:text-xl mb-8 font-medium",
-                themeMode === "dark" ? "text-purple-200" : "text-purple-800"
+                themeMode === "dark" ? "text-purple-200" : "text-purple-800",
               )}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -396,7 +398,7 @@ export function UniverseLoading({
                   key={i}
                   className={cn(
                     "w-3 h-3 rounded-full",
-                    themeMode === "dark" ? "bg-purple-400" : "bg-purple-600"
+                    themeMode === "dark" ? "bg-purple-400" : "bg-purple-600",
                   )}
                   animate={
                     reduceMotion
@@ -423,7 +425,7 @@ export function UniverseLoading({
             <motion.div
               className={cn(
                 "text-sm font-mono",
-                themeMode === "dark" ? "text-purple-300" : "text-purple-700"
+                themeMode === "dark" ? "text-purple-300" : "text-purple-700",
               )}
               animate={
                 reduceMotion
@@ -455,7 +457,7 @@ export function UniverseLoading({
       className={cn(
         "relative w-full h-full min-h-screen flex flex-col items-center justify-center",
         "bg-[var(--color-bg-primary)]",
-        className
+        className,
       )}
     >
       <motion.div
@@ -467,7 +469,7 @@ export function UniverseLoading({
         {/* Enhanced loading spinner */}
         <div className="relative mb-8">
           <LoadingSpinner size="xl" className="mx-auto" />
-          
+
           {/* Progress ring */}
           <motion.div
             className="absolute inset-0 rounded-full border-2 border-transparent border-t-[var(--color-primary-500)]"
@@ -483,7 +485,7 @@ export function UniverseLoading({
             }
           />
         </div>
-        
+
         {/* Main loading message */}
         <motion.div
           className="text-2xl md:text-3xl font-bold text-[var(--color-text-primary)] mb-4"
@@ -505,7 +507,7 @@ export function UniverseLoading({
         >
           {message}
         </motion.div>
-        
+
         {/* Subtitle */}
         <motion.div
           className="text-lg text-[var(--color-text-secondary)] mb-8 font-medium"
@@ -565,7 +567,6 @@ export function UniverseLoading({
           Loading components and data...
         </motion.div>
       </motion.div>
-
     </div>
   );
 }
@@ -577,11 +578,11 @@ interface SkeletonProps {
   height?: string | number;
 }
 
-export function Skeleton({ 
-  className, 
+export function Skeleton({
+  className,
   variant = "rectangular",
   width,
-  height 
+  height,
 }: SkeletonProps) {
   const { isPlayMode, themeMode } = useTheme();
 
@@ -590,15 +591,15 @@ export function Skeleton({
     isPlayMode && themeMode === "dark"
       ? "bg-gradient-to-r from-purple-900/30 via-purple-800/50 to-purple-900/30"
       : isPlayMode && themeMode === "light"
-      ? "bg-gradient-to-r from-purple-100/50 via-purple-200/70 to-purple-100/50"
-      : "bg-[var(--color-surface-secondary)]",
+        ? "bg-gradient-to-r from-purple-100/50 via-purple-200/70 to-purple-100/50"
+        : "bg-[var(--color-surface-secondary)]",
     {
       "rounded-full": variant === "circular",
       "rounded-md": variant === "rectangular",
-      "rounded": variant === "text",
+      rounded: variant === "text",
       "h-4": variant === "text" && !height,
     },
-    className
+    className,
   );
 
   const style = {
@@ -615,10 +616,10 @@ interface CardSkeletonProps {
   lines?: number;
 }
 
-export function CardSkeleton({ 
-  className, 
-  showAvatar = false, 
-  lines = 3 
+export function CardSkeleton({
+  className,
+  showAvatar = false,
+  lines = 3,
 }: CardSkeletonProps) {
   return (
     <div className={cn("p-6 space-y-4", className)}>
@@ -631,7 +632,7 @@ export function CardSkeleton({
           </div>
         </div>
       )}
-      
+
       <div className="space-y-3">
         {Array.from({ length: lines }).map((_, i) => (
           <Skeleton

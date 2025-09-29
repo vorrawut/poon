@@ -106,7 +106,8 @@ export function Sidebar() {
                 "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-secondary)]",
                 "hover:scale-110",
                 // Play mode cosmic effects
-                isPlayMode && "hover:shadow-[0_0_15px_var(--color-mood-glow)]/40",
+                isPlayMode &&
+                  "hover:shadow-[0_0_15px_var(--color-mood-glow)]/40",
                 // Accessibility improvements
                 "focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-500)] focus:ring-offset-2",
               )}
@@ -176,10 +177,12 @@ export function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className={cn(
-        "flex-1 py-6 space-y-1",
-        isCollapsed ? "px-2" : "px-4" // Less padding when collapsed for better touch targets
-      )}>
+      <nav
+        className={cn(
+          "flex-1 py-6 space-y-1",
+          isCollapsed ? "px-2" : "px-4", // Less padding when collapsed for better touch targets
+        )}
+      >
         {navigation.map((item) => (
           <NavLink
             key={item.name}
@@ -188,15 +191,17 @@ export function Sidebar() {
               cn(
                 "flex items-center font-medium rounded-[var(--border-radius)] transition-all duration-200 group relative",
                 // Better sizing for collapsed state
-                isCollapsed 
+                isCollapsed
                   ? "px-3 py-3 justify-center text-xs" // Larger touch target when collapsed
                   : "px-3 py-2.5 text-sm",
                 isActive
                   ? cn(
                       // Active state with theme awareness
                       "bg-[var(--color-primary-50)] text-[var(--color-primary-700)]",
-                      !isCollapsed && "border-r-2 border-[var(--color-primary-600)]",
-                      isCollapsed && "bg-[var(--color-primary-500)] text-white shadow-lg",
+                      !isCollapsed &&
+                        "border-r-2 border-[var(--color-primary-600)]",
+                      isCollapsed &&
+                        "bg-[var(--color-primary-500)] text-white shadow-lg",
                       isPlayMode &&
                         "bg-gradient-to-r from-[var(--color-primary-500)]/10 to-[var(--color-accent-500)]/10 shadow-[0_0_10px_var(--color-mood-glow)]/20",
                     )
@@ -206,7 +211,8 @@ export function Sidebar() {
                       isPlayMode &&
                         "hover:shadow-[0_0_8px_var(--color-mood-glow)]/10",
                       // Better hover state for collapsed
-                      isCollapsed && "hover:bg-[var(--color-primary-100)] hover:scale-105",
+                      isCollapsed &&
+                        "hover:bg-[var(--color-primary-100)] hover:scale-105",
                     ),
               )
             }
@@ -224,7 +230,7 @@ export function Sidebar() {
                 {item.name}
               </span>
             )}
-            
+
             {/* Tooltip for collapsed state */}
             {isCollapsed && (
               <div className="absolute left-full ml-2 px-2 py-1 bg-[var(--color-surface-primary)] border border-[var(--color-border-primary)] rounded-md text-sm font-medium text-[var(--color-text-primary)] opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50 shadow-lg">
@@ -316,7 +322,6 @@ export function Sidebar() {
           )}
         </div>
       </div>
-
     </div>
   );
 }

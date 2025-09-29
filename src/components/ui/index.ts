@@ -13,11 +13,11 @@ export { BigNumber, CompactNumber } from "./BigNumber";
 export { TimeRangeSelector } from "./TimeRangeSelector";
 
 // Loading States
-export { 
-  LoadingSpinner, 
-  UniverseLoading, 
-  Skeleton, 
-  CardSkeleton 
+export {
+  LoadingSpinner,
+  UniverseLoading,
+  Skeleton,
+  CardSkeleton,
 } from "./LoadingStates";
 
 // UI Components

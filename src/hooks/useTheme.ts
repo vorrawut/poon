@@ -1,6 +1,6 @@
 /**
  * 🌌 USE THEME HOOK
- * 
+ *
  * Hook to access the theme context from ThemeProvider
  */
 
