@@ -20,7 +20,7 @@ interface WealthPlanetProps {
   className?: string;
 }
 
-// 3D Wealth Planet Component
+// Enhanced 3D Wealth Planet Component with Realistic Materials
 function WealthPlanet({
   netWorth,
   growth,
@@ -29,89 +29,205 @@ function WealthPlanet({
   growth: number;
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
+  const atmosphereRef = useRef<THREE.Mesh>(null);
+  const ringsRef = useRef<THREE.Mesh>(null);
   const { themeMode } = useTheme();
 
-  // Calculate planet size based on net worth (logarithmic scale for better visualization)
+  // Calculate planet size based on net worth (more dramatic scaling)
   const planetSize = useMemo(() => {
-    const baseSize = 1.5;
-    const scaleFactor = Math.log10(Math.max(netWorth / 10000, 1)) * 0.3;
-    return Math.min(baseSize + scaleFactor, 3); // Cap at 3 units
+    const baseSize = 1.8;
+    const scaleFactor = Math.log10(Math.max(netWorth / 5000, 1)) * 0.4;
+    return Math.min(baseSize + scaleFactor, 3.5); // Larger max size
   }, [netWorth]);
 
-  // Planet color based on growth
-  const planetColor = useMemo(() => {
-    if (growth > 0) return themeMode === "dark" ? "#10B981" : "#059669"; // Green for positive
-    if (growth < 0) return themeMode === "dark" ? "#EF4444" : "#DC2626"; // Red for negative
-    return themeMode === "dark" ? "#6366F1" : "#4F46E5"; // Blue for neutral
-  }, [growth, themeMode]);
+  // Dynamic planet appearance based on wealth and growth
+  const planetMaterial = useMemo(() => {
+    let baseColor, emissiveColor, atmosphereColor, ringColor;
+    
+    if (netWorth > 1000000) {
+      // Millionaire planet - Gold with purple atmosphere
+      baseColor = "#FFD700";
+      emissiveColor = "#FFA500";
+      atmosphereColor = "#9333EA";
+      ringColor = "#F59E0B";
+    } else if (netWorth > 500000) {
+      // High net worth - Silver with blue atmosphere
+      baseColor = "#C0C0C0";
+      emissiveColor = "#E5E7EB";
+      atmosphereColor = "#3B82F6";
+      ringColor = "#6B7280";
+    } else if (growth > 5000) {
+      // High growth - Vibrant green
+      baseColor = "#10B981";
+      emissiveColor = "#059669";
+      atmosphereColor = "#34D399";
+      ringColor = "#10B981";
+    } else if (growth > 0) {
+      // Positive growth - Green to blue gradient
+      baseColor = "#22C55E";
+      emissiveColor = "#16A34A";
+      atmosphereColor = "#86EFAC";
+      ringColor = "#22C55E";
+    } else if (growth < -2000) {
+      // Significant loss - Deep red
+      baseColor = "#DC2626";
+      emissiveColor = "#B91C1C";
+      atmosphereColor = "#F87171";
+      ringColor = "#DC2626";
+    } else {
+      // Stable/neutral - Blue with cosmic purple
+      baseColor = "#3B82F6";
+      emissiveColor = "#2563EB";
+      atmosphereColor = "#93C5FD";
+      ringColor = "#6366F1";
+    }
 
-  // Animate planet rotation and pulsing
+    return { baseColor, emissiveColor, atmosphereColor, ringColor };
+  }, [netWorth, growth]);
+
+  // Enhanced animations
   useFrame((state) => {
     if (meshRef.current) {
-      meshRef.current.rotation.y += 0.005;
+      // Smooth rotation
+      meshRef.current.rotation.y += 0.004;
+      meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.1;
 
-      // Gentle pulsing animation based on growth
-      const pulseIntensity = Math.abs(growth) / 10000;
-      const pulse =
-        Math.sin(state.clock.elapsedTime * 2) * pulseIntensity * 0.1;
-      meshRef.current.scale.setScalar(planetSize + pulse);
+      // Dynamic pulsing based on growth
+      const pulseIntensity = Math.abs(growth) / 20000;
+      const pulse = Math.sin(state.clock.elapsedTime * 1.5) * pulseIntensity * 0.08;
+      meshRef.current.scale.setScalar(1 + pulse);
+    }
+
+    if (atmosphereRef.current) {
+      // Counter-rotate atmosphere
+      atmosphereRef.current.rotation.y -= 0.002;
+      atmosphereRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.5) * 0.05;
+    }
+
+    if (ringsRef.current) {
+      // Rotate rings
+      ringsRef.current.rotation.z += 0.01;
+      ringsRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.4) * 0.2;
     }
   });
 
   return (
     <group>
-      {/* Main Planet */}
-      <Sphere ref={meshRef} args={[planetSize, 64, 64]} position={[0, 0, 0]}>
-        <meshStandardMaterial
-          color={planetColor}
-          metalness={0.3}
-          roughness={0.4}
-          emissive={planetColor}
-          emissiveIntensity={0.1}
+      {/* Enhanced Main Planet */}
+      <Sphere ref={meshRef} args={[planetSize, 128, 128]} position={[0, 0, 0]}>
+        <meshPhysicalMaterial
+          color={planetMaterial.baseColor}
+          metalness={0.2}
+          roughness={0.6}
+          clearcoat={0.4}
+          clearcoatRoughness={0.1}
+          emissive={planetMaterial.emissiveColor}
+          emissiveIntensity={0.2}
+          transmission={0.1}
+          thickness={0.5}
         />
       </Sphere>
 
-      {/* Planet Atmosphere Glow */}
-      <Sphere args={[planetSize * 1.1, 32, 32]} position={[0, 0, 0]}>
+      {/* Multi-layered Atmosphere */}
+      <Sphere ref={atmosphereRef} args={[planetSize * 1.2, 64, 64]} position={[0, 0, 0]}>
         <meshBasicMaterial
-          color={planetColor}
+          color={planetMaterial.atmosphereColor}
           transparent
-          opacity={0.1}
+          opacity={0.4}
           side={THREE.BackSide}
         />
       </Sphere>
 
-      {/* Sparkles for positive growth */}
+      {/* Inner Glow */}
+      <Sphere args={[planetSize * 1.08, 32, 32]} position={[0, 0, 0]}>
+        <meshBasicMaterial
+          color={planetMaterial.emissiveColor}
+          transparent
+          opacity={0.15}
+          side={THREE.BackSide}
+        />
+      </Sphere>
+
+      {/* Orbital Rings for High Net Worth */}
+      {netWorth > 300000 && (
+        <group ref={ringsRef}>
+          <mesh rotation={[Math.PI / 2.2, 0, 0]}>
+            <ringGeometry args={[planetSize * 2.2, planetSize * 2.4, 64]} />
+            <meshBasicMaterial
+              color={planetMaterial.ringColor}
+              transparent
+              opacity={0.7}
+              side={THREE.DoubleSide}
+            />
+          </mesh>
+          {netWorth > 800000 && (
+            <mesh rotation={[Math.PI / 1.8, 0, Math.PI / 4]}>
+              <ringGeometry args={[planetSize * 2.8, planetSize * 3.0, 64]} />
+              <meshBasicMaterial
+                color={planetMaterial.atmosphereColor}
+                transparent
+                opacity={0.5}
+                side={THREE.DoubleSide}
+              />
+            </mesh>
+          )}
+        </group>
+      )}
+
+      {/* Enhanced Sparkles */}
       {growth > 0 && (
         <Sparkles
-          count={20}
-          scale={planetSize * 2}
-          size={2}
-          speed={0.5}
-          color={planetColor}
+          count={Math.min(150, Math.floor(netWorth / 5000))}
+          scale={planetSize * 4}
+          size={4}
+          speed={0.4}
+          color={planetMaterial.emissiveColor}
         />
       )}
 
-      {/* Net Worth Text */}
+      {/* Floating Wealth Display */}
       <Text
-        position={[0, planetSize + 0.8, 0]}
-        fontSize={0.3}
+        position={[0, planetSize + 1.5, 0]}
+        fontSize={0.5}
         color={themeMode === "dark" ? "#FFFFFF" : "#1F2937"}
         anchorX="center"
         anchorY="middle"
+        outlineWidth={0.03}
+        outlineColor={themeMode === "dark" ? "#000000" : "#FFFFFF"}
       >
         ฿{(netWorth / 1000).toFixed(0)}K
       </Text>
 
-      {/* Growth Indicator */}
+      {/* Growth Status with Emoji */}
       <Text
-        position={[0, planetSize + 0.4, 0]}
-        fontSize={0.2}
-        color={planetColor}
+        position={[0, planetSize + 1.0, 0]}
+        fontSize={0.3}
+        color={planetMaterial.baseColor}
         anchorX="center"
         anchorY="middle"
+        outlineWidth={0.02}
+        outlineColor={themeMode === "dark" ? "#000000" : "#FFFFFF"}
       >
-        {growth > 0 ? "+" : ""}฿{(growth / 1000).toFixed(1)}K
+        {growth > 5000 ? "🚀 +" : 
+         growth > 0 ? "📈 +" : 
+         growth < -2000 ? "📉 " : "📊 "}
+        ฿{Math.abs(growth / 1000).toFixed(1)}K
+      </Text>
+
+      {/* Wealth Status Badge */}
+      <Text
+        position={[0, -planetSize - 1.2, 0]}
+        fontSize={0.25}
+        color={themeMode === "dark" ? "#94A3B8" : "#64748B"}
+        anchorX="center"
+        anchorY="middle"
+        outlineWidth={0.01}
+        outlineColor={themeMode === "dark" ? "#000000" : "#FFFFFF"}
+      >
+        {netWorth > 1000000 ? "👑 Millionaire Status" : 
+         netWorth > 500000 ? "💎 High Net Worth" :
+         netWorth > 100000 ? "⭐ Building Wealth" : 
+         netWorth > 50000 ? "🌟 Growing Strong" : "🌱 Starting Journey"}
       </Text>
     </group>
   );
@@ -153,21 +269,76 @@ function Scene({ netWorth, growth }: { netWorth: number; growth: number }) {
 
   return (
     <>
-      {/* Lighting */}
-      <ambientLight intensity={0.4} />
-      <pointLight position={[10, 10, 10]} intensity={1} />
-      <pointLight position={[-10, -10, -10]} intensity={0.5} />
+      {/* Cinematic Lighting Setup */}
+      <ambientLight intensity={0.2} color="#1e1b4b" />
+      
+      {/* Key Light - Main illumination */}
+      <directionalLight 
+        position={[10, 10, 5]} 
+        intensity={1.5} 
+        color="#ffffff"
+        castShadow
+      />
+      
+      {/* Fill Light - Softer secondary light */}
+      <pointLight 
+        position={[-8, 5, 8]} 
+        intensity={0.8} 
+        color="#4f46e5"
+        distance={20}
+        decay={2}
+      />
+      
+      {/* Rim Light - Creates edge glow */}
+      <pointLight 
+        position={[0, -10, -10]} 
+        intensity={1.2} 
+        color="#9333ea"
+        distance={25}
+        decay={1.5}
+      />
+      
+      {/* Accent Light - Dynamic color based on growth */}
+      <pointLight 
+        position={[15, 0, 0]} 
+        intensity={0.6} 
+        color={growth > 0 ? "#10b981" : growth < 0 ? "#ef4444" : "#3b82f6"}
+        distance={30}
+        decay={2}
+      />
 
-      {/* Background Stars */}
+      {/* Enhanced Background Stars */}
       <Stars
-        radius={100}
-        depth={50}
-        count={themeMode === "dark" ? 1000 : 500}
-        factor={4}
+        radius={150}
+        depth={80}
+        count={themeMode === "dark" ? 2000 : 1200}
+        factor={6}
         saturation={0}
         fade
-        speed={0.5}
+        speed={0.3}
       />
+
+      {/* Cosmic Sparkles */}
+      <Sparkles 
+        count={300} 
+        scale={25} 
+        size={2} 
+        speed={0.2} 
+        opacity={0.8}
+        color="#ffffff"
+      />
+
+      {/* Additional Colored Sparkles for Wealth */}
+      {netWorth > 100000 && (
+        <Sparkles 
+          count={100} 
+          scale={15} 
+          size={3} 
+          speed={0.4} 
+          opacity={0.6}
+          color="#ffd700"
+        />
+      )}
 
       {/* Wealth Planet */}
       <WealthPlanet netWorth={netWorth} growth={growth} />
@@ -175,15 +346,19 @@ function Scene({ netWorth, growth }: { netWorth: number; growth: number }) {
       {/* Orbital Rings */}
       <OrbitalRings />
 
-      {/* Camera Controls */}
+      {/* Enhanced Camera Controls */}
       <OrbitControls
         enableZoom={true}
         enablePan={false}
         enableRotate={true}
-        minDistance={5}
-        maxDistance={15}
+        minDistance={6}
+        maxDistance={20}
         autoRotate={true}
-        autoRotateSpeed={0.5}
+        autoRotateSpeed={0.3}
+        enableDamping={true}
+        dampingFactor={0.05}
+        minPolarAngle={Math.PI / 6}
+        maxPolarAngle={Math.PI - Math.PI / 6}
       />
     </>
   );
@@ -277,30 +452,34 @@ export function InteractiveWealthPlanet({
     );
   }
 
-  // 3D Canvas for Play Mode
+  // 3D Canvas for Play Mode - Seamlessly integrated with universe theme
   return (
     <div className={cn("relative aspect-square max-w-md mx-auto", className)}>
       <Canvas
         camera={{ position: [0, 0, 8], fov: 50 }}
         style={{
-          background:
-            themeMode === "dark"
-              ? "radial-gradient(circle, #1e1b4b 0%, #0f0f23 100%)"
-              : "radial-gradient(circle, #ddd6fe 0%, #e0e7ff 100%)",
+          background: "transparent", // Make canvas transparent to blend with universe background
         }}
       >
         <Scene netWorth={netWorth} growth={growth} />
       </Canvas>
 
-      {/* Interactive Overlay */}
+      {/* Enhanced Interactive Overlay */}
       <motion.div
-        className="absolute bottom-4 left-4 right-4 bg-black/20 backdrop-blur-sm rounded-lg p-3"
+        className={cn(
+          "absolute bottom-4 left-4 right-4 rounded-lg p-3 border",
+          "bg-gradient-to-r from-black/30 via-purple-900/20 to-black/30",
+          "backdrop-blur-md border-purple-500/20",
+          "shadow-lg shadow-purple-500/10"
+        )}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1 }}
       >
         <div className="text-center text-white">
-          <div className="text-sm font-medium mb-1">Planet of Wealth</div>
+          <div className="text-sm font-medium mb-1 bg-gradient-to-r from-purple-300 to-blue-300 bg-clip-text text-transparent">
+            🌍 Planet of Wealth
+          </div>
           <div className="text-xs opacity-80">
             Drag to rotate • Scroll to zoom • Auto-rotating
           </div>

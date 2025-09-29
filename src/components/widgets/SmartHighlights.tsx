@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { AccessibleHeading, AccessibleText } from "../../core";
+import { ThemeAwareHeading, ThemeAwareText, useTheme } from "../../core";
 
 interface Highlight {
   id: string;
