@@ -167,14 +167,13 @@ export function Spending() {
                   icon: "🌟",
                   color: "#F9CA24",
                 },
-              ].map((stat, index) => (
+              ].map((stat) => (
                 <AccessibleStatsCard
                   key={stat.label}
                   title={stat.label}
                   value={stat.value.toString()}
                   icon={stat.icon}
                   className="motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4"
-                  style={{ animationDelay: `${0.2 + index * 0.1}s` }}
                 />
               ))}
             </AccessibleGrid>

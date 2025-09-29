@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "tailwindcss/theme" layer(theme);
 
+/* 🌌 Ultimate Theme System */
+@import "./theme.css";
+
 @theme {
   --font-family-sans: "Inter", system-ui, sans-serif;
 

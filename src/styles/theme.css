@@ -1,0 +1,484 @@
+/**
+ * 🌌 ULTIMATE THEME SYSTEM CSS
+ * 
+ * Global CSS that works with the theme system to provide:
+ * - Cosmic backgrounds and effects for Play mode
+ * - Clean, minimal styles for Clarity mode
+ * - Smooth transitions between themes
+ * - Accessibility enhancements
+ */
+
+/* 🎨 CSS CUSTOM PROPERTIES FALLBACKS */
+:root {
+  /* Default color values (overridden by ThemeProvider) */
+  --color-primary-500: #3b82f6;
+  --color-secondary-500: #64748b;
+  --color-accent-500: #22c55e;
+
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f8fafc;
+  --color-surface-primary: #ffffff;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+
+  --font-size-body: 1rem;
+  --font-size-heading: 1.5rem;
+  --font-size-button: 1rem;
+
+  --spacing-md: 1rem;
+  --border-radius: 0.375rem;
+
+  --motion-duration-normal: 0.3s;
+  --motion-easing: cubic-bezier(0.42, 0, 0.58, 1);
+
+  --z-modal: 50;
+}
+
+/* 🌌 PLAY MODE STYLES */
+.view-play {
+  /* Cosmic font stack */
+  --font-family-secondary: "Orbitron", "JetBrains Mono", monospace;
+
+  /* Enhanced border radius for cosmic feel */
+  --border-radius: 1rem;
+
+  /* Cosmic shadows and glows */
+  --shadow-cosmic:
+    0 0 20px rgba(99, 102, 241, 0.3), 0 0 40px rgba(99, 102, 241, 0.1);
+  --shadow-glow: 0 0 15px rgba(99, 102, 241, 0.5);
+}
+
+.view-play body {
+  /* Cosmic background with animated starfield */
+  background:
+    radial-gradient(2px 2px at 20px 30px, #ffffff, transparent),
+    radial-gradient(
+      2px 2px at 40px 70px,
+      rgba(255, 255, 255, 0.8),
+      transparent
+    ),
+    radial-gradient(1px 1px at 90px 40px, #ffffff, transparent),
+    radial-gradient(
+      1px 1px at 130px 80px,
+      rgba(255, 255, 255, 0.6),
+      transparent
+    ),
+    radial-gradient(2px 2px at 160px 30px, #ffffff, transparent),
+    var(--color-bg-primary);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  animation: cosmic-drift 60s linear infinite;
+}
+
+.view-play.theme-dark body {
+  /* Dark mode cosmic background */
+  background:
+    radial-gradient(
+      2px 2px at 20px 30px,
+      rgba(255, 255, 255, 0.8),
+      transparent
+    ),
+    radial-gradient(
+      2px 2px at 40px 70px,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    ),
+    radial-gradient(
+      1px 1px at 90px 40px,
+      rgba(255, 255, 255, 0.6),
+      transparent
+    ),
+    radial-gradient(
+      1px 1px at 130px 80px,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    ),
+    radial-gradient(
+      2px 2px at 160px 30px,
+      rgba(255, 255, 255, 0.5),
+      transparent
+    ),
+    linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  animation: cosmic-drift 60s linear infinite;
+}
+
+/* 🏛️ CLARITY MODE STYLES */
+.view-clarity {
+  /* Clean, minimal styling */
+  --border-radius: 0.375rem;
+  --font-family-secondary: "Inter", system-ui, sans-serif;
+}
+
+.view-clarity body {
+  background: var(--color-bg-primary);
+  transition: background-color var(--motion-duration-normal)
+    var(--motion-easing);
+}
+
+/* 🎭 THEME TRANSITIONS */
+* {
+  transition-property:
+    color, background-color, border-color, box-shadow, transform;
+  transition-duration: var(--motion-duration-normal);
+  transition-timing-function: var(--motion-easing);
+}
+
+/* 🌟 COSMIC ANIMATIONS */
+@keyframes cosmic-drift {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 200px 100px;
+  }
+}
+
+@keyframes cosmic-pulse {
+  0%,
+  100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes cosmic-float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  75% {
+    transform: translateY(-5px) rotate(-1deg);
+  }
+}
+
+@keyframes cosmic-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px var(--color-mood-glow);
+  }
+  50% {
+    box-shadow:
+      0 0 40px var(--color-mood-glow),
+      0 0 60px var(--color-mood-glow);
+  }
+}
+
+@keyframes nebula-swirl {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shooting-star {
+  0% {
+    transform: translateX(-100px) translateY(-50px) scale(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+    transform: translateX(-50px) translateY(-25px) scale(1);
+  }
+  90% {
+    opacity: 1;
+    transform: translateX(250px) translateY(75px) scale(1);
+  }
+  100% {
+    transform: translateX(300px) translateY(100px) scale(0);
+    opacity: 0;
+  }
+}
+
+/* 🎨 COSMIC UTILITY CLASSES */
+.cosmic-glow {
+  animation: cosmic-glow 2s ease-in-out infinite;
+}
+
+.cosmic-float {
+  animation: cosmic-float 4s ease-in-out infinite;
+}
+
+.cosmic-pulse {
+  animation: cosmic-pulse 2s ease-in-out infinite;
+}
+
+.nebula-swirl {
+  animation: nebula-swirl 20s linear infinite;
+}
+
+.shooting-star {
+  animation: shooting-star 2s ease-out;
+}
+
+/* 🌌 COSMIC BACKGROUNDS */
+.cosmic-bg-primary {
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.1) 0%,
+    rgba(139, 92, 246, 0.1) 50%,
+    rgba(34, 197, 94, 0.1) 100%
+  );
+}
+
+.cosmic-bg-secondary {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(99, 102, 241, 0.2) 0%,
+    rgba(139, 92, 246, 0.1) 50%,
+    transparent 100%
+  );
+}
+
+.cosmic-bg-nebula {
+  background:
+    radial-gradient(
+      ellipse 200% 100% at 50% 0%,
+      rgba(99, 102, 241, 0.3),
+      transparent
+    ),
+    radial-gradient(
+      ellipse 200% 100% at 50% 100%,
+      rgba(139, 92, 246, 0.3),
+      transparent
+    ),
+    radial-gradient(
+      ellipse 150% 100% at 0% 50%,
+      rgba(34, 197, 94, 0.2),
+      transparent
+    ),
+    radial-gradient(
+      ellipse 150% 100% at 100% 50%,
+      rgba(245, 158, 11, 0.2),
+      transparent
+    );
+}
+
+/* 🎯 ACCESSIBILITY ENHANCEMENTS */
+.accessibility-elder {
+  /* Larger touch targets and spacing */
+  --spacing-md: 1.5rem;
+  --font-size-body: 1.25rem;
+  --font-size-heading: 2rem;
+  --font-size-button: 1.25rem;
+}
+
+.accessibility-elder * {
+  /* Enhanced contrast and readability */
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: 0.025em;
+}
+
+.accessibility-youth {
+  /* Compact spacing and sizing */
+  --spacing-md: 0.75rem;
+  --font-size-body: 0.875rem;
+  --font-size-heading: 1.25rem;
+  --font-size-button: 0.875rem;
+}
+
+.accessibility-youth * {
+  /* Tighter spacing for youth mode */
+  line-height: 1.4;
+  letter-spacing: normal;
+}
+
+/* 🎭 MOOD-BASED STYLING */
+.mood-growth {
+  --color-mood-primary: #22c55e;
+  --color-mood-secondary: #16a34a;
+  --color-mood-glow: rgba(34, 197, 94, 0.3);
+  --color-mood-background: rgba(34, 197, 94, 0.05);
+}
+
+.mood-warning {
+  --color-mood-primary: #f59e0b;
+  --color-mood-secondary: #d97706;
+  --color-mood-glow: rgba(245, 158, 11, 0.3);
+  --color-mood-background: rgba(245, 158, 11, 0.05);
+}
+
+.mood-danger {
+  --color-mood-primary: #ef4444;
+  --color-mood-secondary: #dc2626;
+  --color-mood-glow: rgba(239, 68, 68, 0.3);
+  --color-mood-background: rgba(239, 68, 68, 0.05);
+}
+
+.mood-neutral {
+  --color-mood-primary: #6366f1;
+  --color-mood-secondary: #4f46e5;
+  --color-mood-glow: rgba(99, 102, 241, 0.3);
+  --color-mood-background: rgba(99, 102, 241, 0.05);
+}
+
+/* 🌟 SPECIAL EFFECTS */
+.glass-morphism {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.theme-dark .glass-morphism {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cosmic-border {
+  border: 2px solid transparent;
+  background:
+    linear-gradient(var(--color-bg-primary), var(--color-bg-primary))
+      padding-box,
+    linear-gradient(135deg, var(--color-primary-500), var(--color-accent-500))
+      border-box;
+}
+
+.cosmic-text-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-400),
+    var(--color-accent-400)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* 🎮 INTERACTIVE ELEMENTS */
+.cosmic-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.cosmic-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.7s;
+}
+
+.cosmic-button:hover::before {
+  left: 100%;
+}
+
+.cosmic-card {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform var(--motion-duration-normal) var(--motion-easing);
+}
+
+.cosmic-card:hover {
+  transform: rotateY(5deg) rotateX(5deg) translateZ(20px);
+}
+
+/* 🌈 GRADIENT UTILITIES */
+.gradient-cosmic {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.gradient-nebula {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.gradient-starfield {
+  background: radial-gradient(ellipse at center, #1e3c72 0%, #2a5298 100%);
+}
+
+.gradient-aurora {
+  background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+}
+
+/* 📱 RESPONSIVE DESIGN */
+@media (max-width: 640px) {
+  .view-play body {
+    background-size: 100px 50px;
+  }
+
+  .cosmic-card:hover {
+    transform: none; /* Disable 3D transforms on mobile */
+  }
+}
+
+/* 🎯 FOCUS STATES */
+*:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+  border-radius: var(--border-radius);
+}
+
+.view-play *:focus-visible {
+  outline: 2px solid var(--color-accent-500);
+  box-shadow: 0 0 0 4px var(--color-mood-glow);
+}
+
+/* 🌙 DARK MODE ADJUSTMENTS */
+.theme-dark {
+  color-scheme: dark;
+}
+
+.theme-dark .cosmic-text-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-300),
+    var(--color-accent-300)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 🎨 PRINT STYLES */
+@media print {
+  .view-play body {
+    background: white !important;
+    animation: none !important;
+  }
+
+  .cosmic-glow,
+  .cosmic-float,
+  .cosmic-pulse {
+    animation: none !important;
+  }
+
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+}
+
+/* 🔧 REDUCED MOTION */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .view-play body {
+    animation: none !important;
+  }
+}

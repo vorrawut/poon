@@ -1,4 +1,5 @@
 import { useUIStore } from "../store/useUIStore";
+import { useTheme } from "../app/providers/ThemeProvider";
 import {
   getAccessibilityClasses,
   getAccessibilityColors,
@@ -10,21 +11,33 @@ import {
 } from "../libs/accessibility";
 
 /**
- * Hook for accessing accessibility utilities and current mode
+ * 🌌 ENHANCED ACCESSIBILITY HOOK
+ *
+ * Hook for accessing accessibility utilities integrated with the ultimate theme system.
+ * Now provides theme-aware accessibility features.
  */
 export function useAccessibility() {
   const { accessibilityMode, viewMode } = useUIStore();
+  const theme = useTheme();
 
   return {
     // Current modes
     accessibilityMode,
     viewMode,
+    themeMode: theme.themeMode,
 
-    // Utility functions
+    // Theme integration
+    theme,
+
+    // Utility functions (enhanced with theme awareness)
     getClasses: (options?: Parameters<typeof getAccessibilityClasses>[2]) =>
-      getAccessibilityClasses(accessibilityMode, viewMode, options),
+      getAccessibilityClasses(accessibilityMode, viewMode, {
+        ...options,
+        themeMode: theme.themeMode,
+      }),
 
-    getColors: () => getAccessibilityColors(accessibilityMode, viewMode),
+    getColors: () =>
+      getAccessibilityColors(accessibilityMode, viewMode, theme.themeMode),
 
     getFontSize: () => getAccessibilityFontSize(accessibilityMode),
 
@@ -37,9 +50,13 @@ export function useAccessibility() {
 
     getAnimations: () => getAccessibilityAnimations(accessibilityMode),
 
-    // Convenience getters
+    // Theme-aware convenience getters
     get colors() {
-      return getAccessibilityColors(accessibilityMode, viewMode);
+      return getAccessibilityColors(
+        accessibilityMode,
+        viewMode,
+        theme.themeMode,
+      );
     },
 
     get fontSize() {
@@ -58,12 +75,22 @@ export function useAccessibility() {
       return getAccessibilityAnimations(accessibilityMode);
     },
 
-    // Mode checks
+    // Enhanced mode checks
     isElderMode: accessibilityMode === "elder",
     isYouthMode: accessibilityMode === "youth",
     isStandardMode: accessibilityMode === "standard",
     isPlayMode: viewMode === "play",
     isClarityMode: viewMode === "clarity",
+    isDarkMode: theme.themeMode === "dark",
+    isLightMode: theme.themeMode === "light",
+
+    // Theme utilities
+    getThemeColor: theme.getColor,
+    getThemeSpacing: theme.getSpacing,
+    getThemeFontSize: theme.getFontSize,
+
+    // CSS custom properties access
+    cssVariables: theme.cssVariables,
   };
 }
 

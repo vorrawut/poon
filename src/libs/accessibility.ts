@@ -1,8 +1,14 @@
 /**
- * Accessibility utilities for consistent styling across the application
+ * 🌌 ENHANCED ACCESSIBILITY UTILITIES
+ *
+ * Accessibility utilities that integrate with the ultimate theme system.
+ * These utilities now work seamlessly with Play/Clarity modes and dark/light themes.
  */
 
+// Theme integration available through useAccessibility hook
+
 export type AccessibilityMode = "standard" | "elder" | "youth";
+export type ViewMode = "play" | "clarity";
 
 /**
  * Get font size classes based on accessibility mode
@@ -81,11 +87,13 @@ export function getAccessibilityButtonSize(mode: AccessibilityMode): string {
 }
 
 /**
- * Get color scheme based on accessibility mode and view mode
+ * Get theme-aware color scheme based on accessibility mode and view mode
+ * Now integrates with the ultimate theme system for consistent theming
  */
 export function getAccessibilityColors(
   mode: AccessibilityMode,
-  viewMode: "play" | "clarity",
+  viewMode: ViewMode,
+  themeMode: "light" | "dark" = "light",
 ): {
   text: string;
   textSecondary: string;
@@ -94,79 +102,69 @@ export function getAccessibilityColors(
   border: string;
   accent: string;
 } {
+  // Use CSS custom properties for dynamic theming
+  const baseColors = {
+    text: "text-[var(--color-text-primary)]",
+    textSecondary: "text-[var(--color-text-secondary)]",
+    textTertiary: "text-[var(--color-text-tertiary)]",
+    background: "bg-[var(--color-bg-primary)]",
+    border: "border-[var(--color-border-primary)]",
+    accent: "text-[var(--color-text-accent)]",
+  };
+
+  // Accessibility mode specific adjustments
   if (mode === "elder") {
     // High contrast colors for elder mode
-    return viewMode === "play"
-      ? {
-          text: "text-white",
-          textSecondary: "text-gray-100",
-          textTertiary: "text-gray-300",
-          background: "bg-gray-900",
-          border: "border-gray-300",
-          accent: "text-yellow-300",
-        }
-      : {
-          text: "text-gray-900",
-          textSecondary: "text-gray-700",
-          textTertiary: "text-gray-500",
-          background: "bg-white",
-          border: "border-gray-900",
-          accent: "text-blue-700",
-        };
+    return {
+      ...baseColors,
+      // Enhanced contrast for better readability
+      text: themeMode === "dark" ? "text-white" : "text-gray-900",
+      textSecondary: themeMode === "dark" ? "text-gray-100" : "text-gray-800",
+      border: themeMode === "dark" ? "border-gray-300" : "border-gray-900",
+      accent:
+        viewMode === "play"
+          ? themeMode === "dark"
+            ? "text-yellow-300"
+            : "text-blue-700"
+          : themeMode === "dark"
+            ? "text-blue-300"
+            : "text-blue-700",
+    };
   }
 
   if (mode === "youth") {
     // Vibrant colors for youth mode
-    return viewMode === "play"
-      ? {
-          text: "text-white",
-          textSecondary: "text-purple-200",
-          textTertiary: "text-purple-300",
-          background: "bg-gradient-to-br from-purple-900 to-pink-900",
-          border: "border-purple-400",
-          accent: "text-pink-300",
-        }
-      : {
-          text: "text-gray-900",
-          textSecondary: "text-purple-700",
-          textTertiary: "text-purple-500",
-          background: "bg-gradient-to-br from-purple-50 to-pink-50",
-          border: "border-purple-300",
-          accent: "text-purple-600",
-        };
+    return {
+      ...baseColors,
+      // More vibrant accent colors
+      accent:
+        viewMode === "play"
+          ? themeMode === "dark"
+            ? "text-pink-300"
+            : "text-purple-600"
+          : themeMode === "dark"
+            ? "text-blue-400"
+            : "text-purple-600",
+    };
   }
 
-  // Standard colors
-  return viewMode === "play"
-    ? {
-        text: "text-white",
-        textSecondary: "text-white/80",
-        textTertiary: "text-white/60",
-        background: "bg-slate-900",
-        border: "border-white/20",
-        accent: "text-blue-300",
-      }
-    : {
-        text: "text-gray-900",
-        textSecondary: "text-gray-600",
-        textTertiary: "text-gray-500",
-        background: "bg-white",
-        border: "border-gray-200",
-        accent: "text-blue-600",
-      };
+  // Standard colors use the theme system
+  return baseColors;
 }
 
 /**
  * Get comprehensive accessibility classes for a component
+ * Enhanced to work with the ultimate theme system
  */
 export function getAccessibilityClasses(
   mode: AccessibilityMode,
-  viewMode: "play" | "clarity",
+  viewMode: ViewMode,
   options: {
     fontSize?: "text" | "heading" | "button";
     headingLevel?: "h1" | "h2" | "h3" | "h4";
     includeSpacing?: boolean;
     includeColors?: boolean;
+    themeMode?: "light" | "dark";
   } = {},
 ): string {
   const {
@@ -174,27 +172,28 @@ export function getAccessibilityClasses(
     headingLevel = "h1",
     includeSpacing = false,
     includeColors = false,
+    themeMode = "light",
   } = options;
 
   let classes = "";
 
-  // Font size
+  // Font size - use CSS custom properties for dynamic sizing
   if (fontSize === "heading") {
-    classes += getAccessibilityHeadingSize(mode, headingLevel);
+    classes += `text-[var(--font-size-heading)] ${getAccessibilityHeadingSize(mode, headingLevel)}`;
   } else if (fontSize === "button") {
-    classes += getAccessibilityButtonSize(mode);
+    classes += `text-[var(--font-size-button)] ${getAccessibilityButtonSize(mode)}`;
   } else {
-    classes += getAccessibilityFontSize(mode);
+    classes += `text-[var(--font-size-body)] ${getAccessibilityFontSize(mode)}`;
   }
 
-  // Spacing
+  // Spacing - use CSS custom properties
   if (includeSpacing) {
-    classes += " " + getAccessibilitySpacing(mode);
+    classes += " p-[var(--spacing-md)]";
   }
 
-  // Colors
+  // Colors - use theme-aware colors
   if (includeColors) {
-    const colors = getAccessibilityColors(mode, viewMode);
+    const colors = getAccessibilityColors(mode, viewMode, themeMode);
     classes += ` ${colors.text} ${colors.background}`;
   }
 

@@ -22,8 +22,16 @@
 // Export all core components
 export * from "./components";
 
-// Export accessibility utilities
-export * from "../libs/accessibility";
+// Export theme hooks
+export { useTheme } from "../app/providers/ThemeProvider";
+export { useThemeStyles } from "../hooks/useThemeStyles";
+export { useThemeMotion } from "../hooks/useThemeMotion";
 
-// Export accessibility hooks
-export * from "../hooks/useAccessibility";
+// Export theme utilities (types only to avoid conflicts)
+export type {
+  ThemeConfig,
+  ViewMode,
+  ThemeMode,
+  AccessibilityMode,
+  AdaptiveMood,
+} from "../styles/tokens/theme";
