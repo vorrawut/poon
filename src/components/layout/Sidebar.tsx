@@ -84,7 +84,7 @@ export function Sidebar() {
           >
             <span className="text-white font-bold text-lg">P</span>
           </div>
-          {!isCollapsed && (
+          {!isCollapsed ? (
             <div>
               <ThemeAwareText
                 as="h1"
@@ -97,6 +97,36 @@ export function Sidebar() {
                 Personal Finance
               </ThemeAwareText>
             </div>
+          ) : (
+            // Large expand button when collapsed - replaces the logo area
+            <button
+              onClick={() => setSidebarCollapsed(false)}
+              className={cn(
+                "ml-2 p-2 transition-all duration-200 rounded-lg group",
+                "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-secondary)]",
+                "hover:scale-110",
+                // Play mode cosmic effects
+                isPlayMode && "hover:shadow-[0_0_15px_var(--color-mood-glow)]/40",
+                // Accessibility improvements
+                "focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-500)] focus:ring-offset-2",
+              )}
+              title="Expand sidebar"
+              aria-label="Expand sidebar"
+            >
+              <svg
+                className="h-7 w-7 transition-all duration-200 group-hover:scale-110"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13 5l7 7-7 7M5 5l7 7-7 7" // Double arrow right
+                />
+              </svg>
+            </button>
           )}
         </div>
 
@@ -114,30 +144,22 @@ export function Sidebar() {
         )}
 
         {/* Desktop collapse button */}
-        {!isMobile && (
+        {!isMobile && !isCollapsed && (
           <button
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
             className={cn(
-              "transition-all duration-200 rounded-lg group",
+              "ml-auto p-2 transition-all duration-200 rounded-lg group",
               "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-secondary)]",
-              // Better sizing and positioning
-              isCollapsed 
-                ? "ml-auto p-3 hover:scale-110" // Larger when collapsed for easier clicking
-                : "ml-auto p-2",
               // Play mode cosmic effects
               isPlayMode && "hover:shadow-[0_0_12px_var(--color-mood-glow)]/30",
               // Accessibility improvements
               "focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-500)] focus:ring-offset-2",
             )}
-            title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-            aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            title="Collapse sidebar"
+            aria-label="Collapse sidebar"
           >
             <svg
-              className={cn(
-                "transition-all duration-200",
-                isCollapsed ? "h-6 w-6" : "h-5 w-5", // Larger icon when collapsed
-                "group-hover:scale-110"
-              )}
+              className="h-5 w-5 transition-all duration-200 group-hover:scale-110"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -146,10 +168,7 @@ export function Sidebar() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d={isCollapsed 
-                  ? "M13 5l7 7-7 7M5 5l7 7-7 7" // Double arrow right when collapsed
-                  : "M11 19l-7-7 7-7M19 19l-7-7 7-7" // Double arrow left when expanded
-                }
+                d="M11 19l-7-7 7-7M19 19l-7-7 7-7" // Double arrow left when expanded
               />
             </svg>
           </button>
@@ -298,39 +317,6 @@ export function Sidebar() {
         </div>
       </div>
 
-      {/* Floating expand button when collapsed */}
-      {isCollapsed && !isMobile && (
-        <button
-          onClick={() => setSidebarCollapsed(false)}
-          className={cn(
-            "fixed left-[4.5rem] top-4 z-[60] transition-all duration-300 group",
-            "bg-[var(--color-surface-primary)] border border-[var(--color-border-primary)]",
-            "rounded-full p-2 shadow-lg hover:shadow-xl",
-            "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]",
-            "hover:bg-[var(--color-surface-secondary)] hover:scale-110",
-            // Play mode cosmic effects
-            isPlayMode && "shadow-[0_0_20px_var(--color-mood-glow)]/40 hover:shadow-[0_0_30px_var(--color-mood-glow)]/60",
-            // Accessibility
-            "focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-500)] focus:ring-offset-2",
-          )}
-          title="Expand sidebar"
-          aria-label="Expand sidebar"
-        >
-          <svg
-            className="h-5 w-5 transition-transform duration-200 group-hover:scale-110"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </button>
-      )}
     </div>
   );
 }

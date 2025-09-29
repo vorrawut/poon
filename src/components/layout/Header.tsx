@@ -26,7 +26,7 @@ const pageTitle: Record<string, string> = {
 
 export function Header() {
   const location = useLocation();
-  const { isMobile, toggleSidebar, openModal } = useUIStore();
+  const { isMobile, toggleSidebar, openModal, sidebarCollapsed, setSidebarCollapsed } = useUIStore();
   const { isPlayMode, themeMode } = useTheme();
 
   const title = pageTitle[location.pathname] || "Universe";
@@ -60,6 +60,36 @@ export function Header() {
               className="p-2"
             >
               <Bars3Icon className="h-5 w-5 sm:h-6 sm:w-6" />
+            </ThemeAwareButton>
+          )}
+
+          {/* Desktop expand sidebar button when collapsed */}
+          {!isMobile && sidebarCollapsed && (
+            <ThemeAwareButton
+              variant="ghost"
+              size="sm"
+              onClick={() => setSidebarCollapsed(false)}
+              className={cn(
+                "p-2 transition-all duration-200 group",
+                // Play mode cosmic effects
+                isPlayMode && "hover:shadow-[0_0_15px_var(--color-mood-glow)]/40",
+              )}
+              title="Expand sidebar"
+              aria-label="Expand sidebar"
+            >
+              <svg
+                className="h-6 w-6 transition-all duration-200 group-hover:scale-110 group-hover:translate-x-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13 5l7 7-7 7M5 5l7 7-7 7" // Double arrow right
+                />
+              </svg>
             </ThemeAwareButton>
           )}
 
