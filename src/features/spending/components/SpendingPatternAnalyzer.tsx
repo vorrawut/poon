@@ -116,198 +116,244 @@ export function SpendingPatternAnalyzer({
 }: SpendingPatternAnalyzerProps) {
   const { isPlayMode } = useTheme();
   const [filterType, setFilterType] = useState<string>("all");
-  const [sortBy, setSortBy] = useState<"impact" | "confidence" | "date">("impact");
+  const [sortBy, setSortBy] = useState<"impact" | "confidence" | "date">(
+    "impact",
+  );
 
   // Analyze spending patterns using AI-like algorithms
   const analyzedPatterns = useMemo(() => {
     const patterns: SpendingPattern[] = [];
 
     // Group transactions by category
-    const categoryGroups = transactions.reduce((groups, transaction) => {
-      const key = transaction.category;
-      if (!groups[key]) groups[key] = [];
-      groups[key].push(transaction);
-      return groups;
-    }, {} as Record<string, SpendingTransaction[]>);
+    const categoryGroups = transactions.reduce(
+      (groups, transaction) => {
+        const key = transaction.category;
+        if (!groups[key]) groups[key] = [];
+        groups[key].push(transaction);
+        return groups;
+      },
+      {} as Record<string, SpendingTransaction[]>,
+    );
 
     // Analyze each category
-    Object.entries(categoryGroups).forEach(([category, categoryTransactions]) => {
-      const totalAmount = categoryTransactions.reduce((sum, t) => sum + t.amount, 0);
-      const avgAmount = totalAmount / categoryTransactions.length;
+    Object.entries(categoryGroups).forEach(
+      ([category, categoryTransactions]) => {
+        const totalAmount = categoryTransactions.reduce(
+          (sum, t) => sum + t.amount,
+          0,
+        );
+        const avgAmount = totalAmount / categoryTransactions.length;
 
-      // Trend Analysis
-      const sortedTransactions = [...categoryTransactions].sort(
-        (a, b) => a.date.getTime() - b.date.getTime()
-      );
-      
-      if (sortedTransactions.length >= 3) {
-        const firstHalf = sortedTransactions.slice(0, Math.floor(sortedTransactions.length / 2));
-        const secondHalf = sortedTransactions.slice(Math.floor(sortedTransactions.length / 2));
-        
-        const firstHalfAvg = firstHalf.reduce((sum, t) => sum + t.amount, 0) / firstHalf.length;
-        const secondHalfAvg = secondHalf.reduce((sum, t) => sum + t.amount, 0) / secondHalf.length;
-        
-        const trendPercentage = ((secondHalfAvg - firstHalfAvg) / firstHalfAvg) * 100;
-        
-        if (Math.abs(trendPercentage) > 15) {
+        // Trend Analysis
+        const sortedTransactions = [...categoryTransactions].sort(
+          (a, b) => a.date.getTime() - b.date.getTime(),
+        );
+
+        if (sortedTransactions.length >= 3) {
+          const firstHalf = sortedTransactions.slice(
+            0,
+            Math.floor(sortedTransactions.length / 2),
+          );
+          const secondHalf = sortedTransactions.slice(
+            Math.floor(sortedTransactions.length / 2),
+          );
+
+          const firstHalfAvg =
+            firstHalf.reduce((sum, t) => sum + t.amount, 0) / firstHalf.length;
+          const secondHalfAvg =
+            secondHalf.reduce((sum, t) => sum + t.amount, 0) /
+            secondHalf.length;
+
+          const trendPercentage =
+            ((secondHalfAvg - firstHalfAvg) / firstHalfAvg) * 100;
+
+          if (Math.abs(trendPercentage) > 15) {
+            patterns.push({
+              id: `trend-${category}`,
+              type: "trend",
+              category,
+              title: `${category} Spending ${trendPercentage > 0 ? "Increasing" : "Decreasing"}`,
+              description: `Your ${category.toLowerCase()} expenses have ${trendPercentage > 0 ? "increased" : "decreased"} by ${Math.abs(trendPercentage).toFixed(1)}% over the selected period.`,
+              confidence: 0.85,
+              impact: Math.abs(trendPercentage) > 30 ? "high" : "medium",
+              timeframe: timeRange,
+              data: {
+                amount: totalAmount,
+                percentage: trendPercentage,
+                trend: trendPercentage > 0 ? "increasing" : "decreasing",
+                prediction: secondHalfAvg * 1.1, // Simple prediction
+              },
+              insights: [
+                `Average ${category.toLowerCase()} spending: ฿${avgAmount.toLocaleString()}`,
+                `Total transactions: ${categoryTransactions.length}`,
+                `Trend direction: ${trendPercentage > 0 ? "Upward" : "Downward"}`,
+              ],
+              recommendations:
+                trendPercentage > 0
+                  ? [
+                      `Consider setting a monthly budget for ${category.toLowerCase()}`,
+                      "Review recent purchases to identify unnecessary expenses",
+                      "Look for alternative options or discounts",
+                    ]
+                  : [
+                      "Great job reducing expenses in this category!",
+                      "Consider reallocating saved money to savings or investments",
+                      "Maintain this positive trend",
+                    ],
+              visualizationType: "line",
+            });
+          }
+        }
+
+        // Recurring Pattern Detection
+        const recurringTransactions = categoryTransactions.filter(
+          (t) => t.isRecurring,
+        );
+        if (recurringTransactions.length > 0) {
+          const recurringAmount = recurringTransactions.reduce(
+            (sum, t) => sum + t.amount,
+            0,
+          );
           patterns.push({
-            id: `trend-${category}`,
-            type: "trend",
+            id: `recurring-${category}`,
+            type: "recurring",
             category,
-            title: `${category} Spending ${trendPercentage > 0 ? "Increasing" : "Decreasing"}`,
-            description: `Your ${category.toLowerCase()} expenses have ${trendPercentage > 0 ? "increased" : "decreased"} by ${Math.abs(trendPercentage).toFixed(1)}% over the selected period.`,
-            confidence: 0.85,
-            impact: Math.abs(trendPercentage) > 30 ? "high" : "medium",
+            title: `Regular ${category} Expenses`,
+            description: `You have ${recurringTransactions.length} recurring ${category.toLowerCase()} expenses totaling ฿${recurringAmount.toLocaleString()} per ${timeRange}.`,
+            confidence: 0.95,
+            impact: recurringAmount > avgAmount * 2 ? "high" : "medium",
             timeframe: timeRange,
             data: {
-              amount: totalAmount,
-              percentage: trendPercentage,
-              trend: trendPercentage > 0 ? "increasing" : "decreasing",
-              prediction: secondHalfAvg * 1.1, // Simple prediction
+              amount: recurringAmount,
+              frequency: "monthly",
+              percentage: (recurringAmount / totalAmount) * 100,
             },
             insights: [
-              `Average ${category.toLowerCase()} spending: ฿${avgAmount.toLocaleString()}`,
-              `Total transactions: ${categoryTransactions.length}`,
-              `Trend direction: ${trendPercentage > 0 ? "Upward" : "Downward"}`,
+              `Recurring expenses: ${recurringTransactions.length} transactions`,
+              `Average recurring amount: ฿${(recurringAmount / recurringTransactions.length).toLocaleString()}`,
+              `Percentage of total ${category.toLowerCase()} spending: ${((recurringAmount / totalAmount) * 100).toFixed(1)}%`,
             ],
-            recommendations: trendPercentage > 0 ? [
-              `Consider setting a monthly budget for ${category.toLowerCase()}`,
-              "Review recent purchases to identify unnecessary expenses",
-              "Look for alternative options or discounts",
-            ] : [
-              "Great job reducing expenses in this category!",
-              "Consider reallocating saved money to savings or investments",
-              "Maintain this positive trend",
+            recommendations: [
+              "Review all recurring subscriptions and memberships",
+              "Cancel unused or underutilized services",
+              "Negotiate better rates for essential services",
+              "Consider annual payments for discounts",
             ],
-            visualizationType: "line",
+            visualizationType: "bar",
           });
         }
-      }
 
-      // Recurring Pattern Detection
-      const recurringTransactions = categoryTransactions.filter(t => t.isRecurring);
-      if (recurringTransactions.length > 0) {
-        const recurringAmount = recurringTransactions.reduce((sum, t) => sum + t.amount, 0);
-        patterns.push({
-          id: `recurring-${category}`,
-          type: "recurring",
-          category,
-          title: `Regular ${category} Expenses`,
-          description: `You have ${recurringTransactions.length} recurring ${category.toLowerCase()} expenses totaling ฿${recurringAmount.toLocaleString()} per ${timeRange}.`,
-          confidence: 0.95,
-          impact: recurringAmount > avgAmount * 2 ? "high" : "medium",
-          timeframe: timeRange,
-          data: {
-            amount: recurringAmount,
-            frequency: "monthly",
-            percentage: (recurringAmount / totalAmount) * 100,
+        // Anomaly Detection
+        const amounts = categoryTransactions.map((t) => t.amount);
+        const mean =
+          amounts.reduce((sum, amount) => sum + amount, 0) / amounts.length;
+        const variance =
+          amounts.reduce((sum, amount) => sum + Math.pow(amount - mean, 2), 0) /
+          amounts.length;
+        const stdDev = Math.sqrt(variance);
+
+        const anomalies = categoryTransactions.filter(
+          (t) => Math.abs(t.amount - mean) > stdDev * 2,
+        );
+
+        if (anomalies.length > 0) {
+          const largestAnomaly = anomalies.reduce((max, t) =>
+            t.amount > max.amount ? t : max,
+          );
+          patterns.push({
+            id: `anomaly-${category}`,
+            type: "anomaly",
+            category,
+            title: `Unusual ${category} Expense Detected`,
+            description: `Found ${anomalies.length} unusual ${category.toLowerCase()} transaction(s). The largest was ฿${largestAnomaly.amount.toLocaleString()} on ${largestAnomaly.date.toLocaleDateString()}.`,
+            confidence: 0.75,
+            impact: largestAnomaly.amount > mean * 3 ? "critical" : "high",
+            timeframe: timeRange,
+            data: {
+              amount: largestAnomaly.amount,
+              percentage: ((largestAnomaly.amount - mean) / mean) * 100,
+              comparison: `${(largestAnomaly.amount / mean - 1) * 100}% above average`,
+            },
+            insights: [
+              `Average ${category.toLowerCase()} expense: ฿${mean.toLocaleString()}`,
+              `Unusual transaction: ฿${largestAnomaly.amount.toLocaleString()}`,
+              `Merchant: ${largestAnomaly.merchant || "Unknown"}`,
+              `Description: ${largestAnomaly.description}`,
+            ],
+            recommendations: [
+              "Verify this transaction is legitimate",
+              "Check if this was a one-time purchase or error",
+              "Consider if this expense was necessary",
+              "Set up alerts for large transactions",
+            ],
+            visualizationType: "scatter",
+          });
+        }
+
+        // Behavioral Pattern (Day of week, time patterns)
+        const dayOfWeekSpending = categoryTransactions.reduce(
+          (days, t) => {
+            const day = t.date.getDay();
+            days[day] = (days[day] || 0) + t.amount;
+            return days;
           },
-          insights: [
-            `Recurring expenses: ${recurringTransactions.length} transactions`,
-            `Average recurring amount: ฿${(recurringAmount / recurringTransactions.length).toLocaleString()}`,
-            `Percentage of total ${category.toLowerCase()} spending: ${((recurringAmount / totalAmount) * 100).toFixed(1)}%`,
-          ],
-          recommendations: [
-            "Review all recurring subscriptions and memberships",
-            "Cancel unused or underutilized services",
-            "Negotiate better rates for essential services",
-            "Consider annual payments for discounts",
-          ],
-          visualizationType: "bar",
-        });
-      }
+          {} as Record<number, number>,
+        );
 
-      // Anomaly Detection
-      const amounts = categoryTransactions.map(t => t.amount);
-      const mean = amounts.reduce((sum, amount) => sum + amount, 0) / amounts.length;
-      const variance = amounts.reduce((sum, amount) => sum + Math.pow(amount - mean, 2), 0) / amounts.length;
-      const stdDev = Math.sqrt(variance);
-      
-      const anomalies = categoryTransactions.filter(t => Math.abs(t.amount - mean) > stdDev * 2);
-      
-      if (anomalies.length > 0) {
-        const largestAnomaly = anomalies.reduce((max, t) => t.amount > max.amount ? t : max);
-        patterns.push({
-          id: `anomaly-${category}`,
-          type: "anomaly",
-          category,
-          title: `Unusual ${category} Expense Detected`,
-          description: `Found ${anomalies.length} unusual ${category.toLowerCase()} transaction(s). The largest was ฿${largestAnomaly.amount.toLocaleString()} on ${largestAnomaly.date.toLocaleDateString()}.`,
-          confidence: 0.75,
-          impact: largestAnomaly.amount > mean * 3 ? "critical" : "high",
-          timeframe: timeRange,
-          data: {
-            amount: largestAnomaly.amount,
-            percentage: ((largestAnomaly.amount - mean) / mean) * 100,
-            comparison: `${((largestAnomaly.amount / mean) - 1) * 100}% above average`,
-          },
-          insights: [
-            `Average ${category.toLowerCase()} expense: ฿${mean.toLocaleString()}`,
-            `Unusual transaction: ฿${largestAnomaly.amount.toLocaleString()}`,
-            `Merchant: ${largestAnomaly.merchant || "Unknown"}`,
-            `Description: ${largestAnomaly.description}`,
-          ],
-          recommendations: [
-            "Verify this transaction is legitimate",
-            "Check if this was a one-time purchase or error",
-            "Consider if this expense was necessary",
-            "Set up alerts for large transactions",
-          ],
-          visualizationType: "scatter",
-        });
-      }
+        const maxDay = Object.entries(dayOfWeekSpending).reduce(
+          (max, [day, amount]) =>
+            amount > max.amount ? { day: parseInt(day), amount } : max,
+          { day: 0, amount: 0 },
+        );
 
-      // Behavioral Pattern (Day of week, time patterns)
-      const dayOfWeekSpending = categoryTransactions.reduce((days, t) => {
-        const day = t.date.getDay();
-        days[day] = (days[day] || 0) + t.amount;
-        return days;
-      }, {} as Record<number, number>);
+        const dayNames = [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ];
 
-      const maxDay = Object.entries(dayOfWeekSpending).reduce((max, [day, amount]) => 
-        amount > max.amount ? { day: parseInt(day), amount } : max, 
-        { day: 0, amount: 0 }
-      );
-
-      const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-      
-      if (maxDay.amount > totalAmount * 0.3) {
-        patterns.push({
-          id: `behavioral-${category}`,
-          type: "behavioral",
-          category,
-          title: `${category} Spending Peak on ${dayNames[maxDay.day]}`,
-          description: `You tend to spend most on ${category.toLowerCase()} on ${dayNames[maxDay.day]}s, accounting for ${((maxDay.amount / totalAmount) * 100).toFixed(1)}% of your total ${category.toLowerCase()} expenses.`,
-          confidence: 0.70,
-          impact: "medium",
-          timeframe: timeRange,
-          data: {
-            amount: maxDay.amount,
-            percentage: (maxDay.amount / totalAmount) * 100,
-            frequency: "weekly",
-          },
-          insights: [
-            `Peak spending day: ${dayNames[maxDay.day]}`,
-            `Amount on peak day: ฿${maxDay.amount.toLocaleString()}`,
-            `Percentage of total: ${((maxDay.amount / totalAmount) * 100).toFixed(1)}%`,
-          ],
-          recommendations: [
-            `Be mindful of ${category.toLowerCase()} spending on ${dayNames[maxDay.day]}s`,
-            "Set a daily spending limit for this category",
-            "Plan purchases in advance to avoid impulse buying",
-            "Consider shopping on different days for better deals",
-          ],
-          visualizationType: "heatmap",
-        });
-      }
-    });
+        if (maxDay.amount > totalAmount * 0.3) {
+          patterns.push({
+            id: `behavioral-${category}`,
+            type: "behavioral",
+            category,
+            title: `${category} Spending Peak on ${dayNames[maxDay.day]}`,
+            description: `You tend to spend most on ${category.toLowerCase()} on ${dayNames[maxDay.day]}s, accounting for ${((maxDay.amount / totalAmount) * 100).toFixed(1)}% of your total ${category.toLowerCase()} expenses.`,
+            confidence: 0.7,
+            impact: "medium",
+            timeframe: timeRange,
+            data: {
+              amount: maxDay.amount,
+              percentage: (maxDay.amount / totalAmount) * 100,
+              frequency: "weekly",
+            },
+            insights: [
+              `Peak spending day: ${dayNames[maxDay.day]}`,
+              `Amount on peak day: ฿${maxDay.amount.toLocaleString()}`,
+              `Percentage of total: ${((maxDay.amount / totalAmount) * 100).toFixed(1)}%`,
+            ],
+            recommendations: [
+              `Be mindful of ${category.toLowerCase()} spending on ${dayNames[maxDay.day]}s`,
+              "Set a daily spending limit for this category",
+              "Plan purchases in advance to avoid impulse buying",
+              "Consider shopping on different days for better deals",
+            ],
+            visualizationType: "heatmap",
+          });
+        }
+      },
+    );
 
     return patterns;
   }, [transactions, timeRange]);
 
   // Filter and sort patterns
   const filteredPatterns = analyzedPatterns
-    .filter(pattern => filterType === "all" || pattern.type === filterType)
+    .filter((pattern) => filterType === "all" || pattern.type === filterType)
     .sort((a, b) => {
       switch (sortBy) {
         case "impact":
@@ -325,10 +371,14 @@ export function SpendingPatternAnalyzer({
   // Calculate summary statistics
   const summaryStats = {
     totalPatterns: analyzedPatterns.length,
-    criticalPatterns: analyzedPatterns.filter(p => p.impact === "critical").length,
-    highConfidencePatterns: analyzedPatterns.filter(p => p.confidence > 0.8).length,
-    trendingUp: analyzedPatterns.filter(p => p.data.trend === "increasing").length,
-    trendingDown: analyzedPatterns.filter(p => p.data.trend === "decreasing").length,
+    criticalPatterns: analyzedPatterns.filter((p) => p.impact === "critical")
+      .length,
+    highConfidencePatterns: analyzedPatterns.filter((p) => p.confidence > 0.8)
+      .length,
+    trendingUp: analyzedPatterns.filter((p) => p.data.trend === "increasing")
+      .length,
+    trendingDown: analyzedPatterns.filter((p) => p.data.trend === "decreasing")
+      .length,
   };
 
   if (analyzedPatterns.length === 0) {
@@ -344,7 +394,8 @@ export function SpendingPatternAnalyzer({
             Analyzing Your Spending Patterns
           </ThemeAwareHeading>
           <ThemeAwareText color="secondary">
-            We need more transaction data to identify meaningful patterns. Keep using the app to unlock powerful insights!
+            We need more transaction data to identify meaningful patterns. Keep
+            using the app to unlock powerful insights!
           </ThemeAwareText>
         </motion.div>
       </ThemeAwareCard>
@@ -356,8 +407,8 @@ export function SpendingPatternAnalyzer({
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
-          <ThemeAwareHeading 
-            level="h2" 
+          <ThemeAwareHeading
+            level="h2"
             className="text-2xl sm:text-3xl font-bold mb-2"
             gradient={isPlayMode}
           >
@@ -390,23 +441,33 @@ export function SpendingPatternAnalyzer({
       {/* Summary Statistics */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
         <div className="text-center p-4 rounded-lg bg-[var(--color-surface-secondary)]">
-          <div className="text-2xl font-bold text-blue-500">{summaryStats.totalPatterns}</div>
+          <div className="text-2xl font-bold text-blue-500">
+            {summaryStats.totalPatterns}
+          </div>
           <div className="text-xs text-gray-500">Total Patterns</div>
         </div>
         <div className="text-center p-4 rounded-lg bg-[var(--color-surface-secondary)]">
-          <div className="text-2xl font-bold text-red-500">{summaryStats.criticalPatterns}</div>
+          <div className="text-2xl font-bold text-red-500">
+            {summaryStats.criticalPatterns}
+          </div>
           <div className="text-xs text-gray-500">Critical Issues</div>
         </div>
         <div className="text-center p-4 rounded-lg bg-[var(--color-surface-secondary)]">
-          <div className="text-2xl font-bold text-green-500">{summaryStats.highConfidencePatterns}</div>
+          <div className="text-2xl font-bold text-green-500">
+            {summaryStats.highConfidencePatterns}
+          </div>
           <div className="text-xs text-gray-500">High Confidence</div>
         </div>
         <div className="text-center p-4 rounded-lg bg-[var(--color-surface-secondary)]">
-          <div className="text-2xl font-bold text-orange-500">{summaryStats.trendingUp}</div>
+          <div className="text-2xl font-bold text-orange-500">
+            {summaryStats.trendingUp}
+          </div>
           <div className="text-xs text-gray-500">Trending Up</div>
         </div>
         <div className="text-center p-4 rounded-lg bg-[var(--color-surface-secondary)]">
-          <div className="text-2xl font-bold text-purple-500">{summaryStats.trendingDown}</div>
+          <div className="text-2xl font-bold text-purple-500">
+            {summaryStats.trendingDown}
+          </div>
           <div className="text-xs text-gray-500">Trending Down</div>
         </div>
       </div>
@@ -420,12 +481,29 @@ export function SpendingPatternAnalyzer({
             onChange={(e) => setFilterType(e.target.value)}
             className="px-3 py-2 rounded-lg border border-[var(--color-border-primary)] bg-[var(--color-surface-primary)] text-[var(--color-text-primary)] text-sm"
           >
-            <option value="all">All Patterns ({analyzedPatterns.length})</option>
-            <option value="trend">Trends ({analyzedPatterns.filter(p => p.type === "trend").length})</option>
-            <option value="anomaly">Anomalies ({analyzedPatterns.filter(p => p.type === "anomaly").length})</option>
-            <option value="recurring">Recurring ({analyzedPatterns.filter(p => p.type === "recurring").length})</option>
-            <option value="behavioral">Behavioral ({analyzedPatterns.filter(p => p.type === "behavioral").length})</option>
-            <option value="seasonal">Seasonal ({analyzedPatterns.filter(p => p.type === "seasonal").length})</option>
+            <option value="all">
+              All Patterns ({analyzedPatterns.length})
+            </option>
+            <option value="trend">
+              Trends (
+              {analyzedPatterns.filter((p) => p.type === "trend").length})
+            </option>
+            <option value="anomaly">
+              Anomalies (
+              {analyzedPatterns.filter((p) => p.type === "anomaly").length})
+            </option>
+            <option value="recurring">
+              Recurring (
+              {analyzedPatterns.filter((p) => p.type === "recurring").length})
+            </option>
+            <option value="behavioral">
+              Behavioral (
+              {analyzedPatterns.filter((p) => p.type === "behavioral").length})
+            </option>
+            <option value="seasonal">
+              Seasonal (
+              {analyzedPatterns.filter((p) => p.type === "seasonal").length})
+            </option>
           </select>
 
           {/* Sort Options */}
@@ -472,13 +550,13 @@ export function SpendingPatternAnalyzer({
                     config.borderColor,
                     "border-2",
                     isPlayMode && "shadow-lg backdrop-blur-sm",
-                    pattern.impact === "critical" && "ring-2 ring-red-500/50"
+                    pattern.impact === "critical" && "ring-2 ring-red-500/50",
                   )}
                   animated={isPlayMode}
                 >
                   {/* Cosmic Background Effect */}
                   {isPlayMode && (
-                    <div 
+                    <div
                       className="absolute inset-0 opacity-5"
                       style={{
                         background: `radial-gradient(circle at 80% 20%, ${config.color}40 0%, transparent 50%)`,
@@ -495,19 +573,27 @@ export function SpendingPatternAnalyzer({
                           style={{ backgroundColor: `${config.color}20` }}
                           whileHover={{ scale: 1.1 }}
                         >
-                          <Icon className="w-6 h-6" style={{ color: config.color }} />
+                          <Icon
+                            className="w-6 h-6"
+                            style={{ color: config.color }}
+                          />
                         </motion.div>
                         <div>
-                          <ThemeAwareHeading level="h3" className="text-lg font-bold">
+                          <ThemeAwareHeading
+                            level="h3"
+                            className="text-lg font-bold"
+                          >
                             {pattern.title}
                           </ThemeAwareHeading>
                           <div className="flex items-center gap-2 mt-1">
-                            <span className="text-sm text-gray-500">{config.name}</span>
-                            <span 
+                            <span className="text-sm text-gray-500">
+                              {config.name}
+                            </span>
+                            <span
                               className="px-2 py-1 text-xs font-medium rounded-full"
-                              style={{ 
+                              style={{
                                 backgroundColor: `${impactInfo.color}20`,
-                                color: impactInfo.color 
+                                color: impactInfo.color,
                               }}
                             >
                               {impactInfo.name}
@@ -518,8 +604,13 @@ export function SpendingPatternAnalyzer({
 
                       {/* Confidence Score */}
                       <div className="text-right">
-                        <div className="text-sm font-medium text-gray-500">Confidence</div>
-                        <div className="text-xl font-bold" style={{ color: config.color }}>
+                        <div className="text-sm font-medium text-gray-500">
+                          Confidence
+                        </div>
+                        <div
+                          className="text-xl font-bold"
+                          style={{ color: config.color }}
+                        >
                           {(pattern.confidence * 100).toFixed(0)}%
                         </div>
                       </div>
@@ -554,11 +645,19 @@ export function SpendingPatternAnalyzer({
                               )}
                               Change
                             </div>
-                            <div                             className={cn(
-                              "font-medium",
-                              pattern.data.trend === "increasing" ? "text-red-500" : "text-green-500"
-                            )}>
-                              {pattern.data.percentage && pattern.data.percentage > 0 ? "+" : ""}{pattern.data.percentage?.toFixed(1)}%
+                            <div
+                              className={cn(
+                                "font-medium",
+                                pattern.data.trend === "increasing"
+                                  ? "text-red-500"
+                                  : "text-green-500",
+                              )}
+                            >
+                              {pattern.data.percentage &&
+                              pattern.data.percentage > 0
+                                ? "+"
+                                : ""}
+                              {pattern.data.percentage?.toFixed(1)}%
                             </div>
                           </div>
                         )}
@@ -574,7 +673,9 @@ export function SpendingPatternAnalyzer({
                         {pattern.insights.slice(0, 2).map((insight, i) => (
                           <li key={i} className="flex items-start gap-2">
                             <span className="text-gray-400 mt-1">•</span>
-                            <span className="text-gray-600 dark:text-gray-300">{insight}</span>
+                            <span className="text-gray-600 dark:text-gray-300">
+                              {insight}
+                            </span>
                           </li>
                         ))}
                       </ul>
@@ -585,7 +686,9 @@ export function SpendingPatternAnalyzer({
                       <ThemeAwareButton
                         variant="outline"
                         size="sm"
-                        onClick={() => console.log("View pattern details:", pattern.id)}
+                        onClick={() =>
+                          console.log("View pattern details:", pattern.id)
+                        }
                         className="flex-1"
                       >
                         <EyeIcon className="w-4 h-4 mr-1" />
@@ -594,7 +697,9 @@ export function SpendingPatternAnalyzer({
                       <ThemeAwareButton
                         variant="ghost"
                         size="sm"
-                        onClick={() => console.log("Export pattern:", pattern.id)}
+                        onClick={() =>
+                          console.log("Export pattern:", pattern.id)
+                        }
                       >
                         📊
                       </ThemeAwareButton>

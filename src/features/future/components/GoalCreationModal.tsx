@@ -20,24 +20,83 @@ import { cn } from "../../../libs/utils";
 interface GoalCreationModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onCreateGoal: (goal: Omit<EnhancedGoal, "id" | "createdAt" | "isCompleted">) => void;
+  onCreateGoal: (
+    goal: Omit<EnhancedGoal, "id" | "createdAt" | "isCompleted">,
+  ) => void;
 }
 
 const categoryOptions = [
-  { id: "emergency", name: "Emergency Fund", icon: "🛡️", color: "#EF4444", description: "Build your financial safety net" },
-  { id: "travel", name: "Travel", icon: "✈️", color: "#3B82F6", description: "Explore the world" },
-  { id: "house", name: "House", icon: "🏠", color: "#10B981", description: "Your dream home" },
-  { id: "car", name: "Car", icon: "🚗", color: "#F59E0B", description: "Transportation goals" },
-  { id: "investment", name: "Investment", icon: "📈", color: "#8B5CF6", description: "Build your wealth" },
-  { id: "education", name: "Education", icon: "🎓", color: "#EC4899", description: "Invest in knowledge" },
-  { id: "other", name: "Other", icon: "🎯", color: "#6B7280", description: "Custom goals" },
+  {
+    id: "emergency",
+    name: "Emergency Fund",
+    icon: "🛡️",
+    color: "#EF4444",
+    description: "Build your financial safety net",
+  },
+  {
+    id: "travel",
+    name: "Travel",
+    icon: "✈️",
+    color: "#3B82F6",
+    description: "Explore the world",
+  },
+  {
+    id: "house",
+    name: "House",
+    icon: "🏠",
+    color: "#10B981",
+    description: "Your dream home",
+  },
+  {
+    id: "car",
+    name: "Car",
+    icon: "🚗",
+    color: "#F59E0B",
+    description: "Transportation goals",
+  },
+  {
+    id: "investment",
+    name: "Investment",
+    icon: "📈",
+    color: "#8B5CF6",
+    description: "Build your wealth",
+  },
+  {
+    id: "education",
+    name: "Education",
+    icon: "🎓",
+    color: "#EC4899",
+    description: "Invest in knowledge",
+  },
+  {
+    id: "other",
+    name: "Other",
+    icon: "🎯",
+    color: "#6B7280",
+    description: "Custom goals",
+  },
 ] as const;
 
 const priorityOptions = [
   { id: "low", name: "Low", color: "#6B7280", description: "Nice to have" },
-  { id: "medium", name: "Medium", color: "#F59E0B", description: "Important goal" },
-  { id: "high", name: "High", color: "#EF4444", description: "Critical priority" },
-  { id: "critical", name: "Critical", color: "#DC2626", description: "Urgent need" },
+  {
+    id: "medium",
+    name: "Medium",
+    color: "#F59E0B",
+    description: "Important goal",
+  },
+  {
+    id: "high",
+    name: "High",
+    color: "#EF4444",
+    description: "Critical priority",
+  },
+  {
+    id: "critical",
+    name: "Critical",
+    color: "#DC2626",
+    description: "Urgent need",
+  },
 ] as const;
 
 const goalTemplates = [
@@ -75,15 +134,26 @@ const goalTemplates = [
   },
 ];
 
-export function GoalCreationModal({ isOpen, onClose, onCreateGoal }: GoalCreationModalProps) {
+export function GoalCreationModal({
+  isOpen,
+  onClose,
+  onCreateGoal,
+}: GoalCreationModalProps) {
   const { isPlayMode } = useTheme();
   const [step, setStep] = useState(1);
-  
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     targetAmount: 0,
-    category: "other" as "emergency" | "travel" | "house" | "car" | "investment" | "education" | "other",
+    category: "other" as
+      | "emergency"
+      | "travel"
+      | "house"
+      | "car"
+      | "investment"
+      | "education"
+      | "other",
     priority: "medium" as "low" | "medium" | "high" | "critical",
     deadline: "",
     tags: [] as string[],
@@ -117,7 +187,7 @@ export function GoalCreationModal({ isOpen, onClose, onCreateGoal }: GoalCreatio
     onClose();
   };
 
-  const handleTemplateSelect = (template: typeof goalTemplates[0]) => {
+  const handleTemplateSelect = (template: (typeof goalTemplates)[0]) => {
     setFormData({
       ...formData,
       name: template.name,
@@ -136,18 +206,18 @@ export function GoalCreationModal({ isOpen, onClose, onCreateGoal }: GoalCreatio
 
   const addTag = () => {
     if (newTag.trim() && !formData.tags.includes(newTag.trim())) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        tags: [...prev.tags, newTag.trim()]
+        tags: [...prev.tags, newTag.trim()],
       }));
       setNewTag("");
     }
   };
 
   const removeTag = (tagToRemove: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      tags: prev.tags.filter(tag => tag !== tagToRemove)
+      tags: prev.tags.filter((tag) => tag !== tagToRemove),
     }));
   };
 
@@ -169,8 +239,8 @@ export function GoalCreationModal({ isOpen, onClose, onCreateGoal }: GoalCreatio
       milestones: formData.milestones,
       lastContribution: undefined,
       monthlyTarget: undefined,
-      icon: categoryOptions.find(cat => cat.id === formData.category)?.icon,
-      color: categoryOptions.find(cat => cat.id === formData.category)?.color,
+      icon: categoryOptions.find((cat) => cat.id === formData.category)?.icon,
+      color: categoryOptions.find((cat) => cat.id === formData.category)?.color,
     };
 
     onCreateGoal(newGoal);
@@ -185,7 +255,7 @@ export function GoalCreationModal({ isOpen, onClose, onCreateGoal }: GoalCreatio
         className={cn(
           "fixed inset-0 z-50 flex items-center justify-center p-4",
           isPlayMode ? "bg-black/70" : "bg-black/50",
-          "backdrop-blur-sm"
+          "backdrop-blur-sm",
         )}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -196,7 +266,7 @@ export function GoalCreationModal({ isOpen, onClose, onCreateGoal }: GoalCreatio
           className={cn(
             "relative w-full max-w-4xl max-h-[90vh] overflow-hidden rounded-2xl",
             "bg-[var(--color-surface-primary)] border border-[var(--color-border-primary)]",
-            "shadow-2xl"
+            "shadow-2xl",
           )}
           initial={{ opacity: 0, scale: 0.8, y: 50 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -219,11 +289,16 @@ export function GoalCreationModal({ isOpen, onClose, onCreateGoal }: GoalCreatio
                   Create New Mission
                 </ThemeAwareHeading>
                 <ThemeAwareText color="secondary">
-                  Step {step} of 3 - {step === 1 ? "Choose Template" : step === 2 ? "Goal Details" : "Review & Launch"}
+                  Step {step} of 3 -{" "}
+                  {step === 1
+                    ? "Choose Template"
+                    : step === 2
+                      ? "Goal Details"
+                      : "Review & Launch"}
                 </ThemeAwareText>
               </div>
             </div>
-            
+
             <ThemeAwareButton
               variant="ghost"
               size="sm"
@@ -239,19 +314,25 @@ export function GoalCreationModal({ isOpen, onClose, onCreateGoal }: GoalCreatio
             <div className="flex items-center gap-2">
               {[1, 2, 3].map((stepNum) => (
                 <div key={stepNum} className="flex items-center flex-1">
-                  <div className={cn(
-                    "w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold",
-                    step >= stepNum 
-                      ? "bg-blue-500 text-white" 
-                      : "bg-gray-200 dark:bg-gray-700 text-gray-500"
-                  )}>
+                  <div
+                    className={cn(
+                      "w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold",
+                      step >= stepNum
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200 dark:bg-gray-700 text-gray-500",
+                    )}
+                  >
                     {stepNum}
                   </div>
                   {stepNum < 3 && (
-                    <div className={cn(
-                      "flex-1 h-1 mx-2 rounded",
-                      step > stepNum ? "bg-blue-500" : "bg-gray-200 dark:bg-gray-700"
-                    )} />
+                    <div
+                      className={cn(
+                        "flex-1 h-1 mx-2 rounded",
+                        step > stepNum
+                          ? "bg-blue-500"
+                          : "bg-gray-200 dark:bg-gray-700",
+                      )}
+                    />
                   )}
                 </div>
               ))}
@@ -270,7 +351,10 @@ export function GoalCreationModal({ isOpen, onClose, onCreateGoal }: GoalCreatio
                   className="space-y-6"
                 >
                   <div className="text-center mb-8">
-                    <ThemeAwareHeading level="h3" className="text-xl font-bold mb-2">
+                    <ThemeAwareHeading
+                      level="h3"
+                      className="text-xl font-bold mb-2"
+                    >
                       Choose Your Mission Type
                     </ThemeAwareHeading>
                     <ThemeAwareText color="secondary">
@@ -281,37 +365,50 @@ export function GoalCreationModal({ isOpen, onClose, onCreateGoal }: GoalCreatio
                   {/* Templates */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                     {goalTemplates.map((template) => {
-                      const categoryConfig = categoryOptions.find(cat => cat.id === template.category);
+                      const categoryConfig = categoryOptions.find(
+                        (cat) => cat.id === template.category,
+                      );
                       return (
                         <motion.div
                           key={template.name}
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
                         >
-                          <ThemeAwareCard 
+                          <ThemeAwareCard
                             className="p-4 cursor-pointer hover:shadow-lg transition-all border-2 border-transparent hover:border-blue-500/50"
                             onClick={() => handleTemplateSelect(template)}
                           >
                             <div className="flex items-center gap-3 mb-3">
-                              <div className="text-2xl">{categoryConfig?.icon}</div>
+                              <div className="text-2xl">
+                                {categoryConfig?.icon}
+                              </div>
                               <div>
                                 <div className="font-bold">{template.name}</div>
-                                <div className="text-sm text-gray-500">{categoryConfig?.name}</div>
+                                <div className="text-sm text-gray-500">
+                                  {categoryConfig?.name}
+                                </div>
                               </div>
                             </div>
-                            <ThemeAwareText color="secondary" className="text-sm mb-3">
+                            <ThemeAwareText
+                              color="secondary"
+                              className="text-sm mb-3"
+                            >
                               {template.description}
                             </ThemeAwareText>
                             <div className="flex items-center justify-between">
                               <span className="font-bold text-green-500">
                                 ฿{template.targetAmount.toLocaleString()}
                               </span>
-                              <span className={cn(
-                                "px-2 py-1 text-xs rounded-full",
-                                template.priority === "high" ? "bg-orange-500/20 text-orange-500" :
-                                template.priority === "medium" ? "bg-yellow-500/20 text-yellow-500" :
-                                "bg-gray-500/20 text-gray-500"
-                              )}>
+                              <span
+                                className={cn(
+                                  "px-2 py-1 text-xs rounded-full",
+                                  template.priority === "high"
+                                    ? "bg-orange-500/20 text-orange-500"
+                                    : template.priority === "medium"
+                                      ? "bg-yellow-500/20 text-yellow-500"
+                                      : "bg-gray-500/20 text-gray-500",
+                                )}
+                              >
                                 {template.priority}
                               </span>
                             </div>
@@ -356,7 +453,12 @@ export function GoalCreationModal({ isOpen, onClose, onCreateGoal }: GoalCreatio
                       <input
                         type="text"
                         value={formData.name}
-                        onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            name: e.target.value,
+                          }))
+                        }
                         className="w-full px-4 py-2 rounded-lg border border-[var(--color-border-primary)] bg-[var(--color-surface-secondary)] text-[var(--color-text-primary)]"
                         placeholder="What's your goal?"
                       />
@@ -372,7 +474,12 @@ export function GoalCreationModal({ isOpen, onClose, onCreateGoal }: GoalCreatio
                         <input
                           type="number"
                           value={formData.targetAmount || ""}
-                          onChange={(e) => setFormData(prev => ({ ...prev, targetAmount: parseFloat(e.target.value) || 0 }))}
+                          onChange={(e) =>
+                            setFormData((prev) => ({
+                              ...prev,
+                              targetAmount: parseFloat(e.target.value) || 0,
+                            }))
+                          }
                           className="w-full pl-10 pr-4 py-2 rounded-lg border border-[var(--color-border-primary)] bg-[var(--color-surface-secondary)] text-[var(--color-text-primary)]"
                           placeholder="0"
                         />
@@ -389,7 +496,12 @@ export function GoalCreationModal({ isOpen, onClose, onCreateGoal }: GoalCreatio
                         <input
                           type="date"
                           value={formData.deadline}
-                          onChange={(e) => setFormData(prev => ({ ...prev, deadline: e.target.value }))}
+                          onChange={(e) =>
+                            setFormData((prev) => ({
+                              ...prev,
+                              deadline: e.target.value,
+                            }))
+                          }
                           className="w-full pl-10 pr-4 py-2 rounded-lg border border-[var(--color-border-primary)] bg-[var(--color-surface-secondary)] text-[var(--color-text-primary)]"
                         />
                       </div>
@@ -402,7 +514,12 @@ export function GoalCreationModal({ isOpen, onClose, onCreateGoal }: GoalCreatio
                       </label>
                       <select
                         value={formData.category}
-                        onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value as any }))}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            category: e.target.value as any,
+                          }))
+                        }
                         className="w-full px-4 py-2 rounded-lg border border-[var(--color-border-primary)] bg-[var(--color-surface-secondary)] text-[var(--color-text-primary)]"
                       >
                         {categoryOptions.map((category) => (
@@ -420,7 +537,12 @@ export function GoalCreationModal({ isOpen, onClose, onCreateGoal }: GoalCreatio
                       </label>
                       <select
                         value={formData.priority}
-                        onChange={(e) => setFormData(prev => ({ ...prev, priority: e.target.value as any }))}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            priority: e.target.value as any,
+                          }))
+                        }
                         className="w-full px-4 py-2 rounded-lg border border-[var(--color-border-primary)] bg-[var(--color-surface-secondary)] text-[var(--color-text-primary)]"
                       >
                         {priorityOptions.map((priority) => (
@@ -438,7 +560,12 @@ export function GoalCreationModal({ isOpen, onClose, onCreateGoal }: GoalCreatio
                       </label>
                       <textarea
                         value={formData.description}
-                        onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            description: e.target.value,
+                          }))
+                        }
                         className="w-full px-4 py-2 rounded-lg border border-[var(--color-border-primary)] bg-[var(--color-surface-secondary)] text-[var(--color-text-primary)]"
                         rows={3}
                         placeholder="Describe your goal..."
@@ -459,7 +586,7 @@ export function GoalCreationModal({ isOpen, onClose, onCreateGoal }: GoalCreatio
                             onChange={(e) => setNewTag(e.target.value)}
                             className="w-full pl-10 pr-4 py-2 rounded-lg border border-[var(--color-border-primary)] bg-[var(--color-surface-secondary)] text-[var(--color-text-primary)]"
                             placeholder="Add a tag..."
-                            onKeyPress={(e) => e.key === 'Enter' && addTag()}
+                            onKeyPress={(e) => e.key === "Enter" && addTag()}
                           />
                         </div>
                         <ThemeAwareButton variant="outline" onClick={addTag}>
@@ -496,7 +623,10 @@ export function GoalCreationModal({ isOpen, onClose, onCreateGoal }: GoalCreatio
                   className="space-y-6"
                 >
                   <div className="text-center mb-8">
-                    <ThemeAwareHeading level="h3" className="text-xl font-bold mb-2">
+                    <ThemeAwareHeading
+                      level="h3"
+                      className="text-xl font-bold mb-2"
+                    >
                       Ready to Launch? 🚀
                     </ThemeAwareHeading>
                     <ThemeAwareText color="secondary">
@@ -507,19 +637,31 @@ export function GoalCreationModal({ isOpen, onClose, onCreateGoal }: GoalCreatio
                   <ThemeAwareCard className="p-6">
                     <div className="flex items-center gap-4 mb-6">
                       <div className="text-4xl">
-                        {categoryOptions.find(cat => cat.id === formData.category)?.icon}
+                        {
+                          categoryOptions.find(
+                            (cat) => cat.id === formData.category,
+                          )?.icon
+                        }
                       </div>
                       <div>
-                        <div className="text-2xl font-bold">{formData.name}</div>
+                        <div className="text-2xl font-bold">
+                          {formData.name}
+                        </div>
                         <div className="text-gray-500">
-                          {categoryOptions.find(cat => cat.id === formData.category)?.name}
+                          {
+                            categoryOptions.find(
+                              (cat) => cat.id === formData.category,
+                            )?.name
+                          }
                         </div>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4 mb-6">
                       <div>
-                        <div className="text-sm text-gray-500">Target Amount</div>
+                        <div className="text-sm text-gray-500">
+                          Target Amount
+                        </div>
                         <div className="text-xl font-bold text-green-500">
                           ฿{formData.targetAmount.toLocaleString()}
                         </div>
@@ -534,7 +676,9 @@ export function GoalCreationModal({ isOpen, onClose, onCreateGoal }: GoalCreatio
 
                     {formData.description && (
                       <div className="mb-4">
-                        <div className="text-sm text-gray-500 mb-1">Description</div>
+                        <div className="text-sm text-gray-500 mb-1">
+                          Description
+                        </div>
                         <div>{formData.description}</div>
                       </div>
                     )}
@@ -573,10 +717,7 @@ export function GoalCreationModal({ isOpen, onClose, onCreateGoal }: GoalCreatio
               )}
             </div>
             <div className="flex gap-2">
-              <ThemeAwareButton
-                variant="outline"
-                onClick={handleClose}
-              >
+              <ThemeAwareButton variant="outline" onClick={handleClose}>
                 Cancel
               </ThemeAwareButton>
               {step < 3 ? (

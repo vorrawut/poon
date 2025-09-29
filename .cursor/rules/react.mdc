@@ -1250,3 +1250,355 @@ import * as Core from "../../core";
 7. **FUTURE PROOF** - Core components evolve, hardcoded styles don't
 
 This ensures consistent, accessible, and maintainable UI across the entire application.
+
+## 🌍 **INTERNATIONALIZATION (i18n) SYSTEM (MANDATORY)**
+
+### **Systematic Localization Architecture**
+```
+src/libs/i18n/
+├── types.ts                    # TypeScript interfaces for i18n
+├── context/
+│   └── I18nContext.ts         # React context for language state
+├── hooks/
+│   └── useI18n.ts             # Hooks for translation functions
+├── providers/
+│   └── I18nProvider.tsx       # Context provider with persistence
+├── translations/
+│   ├── common.ts              # Common UI text (buttons, labels, etc.)
+│   ├── features.ts            # Feature-specific translations
+│   └── index.ts               # Translation exports
+├── utils/
+│   └── translationUtils.ts    # Translation utilities and validation
+└── index.ts                   # Main i18n exports
+```
+
+### **Supported Languages (CURRENT)**
+- **English (en)**: Primary language, fallback for missing translations
+- **Thai (th)**: Full localization with cultural context
+- **Extensible**: Architecture ready for additional languages
+
+### **Translation Structure (MANDATORY)**
+```typescript
+// ✅ REQUIRED - All translations must follow this structure
+interface TranslationKey {
+  en: string;
+  th: string;
+}
+
+// ✅ GOOD - Organized by domain and feature
+const translations = {
+  common: {
+    navigation: {
+      dashboard: {
+        en: 'Dashboard',
+        th: 'แดชบอร์ด'
+      }
+    },
+    actions: {
+      save: {
+        en: 'Save',
+        th: 'บันทึก'
+      }
+    }
+  },
+  features: {
+    goals: {
+      title: {
+        en: 'Future Missions',
+        th: 'ภารกิจอนาคต'
+      }
+    }
+  }
+};
+```
+
+### **Translation Usage (MANDATORY)**
+```typescript
+// ✅ REQUIRED - Use useTranslation hook in all components
+import { useTranslation } from '../../libs/i18n';
+
+export function MyComponent() {
+  const { t } = useTranslation();
+  
+  return (
+    <div>
+      <h1>{t('features.dashboard.title')}</h1>
+      <button>{t('common.actions.save')}</button>
+    </div>
+  );
+}
+
+// ✅ GOOD - Parameter interpolation
+const message = t('common.messages.welcome', { name: 'John' });
+// Translation: "Welcome {{name}}" -> "Welcome John"
+```
+
+### **Language Management (MANDATORY)**
+```typescript
+// ✅ REQUIRED - Language switching
+import { useLanguage } from '../../libs/i18n';
+
+export function LanguageSettings() {
+  const { language, setLanguage } = useLanguage();
+  
+  const handleLanguageChange = (newLang: 'en' | 'th') => {
+    setLanguage(newLang); // Automatically persisted
+  };
+  
+  return (
+    <select value={language} onChange={(e) => handleLanguageChange(e.target.value)}>
+      <option value="en">English</option>
+      <option value="th">ไทย</option>
+    </select>
+  );
+}
+```
+
+### **Component Integration (MANDATORY)**
+```typescript
+// ✅ REQUIRED - All user-facing text must use translations
+import { useTranslation } from '../../libs/i18n';
+import { ThemeAwareHeading, ThemeAwareText, ThemeAwareButton } from '../../core';
+
+export function Dashboard() {
+  const { t } = useTranslation();
+  
+  return (
+    <div>
+      <ThemeAwareHeading level="h1">
+        {t('features.dashboard.title')}
+      </ThemeAwareHeading>
+      
+      <ThemeAwareText color="secondary">
+        {t('features.dashboard.subtitle')}
+      </ThemeAwareText>
+      
+      <ThemeAwareButton variant="primary">
+        {t('common.actions.create')}
+      </ThemeAwareButton>
+    </div>
+  );
+}
+
+// ❌ BAD - Hardcoded text
+export function BadComponent() {
+  return (
+    <div>
+      <h1>Dashboard</h1> {/* Should use t('features.dashboard.title') */}
+      <button>Save</button> {/* Should use t('common.actions.save') */}
+    </div>
+  );
+}
+```
+
+### **Language Switcher Integration (MANDATORY)**
+```typescript
+// ✅ REQUIRED - Include language switcher in app header
+import { LanguageSwitcher } from '../../components/ui/LanguageSwitcher';
+
+export function Header() {
+  return (
+    <header>
+      {/* Other header content */}
+      <LanguageSwitcher variant="compact" />
+    </header>
+  );
+}
+
+// ✅ AVAILABLE VARIANTS
+// variant="button" - Simple toggle between languages
+// variant="dropdown" - Full dropdown with flags and names
+// variant="compact" - Minimal flag/code display
+```
+
+### **Translation Organization Rules (MANDATORY)**
+```typescript
+// ✅ GOOD - Organized by feature and context
+common: {
+  navigation: { /* navigation items */ },
+  actions: { /* buttons and actions */ },
+  labels: { /* form labels and fields */ },
+  time: { /* date and time related */ },
+  status: { /* status messages */ },
+  accessibility: { /* accessibility modes */ }
+}
+
+features: {
+  dashboard: { /* dashboard specific */ },
+  accounts: { /* accounts specific */ },
+  goals: { /* goals specific */ },
+  thaiCulture: { /* Thai cultural features */ }
+}
+
+// ❌ BAD - Flat or poorly organized
+translations: {
+  button1: { en: 'Save', th: 'บันทึก' },
+  text1: { en: 'Dashboard', th: 'แดชบอร์ด' },
+  // Hard to maintain and find
+}
+```
+
+### **Thai Language Considerations (CRITICAL)**
+```typescript
+// ✅ REQUIRED - Thai cultural context
+const culturalTranslations = {
+  familyObligations: {
+    en: 'Family Obligations',
+    th: 'ภาระครอบครัว' // Uses cultural concept
+  },
+  meritMaking: {
+    en: 'Merit Making',
+    th: 'การทำบุญ' // Buddhist concept
+  }
+};
+
+// ✅ GOOD - Thai number formatting
+import { formatThaiCurrency } from '../features/thai-culture';
+const amount = formatThaiCurrency(1000, 'th'); // "฿1,000"
+
+// ✅ GOOD - Buddhist calendar integration
+import { formatBuddhistDate } from '../features/thai-culture';
+const date = formatBuddhistDate(new Date(), 'th'); // "15 ธันวาคม พ.ศ. 2567"
+```
+
+### **Development Workflow (MANDATORY)**
+
+#### **Adding New Translations:**
+1. **Add to translation files**: Update `src/libs/i18n/translations/`
+2. **Use TypeScript**: Ensure type safety with interfaces
+3. **Test both languages**: Verify translations work in both en/th
+4. **Cultural review**: Ensure Thai translations are culturally appropriate
+
+#### **Translation Keys Naming:**
+```typescript
+// ✅ GOOD - Clear hierarchical naming
+'common.actions.save'
+'features.dashboard.welcomeMessage'
+'features.goals.createNewGoal'
+
+// ❌ BAD - Unclear or flat naming
+'save'
+'msg1'
+'dashboardText'
+```
+
+#### **Missing Translation Handling:**
+```typescript
+// ✅ BUILT-IN - Automatic fallback to English
+const text = t('some.missing.key'); 
+// If Thai missing, shows English
+// If both missing, shows the key path
+
+// ✅ VALIDATION - Check translation completeness
+import { validateTranslations } from '../../libs/i18n';
+const validation = validateTranslations();
+console.log(validation.missingTranslations);
+```
+
+### **Performance Considerations (MANDATORY)**
+```typescript
+// ✅ GOOD - Translation functions are memoized
+const { t } = useTranslation(); // Memoized based on language
+
+// ✅ GOOD - Language persistence
+// Language choice automatically saved to localStorage
+// Restored on app reload
+
+// ✅ GOOD - Lazy loading ready
+// Architecture supports lazy loading of translation chunks
+// Currently loads all translations for simplicity
+```
+
+### **Testing i18n Components (MANDATORY)**
+```typescript
+// ✅ REQUIRED - Test with both languages
+import { render } from '@testing-library/react';
+import { I18nProvider } from '../../libs/i18n';
+
+describe('MyComponent i18n', () => {
+  it('renders in English', () => {
+    render(
+      <I18nProvider defaultLanguage="en">
+        <MyComponent />
+      </I18nProvider>
+    );
+    expect(screen.getByText('Dashboard')).toBeInTheDocument();
+  });
+
+  it('renders in Thai', () => {
+    render(
+      <I18nProvider defaultLanguage="th">
+        <MyComponent />
+      </I18nProvider>
+    );
+    expect(screen.getByText('แดชบอร์ด')).toBeInTheDocument();
+  });
+});
+```
+
+### **Integration with Existing Systems (MANDATORY)**
+```typescript
+// ✅ REQUIRED - Works with theme system
+const { t } = useTranslation();
+const { isPlayMode } = useTheme();
+
+<ThemeAwareHeading level="h1" gradient={isPlayMode}>
+  {t('features.dashboard.title')}
+</ThemeAwareHeading>
+
+// ✅ REQUIRED - Works with accessibility
+const { t } = useTranslation();
+const { accessibilityMode } = useUIStore();
+
+const message = accessibilityMode === 'elder' 
+  ? t('features.dashboard.elderMessage')
+  : t('features.dashboard.standardMessage');
+```
+
+### **Quality Assurance (MANDATORY)**
+
+#### **Translation Checklist:**
+- [ ] All user-facing text uses `t()` function
+- [ ] No hardcoded strings in components
+- [ ] Both English and Thai translations provided
+- [ ] Thai translations culturally appropriate
+- [ ] Translation keys follow naming conventions
+- [ ] Components tested in both languages
+- [ ] Language switcher accessible and functional
+
+#### **Code Review Requirements:**
+- [ ] No hardcoded text in JSX
+- [ ] Proper use of `useTranslation` hook
+- [ ] Translation keys are descriptive
+- [ ] Thai cultural context respected
+- [ ] Performance considerations addressed
+
+### **Future Extensibility (READY)**
+```typescript
+// ✅ ARCHITECTURE READY - Additional languages
+type SupportedLanguage = 'en' | 'th' | 'zh' | 'ja' | 'ko';
+
+// ✅ PREPARED - Regional variations
+interface TranslationKey {
+  en: string;
+  'en-US': string;
+  'en-GB': string;
+  th: string;
+  'th-TH': string;
+}
+
+// ✅ SCALABLE - Feature-based translation loading
+const loadFeatureTranslations = (feature: string) => 
+  import(`./translations/${feature}`);
+```
+
+**🚨 CRITICAL i18n REMINDERS:**
+1. **NO HARDCODED TEXT** - All user-facing text must use translations
+2. **THAI CULTURAL CONTEXT** - Ensure Thai translations respect cultural values
+3. **FALLBACK TO ENGLISH** - System gracefully handles missing translations
+4. **PERSISTENT LANGUAGE** - User language choice is saved and restored
+5. **COMPONENT INTEGRATION** - Works seamlessly with theme and accessibility systems
+6. **PERFORMANCE OPTIMIZED** - Translation functions are memoized and efficient
+7. **TESTING REQUIRED** - All components must be tested in both languages
+
+This systematic localization ensures the app is truly accessible to both English and Thai users while maintaining cultural authenticity and technical excellence.

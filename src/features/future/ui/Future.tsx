@@ -1,23 +1,12 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FadeIn } from "../../../components/ui";
-import {
-  ThemeAwareHeading,
-  ThemeAwareText,
-  useTheme,
-} from "../../../core";
-import {
-  EnhancedGoalTracker,
-  type EnhancedGoal,
-} from "../../goals";
+import { ThemeAwareHeading, ThemeAwareText, useTheme } from "../../../core";
+import { EnhancedGoalTracker, type EnhancedGoal } from "../../goals";
 import { FutureGoalDetail } from "../components/FutureGoalDetail";
 import { GoalCreationModal } from "../components/GoalCreationModal";
-import {
-  UniverseBackground,
-} from "../../../components/widgets";
-import {
-  mockEnhancedGoals,
-} from "../../../../mockData/features/goals";
+import { UniverseBackground } from "../../../components/widgets";
+import { mockEnhancedGoals } from "../../../../mockData/features/goals";
 
 import { useUIStore } from "../../../store/useUIStore";
 
@@ -33,7 +22,9 @@ export function Future() {
     setGoals(mockEnhancedGoals);
   }, []);
 
-  const handleGoalCreate = (newGoal: Omit<EnhancedGoal, "id" | "createdAt" | "isCompleted">) => {
+  const handleGoalCreate = (
+    newGoal: Omit<EnhancedGoal, "id" | "createdAt" | "isCompleted">,
+  ) => {
     const goal: EnhancedGoal = {
       ...newGoal,
       id: `goal-${Date.now()}`,
@@ -49,20 +40,21 @@ export function Future() {
         goal.id === goalId
           ? {
               ...goal,
-              currentAmount: Math.min(goal.currentAmount + amount, goal.targetAmount),
+              currentAmount: Math.min(
+                goal.currentAmount + amount,
+                goal.targetAmount,
+              ),
               lastContribution: new Date(),
               isCompleted: goal.currentAmount + amount >= goal.targetAmount,
             }
-          : goal
-      )
+          : goal,
+      ),
     );
   };
 
   const handleGoalUpdate = (goalId: string, updates: Partial<EnhancedGoal>) => {
     setGoals((prev) =>
-      prev.map((goal) =>
-        goal.id === goalId ? { ...goal, ...updates } : goal
-      )
+      prev.map((goal) => (goal.id === goalId ? { ...goal, ...updates } : goal)),
     );
     // Update selectedGoal if it's the one being updated
     if (selectedGoal && selectedGoal.id === goalId) {
@@ -105,7 +97,11 @@ export function Future() {
               >
                 🚀
               </motion.div>
-              <ThemeAwareHeading level="h1" className="mb-4" gradient={isPlayMode}>
+              <ThemeAwareHeading
+                level="h1"
+                className="mb-4"
+                gradient={isPlayMode}
+              >
                 Future Missions
               </ThemeAwareHeading>
               <motion.div
@@ -147,7 +143,9 @@ export function Future() {
             onClose={() => setSelectedGoal(null)}
             onUpdate={handleGoalUpdate}
             onDelete={handleGoalDelete}
-            onContribute={(goalId: string, amount: number) => handleContribute(goalId, amount)}
+            onContribute={(goalId: string, amount: number) =>
+              handleContribute(goalId, amount)
+            }
           />
         ) : (
           <EnhancedGoalTracker

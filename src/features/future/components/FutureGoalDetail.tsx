@@ -60,7 +60,9 @@ export function FutureGoalDetail({
   className,
 }: FutureGoalDetailProps) {
   const { isPlayMode } = useTheme();
-  const [activeTab, setActiveTab] = useState<"overview" | "progress" | "transactions" | "notes" | "settings">("overview");
+  const [activeTab, setActiveTab] = useState<
+    "overview" | "progress" | "transactions" | "notes" | "settings"
+  >("overview");
   const [isEditing, setIsEditing] = useState(false);
   const [editedGoal, setEditedGoal] = useState(goal);
   const [contributeAmount, setContributeAmount] = useState("");
@@ -107,13 +109,15 @@ export function FutureGoalDetail({
       },
       {
         id: "2",
-        content: "Researched hotels in Tokyo - Shibuya area looks perfect for our budget.",
+        content:
+          "Researched hotels in Tokyo - Shibuya area looks perfect for our budget.",
         date: new Date("2024-12-05"),
         type: "text",
       },
       {
         id: "3",
-        content: "Created itinerary: Tokyo (5 days) → Kyoto (3 days) → Osaka (2 days)",
+        content:
+          "Created itinerary: Tokyo (5 days) → Kyoto (3 days) → Osaka (2 days)",
         date: new Date("2024-11-28"),
         type: "text",
       },
@@ -126,7 +130,8 @@ export function FutureGoalDetail({
   const progress = (goal.currentAmount / goal.targetAmount) * 100;
   const remaining = goal.targetAmount - goal.currentAmount;
   const daysRemaining = Math.ceil(
-    (new Date(goal.deadline).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
+    (new Date(goal.deadline).getTime() - new Date().getTime()) /
+      (1000 * 60 * 60 * 24),
   );
   const dailyTarget = daysRemaining > 0 ? remaining / daysRemaining : 0;
   const monthlyTarget = dailyTarget * 30;
@@ -161,7 +166,7 @@ export function FutureGoalDetail({
         description: "Manual contribution",
         method: "App",
       };
-      setTransactions(prev => [newTransaction, ...prev]);
+      setTransactions((prev) => [newTransaction, ...prev]);
       setContributeAmount("");
     }
   };
@@ -174,7 +179,7 @@ export function FutureGoalDetail({
         date: new Date(),
         type: "text",
       };
-      setNotes(prev => [note, ...prev]);
+      setNotes((prev) => [note, ...prev]);
       setNewNote("");
     }
   };
@@ -192,7 +197,7 @@ export function FutureGoalDetail({
       className={cn(
         "fixed inset-0 z-50 flex items-center justify-center p-4",
         isPlayMode ? "bg-black/70" : "bg-black/50",
-        "backdrop-blur-sm"
+        "backdrop-blur-sm",
       )}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -204,7 +209,7 @@ export function FutureGoalDetail({
           "relative w-full max-w-6xl max-h-[95vh] overflow-hidden rounded-2xl",
           "bg-[var(--color-surface-primary)] border border-[var(--color-border-primary)]",
           "shadow-2xl",
-          className
+          className,
         )}
         initial={{ opacity: 0, scale: 0.8, y: 50 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -214,7 +219,7 @@ export function FutureGoalDetail({
       >
         {/* Cosmic Background Effect */}
         {isPlayMode && (
-          <div 
+          <div
             className="absolute inset-0 opacity-10"
             style={{
               background: `radial-gradient(circle at 80% 20%, ${config.color}40 0%, transparent 50%)`,
@@ -225,7 +230,7 @@ export function FutureGoalDetail({
         {/* Header */}
         <div className="relative z-10 flex items-center justify-between p-6 border-b border-[var(--color-border-secondary)]">
           <div className="flex items-center gap-4">
-            <motion.div 
+            <motion.div
               className="text-4xl"
               animate={isPlayMode ? { scale: [1, 1.1, 1] } : {}}
               transition={{ duration: 2, repeat: Infinity }}
@@ -237,7 +242,9 @@ export function FutureGoalDetail({
                 <input
                   type="text"
                   value={editedGoal.name}
-                  onChange={(e) => setEditedGoal(prev => ({ ...prev, name: e.target.value }))}
+                  onChange={(e) =>
+                    setEditedGoal((prev) => ({ ...prev, name: e.target.value }))
+                  }
                   className="text-2xl font-bold bg-transparent border-b-2 border-blue-500 focus:outline-none"
                 />
               ) : (
@@ -246,16 +253,19 @@ export function FutureGoalDetail({
                 </ThemeAwareHeading>
               )}
               <div className="flex items-center gap-4 mt-2">
-                <span 
+                <span
                   className="px-3 py-1 text-sm font-medium rounded-full"
-                  style={{ 
+                  style={{
                     backgroundColor: `${config.color}20`,
-                    color: config.color 
+                    color: config.color,
                   }}
                 >
                   {config.name}
                 </span>
-                <span className="text-lg font-bold" style={{ color: config.color }}>
+                <span
+                  className="text-lg font-bold"
+                  style={{ color: config.color }}
+                >
                   {progress.toFixed(1)}%
                 </span>
                 <span className="text-sm text-gray-500">
@@ -264,7 +274,7 @@ export function FutureGoalDetail({
               </div>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-2">
             {!isEditing ? (
               <>
@@ -322,7 +332,8 @@ export function FutureGoalDetail({
         <div className="relative z-10 px-6 py-4 border-b border-[var(--color-border-secondary)]">
           <div className="flex items-center justify-between mb-2">
             <ThemeAwareText weight="bold">
-              ฿{goal.currentAmount.toLocaleString()} / ฿{goal.targetAmount.toLocaleString()}
+              ฿{goal.currentAmount.toLocaleString()} / ฿
+              {goal.targetAmount.toLocaleString()}
             </ThemeAwareText>
             <ThemeAwareText color="secondary">
               ฿{remaining.toLocaleString()} remaining
@@ -362,7 +373,9 @@ export function FutureGoalDetail({
               <ThemeAwareButton
                 variant={isPlayMode ? "cosmic" : "primary"}
                 onClick={handleContribute}
-                disabled={!contributeAmount || parseFloat(contributeAmount) <= 0}
+                disabled={
+                  !contributeAmount || parseFloat(contributeAmount) <= 0
+                }
                 glow={isPlayMode}
               >
                 <PlusIcon className="w-4 h-4 mr-1" />
@@ -389,7 +402,11 @@ export function FutureGoalDetail({
           {[
             { id: "overview", label: "Overview", icon: ChartBarIcon },
             { id: "progress", label: "Progress", icon: RocketLaunchIcon },
-            { id: "transactions", label: "Transactions", icon: CurrencyDollarIcon },
+            {
+              id: "transactions",
+              label: "Transactions",
+              icon: CurrencyDollarIcon,
+            },
             { id: "notes", label: "Notes", icon: DocumentTextIcon },
             { id: "settings", label: "Settings", icon: ClockIcon },
           ].map((tab) => (
@@ -400,10 +417,11 @@ export function FutureGoalDetail({
                 "flex items-center gap-2 px-6 py-3 text-sm font-medium transition-colors whitespace-nowrap",
                 activeTab === tab.id
                   ? "text-[var(--color-text-primary)] border-b-2"
-                  : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
+                  : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]",
               )}
               style={{
-                borderBottomColor: activeTab === tab.id ? config.color : "transparent"
+                borderBottomColor:
+                  activeTab === tab.id ? config.color : "transparent",
               }}
             >
               <tab.icon className="w-4 h-4" />
@@ -459,7 +477,10 @@ export function FutureGoalDetail({
                 {/* Description */}
                 {goal.description && (
                   <div>
-                    <ThemeAwareHeading level="h3" className="text-lg font-semibold mb-3">
+                    <ThemeAwareHeading
+                      level="h3"
+                      className="text-lg font-semibold mb-3"
+                    >
                       Description
                     </ThemeAwareHeading>
                     <ThemeAwareText className="text-base">
@@ -471,7 +492,10 @@ export function FutureGoalDetail({
                 {/* Milestones */}
                 {goal.milestones.length > 0 && (
                   <div>
-                    <ThemeAwareHeading level="h3" className="text-lg font-semibold mb-4">
+                    <ThemeAwareHeading
+                      level="h3"
+                      className="text-lg font-semibold mb-4"
+                    >
                       Milestones
                     </ThemeAwareHeading>
                     <div className="space-y-3">
@@ -480,9 +504,9 @@ export function FutureGoalDetail({
                           key={milestone.id}
                           className={cn(
                             "flex items-center justify-between p-4 rounded-lg",
-                            milestone.isCompleted 
-                              ? "bg-green-500/10 border border-green-500/20" 
-                              : "bg-[var(--color-surface-secondary)]"
+                            milestone.isCompleted
+                              ? "bg-green-500/10 border border-green-500/20"
+                              : "bg-[var(--color-surface-secondary)]",
                           )}
                         >
                           <div className="flex items-center gap-3">
@@ -492,7 +516,9 @@ export function FutureGoalDetail({
                               <StarIcon className="w-6 h-6 text-gray-400" />
                             )}
                             <div>
-                              <div className="font-medium">{milestone.name}</div>
+                              <div className="font-medium">
+                                {milestone.name}
+                              </div>
                               <div className="text-sm text-gray-500">
                                 ฿{milestone.targetAmount.toLocaleString()}
                               </div>
@@ -500,7 +526,8 @@ export function FutureGoalDetail({
                           </div>
                           {milestone.isCompleted && milestone.completedAt && (
                             <div className="text-sm text-green-600 dark:text-green-400">
-                              Completed {milestone.completedAt.toLocaleDateString()}
+                              Completed{" "}
+                              {milestone.completedAt.toLocaleDateString()}
                             </div>
                           )}
                         </div>
@@ -522,7 +549,7 @@ export function FutureGoalDetail({
                 <ThemeAwareHeading level="h3" className="text-lg font-semibold">
                   Progress Tracking
                 </ThemeAwareHeading>
-                
+
                 {/* Progress Chart Placeholder */}
                 <ThemeAwareCard className="p-6">
                   <div className="h-64 flex items-center justify-center bg-gray-50 dark:bg-gray-800 rounded-lg">
@@ -537,29 +564,46 @@ export function FutureGoalDetail({
 
                 {/* Recent Activity */}
                 <div>
-                  <ThemeAwareHeading level="h4" className="text-md font-semibold mb-4">
+                  <ThemeAwareHeading
+                    level="h4"
+                    className="text-md font-semibold mb-4"
+                  >
                     Recent Activity
                   </ThemeAwareHeading>
                   <div className="space-y-2">
                     {transactions.slice(0, 5).map((transaction) => (
-                      <div key={transaction.id} className="flex items-center justify-between p-3 rounded-lg bg-[var(--color-surface-secondary)]">
+                      <div
+                        key={transaction.id}
+                        className="flex items-center justify-between p-3 rounded-lg bg-[var(--color-surface-secondary)]"
+                      >
                         <div className="flex items-center gap-3">
-                          <div className={cn(
-                            "w-2 h-2 rounded-full",
-                            transaction.type === "deposit" ? "bg-green-500" : "bg-red-500"
-                          )} />
+                          <div
+                            className={cn(
+                              "w-2 h-2 rounded-full",
+                              transaction.type === "deposit"
+                                ? "bg-green-500"
+                                : "bg-red-500",
+                            )}
+                          />
                           <div>
-                            <div className="font-medium">{transaction.description}</div>
+                            <div className="font-medium">
+                              {transaction.description}
+                            </div>
                             <div className="text-sm text-gray-500">
                               {transaction.date.toLocaleDateString()}
                             </div>
                           </div>
                         </div>
-                        <div className={cn(
-                          "font-bold",
-                          transaction.type === "deposit" ? "text-green-500" : "text-red-500"
-                        )}>
-                          {transaction.type === "deposit" ? "+" : "-"}฿{transaction.amount.toLocaleString()}
+                        <div
+                          className={cn(
+                            "font-bold",
+                            transaction.type === "deposit"
+                              ? "text-green-500"
+                              : "text-red-500",
+                          )}
+                        >
+                          {transaction.type === "deposit" ? "+" : "-"}฿
+                          {transaction.amount.toLocaleString()}
                         </div>
                       </div>
                     ))}
@@ -577,7 +621,10 @@ export function FutureGoalDetail({
                 className="space-y-4"
               >
                 <div className="flex items-center justify-between">
-                  <ThemeAwareHeading level="h3" className="text-lg font-semibold">
+                  <ThemeAwareHeading
+                    level="h3"
+                    className="text-lg font-semibold"
+                  >
                     Transaction History
                   </ThemeAwareHeading>
                   <ThemeAwareButton variant="outline" size="sm">
@@ -588,16 +635,25 @@ export function FutureGoalDetail({
 
                 <div className="space-y-2">
                   {transactions.map((transaction) => (
-                    <div key={transaction.id} className="flex items-center justify-between p-4 rounded-lg bg-[var(--color-surface-secondary)]">
+                    <div
+                      key={transaction.id}
+                      className="flex items-center justify-between p-4 rounded-lg bg-[var(--color-surface-secondary)]"
+                    >
                       <div className="flex items-center gap-4">
-                        <div className={cn(
-                          "w-10 h-10 rounded-full flex items-center justify-center",
-                          transaction.type === "deposit" ? "bg-green-500/20" : "bg-red-500/20"
-                        )}>
+                        <div
+                          className={cn(
+                            "w-10 h-10 rounded-full flex items-center justify-center",
+                            transaction.type === "deposit"
+                              ? "bg-green-500/20"
+                              : "bg-red-500/20",
+                          )}
+                        >
                           {transaction.type === "deposit" ? "↗️" : "↙️"}
                         </div>
                         <div>
-                          <div className="font-medium">{transaction.description}</div>
+                          <div className="font-medium">
+                            {transaction.description}
+                          </div>
                           <div className="text-sm text-gray-500 flex items-center gap-2">
                             <span>{transaction.date.toLocaleDateString()}</span>
                             {transaction.method && (
@@ -609,11 +665,16 @@ export function FutureGoalDetail({
                           </div>
                         </div>
                       </div>
-                      <div className={cn(
-                        "text-lg font-bold",
-                        transaction.type === "deposit" ? "text-green-500" : "text-red-500"
-                      )}>
-                        {transaction.type === "deposit" ? "+" : "-"}฿{transaction.amount.toLocaleString()}
+                      <div
+                        className={cn(
+                          "text-lg font-bold",
+                          transaction.type === "deposit"
+                            ? "text-green-500"
+                            : "text-red-500",
+                        )}
+                      >
+                        {transaction.type === "deposit" ? "+" : "-"}฿
+                        {transaction.amount.toLocaleString()}
                       </div>
                     </div>
                   ))}
@@ -630,7 +691,10 @@ export function FutureGoalDetail({
                 className="space-y-4"
               >
                 <div className="flex items-center justify-between">
-                  <ThemeAwareHeading level="h3" className="text-lg font-semibold">
+                  <ThemeAwareHeading
+                    level="h3"
+                    className="text-lg font-semibold"
+                  >
                     Notes & Ideas
                   </ThemeAwareHeading>
                 </div>
@@ -643,7 +707,7 @@ export function FutureGoalDetail({
                     value={newNote}
                     onChange={(e) => setNewNote(e.target.value)}
                     className="flex-1 px-4 py-2 rounded-lg border border-[var(--color-border-primary)] bg-[var(--color-surface-secondary)] text-[var(--color-text-primary)]"
-                    onKeyPress={(e) => e.key === 'Enter' && handleAddNote()}
+                    onKeyPress={(e) => e.key === "Enter" && handleAddNote()}
                   />
                   <ThemeAwareButton
                     variant={isPlayMode ? "cosmic" : "primary"}
@@ -658,7 +722,10 @@ export function FutureGoalDetail({
                 {/* Notes List */}
                 <div className="space-y-3">
                   {notes.map((note) => (
-                    <div key={note.id} className="p-4 rounded-lg bg-[var(--color-surface-secondary)]">
+                    <div
+                      key={note.id}
+                      className="p-4 rounded-lg bg-[var(--color-surface-secondary)]"
+                    >
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <ThemeAwareText>{note.content}</ThemeAwareText>
@@ -699,17 +766,28 @@ export function FutureGoalDetail({
                   <ThemeAwareCard className="p-4">
                     <div className="flex items-center gap-2 mb-4">
                       <BellIcon className="w-5 h-5" />
-                      <ThemeAwareHeading level="h4" className="text-md font-semibold">
+                      <ThemeAwareHeading
+                        level="h4"
+                        className="text-md font-semibold"
+                      >
                         Notifications
                       </ThemeAwareHeading>
                     </div>
                     <div className="space-y-3">
                       <label className="flex items-center gap-2">
-                        <input type="checkbox" defaultChecked className="rounded" />
+                        <input
+                          type="checkbox"
+                          defaultChecked
+                          className="rounded"
+                        />
                         <span>Progress reminders</span>
                       </label>
                       <label className="flex items-center gap-2">
-                        <input type="checkbox" defaultChecked className="rounded" />
+                        <input
+                          type="checkbox"
+                          defaultChecked
+                          className="rounded"
+                        />
                         <span>Milestone achievements</span>
                       </label>
                       <label className="flex items-center gap-2">
@@ -723,7 +801,10 @@ export function FutureGoalDetail({
                   <ThemeAwareCard className="p-4">
                     <div className="flex items-center gap-2 mb-4">
                       <ShareIcon className="w-5 h-5" />
-                      <ThemeAwareHeading level="h4" className="text-md font-semibold">
+                      <ThemeAwareHeading
+                        level="h4"
+                        className="text-md font-semibold"
+                      >
                         Privacy
                       </ThemeAwareHeading>
                     </div>
@@ -737,7 +818,11 @@ export function FutureGoalDetail({
                         <span>Allow friends to contribute</span>
                       </label>
                       <label className="flex items-center gap-2">
-                        <input type="checkbox" defaultChecked className="rounded" />
+                        <input
+                          type="checkbox"
+                          defaultChecked
+                          className="rounded"
+                        />
                         <span>Show progress to family</span>
                       </label>
                     </div>
@@ -746,7 +831,10 @@ export function FutureGoalDetail({
 
                 {/* Danger Zone */}
                 <ThemeAwareCard className="p-4 border-red-500/20 bg-red-500/5">
-                  <ThemeAwareHeading level="h4" className="text-md font-semibold text-red-500 mb-4">
+                  <ThemeAwareHeading
+                    level="h4"
+                    className="text-md font-semibold text-red-500 mb-4"
+                  >
                     Danger Zone
                   </ThemeAwareHeading>
                   <div className="flex items-center justify-between">
@@ -759,7 +847,9 @@ export function FutureGoalDetail({
                     <ThemeAwareButton
                       variant="outline"
                       onClick={() => {
-                        if (confirm("Are you sure you want to delete this goal?")) {
+                        if (
+                          confirm("Are you sure you want to delete this goal?")
+                        ) {
                           onDelete?.(goal.id);
                           onClose();
                         }

@@ -14,24 +14,31 @@ import {
 } from "../../../core";
 import { cn } from "../../../libs/utils";
 import { getUpcomingThaiHolidays } from "../data/thaiHolidays";
-import { formatThaiCurrency, formatBuddhistDate } from "../services/thaiLocalization";
+import {
+  formatThaiCurrency,
+  formatBuddhistDate,
+} from "../services/thaiLocalization";
 import type { ThaiHoliday } from "../types";
 
 interface ThaiCalendarIntegrationProps {
-  language?: 'en' | 'th';
+  language?: "en" | "th";
   onPlanExpense?: (holiday: ThaiHoliday, amount: number) => void;
   className?: string;
 }
 
-export function ThaiCalendarIntegration({ 
-  language = 'en', 
+export function ThaiCalendarIntegration({
+  language = "en",
   onPlanExpense,
-  className 
+  className,
 }: ThaiCalendarIntegrationProps) {
   const { isPlayMode } = useTheme();
   const [upcomingHolidays, setUpcomingHolidays] = useState<ThaiHoliday[]>([]);
-  const [selectedHoliday, setSelectedHoliday] = useState<ThaiHoliday | null>(null);
-  const [plannedBudgets, setPlannedBudgets] = useState<Record<string, number>>({});
+  const [selectedHoliday, setSelectedHoliday] = useState<ThaiHoliday | null>(
+    null,
+  );
+  const [plannedBudgets, setPlannedBudgets] = useState<Record<string, number>>(
+    {},
+  );
 
   useEffect(() => {
     const holidays = getUpcomingThaiHolidays(6); // Next 6 months
@@ -39,30 +46,40 @@ export function ThaiCalendarIntegration({
   }, []);
 
   const handlePlanBudget = (holiday: ThaiHoliday, amount: number) => {
-    setPlannedBudgets(prev => ({
+    setPlannedBudgets((prev) => ({
       ...prev,
-      [holiday.id]: amount
+      [holiday.id]: amount,
     }));
     onPlanExpense?.(holiday, amount);
   };
 
-  const getHolidayTypeIcon = (type: ThaiHoliday['type']) => {
+  const getHolidayTypeIcon = (type: ThaiHoliday["type"]) => {
     switch (type) {
-      case 'religious': return '🙏';
-      case 'royal': return '👑';
-      case 'cultural': return '🎉';
-      case 'seasonal': return '🌸';
-      default: return '📅';
+      case "religious":
+        return "🙏";
+      case "royal":
+        return "👑";
+      case "cultural":
+        return "🎉";
+      case "seasonal":
+        return "🌸";
+      default:
+        return "📅";
     }
   };
 
-  const getHolidayTypeColor = (type: ThaiHoliday['type']) => {
+  const getHolidayTypeColor = (type: ThaiHoliday["type"]) => {
     switch (type) {
-      case 'religious': return 'from-yellow-400 to-orange-500';
-      case 'royal': return 'from-purple-400 to-purple-600';
-      case 'cultural': return 'from-pink-400 to-red-500';
-      case 'seasonal': return 'from-green-400 to-blue-500';
-      default: return 'from-gray-400 to-gray-600';
+      case "religious":
+        return "from-yellow-400 to-orange-500";
+      case "royal":
+        return "from-purple-400 to-purple-600";
+      case "cultural":
+        return "from-pink-400 to-red-500";
+      case "seasonal":
+        return "from-green-400 to-blue-500";
+      default:
+        return "from-gray-400 to-gray-600";
     }
   };
 
@@ -79,13 +96,14 @@ export function ThaiCalendarIntegration({
       {/* Header */}
       <div className="text-center">
         <ThemeAwareHeading level="h2" className="mb-4" gradient={isPlayMode}>
-          {language === 'th' ? '📅 ปฏิทินวัฒนธรรมไทย' : '📅 Thai Cultural Calendar'}
+          {language === "th"
+            ? "📅 ปฏิทินวัฒนธรรมไทย"
+            : "📅 Thai Cultural Calendar"}
         </ThemeAwareHeading>
         <ThemeAwareText color="secondary">
-          {language === 'th' 
-            ? 'วางแผนการเงินสำหรับเทศกาลและวันสำคัญของไทย'
-            : 'Plan your finances for Thai festivals and important occasions'
-          }
+          {language === "th"
+            ? "วางแผนการเงินสำหรับเทศกาลและวันสำคัญของไทย"
+            : "Plan your finances for Thai festivals and important occasions"}
         </ThemeAwareText>
       </div>
 
@@ -94,7 +112,7 @@ export function ThaiCalendarIntegration({
         {upcomingHolidays.map((holiday, index) => {
           const daysUntil = getDaysUntil(holiday.gregorianDate);
           const plannedBudget = plannedBudgets[holiday.id];
-          
+
           return (
             <motion.div
               key={holiday.id}
@@ -102,26 +120,28 @@ export function ThaiCalendarIntegration({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <ThemeAwareCard 
+              <ThemeAwareCard
                 hover
                 className={cn(
                   "relative overflow-hidden",
-                  isPlayMode && "border-2 border-purple-400/30"
+                  isPlayMode && "border-2 border-purple-400/30",
                 )}
               >
                 {/* Holiday Type Badge */}
-                <div className={cn(
-                  "absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-medium",
-                  `bg-gradient-to-r ${getHolidayTypeColor(holiday.type)}`,
-                  "text-white shadow-lg"
-                )}>
+                <div
+                  className={cn(
+                    "absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-medium",
+                    `bg-gradient-to-r ${getHolidayTypeColor(holiday.type)}`,
+                    "text-white shadow-lg",
+                  )}
+                >
                   {getHolidayTypeIcon(holiday.type)}
                 </div>
 
                 {/* Days Until Badge */}
                 {daysUntil > 0 && (
                   <div className="absolute top-3 left-3 px-2 py-1 bg-blue-500 text-white rounded-full text-xs font-medium">
-                    {daysUntil} {language === 'th' ? 'วัน' : 'days'}
+                    {daysUntil} {language === "th" ? "วัน" : "days"}
                   </div>
                 )}
 
@@ -131,7 +151,10 @@ export function ThaiCalendarIntegration({
                       {holiday.name[language]}
                     </ThemeAwareHeading>
                     <ThemeAwareText color="secondary" className="text-sm mb-2">
-                      {formatBuddhistDate(new Date(holiday.gregorianDate), language)}
+                      {formatBuddhistDate(
+                        new Date(holiday.gregorianDate),
+                        language,
+                      )}
                     </ThemeAwareText>
                     <ThemeAwareText className="text-sm line-clamp-2">
                       {holiday.significance[language]}
@@ -142,17 +165,31 @@ export function ThaiCalendarIntegration({
                   <div className="space-y-3">
                     <div className="flex items-center justify-between text-sm">
                       <ThemeAwareText color="secondary">
-                        {language === 'th' ? 'งบประมาณแนะนำ:' : 'Suggested Budget:'}
+                        {language === "th"
+                          ? "งบประมาณแนะนำ:"
+                          : "Suggested Budget:"}
                       </ThemeAwareText>
                       <ThemeAwareText className="font-medium">
-                        {formatThaiCurrency(holiday.budgetSuggestion.min, language, true)} - {formatThaiCurrency(holiday.budgetSuggestion.max, language, true)}
+                        {formatThaiCurrency(
+                          holiday.budgetSuggestion.min,
+                          language,
+                          true,
+                        )}{" "}
+                        -{" "}
+                        {formatThaiCurrency(
+                          holiday.budgetSuggestion.max,
+                          language,
+                          true,
+                        )}
                       </ThemeAwareText>
                     </div>
 
                     {plannedBudget && (
                       <div className="flex items-center justify-between text-sm">
                         <ThemeAwareText color="secondary">
-                          {language === 'th' ? 'งบที่วางแผน:' : 'Planned Budget:'}
+                          {language === "th"
+                            ? "งบที่วางแผน:"
+                            : "Planned Budget:"}
                         </ThemeAwareText>
                         <ThemeAwareText className="font-medium text-green-600">
                           {formatThaiCurrency(plannedBudget, language)}
@@ -169,18 +206,23 @@ export function ThaiCalendarIntegration({
                         className="flex-1"
                       >
                         <CalendarIcon className="w-4 h-4 mr-2" />
-                        {language === 'th' ? 'ดูรายละเอียด' : 'View Details'}
+                        {language === "th" ? "ดูรายละเอียด" : "View Details"}
                       </ThemeAwareButton>
-                      
+
                       {!plannedBudget && (
                         <ThemeAwareButton
                           variant="primary"
                           size="sm"
-                          onClick={() => handlePlanBudget(holiday, holiday.budgetSuggestion.min)}
+                          onClick={() =>
+                            handlePlanBudget(
+                              holiday,
+                              holiday.budgetSuggestion.min,
+                            )
+                          }
                           className="flex-1"
                         >
                           <CurrencyDollarIcon className="w-4 h-4 mr-2" />
-                          {language === 'th' ? 'วางแผน' : 'Plan'}
+                          {language === "th" ? "วางแผน" : "Plan"}
                         </ThemeAwareButton>
                       )}
                     </div>
@@ -220,13 +262,18 @@ export function ThaiCalendarIntegration({
               <ThemeAwareCard className="p-6">
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-3">
-                    <span className="text-4xl">{getHolidayTypeIcon(selectedHoliday.type)}</span>
+                    <span className="text-4xl">
+                      {getHolidayTypeIcon(selectedHoliday.type)}
+                    </span>
                     <div>
                       <ThemeAwareHeading level="h2" className="mb-1">
                         {selectedHoliday.name[language]}
                       </ThemeAwareHeading>
                       <ThemeAwareText color="secondary">
-                        {formatBuddhistDate(new Date(selectedHoliday.gregorianDate), language)}
+                        {formatBuddhistDate(
+                          new Date(selectedHoliday.gregorianDate),
+                          language,
+                        )}
                       </ThemeAwareText>
                     </div>
                   </div>
@@ -243,7 +290,7 @@ export function ThaiCalendarIntegration({
                   {/* Significance */}
                   <div>
                     <ThemeAwareHeading level="h3" className="mb-3">
-                      {language === 'th' ? 'ความสำคัญ' : 'Significance'}
+                      {language === "th" ? "ความสำคัญ" : "Significance"}
                     </ThemeAwareHeading>
                     <ThemeAwareText>
                       {selectedHoliday.significance[language]}
@@ -253,47 +300,75 @@ export function ThaiCalendarIntegration({
                   {/* Traditional Expenses */}
                   <div>
                     <ThemeAwareHeading level="h3" className="mb-3">
-                      {language === 'th' ? 'ค่าใช้จ่ายตามประเพณี' : 'Traditional Expenses'}
+                      {language === "th"
+                        ? "ค่าใช้จ่ายตามประเพณี"
+                        : "Traditional Expenses"}
                     </ThemeAwareHeading>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {selectedHoliday.traditionalExpenses.map((expense, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                          <GiftIcon className="w-4 h-4 text-purple-500" />
-                          <ThemeAwareText className="text-sm">{expense}</ThemeAwareText>
-                        </div>
-                      ))}
+                      {selectedHoliday.traditionalExpenses.map(
+                        (expense, index) => (
+                          <div key={index} className="flex items-center gap-2">
+                            <GiftIcon className="w-4 h-4 text-purple-500" />
+                            <ThemeAwareText className="text-sm">
+                              {expense}
+                            </ThemeAwareText>
+                          </div>
+                        ),
+                      )}
                     </div>
                   </div>
 
                   {/* Budget Planning */}
                   <div>
                     <ThemeAwareHeading level="h3" className="mb-3">
-                      {language === 'th' ? 'การวางแผนงบประมาณ' : 'Budget Planning'}
+                      {language === "th"
+                        ? "การวางแผนงบประมาณ"
+                        : "Budget Planning"}
                     </ThemeAwareHeading>
                     <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 p-4 rounded-lg">
                       <div className="flex items-center justify-between mb-4">
                         <ThemeAwareText color="secondary">
-                          {language === 'th' ? 'ช่วงงบประมาณแนะนำ' : 'Recommended Budget Range'}
+                          {language === "th"
+                            ? "ช่วงงบประมาณแนะนำ"
+                            : "Recommended Budget Range"}
                         </ThemeAwareText>
                         <ThemeAwareText className="font-bold text-lg">
-                          {formatThaiCurrency(selectedHoliday.budgetSuggestion.min, language)} - {formatThaiCurrency(selectedHoliday.budgetSuggestion.max, language)}
+                          {formatThaiCurrency(
+                            selectedHoliday.budgetSuggestion.min,
+                            language,
+                          )}{" "}
+                          -{" "}
+                          {formatThaiCurrency(
+                            selectedHoliday.budgetSuggestion.max,
+                            language,
+                          )}
                         </ThemeAwareText>
                       </div>
-                      
+
                       <div className="flex gap-2">
                         <ThemeAwareButton
                           variant="outline"
                           size="sm"
-                          onClick={() => handlePlanBudget(selectedHoliday, selectedHoliday.budgetSuggestion.min)}
+                          onClick={() =>
+                            handlePlanBudget(
+                              selectedHoliday,
+                              selectedHoliday.budgetSuggestion.min,
+                            )
+                          }
                         >
-                          {language === 'th' ? 'วางแผนขั้นต่ำ' : 'Plan Minimum'}
+                          {language === "th" ? "วางแผนขั้นต่ำ" : "Plan Minimum"}
                         </ThemeAwareButton>
                         <ThemeAwareButton
                           variant="primary"
                           size="sm"
-                          onClick={() => handlePlanBudget(selectedHoliday, selectedHoliday.budgetSuggestion.max)}
+                          onClick={() =>
+                            handlePlanBudget(
+                              selectedHoliday,
+                              selectedHoliday.budgetSuggestion.max,
+                            )
+                          }
                         >
-                          {language === 'th' ? 'วางแผนสูงสุด' : 'Plan Maximum'}
+                          {language === "th" ? "วางแผนสูงสุด" : "Plan Maximum"}
                         </ThemeAwareButton>
                       </div>
                     </div>
@@ -310,41 +385,51 @@ export function ThaiCalendarIntegration({
         <ThemeAwareCard className="p-6">
           <div className="text-center">
             <ThemeAwareHeading level="h3" className="mb-4">
-              {language === 'th' ? '📊 สรุปงบประมาณเทศกาล' : '📊 Festival Budget Summary'}
+              {language === "th"
+                ? "📊 สรุปงบประมาณเทศกาล"
+                : "📊 Festival Budget Summary"}
             </ThemeAwareHeading>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="text-center">
                 <ThemeAwareText color="secondary" className="text-sm mb-1">
-                  {language === 'th' ? 'เทศกาลที่จะมาถึง' : 'Upcoming Festivals'}
+                  {language === "th"
+                    ? "เทศกาลที่จะมาถึง"
+                    : "Upcoming Festivals"}
                 </ThemeAwareText>
                 <ThemeAwareText className="text-2xl font-bold text-blue-600">
                   {upcomingHolidays.length}
                 </ThemeAwareText>
               </div>
-              
+
               <div className="text-center">
                 <ThemeAwareText color="secondary" className="text-sm mb-1">
-                  {language === 'th' ? 'งบที่วางแผนแล้ว' : 'Planned Budget'}
+                  {language === "th" ? "งบที่วางแผนแล้ว" : "Planned Budget"}
                 </ThemeAwareText>
                 <ThemeAwareText className="text-2xl font-bold text-green-600">
                   {formatThaiCurrency(
-                    Object.values(plannedBudgets).reduce((sum, amount) => sum + amount, 0),
+                    Object.values(plannedBudgets).reduce(
+                      (sum, amount) => sum + amount,
+                      0,
+                    ),
                     language,
-                    true
+                    true,
                   )}
                 </ThemeAwareText>
               </div>
-              
+
               <div className="text-center">
                 <ThemeAwareText color="secondary" className="text-sm mb-1">
-                  {language === 'th' ? 'งบประมาณแนะนำ' : 'Suggested Total'}
+                  {language === "th" ? "งบประมาณแนะนำ" : "Suggested Total"}
                 </ThemeAwareText>
                 <ThemeAwareText className="text-2xl font-bold text-purple-600">
                   {formatThaiCurrency(
-                    upcomingHolidays.reduce((sum, holiday) => sum + holiday.budgetSuggestion.max, 0),
+                    upcomingHolidays.reduce(
+                      (sum, holiday) => sum + holiday.budgetSuggestion.max,
+                      0,
+                    ),
                     language,
-                    true
+                    true,
                   )}
                 </ThemeAwareText>
               </div>

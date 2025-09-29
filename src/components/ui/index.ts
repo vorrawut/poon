@@ -20,6 +20,9 @@ export {
   CardSkeleton,
 } from "./LoadingStates";
 
+// Internationalization
+export { LanguageSwitcher, LanguageIndicator } from "./LanguageSwitcher";
+
 // UI Components
 export { Button } from "./Button";
 export { Card } from "./Card";

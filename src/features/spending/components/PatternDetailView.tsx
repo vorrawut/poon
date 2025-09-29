@@ -74,7 +74,15 @@ function LineChart({ data, color }: { data: number[]; color: string }) {
   );
 }
 
-function BarChart({ data, labels, color }: { data: number[]; labels: string[]; color: string }) {
+function BarChart({
+  data,
+  labels,
+  color,
+}: {
+  data: number[];
+  labels: string[];
+  color: string;
+}) {
   const max = Math.max(...data);
 
   return (
@@ -109,14 +117,17 @@ function HeatmapChart({ data, color }: { data: number[][]; color: string }) {
     <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
       <div className="grid grid-cols-8 gap-1">
         <div></div>
-        {days.map(day => (
+        {days.map((day) => (
           <div key={day} className="text-xs text-gray-500 text-center p-1">
             {day}
           </div>
         ))}
         {data.map((week, weekIndex) => (
           <>
-            <div key={`week-${weekIndex}`} className="text-xs text-gray-500 p-1">
+            <div
+              key={`week-${weekIndex}`}
+              className="text-xs text-gray-500 p-1"
+            >
               {weeks[weekIndex]}
             </div>
             {week.map((value, dayIndex) => (
@@ -124,7 +135,9 @@ function HeatmapChart({ data, color }: { data: number[][]; color: string }) {
                 key={`${weekIndex}-${dayIndex}`}
                 className="aspect-square rounded transition-all hover:scale-110"
                 style={{
-                  backgroundColor: `${color}${Math.floor((value / max) * 255).toString(16).padStart(2, '0')}`,
+                  backgroundColor: `${color}${Math.floor((value / max) * 255)
+                    .toString(16)
+                    .padStart(2, "0")}`,
                 }}
                 title={`${days[dayIndex]}: ฿${value.toLocaleString()}`}
               />
@@ -143,14 +156,32 @@ export function PatternDetailView({
   className,
 }: PatternDetailViewProps) {
   const { isPlayMode } = useTheme();
-  const [activeTab, setActiveTab] = useState<"overview" | "insights" | "recommendations" | "actions">("overview");
+  const [activeTab, setActiveTab] = useState<
+    "overview" | "insights" | "recommendations" | "actions"
+  >("overview");
 
   const patternTypeConfig = {
-    trend: { icon: ArrowTrendingUpIcon, color: "#3B82F6", name: "Trend Analysis" },
-    seasonal: { icon: CalendarIcon, color: "#10B981", name: "Seasonal Pattern" },
+    trend: {
+      icon: ArrowTrendingUpIcon,
+      color: "#3B82F6",
+      name: "Trend Analysis",
+    },
+    seasonal: {
+      icon: CalendarIcon,
+      color: "#10B981",
+      name: "Seasonal Pattern",
+    },
     recurring: { icon: ClockIcon, color: "#8B5CF6", name: "Recurring Expense" },
-    anomaly: { icon: ExclamationTriangleIcon, color: "#EF4444", name: "Anomaly Detected" },
-    behavioral: { icon: ClockIcon, color: "#F59E0B", name: "Behavioral Pattern" },
+    anomaly: {
+      icon: ExclamationTriangleIcon,
+      color: "#EF4444",
+      name: "Anomaly Detected",
+    },
+    behavioral: {
+      icon: ClockIcon,
+      color: "#F59E0B",
+      name: "Behavioral Pattern",
+    },
   };
 
   const config = patternTypeConfig[pattern.type];
@@ -160,14 +191,18 @@ export function PatternDetailView({
   const generateSampleData = () => {
     switch (pattern.visualizationType) {
       case "line":
-        return Array.from({ length: 12 }, (_, i) => 
-          Math.random() * 10000 + 5000 + (pattern.data.trend === "increasing" ? i * 500 : -i * 300)
+        return Array.from(
+          { length: 12 },
+          (_, i) =>
+            Math.random() * 10000 +
+            5000 +
+            (pattern.data.trend === "increasing" ? i * 500 : -i * 300),
         );
       case "bar":
         return Array.from({ length: 7 }, () => Math.random() * 5000 + 1000);
       case "heatmap":
-        return Array.from({ length: 4 }, () => 
-          Array.from({ length: 7 }, () => Math.random() * 3000 + 500)
+        return Array.from({ length: 4 }, () =>
+          Array.from({ length: 7 }, () => Math.random() * 3000 + 500),
         );
       default:
         return [];
@@ -181,7 +216,7 @@ export function PatternDetailView({
       className={cn(
         "fixed inset-0 z-50 flex items-center justify-center p-4",
         isPlayMode ? "bg-black/70" : "bg-black/50",
-        "backdrop-blur-sm"
+        "backdrop-blur-sm",
       )}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -193,7 +228,7 @@ export function PatternDetailView({
           "relative w-full max-w-4xl max-h-[90vh] overflow-hidden rounded-2xl",
           "bg-[var(--color-surface-primary)] border border-[var(--color-border-primary)]",
           "shadow-2xl",
-          className
+          className,
         )}
         initial={{ opacity: 0, scale: 0.8, y: 50 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -204,7 +239,7 @@ export function PatternDetailView({
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-[var(--color-border-secondary)]">
           <div className="flex items-center gap-4">
-            <div 
+            <div
               className="p-3 rounded-full"
               style={{ backgroundColor: `${config.color}20` }}
             >
@@ -215,11 +250,12 @@ export function PatternDetailView({
                 {pattern.title}
               </ThemeAwareHeading>
               <ThemeAwareText color="secondary">
-                {config.name} • {(pattern.confidence * 100).toFixed(0)}% Confidence
+                {config.name} • {(pattern.confidence * 100).toFixed(0)}%
+                Confidence
               </ThemeAwareText>
             </div>
           </div>
-          
+
           <ThemeAwareButton
             variant="ghost"
             size="sm"
@@ -235,7 +271,11 @@ export function PatternDetailView({
           {[
             { id: "overview", label: "Overview", icon: ChartBarIcon },
             { id: "insights", label: "Insights", icon: LightBulbIcon },
-            { id: "recommendations", label: "Recommendations", icon: CheckCircleIcon },
+            {
+              id: "recommendations",
+              label: "Recommendations",
+              icon: CheckCircleIcon,
+            },
             { id: "actions", label: "Actions", icon: ExclamationTriangleIcon },
           ].map((tab) => (
             <button
@@ -245,10 +285,11 @@ export function PatternDetailView({
                 "flex items-center gap-2 px-6 py-3 text-sm font-medium transition-colors",
                 activeTab === tab.id
                   ? "text-[var(--color-text-primary)] border-b-2"
-                  : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
+                  : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]",
               )}
               style={{
-                borderBottomColor: activeTab === tab.id ? config.color : "transparent"
+                borderBottomColor:
+                  activeTab === tab.id ? config.color : "transparent",
               }}
             >
               <tab.icon className="w-4 h-4" />
@@ -270,7 +311,10 @@ export function PatternDetailView({
               >
                 {/* Pattern Description */}
                 <div>
-                  <ThemeAwareHeading level="h3" className="text-lg font-semibold mb-3">
+                  <ThemeAwareHeading
+                    level="h3"
+                    className="text-lg font-semibold mb-3"
+                  >
                     Pattern Description
                   </ThemeAwareHeading>
                   <ThemeAwareText className="text-base leading-relaxed">
@@ -280,7 +324,10 @@ export function PatternDetailView({
 
                 {/* Key Metrics */}
                 <div>
-                  <ThemeAwareHeading level="h3" className="text-lg font-semibold mb-3">
+                  <ThemeAwareHeading
+                    level="h3"
+                    className="text-lg font-semibold mb-3"
+                  >
                     Key Metrics
                   </ThemeAwareHeading>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -305,18 +352,25 @@ export function PatternDetailView({
                           )}
                           <span className="text-sm text-gray-500">Change</span>
                         </div>
-                        <div className={cn(
-                          "text-xl font-bold",
-                          pattern.data.trend === "increasing" ? "text-red-500" : "text-green-500"
-                        )}>
-                          {pattern.data.percentage > 0 ? "+" : ""}{pattern.data.percentage.toFixed(1)}%
+                        <div
+                          className={cn(
+                            "text-xl font-bold",
+                            pattern.data.trend === "increasing"
+                              ? "text-red-500"
+                              : "text-green-500",
+                          )}
+                        >
+                          {pattern.data.percentage > 0 ? "+" : ""}
+                          {pattern.data.percentage.toFixed(1)}%
                         </div>
                       </div>
                     )}
                     <div className="p-4 rounded-lg bg-[var(--color-surface-secondary)]">
                       <div className="flex items-center gap-2 mb-2">
                         <CheckCircleIcon className="w-5 h-5 text-blue-500" />
-                        <span className="text-sm text-gray-500">Confidence</span>
+                        <span className="text-sm text-gray-500">
+                          Confidence
+                        </span>
                       </div>
                       <div className="text-xl font-bold text-blue-500">
                         {(pattern.confidence * 100).toFixed(0)}%
@@ -336,22 +390,42 @@ export function PatternDetailView({
 
                 {/* Visualization */}
                 <div>
-                  <ThemeAwareHeading level="h3" className="text-lg font-semibold mb-3">
+                  <ThemeAwareHeading
+                    level="h3"
+                    className="text-lg font-semibold mb-3"
+                  >
                     Pattern Visualization
                   </ThemeAwareHeading>
-                  {pattern.visualizationType === "line" && Array.isArray(sampleData) && (
-                    <LineChart data={sampleData as number[]} color={config.color} />
-                  )}
-                  {pattern.visualizationType === "bar" && Array.isArray(sampleData) && (
-                    <BarChart 
-                      data={sampleData as number[]} 
-                      labels={["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}
-                      color={config.color} 
-                    />
-                  )}
-                  {pattern.visualizationType === "heatmap" && Array.isArray(sampleData) && (
-                    <HeatmapChart data={sampleData as number[][]} color={config.color} />
-                  )}
+                  {pattern.visualizationType === "line" &&
+                    Array.isArray(sampleData) && (
+                      <LineChart
+                        data={sampleData as number[]}
+                        color={config.color}
+                      />
+                    )}
+                  {pattern.visualizationType === "bar" &&
+                    Array.isArray(sampleData) && (
+                      <BarChart
+                        data={sampleData as number[]}
+                        labels={[
+                          "Mon",
+                          "Tue",
+                          "Wed",
+                          "Thu",
+                          "Fri",
+                          "Sat",
+                          "Sun",
+                        ]}
+                        color={config.color}
+                      />
+                    )}
+                  {pattern.visualizationType === "heatmap" &&
+                    Array.isArray(sampleData) && (
+                      <HeatmapChart
+                        data={sampleData as number[][]}
+                        color={config.color}
+                      />
+                    )}
                 </div>
               </motion.div>
             )}
@@ -364,7 +438,10 @@ export function PatternDetailView({
                 exit={{ opacity: 0, x: -20 }}
                 className="space-y-4"
               >
-                <ThemeAwareHeading level="h3" className="text-lg font-semibold mb-4">
+                <ThemeAwareHeading
+                  level="h3"
+                  className="text-lg font-semibold mb-4"
+                >
                   Detailed Insights
                 </ThemeAwareHeading>
                 {pattern.insights.map((insight, index) => (
@@ -375,11 +452,14 @@ export function PatternDetailView({
                     transition={{ delay: index * 0.1 }}
                     className="flex items-start gap-3 p-4 rounded-lg bg-[var(--color-surface-secondary)]"
                   >
-                    <div 
+                    <div
                       className="p-2 rounded-full flex-shrink-0"
                       style={{ backgroundColor: `${config.color}20` }}
                     >
-                      <LightBulbIcon className="w-4 h-4" style={{ color: config.color }} />
+                      <LightBulbIcon
+                        className="w-4 h-4"
+                        style={{ color: config.color }}
+                      />
                     </div>
                     <ThemeAwareText className="flex-1">
                       {insight}
@@ -397,7 +477,10 @@ export function PatternDetailView({
                 exit={{ opacity: 0, x: -20 }}
                 className="space-y-4"
               >
-                <ThemeAwareHeading level="h3" className="text-lg font-semibold mb-4">
+                <ThemeAwareHeading
+                  level="h3"
+                  className="text-lg font-semibold mb-4"
+                >
                   Recommended Actions
                 </ThemeAwareHeading>
                 {pattern.recommendations.map((recommendation, index) => (
@@ -412,14 +495,14 @@ export function PatternDetailView({
                       <CheckCircleIcon className="w-4 h-4 text-green-500" />
                     </div>
                     <div className="flex-1">
-                      <ThemeAwareText>
-                        {recommendation}
-                      </ThemeAwareText>
+                      <ThemeAwareText>{recommendation}</ThemeAwareText>
                     </div>
                     <ThemeAwareButton
                       variant="outline"
                       size="sm"
-                      onClick={() => onTakeAction?.("implement", { recommendation, index })}
+                      onClick={() =>
+                        onTakeAction?.("implement", { recommendation, index })
+                      }
                     >
                       Apply
                     </ThemeAwareButton>
@@ -436,10 +519,13 @@ export function PatternDetailView({
                 exit={{ opacity: 0, x: -20 }}
                 className="space-y-6"
               >
-                <ThemeAwareHeading level="h3" className="text-lg font-semibold mb-4">
+                <ThemeAwareHeading
+                  level="h3"
+                  className="text-lg font-semibold mb-4"
+                >
                   Available Actions
                 </ThemeAwareHeading>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <ThemeAwareButton
                     variant={isPlayMode ? "cosmic" : "primary"}

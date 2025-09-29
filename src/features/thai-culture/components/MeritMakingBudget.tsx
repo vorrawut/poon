@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  PlusIcon,
-  CalendarIcon,
-} from "@heroicons/react/24/outline";
+import { PlusIcon, CalendarIcon } from "@heroicons/react/24/outline";
 import {
   ThemeAwareCard,
   ThemeAwareText,
@@ -17,16 +14,16 @@ import type { MeritMakingActivity } from "../types";
 
 interface MeritMakingEntry {
   id: string;
-  activityType: MeritMakingActivity['type'];
+  activityType: MeritMakingActivity["type"];
   amount: number;
   date: Date;
   location?: string;
   notes?: string;
-  frequency: MeritMakingActivity['frequency'];
+  frequency: MeritMakingActivity["frequency"];
 }
 
 interface MeritMakingBudgetProps {
-  language?: 'en' | 'th';
+  language?: "en" | "th";
   onMeritMakingUpdate?: (entry: MeritMakingEntry) => void;
   className?: string;
 }
@@ -34,181 +31,192 @@ interface MeritMakingBudgetProps {
 // Merit Making Activity Types
 const MERIT_MAKING_ACTIVITIES: MeritMakingActivity[] = [
   {
-    id: 'temple_donation',
+    id: "temple_donation",
     name: {
-      en: 'Temple Donation',
-      th: 'บริจาควัด'
+      en: "Temple Donation",
+      th: "บริจาควัด",
     },
-    type: 'temple_donation',
-    frequency: 'monthly',
+    type: "temple_donation",
+    frequency: "monthly",
     suggestedAmount: {
       min: 100,
       max: 5000,
-      currency: 'THB'
+      currency: "THB",
     },
     description: {
-      en: 'Regular donations to support temple maintenance and community activities',
-      th: 'การบริจาคประจำเพื่อสนับสนุนการบำรุงรักษาวัดและกิจกรรมชุมชน'
+      en: "Regular donations to support temple maintenance and community activities",
+      th: "การบริจาคประจำเพื่อสนับสนุนการบำรุงรักษาวัดและกิจกรรมชุมชน",
     },
-    icon: '🏛️'
+    icon: "🏛️",
   },
   {
-    id: 'monk_offering',
+    id: "monk_offering",
     name: {
-      en: 'Monk Offering',
-      th: 'ถวายพระ'
+      en: "Monk Offering",
+      th: "ถวายพระ",
     },
-    type: 'monk_offering',
-    frequency: 'weekly',
+    type: "monk_offering",
+    frequency: "weekly",
     suggestedAmount: {
       min: 20,
       max: 500,
-      currency: 'THB'
+      currency: "THB",
     },
     description: {
-      en: 'Offering food, robes, and necessities to Buddhist monks',
-      th: 'การถวายอาหาร ผ้าไตร และสิ่งของจำเป็นแก่พระสงฆ์'
+      en: "Offering food, robes, and necessities to Buddhist monks",
+      th: "การถวายอาหาร ผ้าไตร และสิ่งของจำเป็นแก่พระสงฆ์",
     },
-    icon: '👨‍🦲'
+    icon: "👨‍🦲",
   },
   {
-    id: 'charity',
+    id: "charity",
     name: {
-      en: 'Charity Donation',
-      th: 'บริจาคการกุศล'
+      en: "Charity Donation",
+      th: "บริจาคการกุศล",
     },
-    type: 'charity',
-    frequency: 'monthly',
+    type: "charity",
+    frequency: "monthly",
     suggestedAmount: {
       min: 50,
       max: 2000,
-      currency: 'THB'
+      currency: "THB",
     },
     description: {
-      en: 'Donations to help those in need and support charitable organizations',
-      th: 'การบริจาคเพื่อช่วยเหลือผู้ที่ต้องการและสนับสนุนองค์กรการกุศล'
+      en: "Donations to help those in need and support charitable organizations",
+      th: "การบริจาคเพื่อช่วยเหลือผู้ที่ต้องการและสนับสนุนองค์กรการกุศล",
     },
-    icon: '❤️'
+    icon: "❤️",
   },
   {
-    id: 'merit_transfer',
+    id: "merit_transfer",
     name: {
-      en: 'Merit Transfer Ceremony',
-      th: 'พิธีอุทิศส่วนกุศล'
+      en: "Merit Transfer Ceremony",
+      th: "พิธีอุทิศส่วนกุศล",
     },
-    type: 'merit_transfer',
-    frequency: 'special_occasion',
+    type: "merit_transfer",
+    frequency: "special_occasion",
     suggestedAmount: {
       min: 500,
       max: 10000,
-      currency: 'THB'
+      currency: "THB",
     },
     description: {
-      en: 'Special ceremonies to transfer merit to deceased relatives and ancestors',
-      th: 'พิธีกรรมพิเศษเพื่ออุทิศส่วนกุศลให้แก่ญาติผู้ล่วงลับและบรรพบุรุษ'
+      en: "Special ceremonies to transfer merit to deceased relatives and ancestors",
+      th: "พิธีกรรมพิเศษเพื่ออุทิศส่วนกุศลให้แก่ญาติผู้ล่วงลับและบรรพบุรุษ",
     },
-    icon: '🕯️'
-  }
+    icon: "🕯️",
+  },
 ];
 
-export function MeritMakingBudget({ 
-  language = 'en', 
+export function MeritMakingBudget({
+  language = "en",
   onMeritMakingUpdate,
-  className 
+  className,
 }: MeritMakingBudgetProps) {
   const { isPlayMode } = useTheme();
   const [entries, setEntries] = useState<MeritMakingEntry[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [newEntry, setNewEntry] = useState<Partial<MeritMakingEntry>>({});
-  const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month' | 'year'>('month');
+  const [selectedPeriod, setSelectedPeriod] = useState<
+    "week" | "month" | "year"
+  >("month");
 
   // Initialize with sample data
   useEffect(() => {
     const sampleEntries: MeritMakingEntry[] = [
       {
-        id: '1',
-        activityType: 'temple_donation',
+        id: "1",
+        activityType: "temple_donation",
         amount: 1000,
         date: new Date(2024, 11, 1),
-        location: language === 'th' ? 'วัดพระแก้ว' : 'Wat Phra Kaew',
-        notes: language === 'th' ? 'บริจาคประจำเดือน' : 'Monthly donation',
-        frequency: 'monthly'
+        location: language === "th" ? "วัดพระแก้ว" : "Wat Phra Kaew",
+        notes: language === "th" ? "บริจาคประจำเดือน" : "Monthly donation",
+        frequency: "monthly",
       },
       {
-        id: '2',
-        activityType: 'monk_offering',
+        id: "2",
+        activityType: "monk_offering",
         amount: 200,
         date: new Date(2024, 11, 15),
-        location: language === 'th' ? 'วัดใกล้บ้าน' : 'Local Temple',
-        notes: language === 'th' ? 'ถวายข้าวและแกง' : 'Rice and curry offering',
-        frequency: 'weekly'
+        location: language === "th" ? "วัดใกล้บ้าน" : "Local Temple",
+        notes: language === "th" ? "ถวายข้าวและแกง" : "Rice and curry offering",
+        frequency: "weekly",
       },
       {
-        id: '3',
-        activityType: 'charity',
+        id: "3",
+        activityType: "charity",
         amount: 500,
         date: new Date(2024, 11, 20),
-        location: language === 'th' ? 'มูลนิธิการกุศล' : 'Charity Foundation',
-        notes: language === 'th' ? 'ช่วยเหลือเด็กกำพร้า' : 'Help orphaned children',
-        frequency: 'monthly'
-      }
+        location: language === "th" ? "มูลนิธิการกุศล" : "Charity Foundation",
+        notes:
+          language === "th" ? "ช่วยเหลือเด็กกำพร้า" : "Help orphaned children",
+        frequency: "monthly",
+      },
     ];
     setEntries(sampleEntries);
   }, [language]);
 
-  const getActivityType = (type: MeritMakingActivity['type']) => {
-    return MERIT_MAKING_ACTIVITIES.find(a => a.type === type);
+  const getActivityType = (type: MeritMakingActivity["type"]) => {
+    return MERIT_MAKING_ACTIVITIES.find((a) => a.type === type);
   };
 
-  const getFrequencyText = (frequency: MeritMakingActivity['frequency']) => {
+  const getFrequencyText = (frequency: MeritMakingActivity["frequency"]) => {
     const frequencies = {
       en: {
-        daily: 'Daily',
-        weekly: 'Weekly',
-        monthly: 'Monthly',
-        special_occasion: 'Special Occasion'
+        daily: "Daily",
+        weekly: "Weekly",
+        monthly: "Monthly",
+        special_occasion: "Special Occasion",
       },
       th: {
-        daily: 'รายวัน',
-        weekly: 'รายสัปดาห์',
-        monthly: 'รายเดือน',
-        special_occasion: 'โอกาสพิเศษ'
-      }
+        daily: "รายวัน",
+        weekly: "รายสัปดาห์",
+        monthly: "รายเดือน",
+        special_occasion: "โอกาสพิเศษ",
+      },
     };
     return frequencies[language][frequency];
   };
 
-  const filterEntriesByPeriod = (entries: MeritMakingEntry[], period: 'week' | 'month' | 'year') => {
+  const filterEntriesByPeriod = (
+    entries: MeritMakingEntry[],
+    period: "week" | "month" | "year",
+  ) => {
     const now = new Date();
     const startDate = new Date();
-    
+
     switch (period) {
-      case 'week':
+      case "week":
         startDate.setDate(now.getDate() - 7);
         break;
-      case 'month':
+      case "month":
         startDate.setMonth(now.getMonth() - 1);
         break;
-      case 'year':
+      case "year":
         startDate.setFullYear(now.getFullYear() - 1);
         break;
     }
 
-    return entries.filter(entry => entry.date >= startDate);
+    return entries.filter((entry) => entry.date >= startDate);
   };
 
   const filteredEntries = filterEntriesByPeriod(entries, selectedPeriod);
-  const totalMeritBudget = filteredEntries.reduce((sum, entry) => sum + entry.amount, 0);
+  const totalMeritBudget = filteredEntries.reduce(
+    (sum, entry) => sum + entry.amount,
+    0,
+  );
 
-  const meritStats = MERIT_MAKING_ACTIVITIES.map(activity => {
-    const activityEntries = filteredEntries.filter(e => e.activityType === activity.type);
+  const meritStats = MERIT_MAKING_ACTIVITIES.map((activity) => {
+    const activityEntries = filteredEntries.filter(
+      (e) => e.activityType === activity.type,
+    );
     const total = activityEntries.reduce((sum, e) => sum + e.amount, 0);
     const count = activityEntries.length;
     return {
       activity,
       total,
       count,
-      percentage: totalMeritBudget > 0 ? (total / totalMeritBudget) * 100 : 0
+      percentage: totalMeritBudget > 0 ? (total / totalMeritBudget) * 100 : 0,
     };
   }).sort((a, b) => b.total - a.total);
 
@@ -224,10 +232,10 @@ export function MeritMakingBudget({
       date: newEntry.date,
       location: newEntry.location,
       notes: newEntry.notes,
-      frequency: newEntry.frequency || 'monthly'
+      frequency: newEntry.frequency || "monthly",
     };
 
-    setEntries(prev => [...prev, entry]);
+    setEntries((prev) => [...prev, entry]);
     onMeritMakingUpdate?.(entry);
     setNewEntry({});
     setShowAddModal(false);
@@ -239,26 +247,33 @@ export function MeritMakingBudget({
       <div className="flex items-center justify-between">
         <div>
           <ThemeAwareHeading level="h2" className="mb-2" gradient={isPlayMode}>
-            {language === 'th' ? '🙏 งบประมาณทำบุญ' : '🙏 Merit Making Budget'}
+            {language === "th" ? "🙏 งบประมาณทำบุญ" : "🙏 Merit Making Budget"}
           </ThemeAwareHeading>
           <ThemeAwareText color="secondary">
-            {language === 'th' 
-              ? 'จัดการและติดตามการทำบุญตามหลักพุทธศาสนา'
-              : 'Manage and track your merit-making activities according to Buddhist principles'
-            }
+            {language === "th"
+              ? "จัดการและติดตามการทำบุญตามหลักพุทธศาสนา"
+              : "Manage and track your merit-making activities according to Buddhist principles"}
           </ThemeAwareText>
         </div>
-        
+
         <div className="flex items-center gap-3">
           {/* Period Selector */}
-          <select 
+          <select
             className="px-3 py-2 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-sm"
             value={selectedPeriod}
-            onChange={(e) => setSelectedPeriod(e.target.value as 'week' | 'month' | 'year')}
+            onChange={(e) =>
+              setSelectedPeriod(e.target.value as "week" | "month" | "year")
+            }
           >
-            <option value="week">{language === 'th' ? 'สัปดาห์นี้' : 'This Week'}</option>
-            <option value="month">{language === 'th' ? 'เดือนนี้' : 'This Month'}</option>
-            <option value="year">{language === 'th' ? 'ปีนี้' : 'This Year'}</option>
+            <option value="week">
+              {language === "th" ? "สัปดาห์นี้" : "This Week"}
+            </option>
+            <option value="month">
+              {language === "th" ? "เดือนนี้" : "This Month"}
+            </option>
+            <option value="year">
+              {language === "th" ? "ปีนี้" : "This Year"}
+            </option>
           </select>
 
           <ThemeAwareButton
@@ -266,7 +281,7 @@ export function MeritMakingBudget({
             onClick={() => setShowAddModal(true)}
           >
             <PlusIcon className="w-4 h-4 mr-2" />
-            {language === 'th' ? 'บันทึกบุญ' : 'Record Merit'}
+            {language === "th" ? "บันทึกบุญ" : "Record Merit"}
           </ThemeAwareButton>
         </div>
       </div>
@@ -277,7 +292,7 @@ export function MeritMakingBudget({
           <div className="text-center">
             <div className="text-2xl mb-2">💰</div>
             <ThemeAwareText color="secondary" className="text-sm mb-1">
-              {language === 'th' ? 'งบประมาณทั้งหมด' : 'Total Merit Budget'}
+              {language === "th" ? "งบประมาณทั้งหมด" : "Total Merit Budget"}
             </ThemeAwareText>
             <ThemeAwareText className="text-xl font-bold text-green-600">
               {formatThaiCurrency(totalMeritBudget, language, true)}
@@ -289,7 +304,7 @@ export function MeritMakingBudget({
           <div className="text-center">
             <div className="text-2xl mb-2">📊</div>
             <ThemeAwareText color="secondary" className="text-sm mb-1">
-              {language === 'th' ? 'ครั้งที่ทำบุญ' : 'Merit Activities'}
+              {language === "th" ? "ครั้งที่ทำบุญ" : "Merit Activities"}
             </ThemeAwareText>
             <ThemeAwareText className="text-xl font-bold text-blue-600">
               {filteredEntries.length}
@@ -301,15 +316,15 @@ export function MeritMakingBudget({
           <div className="text-center">
             <div className="text-2xl mb-2">🏛️</div>
             <ThemeAwareText color="secondary" className="text-sm mb-1">
-              {language === 'th' ? 'บริจาควัด' : 'Temple Donations'}
+              {language === "th" ? "บริจาควัด" : "Temple Donations"}
             </ThemeAwareText>
             <ThemeAwareText className="text-xl font-bold text-orange-600">
               {formatThaiCurrency(
                 filteredEntries
-                  .filter(e => e.activityType === 'temple_donation')
+                  .filter((e) => e.activityType === "temple_donation")
                   .reduce((sum, e) => sum + e.amount, 0),
                 language,
-                true
+                true,
               )}
             </ThemeAwareText>
           </div>
@@ -319,15 +334,15 @@ export function MeritMakingBudget({
           <div className="text-center">
             <div className="text-2xl mb-2">❤️</div>
             <ThemeAwareText color="secondary" className="text-sm mb-1">
-              {language === 'th' ? 'การกุศล' : 'Charity'}
+              {language === "th" ? "การกุศล" : "Charity"}
             </ThemeAwareText>
             <ThemeAwareText className="text-xl font-bold text-red-600">
               {formatThaiCurrency(
                 filteredEntries
-                  .filter(e => e.activityType === 'charity')
+                  .filter((e) => e.activityType === "charity")
                   .reduce((sum, e) => sum + e.amount, 0),
                 language,
-                true
+                true,
               )}
             </ThemeAwareText>
           </div>
@@ -337,7 +352,9 @@ export function MeritMakingBudget({
       {/* Merit Statistics */}
       <ThemeAwareCard className="p-6">
         <ThemeAwareHeading level="h3" className="mb-4">
-          {language === 'th' ? '📈 สถิติการทำบุญ' : '📈 Merit Making Statistics'}
+          {language === "th"
+            ? "📈 สถิติการทำบุญ"
+            : "📈 Merit Making Statistics"}
         </ThemeAwareHeading>
 
         <div className="space-y-4">
@@ -356,7 +373,8 @@ export function MeritMakingBudget({
                     {stat.activity.name[language]}
                   </ThemeAwareText>
                   <ThemeAwareText color="secondary" className="text-sm">
-                    {stat.count} {language === 'th' ? 'ครั้ง' : 'times'} • {stat.percentage.toFixed(1)}%
+                    {stat.count} {language === "th" ? "ครั้ง" : "times"} •{" "}
+                    {stat.percentage.toFixed(1)}%
                   </ThemeAwareText>
                 </div>
               </div>
@@ -371,7 +389,9 @@ export function MeritMakingBudget({
       {/* Recent Merit Activities */}
       <ThemeAwareCard className="p-6">
         <ThemeAwareHeading level="h3" className="mb-4">
-          {language === 'th' ? '📋 กิจกรรมทำบุญล่าสุด' : '📋 Recent Merit Activities'}
+          {language === "th"
+            ? "📋 กิจกรรมทำบุญล่าสุด"
+            : "📋 Recent Merit Activities"}
         </ThemeAwareHeading>
 
         <div className="space-y-3">
@@ -397,7 +417,9 @@ export function MeritMakingBudget({
                       <div className="flex items-center gap-2 text-sm">
                         <CalendarIcon className="w-4 h-4" />
                         <ThemeAwareText color="secondary">
-                          {entry.date.toLocaleDateString(language === 'th' ? 'th-TH' : 'en-US')}
+                          {entry.date.toLocaleDateString(
+                            language === "th" ? "th-TH" : "en-US",
+                          )}
                         </ThemeAwareText>
                         {entry.location && (
                           <>
@@ -422,10 +444,9 @@ export function MeritMakingBudget({
           <div className="text-center py-8">
             <div className="text-4xl mb-4">🙏</div>
             <ThemeAwareText color="secondary">
-              {language === 'th' 
-                ? 'ยังไม่มีกิจกรรมทำบุญในช่วงเวลานี้'
-                : 'No merit-making activities in this period'
-              }
+              {language === "th"
+                ? "ยังไม่มีกิจกรรมทำบุญในช่วงเวลานี้"
+                : "No merit-making activities in this period"}
             </ThemeAwareText>
           </div>
         )}
@@ -434,7 +455,9 @@ export function MeritMakingBudget({
       {/* Merit Making Suggestions */}
       <ThemeAwareCard className="p-6">
         <ThemeAwareHeading level="h3" className="mb-4">
-          {language === 'th' ? '💡 คำแนะนำการทำบุญ' : '💡 Merit Making Suggestions'}
+          {language === "th"
+            ? "💡 คำแนะนำการทำบุญ"
+            : "💡 Merit Making Suggestions"}
         </ThemeAwareHeading>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -447,13 +470,14 @@ export function MeritMakingBudget({
               className={cn(
                 "p-4 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg",
                 "hover:border-purple-400 transition-colors cursor-pointer",
-                isPlayMode && "hover:border-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/10"
+                isPlayMode &&
+                  "hover:border-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/10",
               )}
               onClick={() => {
                 setNewEntry({
                   activityType: activity.type,
                   frequency: activity.frequency,
-                  amount: activity.suggestedAmount.min
+                  amount: activity.suggestedAmount.min,
                 });
                 setShowAddModal(true);
               }}
@@ -472,7 +496,8 @@ export function MeritMakingBudget({
                   {getFrequencyText(activity.frequency)}
                 </ThemeAwareText>
                 <ThemeAwareText className="font-medium">
-                  {formatThaiCurrency(activity.suggestedAmount.min, language)} - {formatThaiCurrency(activity.suggestedAmount.max, language)}
+                  {formatThaiCurrency(activity.suggestedAmount.min, language)} -{" "}
+                  {formatThaiCurrency(activity.suggestedAmount.max, language)}
                 </ThemeAwareText>
               </div>
             </motion.div>
@@ -502,22 +527,32 @@ export function MeritMakingBudget({
             >
               <ThemeAwareCard className="p-6">
                 <ThemeAwareHeading level="h2" className="mb-6">
-                  {language === 'th' ? 'บันทึกการทำบุญ' : 'Record Merit Making'}
+                  {language === "th" ? "บันทึกการทำบุญ" : "Record Merit Making"}
                 </ThemeAwareHeading>
 
                 <div className="space-y-4">
                   {/* Activity Type */}
                   <div>
                     <ThemeAwareText className="text-sm font-medium mb-2">
-                      {language === 'th' ? 'ประเภทการทำบุญ' : 'Merit Activity Type'}
+                      {language === "th"
+                        ? "ประเภทการทำบุญ"
+                        : "Merit Activity Type"}
                     </ThemeAwareText>
-                    <select 
+                    <select
                       className="w-full p-3 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
-                      value={newEntry.activityType || ''}
-                      onChange={(e) => setNewEntry(prev => ({ ...prev, activityType: e.target.value as MeritMakingActivity['type'] }))}
+                      value={newEntry.activityType || ""}
+                      onChange={(e) =>
+                        setNewEntry((prev) => ({
+                          ...prev,
+                          activityType: e.target
+                            .value as MeritMakingActivity["type"],
+                        }))
+                      }
                     >
-                      <option value="">{language === 'th' ? 'เลือกประเภท' : 'Select Type'}</option>
-                      {MERIT_MAKING_ACTIVITIES.map(activity => (
+                      <option value="">
+                        {language === "th" ? "เลือกประเภท" : "Select Type"}
+                      </option>
+                      {MERIT_MAKING_ACTIVITIES.map((activity) => (
                         <option key={activity.id} value={activity.type}>
                           {activity.icon} {activity.name[language]}
                         </option>
@@ -528,55 +563,83 @@ export function MeritMakingBudget({
                   {/* Amount */}
                   <div>
                     <ThemeAwareText className="text-sm font-medium mb-2">
-                      {language === 'th' ? 'จำนวนเงิน (บาท)' : 'Amount (THB)'}
+                      {language === "th" ? "จำนวนเงิน (บาท)" : "Amount (THB)"}
                     </ThemeAwareText>
                     <input
                       type="number"
                       className="w-full p-3 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
                       placeholder="0"
-                      value={newEntry.amount || ''}
-                      onChange={(e) => setNewEntry(prev => ({ ...prev, amount: parseFloat(e.target.value) || 0 }))}
+                      value={newEntry.amount || ""}
+                      onChange={(e) =>
+                        setNewEntry((prev) => ({
+                          ...prev,
+                          amount: parseFloat(e.target.value) || 0,
+                        }))
+                      }
                     />
                   </div>
 
                   {/* Date */}
                   <div>
                     <ThemeAwareText className="text-sm font-medium mb-2">
-                      {language === 'th' ? 'วันที่' : 'Date'}
+                      {language === "th" ? "วันที่" : "Date"}
                     </ThemeAwareText>
                     <input
                       type="date"
                       className="w-full p-3 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
-                      value={newEntry.date?.toISOString().split('T')[0] || ''}
-                      onChange={(e) => setNewEntry(prev => ({ ...prev, date: new Date(e.target.value) }))}
+                      value={newEntry.date?.toISOString().split("T")[0] || ""}
+                      onChange={(e) =>
+                        setNewEntry((prev) => ({
+                          ...prev,
+                          date: new Date(e.target.value),
+                        }))
+                      }
                     />
                   </div>
 
                   {/* Location */}
                   <div>
                     <ThemeAwareText className="text-sm font-medium mb-2">
-                      {language === 'th' ? 'สถานที่' : 'Location'}
+                      {language === "th" ? "สถานที่" : "Location"}
                     </ThemeAwareText>
                     <input
                       type="text"
                       className="w-full p-3 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
-                      placeholder={language === 'th' ? 'เช่น วัดพระแก้ว' : 'e.g., Wat Phra Kaew'}
-                      value={newEntry.location || ''}
-                      onChange={(e) => setNewEntry(prev => ({ ...prev, location: e.target.value }))}
+                      placeholder={
+                        language === "th"
+                          ? "เช่น วัดพระแก้ว"
+                          : "e.g., Wat Phra Kaew"
+                      }
+                      value={newEntry.location || ""}
+                      onChange={(e) =>
+                        setNewEntry((prev) => ({
+                          ...prev,
+                          location: e.target.value,
+                        }))
+                      }
                     />
                   </div>
 
                   {/* Notes */}
                   <div>
                     <ThemeAwareText className="text-sm font-medium mb-2">
-                      {language === 'th' ? 'หมายเหตุ' : 'Notes'}
+                      {language === "th" ? "หมายเหตุ" : "Notes"}
                     </ThemeAwareText>
                     <textarea
                       className="w-full p-3 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
                       rows={3}
-                      placeholder={language === 'th' ? 'รายละเอียดเพิ่มเติม...' : 'Additional details...'}
-                      value={newEntry.notes || ''}
-                      onChange={(e) => setNewEntry(prev => ({ ...prev, notes: e.target.value }))}
+                      placeholder={
+                        language === "th"
+                          ? "รายละเอียดเพิ่มเติม..."
+                          : "Additional details..."
+                      }
+                      value={newEntry.notes || ""}
+                      onChange={(e) =>
+                        setNewEntry((prev) => ({
+                          ...prev,
+                          notes: e.target.value,
+                        }))
+                      }
                     />
                   </div>
                 </div>
@@ -590,14 +653,14 @@ export function MeritMakingBudget({
                       setNewEntry({});
                     }}
                   >
-                    {language === 'th' ? 'ยกเลิก' : 'Cancel'}
+                    {language === "th" ? "ยกเลิก" : "Cancel"}
                   </ThemeAwareButton>
                   <ThemeAwareButton
                     variant="primary"
                     className="flex-1"
                     onClick={handleAddEntry}
                   >
-                    {language === 'th' ? 'บันทึก' : 'Record'}
+                    {language === "th" ? "บันทึก" : "Record"}
                   </ThemeAwareButton>
                 </div>
               </ThemeAwareCard>

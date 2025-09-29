@@ -12,54 +12,54 @@ import {
   FamilyObligationTracker,
   MeritMakingBudget,
 } from "../features/thai-culture";
-import {
-  UniverseBackground,
-} from "../components/widgets";
+import { UniverseBackground } from "../components/widgets";
 import { useUIStore } from "../store/useUIStore";
 
 export function ThaiCulture() {
   const { viewMode, accessibilityMode } = useUIStore();
   const { isPlayMode } = useTheme();
-  const [activeTab, setActiveTab] = useState<'calendar' | 'family' | 'merit'>('calendar');
-  const [language, setLanguage] = useState<'en' | 'th'>('en');
+  const [activeTab, setActiveTab] = useState<"calendar" | "family" | "merit">(
+    "calendar",
+  );
+  const [language, setLanguage] = useState<"en" | "th">("en");
 
   const tabs = [
     {
-      id: 'calendar' as const,
+      id: "calendar" as const,
       name: {
-        en: 'Thai Calendar',
-        th: 'ปฏิทินไทย'
+        en: "Thai Calendar",
+        th: "ปฏิทินไทย",
       },
-      icon: '📅',
+      icon: "📅",
       description: {
-        en: 'Plan for Thai festivals and cultural events',
-        th: 'วางแผนสำหรับเทศกาลและงานวัฒนธรรมไทย'
-      }
+        en: "Plan for Thai festivals and cultural events",
+        th: "วางแผนสำหรับเทศกาลและงานวัฒนธรรมไทย",
+      },
     },
     {
-      id: 'family' as const,
+      id: "family" as const,
       name: {
-        en: 'Family Obligations',
-        th: 'ภาระครอบครัว'
+        en: "Family Obligations",
+        th: "ภาระครอบครัว",
       },
-      icon: '👨‍👩‍👧‍👦',
+      icon: "👨‍👩‍👧‍👦",
       description: {
-        en: 'Manage family support and responsibilities',
-        th: 'จัดการการช่วยเหลือและความรับผิดชอบต่อครอบครัว'
-      }
+        en: "Manage family support and responsibilities",
+        th: "จัดการการช่วยเหลือและความรับผิดชอบต่อครอบครัว",
+      },
     },
     {
-      id: 'merit' as const,
+      id: "merit" as const,
       name: {
-        en: 'Merit Making',
-        th: 'การทำบุญ'
+        en: "Merit Making",
+        th: "การทำบุญ",
       },
-      icon: '🙏',
+      icon: "🙏",
       description: {
-        en: 'Track your Buddhist merit-making activities',
-        th: 'ติดตามกิจกรรมการทำบุญตามหลักพุทธศาสนา'
-      }
-    }
+        en: "Track your Buddhist merit-making activities",
+        th: "ติดตามกิจกรรมการทำบุญตามหลักพุทธศาสนา",
+      },
+    },
   ];
 
   return (
@@ -92,8 +92,12 @@ export function ThaiCulture() {
               >
                 🇹🇭
               </motion.div>
-              <ThemeAwareHeading level="h1" className="mb-4" gradient={isPlayMode}>
-                {language === 'th' ? 'วัฒนธรรมไทย' : 'Thai Culture'}
+              <ThemeAwareHeading
+                level="h1"
+                className="mb-4"
+                gradient={isPlayMode}
+              >
+                {language === "th" ? "วัฒนธรรมไทย" : "Thai Culture"}
               </ThemeAwareHeading>
               <motion.div
                 className="text-5xl md:text-7xl"
@@ -117,36 +121,35 @@ export function ThaiCulture() {
               className="mb-8 max-w-4xl mx-auto px-4"
             >
               {accessibilityMode === "elder"
-                ? (language === 'th' ? 
-                    "จัดการการเงินตามวัฒนธรรมไทย ด้วยระบบที่เข้าใจง่ายและใช้งานสะดวก" :
-                    "Manage your finances according to Thai culture with easy-to-understand and convenient systems")
+                ? language === "th"
+                  ? "จัดการการเงินตามวัฒนธรรมไทย ด้วยระบบที่เข้าใจง่ายและใช้งานสะดวก"
+                  : "Manage your finances according to Thai culture with easy-to-understand and convenient systems"
                 : accessibilityMode === "youth"
-                  ? (language === 'th' ?
-                      "ปรับแต่งการเงินแบบไทยๆ! 🎮 ทำบุญ ดูแลครอบครัว และวางแปลนเทศกาลอย่างเจ๋ง! 🇹🇭✨" :
-                      "Customize Thai-style finances! 🎮 Make merit, care for family, and plan festivals like a pro! 🇹🇭✨")
+                  ? language === "th"
+                    ? "ปรับแต่งการเงินแบบไทยๆ! 🎮 ทำบุญ ดูแลครอบครัว และวางแปลนเทศกาลอย่างเจ๋ง! 🇹🇭✨"
+                    : "Customize Thai-style finances! 🎮 Make merit, care for family, and plan festivals like a pro! 🇹🇭✨"
                   : viewMode === "play"
-                    ? (language === 'th' ?
-                        "จัดการการเงินในแบบไทยๆ — ที่ทุกการวางแผนเป็นการเดินทางผ่านจักรวาลวัฒนธรรมของคุณเอง! 🌌" :
-                        "Manage your finances the Thai way — where every plan becomes a journey through your personal cultural universe! 🌌")
-                    : (language === 'th' ?
-                        "การจัดการการเงินที่เข้าใจวัฒนธรรมไทย วางแผนเทศกาล ดูแลครอบครัว และทำบุญอย่างเป็นระบบ" :
-                        "Thai culture-aware financial management. Plan festivals, care for family, and make merit systematically.")
-              }
+                    ? language === "th"
+                      ? "จัดการการเงินในแบบไทยๆ — ที่ทุกการวางแผนเป็นการเดินทางผ่านจักรวาลวัฒนธรรมของคุณเอง! 🌌"
+                      : "Manage your finances the Thai way — where every plan becomes a journey through your personal cultural universe! 🌌"
+                    : language === "th"
+                      ? "การจัดการการเงินที่เข้าใจวัฒนธรรมไทย วางแผนเทศกาล ดูแลครอบครัว และทำบุญอย่างเป็นระบบ"
+                      : "Thai culture-aware financial management. Plan festivals, care for family, and make merit systematically."}
             </ThemeAwareText>
 
             {/* Language Toggle */}
             <div className="flex items-center justify-center gap-2 mb-8">
               <ThemeAwareButton
-                variant={language === 'en' ? 'primary' : 'outline'}
+                variant={language === "en" ? "primary" : "outline"}
                 size="sm"
-                onClick={() => setLanguage('en')}
+                onClick={() => setLanguage("en")}
               >
                 🇺🇸 English
               </ThemeAwareButton>
               <ThemeAwareButton
-                variant={language === 'th' ? 'primary' : 'outline'}
+                variant={language === "th" ? "primary" : "outline"}
                 size="sm"
-                onClick={() => setLanguage('th')}
+                onClick={() => setLanguage("th")}
               >
                 🇹🇭 ไทย
               </ThemeAwareButton>
@@ -165,26 +168,27 @@ export function ThaiCulture() {
               onClick={() => setActiveTab(tab.id)}
               className={`
                 px-6 py-4 rounded-xl transition-all duration-300 text-left
-                ${activeTab === tab.id
-                  ? isPlayMode
-                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
-                    : 'bg-blue-500 text-white shadow-lg'
-                  : isPlayMode
-                    ? 'bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20'
-                    : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'
+                ${
+                  activeTab === tab.id
+                    ? isPlayMode
+                      ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
+                      : "bg-blue-500 text-white shadow-lg"
+                    : isPlayMode
+                      ? "bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20"
+                      : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
                 }
-                ${isPlayMode && 'backdrop-blur-sm'}
+                ${isPlayMode && "backdrop-blur-sm"}
               `}
             >
               <div className="flex items-center gap-3">
                 <span className="text-2xl">{tab.icon}</span>
                 <div>
-                  <div className="font-medium">
-                    {tab.name[language]}
-                  </div>
-                  <div className={`text-sm ${
-                    activeTab === tab.id ? 'opacity-90' : 'opacity-70'
-                  }`}>
+                  <div className="font-medium">{tab.name[language]}</div>
+                  <div
+                    className={`text-sm ${
+                      activeTab === tab.id ? "opacity-90" : "opacity-70"
+                    }`}
+                  >
                     {tab.description[language]}
                   </div>
                 </div>
@@ -200,29 +204,34 @@ export function ThaiCulture() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          {activeTab === 'calendar' && (
+          {activeTab === "calendar" && (
             <ThaiCalendarIntegration
               language={language}
               onPlanExpense={(holiday, amount) => {
-                console.log('Planning expense for', holiday.name[language], ':', amount);
+                console.log(
+                  "Planning expense for",
+                  holiday.name[language],
+                  ":",
+                  amount,
+                );
               }}
             />
           )}
 
-          {activeTab === 'family' && (
+          {activeTab === "family" && (
             <FamilyObligationTracker
               language={language}
               onObligationUpdate={(obligation) => {
-                console.log('Family obligation updated:', obligation);
+                console.log("Family obligation updated:", obligation);
               }}
             />
           )}
 
-          {activeTab === 'merit' && (
+          {activeTab === "merit" && (
             <MeritMakingBudget
               language={language}
               onMeritMakingUpdate={(entry) => {
-                console.log('Merit making entry updated:', entry);
+                console.log("Merit making entry updated:", entry);
               }}
             />
           )}
@@ -235,25 +244,31 @@ export function ThaiCulture() {
           transition={{ delay: 0.5 }}
           className="mt-16"
         >
-          <div className={`
+          <div
+            className={`
             p-8 rounded-2xl text-center
-            ${isPlayMode
-              ? 'bg-gradient-to-r from-yellow-400/20 to-orange-400/20 backdrop-blur-sm border border-yellow-400/30'
-              : 'bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200'
+            ${
+              isPlayMode
+                ? "bg-gradient-to-r from-yellow-400/20 to-orange-400/20 backdrop-blur-sm border border-yellow-400/30"
+                : "bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200"
             }
-          `}>
+          `}
+          >
             <div className="text-4xl mb-4">🧠</div>
             <ThemeAwareHeading level="h2" className="mb-4">
-              {language === 'th' ? 'ปัญญาการเงินแบบไทย' : 'Thai Financial Wisdom'}
+              {language === "th"
+                ? "ปัญญาการเงินแบบไทย"
+                : "Thai Financial Wisdom"}
             </ThemeAwareHeading>
             <ThemeAwareText className="max-w-3xl mx-auto">
-              {language === 'th'
+              {language === "th"
                 ? '"การออมเงินเป็นเหมือนการสร้างบุญ - ทำเล็กน้อยแต่สม่ำเสมอ จะได้ผลใหญ่ในที่สุด การดูแลครอบครัวและการทำบุญเป็นการลงทุนที่ดีที่สุดสำหรับชีวิต"'
-                : '"Saving money is like making merit - small but consistent actions lead to great results. Taking care of family and making merit are the best investments for life."'
-              }
+                : '"Saving money is like making merit - small but consistent actions lead to great results. Taking care of family and making merit are the best investments for life."'}
             </ThemeAwareText>
             <ThemeAwareText color="secondary" className="mt-4 italic">
-              {language === 'th' ? '- ปรัชญาการเงินแบบไทย' : '- Thai Financial Philosophy'}
+              {language === "th"
+                ? "- ปรัชญาการเงินแบบไทย"
+                : "- Thai Financial Philosophy"}
             </ThemeAwareText>
           </div>
         </motion.div>

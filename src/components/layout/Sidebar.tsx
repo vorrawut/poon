@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useUIStore } from "../../store/useUIStore";
 import { DualLensToggle } from "../widgets";
 import { useTheme, ThemeAwareText } from "../../core";
+import { useTranslation } from "../../libs/i18n";
 import { cn } from "../../libs/utils";
 import {
   HomeIcon,
@@ -17,20 +18,63 @@ import {
   RocketLaunchIcon,
 } from "@heroicons/react/24/outline";
 
-const navigation = [
-  { name: "Universe", href: "/", icon: GlobeAltIcon },
-  { name: "Dashboard", href: "/dashboard", icon: HomeIcon },
-  { name: "Accounts", href: "/accounts", icon: BanknotesIcon },
-  { name: "Portfolio", href: "/portfolio", icon: ChartPieIcon },
-  { name: "Money Flow", href: "/money-flow", icon: CurrencyDollarIcon },
-  { name: "Time Machine", href: "/time-machine", icon: ClockIcon },
-  { name: "Future", href: "/future", icon: RocketLaunchIcon },
-  { name: "Spending", href: "/spending", icon: CreditCardIcon },
-  { name: "Import", href: "/imports", icon: DocumentArrowUpIcon },
-  { name: "Settings", href: "/settings", icon: Cog6ToothIcon },
+// Navigation items with translation keys
+const getNavigation = (t: (key: string) => string) => [
+  { name: t("common.navigation.universe"), href: "/", icon: GlobeAltIcon },
+  {
+    name: t("common.navigation.dashboard"),
+    href: "/dashboard",
+    icon: HomeIcon,
+  },
+  {
+    name: t("common.navigation.accounts"),
+    href: "/accounts",
+    icon: BanknotesIcon,
+  },
+  {
+    name: t("common.navigation.portfolio"),
+    href: "/portfolio",
+    icon: ChartPieIcon,
+  },
+  {
+    name: t("common.navigation.moneyFlow"),
+    href: "/money-flow",
+    icon: CurrencyDollarIcon,
+  },
+  {
+    name: t("common.navigation.timeMachine"),
+    href: "/time-machine",
+    icon: ClockIcon,
+  },
+  {
+    name: t("common.navigation.future"),
+    href: "/future",
+    icon: RocketLaunchIcon,
+  },
+  {
+    name: t("common.navigation.thaiCulture"),
+    href: "/thai-culture",
+    icon: HomeIcon,
+  }, // Will fix icon later
+  {
+    name: t("common.navigation.spending"),
+    href: "/spending",
+    icon: CreditCardIcon,
+  },
+  {
+    name: t("common.navigation.import"),
+    href: "/imports",
+    icon: DocumentArrowUpIcon,
+  },
+  {
+    name: t("common.navigation.settings"),
+    href: "/settings",
+    icon: Cog6ToothIcon,
+  },
 ];
 
 export function Sidebar() {
+  const { t } = useTranslation();
   const {
     sidebarOpen,
     sidebarCollapsed,
@@ -44,6 +88,7 @@ export function Sidebar() {
 
   const isVisible = isMobile ? sidebarOpen : true;
   const isCollapsed = !isMobile && sidebarCollapsed;
+  const navigation = getNavigation(t);
 
   return (
     <div

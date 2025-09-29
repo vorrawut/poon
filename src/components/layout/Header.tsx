@@ -7,25 +7,33 @@ import {
   useTheme,
 } from "../../core";
 import { ThemeToggle } from "../ui/ThemeToggle";
+import { LanguageSwitcher } from "../ui/LanguageSwitcher";
+import { useTranslation } from "../../libs/i18n";
 import { Bars3Icon, PlusIcon, BellIcon } from "@heroicons/react/24/outline";
 import { cn } from "../../libs/utils";
 
-const pageTitle: Record<string, string> = {
-  "/": "Universe",
-  "/universe": "Universe",
-  "/dashboard": "Dashboard",
-  "/accounts": "Accounts",
-  "/portfolio": "Portfolio",
-  "/money-flow": "Money Flow",
-  "/spending": "Spending",
-  "/imports": "Import Data",
-  "/time-machine": "Time Machine",
-  "/future": "Future",
-  "/settings": "Settings",
+// Use translation keys instead of hardcoded titles
+const getPageTitle = (path: string, t: (key: string) => string): string => {
+  const titleMap: Record<string, string> = {
+    "/": t("common.navigation.universe"),
+    "/universe": t("common.navigation.universe"),
+    "/dashboard": t("common.navigation.dashboard"),
+    "/accounts": t("common.navigation.accounts"),
+    "/portfolio": t("common.navigation.portfolio"),
+    "/money-flow": t("common.navigation.moneyFlow"),
+    "/spending": t("common.navigation.spending"),
+    "/imports": t("common.navigation.import"),
+    "/time-machine": t("common.navigation.timeMachine"),
+    "/future": t("common.navigation.future"),
+    "/thai-culture": t("common.navigation.thaiCulture"),
+    "/settings": t("common.navigation.settings"),
+  };
+  return titleMap[path] || path;
 };
 
 export function Header() {
   const location = useLocation();
+  const { t } = useTranslation();
   const {
     isMobile,
     toggleSidebar,
@@ -35,7 +43,7 @@ export function Header() {
   } = useUIStore();
   const { isPlayMode, themeMode } = useTheme();
 
-  const title = pageTitle[location.pathname] || "Universe";
+  const title = getPageTitle(location.pathname, t);
 
   const handleQuickAction = () => {
     openModal("addTransaction");
@@ -142,6 +150,9 @@ export function Header() {
             <BellIcon className="h-5 w-5 sm:h-6 sm:w-6" />
             <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full animate-pulse"></span>
           </ThemeAwareButton>
+
+          {/* Language switcher */}
+          <LanguageSwitcher variant="compact" />
 
           {/* Theme toggle */}
           <ThemeToggle className="h-10 w-10 sm:h-12 sm:w-12" />
