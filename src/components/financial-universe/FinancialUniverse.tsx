@@ -2,6 +2,9 @@ import { motion } from "framer-motion";
 import { MoonOfSpending } from "./MoonOfSpending";
 import { GoalsAsStars } from "./GoalsAsStars";
 import { InteractiveWealthPlanet } from "./InteractiveWealthPlanet";
+import { EnhancedCosmicBackground } from "./EnhancedCosmicBackground";
+import { SpendingMoonPhases } from "./SpendingMoonPhases";
+import { GoalStarConstellation } from "./GoalStarConstellation";
 import { useNetWorth } from "../../features/networth/hooks/useNetWorth";
 import {
   mockFinancialUniverseGoals,
@@ -13,6 +16,7 @@ import {
   ThemeAwareButton,
   ThemeAwareHeading,
   ThemeAwareText,
+  useTheme,
 } from "../../core";
 import { AIInsightsContainer } from "../../features/ai-insights/components/AIInsightCard";
 import { mockAIInsights } from "../../../mockData/features/ai-insights";
@@ -31,6 +35,7 @@ export function FinancialUniverse({
 }: FinancialUniverseProps) {
   const { netWorthData, loading, error } = useNetWorth();
   const [aiInsights, setAiInsights] = useState<any[]>([]);
+  const { isPlayMode } = useTheme();
 
   // Use centralized mock AI insights
   useEffect(() => {
@@ -80,37 +85,12 @@ export function FinancialUniverse({
     <div
       className={`relative h-full bg-gradient-to-b from-slate-900 via-purple-900 to-indigo-900 overflow-y-auto ${className}`}
     >
-      {/* Background Stars Field */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(100)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute bg-white rounded-full"
-            style={{
-              width: Math.random() * 2 + 0.5,
-              height: Math.random() * 2 + 0.5,
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              opacity: [0.2, 1, 0.2],
-              scale: [0.8, 1.2, 0.8],
-            }}
-            transition={{
-              duration: 3 + Math.random() * 4,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Nebula Background */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl" />
-        <div className="absolute top-3/4 left-1/3 w-64 h-64 bg-pink-500/5 rounded-full blur-3xl" />
-      </div>
+      {/* Enhanced Cosmic Background */}
+      <EnhancedCosmicBackground
+        starCount={200}
+        showNebula={true}
+        showShootingStars={true}
+      />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Universe Header */}
@@ -154,6 +134,57 @@ export function FinancialUniverse({
               }}
             />
           </motion.div>
+        )}
+
+        {/* Enhanced Universe Components */}
+        {isPlayMode && (
+          <div className="mb-16 space-y-16">
+            {/* Spending Moon Phases */}
+            <motion.div
+              className="flex justify-center"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.8 }}
+            >
+              <SpendingMoonPhases
+                monthlySpending={mockSpendingData.monthlySpending}
+                previousMonthSpending={mockSpendingData.previousMonthSpending}
+                spendingChange={mockSpendingData.spendingChange}
+                spendingPattern={
+                  mockSpendingData.spendingChange > 20
+                    ? "volatile"
+                    : mockSpendingData.spendingChange > 5
+                      ? "increasing"
+                      : mockSpendingData.spendingChange < -5
+                        ? "decreasing"
+                        : "stable"
+                }
+              />
+            </motion.div>
+
+            {/* Goal Star Constellation */}
+            <motion.div
+              className="flex justify-center"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 1.2 }}
+            >
+              <GoalStarConstellation
+                goals={mockGoals.map((goal) => ({
+                  id: goal.id,
+                  name: goal.name,
+                  target: goal.targetAmount,
+                  current: goal.currentAmount,
+                  deadline: "2024-12-31", // Mock deadline
+                  category: goal.category,
+                  icon: goal.icon,
+                  color: goal.color,
+                  priority: goal.priority as "low" | "medium" | "high",
+                }))}
+                onGoalClick={(goal) => onQuickAction?.("view_goal", goal)}
+              />
+            </motion.div>
+          </div>
         )}
 
         {/* Main Universe Layout */}

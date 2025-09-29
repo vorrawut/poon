@@ -43,7 +43,7 @@ function WealthPlanet({
   // Dynamic planet appearance based on wealth and growth
   const planetMaterial = useMemo(() => {
     let baseColor, emissiveColor, atmosphereColor, ringColor;
-    
+
     if (netWorth > 1000000) {
       // Millionaire planet - Gold with purple atmosphere
       baseColor = "#FFD700";
@@ -90,24 +90,28 @@ function WealthPlanet({
     if (meshRef.current) {
       // Smooth rotation
       meshRef.current.rotation.y += 0.004;
-      meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.1;
+      meshRef.current.rotation.x =
+        Math.sin(state.clock.elapsedTime * 0.3) * 0.1;
 
       // Dynamic pulsing based on growth
       const pulseIntensity = Math.abs(growth) / 20000;
-      const pulse = Math.sin(state.clock.elapsedTime * 1.5) * pulseIntensity * 0.08;
+      const pulse =
+        Math.sin(state.clock.elapsedTime * 1.5) * pulseIntensity * 0.08;
       meshRef.current.scale.setScalar(1 + pulse);
     }
 
     if (atmosphereRef.current) {
       // Counter-rotate atmosphere
       atmosphereRef.current.rotation.y -= 0.002;
-      atmosphereRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.5) * 0.05;
+      atmosphereRef.current.rotation.z =
+        Math.sin(state.clock.elapsedTime * 0.5) * 0.05;
     }
 
     if (ringsRef.current) {
       // Rotate rings
       ringsRef.current.rotation.z += 0.01;
-      ringsRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.4) * 0.2;
+      ringsRef.current.rotation.x =
+        Math.sin(state.clock.elapsedTime * 0.4) * 0.2;
     }
   });
 
@@ -129,7 +133,11 @@ function WealthPlanet({
       </Sphere>
 
       {/* Multi-layered Atmosphere */}
-      <Sphere ref={atmosphereRef} args={[planetSize * 1.2, 64, 64]} position={[0, 0, 0]}>
+      <Sphere
+        ref={atmosphereRef}
+        args={[planetSize * 1.2, 64, 64]}
+        position={[0, 0, 0]}
+      >
         <meshBasicMaterial
           color={planetMaterial.atmosphereColor}
           transparent
@@ -208,9 +216,13 @@ function WealthPlanet({
         outlineWidth={0.02}
         outlineColor={themeMode === "dark" ? "#000000" : "#FFFFFF"}
       >
-        {growth > 5000 ? "🚀 +" : 
-         growth > 0 ? "📈 +" : 
-         growth < -2000 ? "📉 " : "📊 "}
+        {growth > 5000
+          ? "🚀 +"
+          : growth > 0
+            ? "📈 +"
+            : growth < -2000
+              ? "📉 "
+              : "📊 "}
         ฿{Math.abs(growth / 1000).toFixed(1)}K
       </Text>
 
@@ -224,10 +236,15 @@ function WealthPlanet({
         outlineWidth={0.01}
         outlineColor={themeMode === "dark" ? "#000000" : "#FFFFFF"}
       >
-        {netWorth > 1000000 ? "👑 Millionaire Status" : 
-         netWorth > 500000 ? "💎 High Net Worth" :
-         netWorth > 100000 ? "⭐ Building Wealth" : 
-         netWorth > 50000 ? "🌟 Growing Strong" : "🌱 Starting Journey"}
+        {netWorth > 1000000
+          ? "👑 Millionaire Status"
+          : netWorth > 500000
+            ? "💎 High Net Worth"
+            : netWorth > 100000
+              ? "⭐ Building Wealth"
+              : netWorth > 50000
+                ? "🌟 Growing Strong"
+                : "🌱 Starting Journey"}
       </Text>
     </group>
   );
@@ -271,37 +288,37 @@ function Scene({ netWorth, growth }: { netWorth: number; growth: number }) {
     <>
       {/* Cinematic Lighting Setup */}
       <ambientLight intensity={0.2} color="#1e1b4b" />
-      
+
       {/* Key Light - Main illumination */}
-      <directionalLight 
-        position={[10, 10, 5]} 
-        intensity={1.5} 
+      <directionalLight
+        position={[10, 10, 5]}
+        intensity={1.5}
         color="#ffffff"
         castShadow
       />
-      
+
       {/* Fill Light - Softer secondary light */}
-      <pointLight 
-        position={[-8, 5, 8]} 
-        intensity={0.8} 
+      <pointLight
+        position={[-8, 5, 8]}
+        intensity={0.8}
         color="#4f46e5"
         distance={20}
         decay={2}
       />
-      
+
       {/* Rim Light - Creates edge glow */}
-      <pointLight 
-        position={[0, -10, -10]} 
-        intensity={1.2} 
+      <pointLight
+        position={[0, -10, -10]}
+        intensity={1.2}
         color="#9333ea"
         distance={25}
         decay={1.5}
       />
-      
+
       {/* Accent Light - Dynamic color based on growth */}
-      <pointLight 
-        position={[15, 0, 0]} 
-        intensity={0.6} 
+      <pointLight
+        position={[15, 0, 0]}
+        intensity={0.6}
         color={growth > 0 ? "#10b981" : growth < 0 ? "#ef4444" : "#3b82f6"}
         distance={30}
         decay={2}
@@ -319,22 +336,22 @@ function Scene({ netWorth, growth }: { netWorth: number; growth: number }) {
       />
 
       {/* Cosmic Sparkles */}
-      <Sparkles 
-        count={300} 
-        scale={25} 
-        size={2} 
-        speed={0.2} 
+      <Sparkles
+        count={300}
+        scale={25}
+        size={2}
+        speed={0.2}
         opacity={0.8}
         color="#ffffff"
       />
 
       {/* Additional Colored Sparkles for Wealth */}
       {netWorth > 100000 && (
-        <Sparkles 
-          count={100} 
-          scale={15} 
-          size={3} 
-          speed={0.4} 
+        <Sparkles
+          count={100}
+          scale={15}
+          size={3}
+          speed={0.4}
           opacity={0.6}
           color="#ffd700"
         />
@@ -470,7 +487,7 @@ export function InteractiveWealthPlanet({
           "absolute bottom-4 left-4 right-4 rounded-lg p-3 border",
           "bg-gradient-to-r from-black/30 via-purple-900/20 to-black/30",
           "backdrop-blur-md border-purple-500/20",
-          "shadow-lg shadow-purple-500/10"
+          "shadow-lg shadow-purple-500/10",
         )}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

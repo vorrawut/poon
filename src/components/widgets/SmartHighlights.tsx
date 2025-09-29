@@ -41,16 +41,16 @@ export function SmartHighlights({
       transition={{ duration: 1, delay: 0.5 }}
     >
       <div className="text-center mb-12">
-        <ThemeAwareHeading 
-          level="h2" 
+        <ThemeAwareHeading
+          level="h2"
           className="mb-4 text-2xl sm:text-3xl"
           gradient={isPlayMode}
         >
           <span className="mr-3">🧠</span>
           {title}
         </ThemeAwareHeading>
-        <ThemeAwareText 
-          color="secondary" 
+        <ThemeAwareText
+          color="secondary"
           className="max-w-2xl mx-auto text-base sm:text-lg"
         >
           {subtitle}
@@ -70,16 +70,14 @@ export function SmartHighlights({
           >
             <div className="flex items-center gap-3 mb-3">
               <div className="text-2xl sm:text-3xl">{highlight.icon}</div>
-              <ThemeAwareHeading 
-                level="h3" 
+              <ThemeAwareHeading
+                level="h3"
                 className="text-base sm:text-lg font-semibold"
               >
                 {highlight.title}
               </ThemeAwareHeading>
             </div>
-            <ThemeAwareText 
-              className="text-sm sm:text-base opacity-90"
-            >
+            <ThemeAwareText className="text-sm sm:text-base opacity-90">
               {highlight.message}
             </ThemeAwareText>
           </motion.div>

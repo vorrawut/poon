@@ -49,10 +49,16 @@ export function SpendingGamification({
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <ThemeAwareHeading level="h3" className="text-2xl font-bold mb-2" gradient={isPlayMode}>
+          <ThemeAwareHeading
+            level="h3"
+            className="text-2xl font-bold mb-2"
+            gradient={isPlayMode}
+          >
             Spending Achievements
           </ThemeAwareHeading>
-          <ThemeAwareText color="secondary">Level up your financial game</ThemeAwareText>
+          <ThemeAwareText color="secondary">
+            Level up your financial game
+          </ThemeAwareText>
         </div>
 
         <div className="flex items-center gap-4">

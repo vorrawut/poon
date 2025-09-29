@@ -281,9 +281,9 @@ export function AICoPilot({ missions, className = "" }: AICoPilotProps) {
     <div className={`relative ${className}`}>
       {/* Main Co-Pilot Display */}
       <motion.div
-        className={`backdrop-blur-md rounded-xl border overflow-hidden cursor-pointer w-full sm:w-80 md:w-96 max-w-[calc(100vw-2rem)] ${g
-          isPlayMode 
-            ? "bg-gradient-to-r from-blue-900/20 to-purple-900/20 border-white/10" 
+        className={`backdrop-blur-md rounded-xl border overflow-hidden cursor-pointer w-full sm:w-80 md:w-96 max-w-[calc(100vw-2rem)] ${
+          isPlayMode
+            ? "bg-gradient-to-r from-blue-900/20 to-purple-900/20 border-white/10"
             : "bg-[var(--color-surface-primary)] border-[var(--color-border-primary)]"
         }`}
         initial={{ opacity: 0, y: 20 }}
@@ -444,9 +444,7 @@ export function AICoPilot({ missions, className = "" }: AICoPilotProps) {
                       <ThemeAwareHeading level="h2" className="text-white">
                         AI Co-Pilot Command Center
                       </ThemeAwareHeading>
-                      <ThemeAwareText
-                        className="text-white/70"
-                      >
+                      <ThemeAwareText className="text-white/70">
                         Mission intelligence and guidance system
                       </ThemeAwareText>
                     </div>

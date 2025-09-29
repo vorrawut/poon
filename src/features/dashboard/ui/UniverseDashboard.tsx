@@ -82,7 +82,9 @@ export function UniverseDashboard() {
               </div>
 
               <div className="bg-[var(--color-surface-primary)] border border-[var(--color-border-primary)] rounded-2xl p-6 shadow-lg">
-                <h3 className="text-xl font-bold mb-4 text-[var(--color-text-primary)]">🎯 Goal Tracker</h3>
+                <h3 className="text-xl font-bold mb-4 text-[var(--color-text-primary)]">
+                  🎯 Goal Tracker
+                </h3>
                 <p className="text-[var(--color-text-secondary)]">
                   Advanced goal tracking and progress visualization...
                 </p>
