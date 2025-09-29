@@ -16,6 +16,9 @@ export * from "./ai-insights";
 // Goals & Mission Tracking Feature
 export * from "./goals";
 
+// Thai Cultural Features
+export * from "./thai-culture";
+
 // Feature exports for lazy loading (implemented features only)
 export const NetWorthFeature = () => import("./networth");
 export const AccountsFeature = () => import("./accounts");
@@ -23,6 +26,7 @@ export const QuickActionsFeature = () => import("./quickactions");
 export const TransactionsFeature = () => import("./transactions");
 export const AIInsightsFeature = () => import("./ai-insights");
 export const GoalsFeature = () => import("./goals");
+export const ThaiCultureFeature = () => import("./thai-culture");
 
 // Future features (to be implemented)
 // export const PortfolioFeature = () => import('./portfolio');

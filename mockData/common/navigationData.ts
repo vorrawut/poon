@@ -11,6 +11,7 @@ import {
   CurrencyDollarIcon,
   ClockIcon,
   RocketLaunchIcon,
+  HeartIcon,
 } from "@heroicons/react/24/outline";
 
 export interface NavigationItem {
@@ -27,6 +28,7 @@ export const navigationItems: NavigationItem[] = [
   { name: "Money Flow", href: "/money-flow", icon: CurrencyDollarIcon },
   { name: "Time Machine", href: "/time-machine", icon: ClockIcon },
   { name: "Future", href: "/future", icon: RocketLaunchIcon },
+  { name: "Thai Culture", href: "/thai-culture", icon: HeartIcon },
   { name: "Spending", href: "/spending", icon: CreditCardIcon },
   { name: "Import", href: "/imports", icon: DocumentArrowUpIcon },
   { name: "Settings", href: "/settings", icon: Cog6ToothIcon },

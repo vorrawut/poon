@@ -8,3 +8,4 @@ export { Future } from "../features/future";
 // Standalone pages (to be moved to features later)
 export { Imports } from "./Imports";
 export { Settings } from "./Settings";
+export { ThaiCulture } from "./ThaiCulture";
