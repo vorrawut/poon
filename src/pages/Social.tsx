@@ -7,7 +7,7 @@ import {
   ThemeAwareHeading,
   useTheme,
 } from "../core";
-// import { useTranslation } from "../libs/i18n";
+import { useTranslation } from "../libs/i18n";
 // import { cn } from "../libs/utils";
 import {
   UserProfile,
@@ -20,7 +20,7 @@ import {
 import type { UserAchievement } from "../features/social";
 
 export function Social() {
-  // const { language } = useTranslation();
+  const { t } = useTranslation();
   const { isPlayMode } = useTheme();
   const [activeTab, setActiveTab] = useState<
     "profile" | "challenges" | "friends" | "leaderboard"
@@ -68,7 +68,7 @@ export function Social() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="text-4xl mb-4">👥</div>
-          <ThemeAwareText>Loading social features...</ThemeAwareText>
+          <ThemeAwareText>{t("features.social.loading")}</ThemeAwareText>
         </div>
       </div>
     );
@@ -79,7 +79,9 @@ export function Social() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="text-4xl mb-4">❌</div>
-          <ThemeAwareText color="secondary">Error: {error}</ThemeAwareText>
+          <ThemeAwareText color="secondary">
+            {t("features.social.error")}: {error}
+          </ThemeAwareText>
         </div>
       </div>
     );
@@ -114,15 +116,15 @@ export function Social() {
             >
               👥
             </motion.span>
-            Social Hub
+            {t("features.social.hub.title")}
           </ThemeAwareHeading>
           <ThemeAwareText
             color="secondary"
             className="mb-8 max-w-2xl mx-auto text-base sm:text-lg"
           >
             {isPlayMode
-              ? "Connect, compete, and celebrate your financial journey with friends! 🚀"
-              : "Build your financial network and achieve goals together through community support."}
+              ? t("features.social.hub.subtitle.play")
+              : t("features.social.hub.subtitle.clarity")}
           </ThemeAwareText>
         </div>
 
@@ -132,28 +134,36 @@ export function Social() {
             <div className="text-2xl font-bold text-blue-400">
               {socialStats.totalFriends}
             </div>
-            <div className="text-sm text-gray-400">Friends</div>
+            <div className="text-sm text-gray-400">
+              {t("features.social.stats.friends")}
+            </div>
           </ThemeAwareCard>
 
           <ThemeAwareCard className="p-4 text-center">
             <div className="text-2xl font-bold text-green-400">
               {socialStats.totalAchievements}
             </div>
-            <div className="text-sm text-gray-400">Achievements</div>
+            <div className="text-sm text-gray-400">
+              {t("features.social.stats.achievements")}
+            </div>
           </ThemeAwareCard>
 
           <ThemeAwareCard className="p-4 text-center">
             <div className="text-2xl font-bold text-purple-400">
               #{socialStats.socialRank}
             </div>
-            <div className="text-sm text-gray-400">Rank</div>
+            <div className="text-sm text-gray-400">
+              {t("features.social.stats.rank")}
+            </div>
           </ThemeAwareCard>
 
           <ThemeAwareCard className="p-4 text-center">
             <div className="text-2xl font-bold text-yellow-400">
               {socialStats.engagementScore}
             </div>
-            <div className="text-sm text-gray-400">Engagement</div>
+            <div className="text-sm text-gray-400">
+              {t("features.social.stats.engagement")}
+            </div>
           </ThemeAwareCard>
         </div>
 
@@ -161,10 +171,26 @@ export function Social() {
         <div className="flex flex-wrap gap-2 justify-center mb-8">
           {(
             [
-              { id: "profile", label: "👤 Profile", icon: "👤" },
-              { id: "challenges", label: "🏆 Challenges", icon: "🏆" },
-              { id: "friends", label: "👥 Friends", icon: "👥" },
-              { id: "leaderboard", label: "📊 Leaderboard", icon: "📊" },
+              {
+                id: "profile",
+                label: `👤 ${t("features.social.tabs.profile")}`,
+                icon: "👤",
+              },
+              {
+                id: "challenges",
+                label: `🏆 ${t("features.social.tabs.challenges")}`,
+                icon: "🏆",
+              },
+              {
+                id: "friends",
+                label: `👥 ${t("features.social.tabs.friends")}`,
+                icon: "👥",
+              },
+              {
+                id: "leaderboard",
+                label: `📊 ${t("features.social.tabs.leaderboard")}`,
+                icon: "📊",
+              },
             ] as const
           ).map((tab) => (
             <ThemeAwareButton

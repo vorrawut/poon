@@ -20,10 +20,13 @@ export function AIInsights() {
   >("dashboard");
 
   const tabs = [
-    { id: "dashboard" as const, label: "Dashboard" },
-    { id: "patterns" as const, label: "Spending Patterns" },
-    { id: "goals" as const, label: "Goal Optimization" },
-    { id: "risk" as const, label: "Risk Assessment" },
+    {
+      id: "dashboard" as const,
+      label: t("features.aiInsights.tabs.dashboard"),
+    },
+    { id: "patterns" as const, label: t("features.aiInsights.tabs.patterns") },
+    { id: "goals" as const, label: t("features.aiInsights.tabs.goals") },
+    { id: "risk" as const, label: t("features.aiInsights.tabs.risk") },
   ];
 
   return (

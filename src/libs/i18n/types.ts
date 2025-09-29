@@ -67,6 +67,10 @@ export interface CommonTranslations {
     total: TranslationKey;
     balance: TranslationKey;
     progress: TranslationKey;
+    personalFinance: TranslationKey;
+    viewMode: TranslationKey;
+    demoUser: TranslationKey;
+    demoEmail: TranslationKey;
   };
 
   // Time & Dates
@@ -155,6 +159,8 @@ export interface CommonTranslations {
       goals: TranslationKey;
       insights: TranslationKey;
       categories: TranslationKey;
+      transactions: TranslationKey;
+      accounts: TranslationKey;
       limitReached: TranslationKey;
       nearLimit: TranslationKey;
       available: TranslationKey;
@@ -519,6 +525,156 @@ export interface FeatureTranslations {
         };
       };
       comparison: TranslationKey;
+    };
+  };
+
+  subscription: {
+    title: TranslationKey;
+    subtitle: TranslationKey;
+    monthly: TranslationKey;
+    yearly: TranslationKey;
+    plans: {
+      free: {
+        name: TranslationKey;
+        description: TranslationKey;
+        features: {
+          basicTracking: TranslationKey;
+          threeGoals: TranslationKey;
+          manualEntry: TranslationKey;
+          basicInsights: TranslationKey;
+        };
+      };
+      premium: {
+        name: TranslationKey;
+        description: TranslationKey;
+        popular: TranslationKey;
+        features: {
+          unlimitedGoals: TranslationKey;
+          advancedAI: TranslationKey;
+          investmentTracking: TranslationKey;
+          prioritySupport: TranslationKey;
+        };
+      };
+      family: {
+        name: TranslationKey;
+        description: TranslationKey;
+        features: {
+          allPremium: TranslationKey;
+          fiveMembers: TranslationKey;
+          familyDashboard: TranslationKey;
+          sharedGoals: TranslationKey;
+        };
+      };
+    };
+    actions: {
+      choosePlan: TranslationKey;
+      currentPlan: TranslationKey;
+      upgrade: TranslationKey;
+      cancel: TranslationKey;
+      choose: TranslationKey;
+    };
+    pricing: {
+      free: TranslationKey;
+      month: TranslationKey;
+      year: TranslationKey;
+      save: TranslationKey;
+      perYear: TranslationKey;
+    };
+    comparison: {
+      title: TranslationKey;
+      features: {
+        goals: TranslationKey;
+        insights: TranslationKey;
+        investment: TranslationKey;
+        members: TranslationKey;
+        support: TranslationKey;
+      };
+      values: {
+        basic: TranslationKey;
+        advanced: TranslationKey;
+        unlimited: TranslationKey;
+        included: TranslationKey;
+        notIncluded: TranslationKey;
+      };
+    };
+  };
+
+  social: {
+    title: TranslationKey;
+    subtitle: TranslationKey;
+    loading: TranslationKey;
+    error: TranslationKey;
+    tabs: {
+      profile: TranslationKey;
+      challenges: TranslationKey;
+      friends: TranslationKey;
+      leaderboard: TranslationKey;
+    };
+    hub: {
+      title: TranslationKey;
+      subtitle: {
+        play: TranslationKey;
+        clarity: TranslationKey;
+      };
+    };
+    stats: {
+      friends: TranslationKey;
+      achievements: TranslationKey;
+      rank: TranslationKey;
+      challenges: TranslationKey;
+      engagement: TranslationKey;
+    };
+  };
+
+  aiInsights: {
+    title: TranslationKey;
+    subtitle: TranslationKey;
+    tabs: {
+      dashboard: TranslationKey;
+      patterns: TranslationKey;
+      goals: TranslationKey;
+      risk: TranslationKey;
+    };
+    cards: {
+      smartInsights: {
+        title: TranslationKey;
+        description: TranslationKey;
+      };
+      riskAssessment: {
+        title: TranslationKey;
+        description: TranslationKey;
+      };
+      recommendations: {
+        title: TranslationKey;
+        description: TranslationKey;
+      };
+    };
+    features: {
+      spendingAnalysis: TranslationKey;
+      goalOptimization: TranslationKey;
+      healthScore: TranslationKey;
+      predictiveAnalytics: TranslationKey;
+      patternDetection: {
+        title: TranslationKey;
+        description: TranslationKey;
+      };
+      goalAcceleration: {
+        title: TranslationKey;
+        description: TranslationKey;
+      };
+      riskMitigation: {
+        title: TranslationKey;
+        description: TranslationKey;
+      };
+    };
+  };
+
+  aiCoaching: {
+    title: TranslationKey;
+    subtitle: TranslationKey;
+    placeholder: {
+      title: TranslationKey;
+      message: TranslationKey;
     };
   };
 }

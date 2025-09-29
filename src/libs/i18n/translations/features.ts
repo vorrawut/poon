@@ -939,4 +939,412 @@ export const featureTranslations: FeatureTranslations = {
       },
     },
   },
+
+  subscription: {
+    title: {
+      en: "Subscription Plans",
+      th: "แผนสมาชิก",
+    },
+    subtitle: {
+      en: "Choose the perfect plan for your financial journey. Upgrade anytime to unlock premium features.",
+      th: "เลือกแผนที่เหมาะสมสำหรับการเดินทางทางการเงินของคุณ อัปเกรดได้ตลอดเวลาเพื่อปลดล็อกฟีเจอร์พรีเมียม",
+    },
+    monthly: {
+      en: "Monthly",
+      th: "รายเดือน",
+    },
+    yearly: {
+      en: "Yearly (Save 17%)",
+      th: "รายปี (ประหยัด 17%)",
+    },
+    plans: {
+      free: {
+        name: {
+          en: "Free",
+          th: "ฟรี",
+        },
+        description: {
+          en: "Perfect for getting started with financial management",
+          th: "เหมาะสำหรับเริ่มต้นจัดการการเงิน",
+        },
+        features: {
+          basicTracking: {
+            en: "Basic financial tracking",
+            th: "การติดตามการเงินพื้นฐาน",
+          },
+          threeGoals: {
+            en: "3 goals",
+            th: "3 เป้าหมาย",
+          },
+          manualEntry: {
+            en: "Manual entry",
+            th: "บันทึกด้วยตนเอง",
+          },
+          basicInsights: {
+            en: "Basic insights",
+            th: "ข้อมูลเชิงลึกพื้นฐาน",
+          },
+        },
+      },
+      premium: {
+        name: {
+          en: "Premium",
+          th: "พรีเมียม",
+        },
+        description: {
+          en: "Advanced features for serious financial planning",
+          th: "ฟีเจอร์ขั้นสูงสำหรับการวางแผนการเงินอย่างจริงจัง",
+        },
+        popular: {
+          en: "Most Popular",
+          th: "ยอดนิยม",
+        },
+        features: {
+          unlimitedGoals: {
+            en: "Unlimited goals",
+            th: "เป้าหมายไม่จำกัด",
+          },
+          advancedAI: {
+            en: "Advanced AI insights",
+            th: "ข้อมูลเชิงลึก AI ขั้นสูง",
+          },
+          investmentTracking: {
+            en: "Investment tracking",
+            th: "ติดตามการลงทุน",
+          },
+          prioritySupport: {
+            en: "Priority support",
+            th: "การสนับสนุนแบบพิเศษ",
+          },
+        },
+      },
+      family: {
+        name: {
+          en: "Family",
+          th: "ครอบครัว",
+        },
+        description: {
+          en: "Perfect for families managing finances together",
+          th: "เหมาะสำหรับครอบครัวที่จัดการการเงินร่วมกัน",
+        },
+        features: {
+          allPremium: {
+            en: "All Premium features",
+            th: "ฟีเจอร์พรีเมียมทั้งหมด",
+          },
+          fiveMembers: {
+            en: "Up to 5 family members",
+            th: "สมาชิกครอบครัวได้สูงสุด 5 คน",
+          },
+          familyDashboard: {
+            en: "Family dashboard",
+            th: "แดชบอร์ดครอบครัว",
+          },
+          sharedGoals: {
+            en: "Shared goals",
+            th: "เป้าหมายร่วมกัน",
+          },
+        },
+      },
+    },
+    actions: {
+      choosePlan: {
+        en: "Choose Plan",
+        th: "เลือกแผน",
+      },
+      currentPlan: {
+        en: "Current Plan",
+        th: "แผนปัจจุบัน",
+      },
+      upgrade: {
+        en: "Upgrade",
+        th: "อัปเกรด",
+      },
+      cancel: {
+        en: "Cancel Subscription",
+        th: "ยกเลิกการสมาชิก",
+      },
+      choose: {
+        en: "Choose",
+        th: "เลือก",
+      },
+    },
+    pricing: {
+      free: {
+        en: "Free",
+        th: "ฟรี",
+      },
+      month: {
+        en: "month",
+        th: "เดือน",
+      },
+      year: {
+        en: "year",
+        th: "ปี",
+      },
+      save: {
+        en: "Save",
+        th: "ประหยัด",
+      },
+      perYear: {
+        en: "per year!",
+        th: "ต่อปี!",
+      },
+    },
+    comparison: {
+      title: {
+        en: "Feature Comparison",
+        th: "เปรียบเทียบฟีเจอร์",
+      },
+      features: {
+        goals: {
+          en: "Financial Goals",
+          th: "เป้าหมายการเงิน",
+        },
+        insights: {
+          en: "AI Insights",
+          th: "ข้อมูลเชิงลึก AI",
+        },
+        investment: {
+          en: "Investment Tracking",
+          th: "ติดตามการลงทุน",
+        },
+        members: {
+          en: "Family Members",
+          th: "สมาชิกครอบครัว",
+        },
+        support: {
+          en: "Priority Support",
+          th: "การสนับสนุนแบบพิเศษ",
+        },
+      },
+      values: {
+        basic: {
+          en: "Basic",
+          th: "พื้นฐาน",
+        },
+        advanced: {
+          en: "Advanced",
+          th: "ขั้นสูง",
+        },
+        unlimited: {
+          en: "Unlimited",
+          th: "ไม่จำกัด",
+        },
+        included: {
+          en: "✓",
+          th: "✓",
+        },
+        notIncluded: {
+          en: "✕",
+          th: "✕",
+        },
+      },
+    },
+  },
+
+  social: {
+    title: {
+      en: "Social Finance",
+      th: "การเงินสังคม",
+    },
+    subtitle: {
+      en: "Connect, share, and grow with your financial community",
+      th: "เชื่อมต่อ แบ่งปัน และเติบโตไปกับชุมชนการเงินของคุณ",
+    },
+    loading: {
+      en: "Loading social features...",
+      th: "กำลังโหลดฟีเจอร์สังคม...",
+    },
+    error: {
+      en: "Error",
+      th: "ข้อผิดพลาด",
+    },
+    tabs: {
+      profile: {
+        en: "Profile",
+        th: "โปรไฟล์",
+      },
+      challenges: {
+        en: "Challenges",
+        th: "ความท้าทาย",
+      },
+      friends: {
+        en: "Friends",
+        th: "เพื่อน",
+      },
+      leaderboard: {
+        en: "Leaderboard",
+        th: "อันดับผู้เล่น",
+      },
+    },
+    hub: {
+      title: {
+        en: "Social Hub",
+        th: "ศูนย์กลางสังคม",
+      },
+      subtitle: {
+        play: {
+          en: "Connect, compete, and celebrate your financial journey with friends! 🚀",
+          th: "เชื่อมต่อ แข่งขัน และฉลองการเดินทางการเงินกับเพื่อน! 🚀",
+        },
+        clarity: {
+          en: "Build your financial network and achieve goals together through community support.",
+          th: "สร้างเครือข่ายการเงินและบรรลุเป้าหมายร่วมกันผ่านการสนับสนุนจากชุมชน",
+        },
+      },
+    },
+    stats: {
+      friends: {
+        en: "Friends",
+        th: "เพื่อน",
+      },
+      achievements: {
+        en: "Achievements",
+        th: "ความสำเร็จ",
+      },
+      rank: {
+        en: "Rank",
+        th: "อันดับ",
+      },
+      challenges: {
+        en: "Challenges",
+        th: "ความท้าทาย",
+      },
+      engagement: {
+        en: "Engagement",
+        th: "การมีส่วนร่วม",
+      },
+    },
+  },
+
+  aiInsights: {
+    title: {
+      en: "AI Insights",
+      th: "ข้อมูลเชิงลึก AI",
+    },
+    subtitle: {
+      en: "Advanced AI-powered financial insights and recommendations",
+      th: "ข้อมูลเชิงลึกและคำแนะนำทางการเงินขับเคลื่อนด้วย AI ขั้นสูง",
+    },
+    tabs: {
+      dashboard: {
+        en: "Dashboard",
+        th: "แดชบอร์ด",
+      },
+      patterns: {
+        en: "Spending Patterns",
+        th: "รูปแบบการใช้จ่าย",
+      },
+      goals: {
+        en: "Goal Optimization",
+        th: "การปรับปรุงเป้าหมาย",
+      },
+      risk: {
+        en: "Risk Assessment",
+        th: "การประเมินความเสี่ยง",
+      },
+    },
+    cards: {
+      smartInsights: {
+        title: {
+          en: "Smart Insights",
+          th: "ข้อมูลเชิงลึกอัจฉริยะ",
+        },
+        description: {
+          en: "AI-powered analysis of your financial patterns and behaviors.",
+          th: "การวิเคราะห์รูปแบบและพฤติกรรมทางการเงินด้วย AI",
+        },
+      },
+      riskAssessment: {
+        title: {
+          en: "Risk Assessment",
+          th: "การประเมินความเสี่ยง",
+        },
+        description: {
+          en: "Comprehensive financial health and risk evaluation.",
+          th: "การประเมินสุขภาพการเงินและความเสี่ยงอย่างครอบคลุม",
+        },
+      },
+      recommendations: {
+        title: {
+          en: "Actionable Recommendations",
+          th: "คำแนะนำที่ปฏิบัติได้",
+        },
+        description: {
+          en: "Get personalized suggestions to improve your financial situation.",
+          th: "รับคำแนะนำเฉพาะบุคคลเพื่อปรับปรุงสถานการณ์ทางการเงิน",
+        },
+      },
+    },
+    features: {
+      spendingAnalysis: {
+        en: "Spending Pattern Analysis",
+        th: "การวิเคราะห์รูปแบบการใช้จ่าย",
+      },
+      goalOptimization: {
+        en: "Goal Optimization",
+        th: "การปรับปรุงเป้าหมาย",
+      },
+      healthScore: {
+        en: "Financial Health Score",
+        th: "คะแนนสุขภาพการเงิน",
+      },
+      predictiveAnalytics: {
+        en: "Predictive Analytics",
+        th: "การวิเคราะห์เชิงทำนาย",
+      },
+      patternDetection: {
+        title: {
+          en: "🔍 Pattern Detection",
+          th: "🔍 การตรวจจับรูปแบบ",
+        },
+        description: {
+          en: "Identify recurring expenses and optimization opportunities",
+          th: "ระบุค่าใช้จ่ายที่เกิดขึ้นซ้ำและโอกาสในการปรับปรุง",
+        },
+      },
+      goalAcceleration: {
+        title: {
+          en: "🚀 Goal Acceleration",
+          th: "🚀 การเร่งเป้าหมาย",
+        },
+        description: {
+          en: "Optimize savings strategies to reach goals faster",
+          th: "ปรับปรุงกลยุทธ์การออมเพื่อบรรลุเป้าหมายเร็วขึ้น",
+        },
+      },
+      riskMitigation: {
+        title: {
+          en: "🛡️ Risk Mitigation",
+          th: "🛡️ การลดความเสี่ยง",
+        },
+        description: {
+          en: "Identify and address potential financial risks",
+          th: "ระบุและจัดการความเสี่ยงทางการเงินที่อาจเกิดขึ้น",
+        },
+      },
+    },
+  },
+
+  aiCoaching: {
+    title: {
+      en: "AI Coaching",
+      th: "AI โค้ช",
+    },
+    subtitle: {
+      en: "Your personal AI financial coach for guidance and motivation",
+      th: "โค้ชทางการเงิน AI ส่วนบุคคลสำหรับคำแนะนำและแรงบันดาลใจ",
+    },
+    placeholder: {
+      title: {
+        en: "AI Coaching Coming Soon",
+        th: "AI โค้ช เร็วๆ นี้",
+      },
+      message: {
+        en: "Your personal AI financial coach will provide personalized guidance and motivation.",
+        th: "โค้ชทางการเงิน AI ส่วนบุคคลของคุณจะให้คำแนะนำเฉพาะบุคคลและแรงบันดาลใจ",
+      },
+    },
+  },
 };

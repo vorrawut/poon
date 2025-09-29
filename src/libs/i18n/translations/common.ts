@@ -140,6 +140,14 @@ export const commonTranslations: CommonTranslations = {
         en: "Categories",
         th: "หมวดหมู่",
       },
+      transactions: {
+        en: "Transactions",
+        th: "รายการ",
+      },
+      accounts: {
+        en: "Accounts",
+        th: "บัญชี",
+      },
       limitReached: {
         en: "You've reached your {feature} limit",
         th: "คุณใช้ {feature} ครบตามขีดจำกัดแล้ว",
@@ -328,6 +336,22 @@ export const commonTranslations: CommonTranslations = {
     progress: {
       en: "Progress",
       th: "ความคืบหน้า",
+    },
+    personalFinance: {
+      en: "Personal Finance",
+      th: "การเงินส่วนบุคคล",
+    },
+    viewMode: {
+      en: "View Mode",
+      th: "โหมดการดู",
+    },
+    demoUser: {
+      en: "Demo User",
+      th: "ผู้ใช้ตัวอย่าง",
+    },
+    demoEmail: {
+      en: "demo@example.com",
+      th: "demo@example.com",
     },
   },
 

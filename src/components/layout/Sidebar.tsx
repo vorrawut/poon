@@ -163,7 +163,7 @@ export function Sidebar() {
                 Poon
               </ThemeAwareText>
               <ThemeAwareText className="text-xs" color="secondary">
-                Personal Finance
+                {t("common.labels.personalFinance")}
               </ThemeAwareText>
             </div>
           ) : (
@@ -323,7 +323,7 @@ export function Sidebar() {
               className="text-xs font-medium uppercase tracking-wide"
               color="secondary"
             >
-              View Mode
+              {t("common.labels.viewMode")}
             </ThemeAwareText>
           </div>
           <DualLensToggle
@@ -382,10 +382,10 @@ export function Sidebar() {
           {!isCollapsed && (
             <div>
               <ThemeAwareText className="text-sm font-medium">
-                Demo User
+                {t("common.labels.demoUser")}
               </ThemeAwareText>
               <ThemeAwareText className="text-xs" color="secondary">
-                demo@example.com
+                {t("common.labels.demoEmail")}
               </ThemeAwareText>
             </div>
           )}

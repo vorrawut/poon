@@ -22,40 +22,40 @@ export function Subscription() {
   const plans = [
     {
       id: "free",
-      name: "Free",
+      name: t("features.subscription.plans.free.name"),
       price: 0,
       features: [
-        "Basic financial tracking",
-        "3 goals",
-        "Manual entry",
-        "Basic insights",
+        t("features.subscription.plans.free.features.basicTracking"),
+        t("features.subscription.plans.free.features.threeGoals"),
+        t("features.subscription.plans.free.features.manualEntry"),
+        t("features.subscription.plans.free.features.basicInsights"),
       ],
-      description: "Perfect for getting started with financial management",
+      description: t("features.subscription.plans.free.description"),
     },
     {
       id: "premium",
-      name: "Premium",
+      name: t("features.subscription.plans.premium.name"),
       price: selectedPlan === "monthly" ? 299 : 2990,
       features: [
-        "Unlimited goals",
-        "Advanced AI insights",
-        "Investment tracking",
-        "Priority support",
+        t("features.subscription.plans.premium.features.unlimitedGoals"),
+        t("features.subscription.plans.premium.features.advancedAI"),
+        t("features.subscription.plans.premium.features.investmentTracking"),
+        t("features.subscription.plans.premium.features.prioritySupport"),
       ],
-      description: "Advanced features for serious financial planning",
+      description: t("features.subscription.plans.premium.description"),
       popular: true,
     },
     {
       id: "family",
-      name: "Family",
+      name: t("features.subscription.plans.family.name"),
       price: selectedPlan === "monthly" ? 499 : 4990,
       features: [
-        "All Premium features",
-        "Up to 5 family members",
-        "Family dashboard",
-        "Shared goals",
+        t("features.subscription.plans.family.features.allPremium"),
+        t("features.subscription.plans.family.features.fiveMembers"),
+        t("features.subscription.plans.family.features.familyDashboard"),
+        t("features.subscription.plans.family.features.sharedGoals"),
       ],
-      description: "Perfect for families managing finances together",
+      description: t("features.subscription.plans.family.description"),
     },
   ];
 
@@ -63,11 +63,10 @@ export function Subscription() {
     <div className="p-4 space-y-6 max-w-7xl mx-auto">
       <div className="text-center space-y-4">
         <AccessibleHeading level="h1" gradient={isPlayMode}>
-          {t("common.navigation.subscription")}
+          {t("features.subscription.title")}
         </AccessibleHeading>
         <AccessibleText color="secondary" className="max-w-2xl mx-auto">
-          Choose the perfect plan for your financial journey. Upgrade anytime to
-          unlock premium features.
+          {t("features.subscription.subtitle")}
         </AccessibleText>
       </div>
 
@@ -79,14 +78,14 @@ export function Subscription() {
             size="sm"
             onClick={() => setSelectedPlan("monthly")}
           >
-            Monthly
+            {t("features.subscription.monthly")}
           </AccessibleButton>
           <AccessibleButton
             variant={selectedPlan === "yearly" ? "primary" : "ghost"}
             size="sm"
             onClick={() => setSelectedPlan("yearly")}
           >
-            Yearly (Save 17%)
+            {t("features.subscription.yearly")}
           </AccessibleButton>
         </div>
       </div>
@@ -105,7 +104,7 @@ export function Subscription() {
             {plan.popular && (
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                 <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                  Most Popular
+                  {t("features.subscription.plans.premium.popular")}
                 </span>
               </div>
             )}
@@ -121,21 +120,24 @@ export function Subscription() {
               <div className="space-y-2">
                 <div className="text-3xl font-bold">
                   {plan.id === "free" ? (
-                    "Free"
+                    t("features.subscription.pricing.free")
                   ) : (
                     <>
                       ฿{plan.price.toLocaleString()}
                       <span className="text-lg font-normal text-gray-600">
-                        /{selectedPlan === "monthly" ? "month" : "year"}
+                        /
+                        {selectedPlan === "monthly"
+                          ? t("features.subscription.pricing.month")
+                          : t("features.subscription.pricing.year")}
                       </span>
                     </>
                   )}
                 </div>
                 {selectedPlan === "yearly" && plan.id !== "free" && (
                   <AccessibleText color="secondary" variant="caption">
-                    Save ฿
-                    {((plan.price / 10) * 12 - plan.price).toLocaleString()} per
-                    year!
+                    {t("features.subscription.pricing.save")} ฿
+                    {((plan.price / 10) * 12 - plan.price).toLocaleString()}{" "}
+                    {t("features.subscription.pricing.perYear")}
                   </AccessibleText>
                 )}
               </div>
@@ -155,7 +157,9 @@ export function Subscription() {
                   fullWidth
                   onClick={() => console.log(`Subscribe to ${plan.name}`)}
                 >
-                  {plan.id === "free" ? "Current Plan" : `Choose ${plan.name}`}
+                  {plan.id === "free"
+                    ? t("features.subscription.actions.currentPlan")
+                    : `${t("features.subscription.actions.choose")} ${plan.name}`}
                 </AccessibleButton>
               </div>
             </div>
@@ -166,31 +170,41 @@ export function Subscription() {
       {/* Features Comparison */}
       <AccessibleCard variant="elevated" padding="lg">
         <AccessibleHeading level="h2" className="text-center mb-6">
-          Feature Comparison
+          {t("features.subscription.comparison.title")}
         </AccessibleHeading>
 
         <div className="space-y-4">
           {[
             {
-              name: "Financial Goals",
+              name: t("features.subscription.comparison.features.goals"),
               free: "3",
-              premium: "Unlimited",
-              family: "Unlimited",
+              premium: t("features.subscription.comparison.values.unlimited"),
+              family: t("features.subscription.comparison.values.unlimited"),
             },
             {
-              name: "AI Insights",
-              free: "Basic",
-              premium: "Advanced",
-              family: "Advanced",
+              name: t("features.subscription.comparison.features.insights"),
+              free: t("features.subscription.comparison.values.basic"),
+              premium: t("features.subscription.comparison.values.advanced"),
+              family: t("features.subscription.comparison.values.advanced"),
             },
             {
-              name: "Investment Tracking",
-              free: "✕",
-              premium: "✓",
-              family: "✓",
+              name: t("features.subscription.comparison.features.investment"),
+              free: t("features.subscription.comparison.values.notIncluded"),
+              premium: t("features.subscription.comparison.values.included"),
+              family: t("features.subscription.comparison.values.included"),
             },
-            { name: "Family Members", free: "1", premium: "1", family: "5" },
-            { name: "Priority Support", free: "✕", premium: "✓", family: "✓" },
+            {
+              name: t("features.subscription.comparison.features.members"),
+              free: "1",
+              premium: "1",
+              family: "5",
+            },
+            {
+              name: t("features.subscription.comparison.features.support"),
+              free: t("features.subscription.comparison.values.notIncluded"),
+              premium: t("features.subscription.comparison.values.included"),
+              family: t("features.subscription.comparison.values.included"),
+            },
           ].map((feature, index) => (
             <div
               key={index}
