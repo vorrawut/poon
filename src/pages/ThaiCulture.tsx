@@ -17,44 +17,26 @@ export function ThaiCulture() {
   const [activeTab, setActiveTab] = useState<"calendar" | "family" | "merit">(
     "calendar",
   );
-  const { language } = useTranslation();
+  const { t } = useTranslation();
 
   const tabs = [
     {
       id: "calendar" as const,
-      name: {
-        en: "Thai Calendar",
-        th: "ปฏิทินไทย",
-      },
+      name: t("features.thaiCulture.tabs.calendar.name"),
       icon: "📅",
-      description: {
-        en: "Plan for Thai festivals and cultural events",
-        th: "วางแผนสำหรับเทศกาลและงานวัฒนธรรมไทย",
-      },
+      description: t("features.thaiCulture.tabs.calendar.description"),
     },
     {
       id: "family" as const,
-      name: {
-        en: "Family Obligations",
-        th: "ภาระครอบครัว",
-      },
+      name: t("features.thaiCulture.tabs.family.name"),
       icon: "👨‍👩‍👧‍👦",
-      description: {
-        en: "Manage family support and responsibilities",
-        th: "จัดการการช่วยเหลือและความรับผิดชอบต่อครอบครัว",
-      },
+      description: t("features.thaiCulture.tabs.family.description"),
     },
     {
       id: "merit" as const,
-      name: {
-        en: "Merit Making",
-        th: "การทำบุญ",
-      },
+      name: t("features.thaiCulture.tabs.merit.name"),
       icon: "🙏",
-      description: {
-        en: "Track your Buddhist merit-making activities",
-        th: "ติดตามกิจกรรมการทำบุญตามหลักพุทธศาสนา",
-      },
+      description: t("features.thaiCulture.tabs.merit.description"),
     },
   ];
 
@@ -93,7 +75,7 @@ export function ThaiCulture() {
                 className="mb-4"
                 gradient={isPlayMode}
               >
-                {language === "th" ? "วัฒนธรรมไทย" : "Thai Culture"}
+                {t("features.thaiCulture.title")}
               </ThemeAwareHeading>
               <motion.div
                 className="text-5xl md:text-7xl"
@@ -117,20 +99,12 @@ export function ThaiCulture() {
               className="mb-8 max-w-4xl mx-auto px-4"
             >
               {accessibilityMode === "elder"
-                ? language === "th"
-                  ? "จัดการการเงินตามวัฒนธรรมไทย ด้วยระบบที่เข้าใจง่ายและใช้งานสะดวก"
-                  : "Manage your finances according to Thai culture with easy-to-understand and convenient systems"
+                ? t("features.thaiCulture.description.elder")
                 : accessibilityMode === "youth"
-                  ? language === "th"
-                    ? "ปรับแต่งการเงินแบบไทยๆ! 🎮 ทำบุญ ดูแลครอบครัว และวางแปลนเทศกาลอย่างเจ๋ง! 🇹🇭✨"
-                    : "Customize Thai-style finances! 🎮 Make merit, care for family, and plan festivals like a pro! 🇹🇭✨"
+                  ? t("features.thaiCulture.description.youth")
                   : viewMode === "play"
-                    ? language === "th"
-                      ? "จัดการการเงินในแบบไทยๆ — ที่ทุกการวางแผนเป็นการเดินทางผ่านจักรวาลวัฒนธรรมของคุณเอง! 🌌"
-                      : "Manage your finances the Thai way — where every plan becomes a journey through your personal cultural universe! 🌌"
-                    : language === "th"
-                      ? "การจัดการการเงินที่เข้าใจวัฒนธรรมไทย วางแผนเทศกาล ดูแลครอบครัว และทำบุญอย่างเป็นระบบ"
-                      : "Thai culture-aware financial management. Plan festivals, care for family, and make merit systematically."}
+                    ? t("features.thaiCulture.description.play")
+                    : t("features.thaiCulture.description.clarity")}
             </ThemeAwareText>
           </div>
         </FadeIn>
@@ -161,13 +135,13 @@ export function ThaiCulture() {
               <div className="flex items-center gap-3">
                 <span className="text-2xl">{tab.icon}</span>
                 <div>
-                  <div className="font-medium">{tab.name[language]}</div>
+                  <div className="font-medium">{tab.name}</div>
                   <div
                     className={`text-sm ${
                       activeTab === tab.id ? "opacity-90" : "opacity-70"
                     }`}
                   >
-                    {tab.description[language]}
+                    {tab.description}
                   </div>
                 </div>
               </div>
@@ -226,19 +200,13 @@ export function ThaiCulture() {
           >
             <div className="text-4xl mb-4">🧠</div>
             <ThemeAwareHeading level="h2" className="mb-4">
-              {language === "th"
-                ? "ปัญญาการเงินแบบไทย"
-                : "Thai Financial Wisdom"}
+              {t("features.thaiCulture.wisdom.title")}
             </ThemeAwareHeading>
             <ThemeAwareText className="max-w-3xl mx-auto">
-              {language === "th"
-                ? '"การออมเงินเป็นเหมือนการสร้างบุญ - ทำเล็กน้อยแต่สม่ำเสมอ จะได้ผลใหญ่ในที่สุด การดูแลครอบครัวและการทำบุญเป็นการลงทุนที่ดีที่สุดสำหรับชีวิต"'
-                : '"Saving money is like making merit - small but consistent actions lead to great results. Taking care of family and making merit are the best investments for life."'}
+              {t("features.thaiCulture.wisdom.principles")}
             </ThemeAwareText>
             <ThemeAwareText color="secondary" className="mt-4 italic">
-              {language === "th"
-                ? "- ปรัชญาการเงินแบบไทย"
-                : "- Thai Financial Philosophy"}
+              {t("features.thaiCulture.subtitle")}
             </ThemeAwareText>
           </div>
         </motion.div>

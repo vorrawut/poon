@@ -54,28 +54,100 @@ export const featureTranslations: FeatureTranslations = {
       th: "การเงินตามวัฒนธรรมไทย",
     },
     subtitle: {
-      en: "Manage your finances according to Thai cultural values",
-      th: "จัดการการเงินตามคุณค่าวัฒนธรรมไทย",
+      en: "Manage your finances according to Thai cultural values and traditions",
+      th: "จัดการการเงินตามคุณค่าและประเพณีวัฒนธรรมไทย",
     },
-    calendar: {
-      en: "Thai Calendar",
-      th: "ปฏิทินไทย",
+    description: {
+      elder: {
+        en: "Manage your finances according to Thai culture with easy-to-understand and convenient systems",
+        th: "จัดการการเงินตามวัฒนธรรมไทย ด้วยระบบที่เข้าใจง่ายและใช้งานสะดวก",
+      },
+      youth: {
+        en: "Customize Thai-style finances! 🎮 Make merit, care for family, and plan festivals like a pro! 🇹🇭✨",
+        th: "ปรับแต่งการเงินแบบไทยๆ! 🎮 ทำบุญ ดูแลครอบครัว และวางแปลนเทศกาลอย่างเจ๋ง! 🇹🇭✨",
+      },
+      play: {
+        en: "Honor your cultural heritage while building financial prosperity through traditional Thai wisdom and modern financial planning.",
+        th: "เคารพมรดกทางวัฒนธรรมในขณะที่สร้างความมั่งคั่งทางการเงินผ่านภูมิปัญญาไทยดั้งเดิมและการวางแผนการเงินสมัยใหม่",
+      },
+      clarity: {
+        en: "Integrate Thai cultural values into your financial planning with systematic tracking and budgeting tools.",
+        th: "บูรณาการคุณค่าวัฒนธรรมไทยเข้ากับการวางแผนการเงินด้วยเครื่องมือติดตามและจัดงบประมาณอย่างเป็นระบบ",
+      },
     },
-    familyObligations: {
-      en: "Family Obligations",
-      th: "ภาระครอบครัว",
+    tabs: {
+      calendar: {
+        name: {
+          en: "Thai Calendar",
+          th: "ปฏิทินไทย",
+        },
+        description: {
+          en: "Plan for Thai festivals and cultural events",
+          th: "วางแผนสำหรับเทศกาลและงานวัฒนธรรมไทย",
+        },
+      },
+      family: {
+        name: {
+          en: "Family Obligations",
+          th: "ภาระครอบครัว",
+        },
+        description: {
+          en: "Manage family support and responsibilities",
+          th: "จัดการการช่วยเหลือและความรับผิดชอบต่อครอบครัว",
+        },
+      },
+      merit: {
+        name: {
+          en: "Merit Making",
+          th: "การทำบุญ",
+        },
+        description: {
+          en: "Budget for religious and charitable activities",
+          th: "จัดงบประมาณสำหรับกิจกรรมทางศาสนาและการกุศล",
+        },
+      },
     },
-    meritMaking: {
-      en: "Merit Making",
-      th: "การทำบุญ",
+    wisdom: {
+      title: {
+        en: "Thai Financial Wisdom",
+        th: "ภูมิปัญญาการเงินไทย",
+      },
+      principles: {
+        sufficiency: {
+          en: "Sufficiency Economy Philosophy",
+          th: "ปรัชญาเศรษฐกิจพอเพียง",
+        },
+        gratitude: {
+          en: "Gratitude (กตัญญู)",
+          th: "กตัญญู",
+        },
+        moderation: {
+          en: "Moderation in Spending",
+          th: "ความพอประมาณในการใช้จ่าย",
+        },
+        sharing: {
+          en: "Sharing with Community",
+          th: "การแบ่งปันกับชุมชน",
+        },
+      },
     },
-    festivals: {
-      en: "Festivals",
-      th: "เทศกาล",
-    },
-    culturalWisdom: {
-      en: "Cultural Wisdom",
-      th: "ปัญญาวัฒนธรรม",
+    features: {
+      culturalBudgeting: {
+        en: "Cultural Budgeting",
+        th: "งบประมาณตามวัฒนธรรม",
+      },
+      festivalPlanning: {
+        en: "Festival Planning",
+        th: "การวางแผนเทศกาล",
+      },
+      familySupport: {
+        en: "Family Support Tracking",
+        th: "การติดตามการช่วยเหลือครอบครัว",
+      },
+      meritBudget: {
+        en: "Merit Making Budget",
+        th: "งบประมาณการทำบุญ",
+      },
     },
   },
 
@@ -1335,6 +1407,43 @@ export const featureTranslations: FeatureTranslations = {
     subtitle: {
       en: "Your personal AI financial coach for guidance and motivation",
       th: "โค้ชทางการเงิน AI ส่วนบุคคลสำหรับคำแนะนำและแรงบันดาลใจ",
+    },
+    tabs: {
+      coaching: { en: "AI Coaching", th: "AI โค้ช" },
+      tips: { en: "Personalized Tips", th: "คำแนะนำส่วนบุคคล" },
+      progress: { en: "Progress Tracking", th: "ติดตามความคืบหน้า" },
+      motivation: { en: "Motivation", th: "แรงบันดาลใจ" },
+    },
+    features: {
+      title: { en: "AI Coaching Feature", th: "ฟีเจอร์ AI โค้ช" },
+      description: {
+        en: "Intelligent financial coaching with cultural awareness and personalized recommendations.",
+        th: "โค้ชการเงินอัจฉริยะด้วยความตระหนักทางวัฒนธรรมและคำแนะนำส่วนบุคคล",
+      },
+      personalizedTips: {
+        title: {
+          en: "🎯 Personalized Financial Tips",
+          th: "🎯 คำแนะนำการเงินส่วนบุคคล",
+        },
+        description: {
+          en: "Get AI-powered recommendations tailored to your spending patterns and goals.",
+          th: "รับคำแนะนำจาก AI ที่ปรับให้เหมาะกับรูปแบบการใช้จ่ายและเป้าหมายของคุณ",
+        },
+      },
+      progressTracking: {
+        title: { en: "📊 Progress Tracking", th: "📊 ติดตามความคืบหน้า" },
+        description: {
+          en: "Monitor your financial journey with intelligent insights and celebrations.",
+          th: "ติดตามการเดินทางทางการเงินของคุณด้วยข้อมูลเชิงลึกอัจฉริยะและการฉลอง",
+        },
+      },
+      culturalAwareness: {
+        title: { en: "🇹🇭 Cultural Awareness", th: "🇹🇭 ความตระหนักทางวัฒนธรรม" },
+        description: {
+          en: "Coaching adapted for Thai cultural financial behaviors and practices.",
+          th: "โค้ชที่ปรับให้เหมาะกับพฤติกรรมและแนวปฏิบัติทางการเงินของวัฒนธรรมไทย",
+        },
+      },
     },
     placeholder: {
       title: {

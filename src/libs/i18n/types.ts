@@ -200,11 +200,41 @@ export interface FeatureTranslations {
   thaiCulture: {
     title: TranslationKey;
     subtitle: TranslationKey;
-    calendar: TranslationKey;
-    familyObligations: TranslationKey;
-    meritMaking: TranslationKey;
-    festivals: TranslationKey;
-    culturalWisdom: TranslationKey;
+    description: {
+      elder: TranslationKey;
+      youth: TranslationKey;
+      play: TranslationKey;
+      clarity: TranslationKey;
+    };
+    tabs: {
+      calendar: {
+        name: TranslationKey;
+        description: TranslationKey;
+      };
+      family: {
+        name: TranslationKey;
+        description: TranslationKey;
+      };
+      merit: {
+        name: TranslationKey;
+        description: TranslationKey;
+      };
+    };
+    wisdom: {
+      title: TranslationKey;
+      principles: {
+        sufficiency: TranslationKey;
+        gratitude: TranslationKey;
+        moderation: TranslationKey;
+        sharing: TranslationKey;
+      };
+    };
+    features: {
+      culturalBudgeting: TranslationKey;
+      festivalPlanning: TranslationKey;
+      familySupport: TranslationKey;
+      meritBudget: TranslationKey;
+    };
   };
 
   settings: {
@@ -672,6 +702,28 @@ export interface FeatureTranslations {
   aiCoaching: {
     title: TranslationKey;
     subtitle: TranslationKey;
+    tabs: {
+      coaching: TranslationKey;
+      tips: TranslationKey;
+      progress: TranslationKey;
+      motivation: TranslationKey;
+    };
+    features: {
+      title: TranslationKey;
+      description: TranslationKey;
+      personalizedTips: {
+        title: TranslationKey;
+        description: TranslationKey;
+      };
+      progressTracking: {
+        title: TranslationKey;
+        description: TranslationKey;
+      };
+      culturalAwareness: {
+        title: TranslationKey;
+        description: TranslationKey;
+      };
+    };
     placeholder: {
       title: TranslationKey;
       message: TranslationKey;

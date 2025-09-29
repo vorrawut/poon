@@ -20,10 +20,13 @@ export function AICoaching() {
   >("coaching");
 
   const tabs = [
-    { id: "coaching" as const, label: "AI Coaching" },
-    { id: "tips" as const, label: "Personalized Tips" },
-    { id: "progress" as const, label: "Progress Tracking" },
-    { id: "motivation" as const, label: "Motivation" },
+    { id: "coaching" as const, label: t("features.aiCoaching.tabs.coaching") },
+    { id: "tips" as const, label: t("features.aiCoaching.tabs.tips") },
+    { id: "progress" as const, label: t("features.aiCoaching.tabs.progress") },
+    {
+      id: "motivation" as const,
+      label: t("features.aiCoaching.tabs.motivation"),
+    },
   ];
 
   return (
@@ -52,37 +55,37 @@ export function AICoaching() {
       <AccessibleCard variant="elevated" padding="lg">
         <div className="text-center py-12">
           <div className="text-6xl mb-4">🤖</div>
-          <AccessibleHeading level="h2">AI Coaching Feature</AccessibleHeading>
+          <AccessibleHeading level="h2">
+            {t("features.aiCoaching.features.title")}
+          </AccessibleHeading>
           <AccessibleText color="secondary" className="mt-2">
-            Intelligent financial coaching with cultural awareness and
-            personalized recommendations.
+            {t("features.aiCoaching.features.description")}
           </AccessibleText>
           <div className="mt-6 space-y-4">
             <div className="bg-blue-50 p-4 rounded-lg">
               <AccessibleText className="font-medium text-blue-900">
-                🎯 Personalized Financial Tips
+                {t("features.aiCoaching.features.personalizedTips.title")}
               </AccessibleText>
               <AccessibleText className="text-blue-700 mt-1">
-                Get AI-powered recommendations tailored to your spending
-                patterns and goals.
+                {t("features.aiCoaching.features.personalizedTips.description")}
               </AccessibleText>
             </div>
             <div className="bg-green-50 p-4 rounded-lg">
               <AccessibleText className="font-medium text-green-900">
-                📊 Progress Tracking
+                {t("features.aiCoaching.features.progressTracking.title")}
               </AccessibleText>
               <AccessibleText className="text-green-700 mt-1">
-                Monitor your financial journey with intelligent insights and
-                celebrations.
+                {t("features.aiCoaching.features.progressTracking.description")}
               </AccessibleText>
             </div>
             <div className="bg-purple-50 p-4 rounded-lg">
               <AccessibleText className="font-medium text-purple-900">
-                🇹🇭 Cultural Awareness
+                {t("features.aiCoaching.features.culturalAwareness.title")}
               </AccessibleText>
               <AccessibleText className="text-purple-700 mt-1">
-                Coaching adapted for Thai cultural financial behaviors and
-                practices.
+                {t(
+                  "features.aiCoaching.features.culturalAwareness.description",
+                )}
               </AccessibleText>
             </div>
           </div>
