@@ -25,114 +25,16 @@ interface GoalCreationModalProps {
   ) => void;
 }
 
-const categoryOptions = [
-  {
-    id: "emergency",
-    name: "Emergency Fund",
-    icon: "🛡️",
-    color: "#EF4444",
-    description: "Build your financial safety net",
-  },
-  {
-    id: "travel",
-    name: "Travel",
-    icon: "✈️",
-    color: "#3B82F6",
-    description: "Explore the world",
-  },
-  {
-    id: "house",
-    name: "House",
-    icon: "🏠",
-    color: "#10B981",
-    description: "Your dream home",
-  },
-  {
-    id: "car",
-    name: "Car",
-    icon: "🚗",
-    color: "#F59E0B",
-    description: "Transportation goals",
-  },
-  {
-    id: "investment",
-    name: "Investment",
-    icon: "📈",
-    color: "#8B5CF6",
-    description: "Build your wealth",
-  },
-  {
-    id: "education",
-    name: "Education",
-    icon: "🎓",
-    color: "#EC4899",
-    description: "Invest in knowledge",
-  },
-  {
-    id: "other",
-    name: "Other",
-    icon: "🎯",
-    color: "#6B7280",
-    description: "Custom goals",
-  },
-] as const;
+// Import goal categories from centralized mock data
+import {
+  categoryOptions,
+  priorityOptions,
+  goalTemplates,
+} from "../../../../mockData/features/goals";
 
-const priorityOptions = [
-  { id: "low", name: "Low", color: "#6B7280", description: "Nice to have" },
-  {
-    id: "medium",
-    name: "Medium",
-    color: "#F59E0B",
-    description: "Important goal",
-  },
-  {
-    id: "high",
-    name: "High",
-    color: "#EF4444",
-    description: "Critical priority",
-  },
-  {
-    id: "critical",
-    name: "Critical",
-    color: "#DC2626",
-    description: "Urgent need",
-  },
-] as const;
+// Priority options are imported from centralized mock data
 
-const goalTemplates = [
-  {
-    name: "Emergency Fund",
-    category: "emergency" as const,
-    targetAmount: 180000,
-    description: "3-6 months of living expenses for financial security",
-    priority: "high" as const,
-    tags: ["security", "emergency"],
-  },
-  {
-    name: "Japan Trip",
-    category: "travel" as const,
-    targetAmount: 120000,
-    description: "Dream vacation to Tokyo, Kyoto, and Mount Fuji",
-    priority: "medium" as const,
-    tags: ["travel", "vacation", "japan"],
-  },
-  {
-    name: "House Down Payment",
-    category: "house" as const,
-    targetAmount: 600000,
-    description: "20% down payment for first home purchase",
-    priority: "high" as const,
-    tags: ["property", "investment"],
-  },
-  {
-    name: "New Car",
-    category: "car" as const,
-    targetAmount: 800000,
-    description: "Reliable transportation for daily commute",
-    priority: "medium" as const,
-    tags: ["transportation", "vehicle"],
-  },
-];
+// Goal templates are imported from centralized mock data
 
 export function GoalCreationModal({
   isOpen,

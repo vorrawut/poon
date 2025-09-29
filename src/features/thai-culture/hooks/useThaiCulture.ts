@@ -3,11 +3,11 @@ import {
   thaiCultureService,
   getCulturalSpendingInsights,
 } from "../services/thaiCultureService";
-import type { 
-  ThaiCulturalEvent, 
-  FamilyObligation, 
-  MeritMakingActivity, 
-  ThaiFestival 
+import type {
+  ThaiCulturalEvent,
+  FamilyObligation,
+  MeritMakingActivity,
+  ThaiFestival,
 } from "../../../../mockData/features/thai-culture";
 
 export interface ThaiCultureData {

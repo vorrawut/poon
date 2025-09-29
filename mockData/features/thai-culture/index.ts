@@ -3,3 +3,4 @@ export * from './thaiCalendarData';
 export * from './familyObligationsData';
 export * from './meritMakingData';
 export * from './festivalSpendingData';
+export * from './culturalCategoriesData';

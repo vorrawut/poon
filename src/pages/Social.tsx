@@ -225,10 +225,10 @@ export function Social() {
                 leaderboard={leaderboard}
                 category="overall"
                 period="monthly"
-                onCategoryChange={(category) => {
+                onCategoryChange={(category: any) => {
                   console.log("Category changed:", category);
                 }}
-                onPeriodChange={(period) => {
+                onPeriodChange={(period: any) => {
                   console.log("Period changed:", period);
                 }}
                 className="max-w-4xl mx-auto"

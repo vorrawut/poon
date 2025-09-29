@@ -118,7 +118,7 @@ export const challengeManagement = {
     userActions: any[],
   ): number => {
     if (!challenge.target) return 0;
-    
+
     // Mock implementation - return a simple percentage
     return Math.min(100, userActions.length * 10);
   },

@@ -309,7 +309,9 @@ export function useSocial(options: UseSocialOptions = {}) {
 
     return data.achievements.filter(
       (achievement) =>
-        achievement.isUnlocked && achievement.earnedAt && new Date(achievement.earnedAt) > cutoffDate,
+        achievement.isUnlocked &&
+        achievement.earnedAt &&
+        new Date(achievement.earnedAt) > cutoffDate,
     );
   };
 
