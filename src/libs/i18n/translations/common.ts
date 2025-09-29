@@ -65,6 +65,128 @@ export const commonTranslations: CommonTranslations = {
     },
   },
 
+  // Premium Features
+  premium: {
+    premiumFeature: {
+      en: "Premium Feature",
+      th: "ฟีเจอร์พรีเมียม",
+    },
+    familyFeature: {
+      en: "Family Feature", 
+      th: "ฟีเจอร์สำหรับครอบครัว",
+    },
+    upgradeToUnlock: {
+      en: "Upgrade to unlock",
+      th: "อัปเกรดเพื่อปลดล็อก",
+    },
+    upgradeNow: {
+      en: "Upgrade Now",
+      th: "อัปเกรดเดี๋ยวนี้",
+    },
+    comparePlans: {
+      en: "Compare Plans",
+      th: "เปรียบเทียบแผน",
+    },
+    currentPlan: {
+      en: "Current Plan",
+      th: "แผนปัจจุบัน",
+    },
+    upgrade: {
+      en: "Upgrade",
+      th: "อัปเกรด",
+    },
+    plans: {
+      free: {
+        en: "Free",
+        th: "ฟรี",
+      },
+      premium: {
+        en: "Premium",
+        th: "พรีเมียม",
+      },
+      family: {
+        en: "Family",
+        th: "ครอบครัว",
+      },
+    },
+    benefits: {
+      unlimitedGoals: {
+        en: "Unlimited financial goals",
+        th: "เป้าหมายทางการเงินไม่จำกัด",
+      },
+      advancedAI: {
+        en: "Advanced AI insights",
+        th: "ข้อมูลเชิงลึก AI ขั้นสูง",
+      },
+      prioritySupport: {
+        en: "Priority customer support",
+        th: "การสนับสนุนลูกค้าแบบพิเศษ",
+      },
+      familySharing: {
+        en: "Family account sharing",
+        th: "แชร์บัญชีครอบครัว",
+      },
+    },
+    usage: {
+      goals: {
+        en: "Goals",
+        th: "เป้าหมาย",
+      },
+      insights: {
+        en: "AI Insights",
+        th: "ข้อมูลเชิงลึก AI",
+      },
+      categories: {
+        en: "Categories",
+        th: "หมวดหมู่",
+      },
+      limitReached: {
+        en: "You've reached your {feature} limit",
+        th: "คุณใช้ {feature} ครบตามขีดจำกัดแล้ว",
+      },
+      nearLimit: {
+        en: "{remaining} {unit} {feature} remaining",
+        th: "เหลือ {feature} อีก {remaining} {unit}",
+      },
+      available: {
+        en: "{remaining} {unit} {feature} available",
+        th: "สามารถใช้ {feature} ได้อีก {remaining} {unit}",
+      },
+    },
+    features: {
+      unlimitedGoals: {
+        title: {
+          en: "Unlimited Goals",
+          th: "เป้าหมายไม่จำกัด",
+        },
+        description: {
+          en: "Create unlimited financial goals to achieve all your dreams. Track multiple savings targets, investment goals, and life milestones.",
+          th: "สร้างเป้าหมายทางการเงินได้ไม่จำกัดเพื่อบรรลุความฝันทั้งหมด ติดตามเป้าหมายการออม การลงทุน และเหตุการณ์สำคัญในชีวิต",
+        },
+      },
+      advancedAI: {
+        title: {
+          en: "Advanced AI Insights",
+          th: "ข้อมูลเชิงลึก AI ขั้นสูง",
+        },
+        description: {
+          en: "Get personalized financial recommendations, spending pattern analysis, and predictive insights powered by advanced AI.",
+          th: "รับคำแนะนำทางการเงินเฉพาะบุคคล การวิเคราะห์รูปแบบการใช้จ่าย และข้อมูลเชิงลึกที่ขับเคลื่อนด้วย AI ขั้นสูง",
+        },
+      },
+      familySharing: {
+        title: {
+          en: "Family Account Sharing",
+          th: "แชร์บัญชีครอบครัว",
+        },
+        description: {
+          en: "Share your financial journey with up to 5 family members. Collaborate on goals and track family finances together.",
+          th: "แชร์การเดินทางทางการเงินกับสมาชิกครอบครัวได้สูงสุด 5 คน ร่วมกันตั้งเป้าหมายและติดตามการเงินครอบครัว",
+        },
+      },
+    },
+  },
+
   // Common Actions
   actions: {
     save: {

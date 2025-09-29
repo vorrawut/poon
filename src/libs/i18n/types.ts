@@ -130,6 +130,50 @@ export interface CommonTranslations {
     addTransaction: TranslationKey;
     notifications: TranslationKey;
   };
+
+  // Premium Features
+  premium: {
+    premiumFeature: TranslationKey;
+    familyFeature: TranslationKey;
+    upgradeToUnlock: TranslationKey;
+    upgradeNow: TranslationKey;
+    comparePlans: TranslationKey;
+    currentPlan: TranslationKey;
+    upgrade: TranslationKey;
+    plans: {
+      free: TranslationKey;
+      premium: TranslationKey;
+      family: TranslationKey;
+    };
+    benefits: {
+      unlimitedGoals: TranslationKey;
+      advancedAI: TranslationKey;
+      prioritySupport: TranslationKey;
+      familySharing: TranslationKey;
+    };
+    usage: {
+      goals: TranslationKey;
+      insights: TranslationKey;
+      categories: TranslationKey;
+      limitReached: TranslationKey;
+      nearLimit: TranslationKey;
+      available: TranslationKey;
+    };
+    features: {
+      unlimitedGoals: {
+        title: TranslationKey;
+        description: TranslationKey;
+      };
+      advancedAI: {
+        title: TranslationKey;
+        description: TranslationKey;
+      };
+      familySharing: {
+        title: TranslationKey;
+        description: TranslationKey;
+      };
+    };
+  };
 }
 
 export interface FeatureTranslations {

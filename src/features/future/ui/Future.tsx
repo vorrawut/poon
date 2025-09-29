@@ -8,6 +8,8 @@ import { FutureGoalDetail } from "../components/FutureGoalDetail";
 import { GoalCreationModal } from "../components/GoalCreationModal";
 import { UniverseBackground } from "../../../components/widgets";
 import { mockEnhancedGoals } from "../../../../mockData/features/goals";
+import { PremiumFeatureGate, UsageLimitIndicator } from "../../../components/premium";
+import { useSubscription } from "../../subscription";
 
 import { useUIStore } from "../../../store/useUIStore";
 
@@ -15,9 +17,14 @@ export function Future() {
   const { viewMode, accessibilityMode } = useUIStore();
   const { isPlayMode } = useTheme();
   const { t } = useTranslation();
+  const { isPremium } = useSubscription();
   const [selectedGoal, setSelectedGoal] = useState<EnhancedGoal | null>(null);
   const [goals, setGoals] = useState<EnhancedGoal[]>([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
+
+  // Premium limits
+  const FREE_GOALS_LIMIT = 3;
+  const canCreateMoreGoals = isPremium || goals.length < FREE_GOALS_LIMIT;
 
   // Initialize goals with enhanced data
   useEffect(() => {
@@ -138,6 +145,19 @@ export function Future() {
           </div>
         </FadeIn>
 
+        {/* Usage Limit Indicator for Free Users */}
+        {!isPremium && (
+          <FadeIn direction="up" delay={0.2} className="mb-6">
+            <UsageLimitIndicator
+              feature="goals"
+              current={goals.length}
+              limit={FREE_GOALS_LIMIT}
+              showUpgradeAt={80}
+              className="max-w-md mx-auto"
+            />
+          </FadeIn>
+        )}
+
         {/* Enhanced Goal Tracker or Future Goal Detail View */}
         {selectedGoal ? (
           <FutureGoalDetail
@@ -150,13 +170,32 @@ export function Future() {
             }
           />
         ) : (
-          <EnhancedGoalTracker
-            goals={goals}
-            onGoalCreate={() => setShowCreateModal(true)}
-            onContribute={handleContribute}
-            onGoalSelect={(goal) => setSelectedGoal(goal)}
-            showCreateButton={true}
-          />
+          <>
+            <EnhancedGoalTracker
+              goals={goals}
+              onGoalCreate={() => canCreateMoreGoals ? setShowCreateModal(true) : undefined}
+              onContribute={handleContribute}
+              onGoalSelect={(goal) => setSelectedGoal(goal)}
+              showCreateButton={canCreateMoreGoals}
+            />
+            
+            {/* Premium Feature Gate for Goal Creation */}
+            {!canCreateMoreGoals && (
+              <FadeIn direction="up" delay={0.3} className="mt-8">
+                <PremiumFeatureGate
+                  feature="unlimited_goals"
+                  title={t('premium.features.unlimitedGoals.title')}
+                  description={t('premium.features.unlimitedGoals.description')}
+                  requiredPlan="premium"
+                  showPreview={false}
+                  className="max-w-2xl mx-auto"
+                >
+                  {/* This gate blocks goal creation when limit is reached */}
+                  <div />
+                </PremiumFeatureGate>
+              </FadeIn>
+            )}
+          </>
         )}
 
         {/* Goal Creation Modal */}

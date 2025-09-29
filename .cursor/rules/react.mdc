@@ -239,13 +239,22 @@ const portfolioKeys = {
 
 ## 🚀 **DEVELOPMENT WORKFLOW**
 
+### **🔍 PRE-DEVELOPMENT VERIFICATION (MANDATORY)**
+- **ALWAYS CHECK EXISTING CODE FIRST** - Before creating any new component, hook, service, or feature
+- **Search entire `/src` directory** - Use `grep`, `find`, or IDE search to check if similar functionality exists
+- **Check component taxonomy** - Verify if atoms, molecules, widgets, or features already cover the use case
+- **Review feature exports** - Check all `index.ts` files for existing exports
+- **Prevent duplication** - Never create duplicate components, hooks, or utilities
+- **Reuse over recreate** - Always prefer extending/improving existing code over creating new files
+
 ### **Adding New Features**
-1. Create feature folder: `src/features/feature-name/`
-2. Add subfolders: `ui/`, `components/`, `hooks/`, `services/`, `types/`
-3. Create mock data: `mockData/features/feature-name/`
-4. Export from feature index: `src/features/feature-name/index.ts`
-5. Add tests co-located with components
-6. Update routes in `src/app/routes.tsx`
+1. **🔍 FIRST: Search `/src` for existing similar functionality**
+2. Create feature folder: `src/features/feature-name/`
+3. Add subfolders: `ui/`, `components/`, `hooks/`, `services/`, `types/`
+4. Create mock data: `mockData/features/feature-name/`
+5. Export from feature index: `src/features/feature-name/index.ts`
+6. Add tests co-located with components
+7. Update routes in `src/app/routes.tsx`
 
 ### **Mock Data Workflow**
 1. **NEVER** create mock data in `/src`
@@ -1396,13 +1405,22 @@ const portfolioKeys = {
 
 ## 🚀 **DEVELOPMENT WORKFLOW**
 
+### **🔍 PRE-DEVELOPMENT VERIFICATION (MANDATORY)**
+- **ALWAYS CHECK EXISTING CODE FIRST** - Before creating any new component, hook, service, or feature
+- **Search entire `/src` directory** - Use `grep`, `find`, or IDE search to check if similar functionality exists
+- **Check component taxonomy** - Verify if atoms, molecules, widgets, or features already cover the use case
+- **Review feature exports** - Check all `index.ts` files for existing exports
+- **Prevent duplication** - Never create duplicate components, hooks, or utilities
+- **Reuse over recreate** - Always prefer extending/improving existing code over creating new files
+
 ### **Adding New Features**
-1. Create feature folder: `src/features/feature-name/`
-2. Add subfolders: `ui/`, `components/`, `hooks/`, `services/`, `types/`
-3. Create mock data: `mockData/features/feature-name/`
-4. Export from feature index: `src/features/feature-name/index.ts`
-5. Add tests co-located with components
-6. Update routes in `src/app/routes.tsx`
+1. **🔍 FIRST: Search `/src` for existing similar functionality**
+2. Create feature folder: `src/features/feature-name/`
+3. Add subfolders: `ui/`, `components/`, `hooks/`, `services/`, `types/`
+4. Create mock data: `mockData/features/feature-name/`
+5. Export from feature index: `src/features/feature-name/index.ts`
+6. Add tests co-located with components
+7. Update routes in `src/app/routes.tsx`
 
 ### **Mock Data Workflow**
 1. **NEVER** create mock data in `/src`
