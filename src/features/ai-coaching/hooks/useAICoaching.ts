@@ -356,7 +356,7 @@ export function useAICoaching(options: UseAICoachingOptions = {}) {
       cutoffDate.setDate(cutoffDate.getDate() - days);
 
       return data.achievements.filter(
-        (achievement) => new Date(achievement.achievedAt) > cutoffDate,
+        (achievement) => achievement.achievedAt && new Date(achievement.achievedAt) > cutoffDate,
       );
     },
     [data],

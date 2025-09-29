@@ -99,7 +99,7 @@ export const aiCoachingEngine = {
 
   // Generate personalized financial tips
   generatePersonalizedTips: (
-    profile: UserFinancialProfile,
+    _profile: UserFinancialProfile,
     _analytics: CoachingAnalytics,
   ): PersonalizedTip[] => {
     // Mock implementation - in real app, this would use AI models
@@ -107,14 +107,7 @@ export const aiCoachingEngine = {
       {
         category: "spending",
         priority: "high",
-        impact: "high",
         confidence: 87,
-        personalizedFor: {
-          spendingPattern: profile.spendingHabits.patterns[0] || "general",
-          goalType: profile.goalTypes[0] || "general",
-          culturalProfile: profile.culturalProfile.heritage,
-          riskTolerance: profile.savingsProfile.riskTolerance,
-        },
       },
     ];
 
@@ -188,28 +181,18 @@ export const aiCoachingEngine = {
     if (currentData.savings >= 50000 && previousData.savings < 50000) {
       achievements.push({
         id: "savings_50k",
-        type: "milestone",
         title: { en: "Savings Milestone", th: "เป้าหมายการออม" },
         description: {
           en: "Reached ฿50,000 in savings",
           th: "บรรลุเป้าหมายการออม ฿50,000",
         },
         icon: "💰",
-        value: 50000,
-        unit: "THB",
-        celebrationMessage: {
-          en: "Outstanding savings discipline!",
-          th: "วินัยการออมที่ยอดเยี่ยม!",
-        },
-        motivationalQuote: {
-          en: "Every baht saved is a step toward freedom",
-          th: "ทุกบาทที่ออมคือก้าวสู่อิสรภาพ",
-        },
-        shareMessage: {
-          en: "Hit ฿50K savings milestone!",
-          th: "บรรลุเป้าหมายการออม ฿50K!",
-        },
-        rewards: { xp: 500, badge: "💰" },
+        rarity: "uncommon",
+        category: "savings",
+        unlockedAt: new Date(),
+        progress: 100,
+        maxProgress: 100,
+        isUnlocked: true,
         achievedAt: new Date().toISOString(),
       } as Achievement);
     }

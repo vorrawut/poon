@@ -3,10 +3,12 @@ import {
   thaiCultureService,
   getCulturalSpendingInsights,
 } from "../services/thaiCultureService";
-import type { ThaiCulturalEvent } from "../components/ThaiCalendarIntegration";
-import type { FamilyObligation } from "../components/FamilyObligationTracker";
-import type { MeritMakingActivity } from "../components/MeritMakingBudget";
-import type { ThaiFestival } from "../components/FestivalSpendingPlanner";
+import type { 
+  ThaiCulturalEvent, 
+  FamilyObligation, 
+  MeritMakingActivity, 
+  ThaiFestival 
+} from "../../../../mockData/features/thai-culture";
 
 export interface ThaiCultureData {
   events: ThaiCulturalEvent[];
@@ -186,8 +188,8 @@ export function useThaiCulture(options: UseThaiCultureOptions = {}) {
     const today = new Date();
 
     return data.obligations.filter((obligation) => {
-      if (!obligation.nextDueDate || !obligation.isActive) return false;
-      return new Date(obligation.nextDueDate) < today;
+      if (!obligation.nextDue || !obligation.isActive) return false;
+      return new Date(obligation.nextDue) < today;
     });
   };
 

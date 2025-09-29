@@ -1,8 +1,8 @@
 // Offline Indicator - Shows connection status to users
-import { useState, useEffect } from 'react';
-import { useTranslation } from '../../libs/i18n';
-import { AccessibleText } from '../../core';
-import { WifiIcon, SignalSlashIcon } from '@heroicons/react/24/outline';
+import { useState, useEffect } from "react";
+import { useTranslation } from "../../libs/i18n";
+import { AccessibleText } from "../../core";
+import { WifiIcon, SignalSlashIcon } from "@heroicons/react/24/outline";
 
 export function OfflineIndicator() {
   const { t } = useTranslation();
@@ -20,8 +20,8 @@ export function OfflineIndicator() {
       setShowOfflineMessage(true);
     };
 
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
 
     // Show offline message if starting offline
     if (!navigator.onLine) {
@@ -29,8 +29,8 @@ export function OfflineIndicator() {
     }
 
     return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
     };
   }, []);
 
@@ -47,14 +47,18 @@ export function OfflineIndicator() {
   if (!showOfflineMessage) return null;
 
   return (
-    <div className={`fixed top-16 left-4 right-4 z-[60] max-w-md mx-auto transition-all duration-300 ${
-      showOfflineMessage ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
-    }`}>
-      <div className={`rounded-lg shadow-lg p-3 flex items-center gap-3 ${
-        isOnline 
-          ? 'bg-green-600 text-white' 
-          : 'bg-orange-600 text-white'
-      }`}>
+    <div
+      className={`fixed top-16 left-4 right-4 z-[60] max-w-md mx-auto transition-all duration-300 ${
+        showOfflineMessage
+          ? "translate-y-0 opacity-100"
+          : "-translate-y-full opacity-0"
+      }`}
+    >
+      <div
+        className={`rounded-lg shadow-lg p-3 flex items-center gap-3 ${
+          isOnline ? "bg-green-600 text-white" : "bg-orange-600 text-white"
+        }`}
+      >
         <div className="flex-shrink-0">
           {isOnline ? (
             <WifiIcon className="h-5 w-5" />
@@ -62,17 +66,16 @@ export function OfflineIndicator() {
             <SignalSlashIcon className="h-5 w-5" />
           )}
         </div>
-        
+
         <div className="flex-1 min-w-0">
           <AccessibleText className="font-medium text-white text-sm">
-            {isOnline 
-              ? t('pwa.connection.backOnline') 
-              : t('pwa.connection.offline')
-            }
+            {isOnline
+              ? t("pwa.connection.backOnline")
+              : t("pwa.connection.offline")}
           </AccessibleText>
           {!isOnline && (
             <AccessibleText className="text-orange-100 text-xs mt-1">
-              {t('pwa.connection.offlineDescription')}
+              {t("pwa.connection.offlineDescription")}
             </AccessibleText>
           )}
         </div>

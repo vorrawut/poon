@@ -2,7 +2,8 @@
 // @TODO: See TODO.md - SOCIAL FEATURES section for complete implementation roadmap
 export { UserProfile } from "./components/UserProfile";
 export { AchievementShare } from "./components/AchievementShare";
-export { CommunityChallenge } from "./components/CommunityChallenge";
+export { CommunityChallengeWidget } from "./components/CommunityChallenge";
+export type { CommunityChallenge } from "./components/CommunityChallenge";
 export { FriendConnection } from "./components/FriendConnection";
 export { LeaderboardWidget } from "./components/LeaderboardWidget";
 
@@ -22,8 +23,6 @@ export type {
 
 export type {
   CommunityChallenge as ChallengeType,
-  ChallengeParticipant,
-  ChallengeReward,
   CommunityChallengeProps,
 } from "./components/CommunityChallenge";
 

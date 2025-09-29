@@ -263,11 +263,7 @@ export function useSocial(options: UseSocialOptions = {}) {
             challenge.id === challengeId
               ? {
                   ...challenge,
-                  participants: challenge.participants.map((participant) =>
-                    participant.isCurrentUser
-                      ? { ...participant, progress }
-                      : participant,
-                  ),
+                  progress: progress,
                 }
               : challenge,
           ),
@@ -313,7 +309,7 @@ export function useSocial(options: UseSocialOptions = {}) {
 
     return data.achievements.filter(
       (achievement) =>
-        achievement.isUnlocked && new Date(achievement.earnedAt) > cutoffDate,
+        achievement.isUnlocked && achievement.earnedAt && new Date(achievement.earnedAt) > cutoffDate,
     );
   };
 

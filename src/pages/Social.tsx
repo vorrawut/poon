@@ -12,7 +12,7 @@ import {
 import {
   UserProfile,
   AchievementShare,
-  CommunityChallenge,
+  CommunityChallengeWidget,
   FriendConnection,
   LeaderboardWidget,
   useSocial,
@@ -202,13 +202,10 @@ export function Social() {
             )}
 
             {activeTab === "challenges" && (
-              <CommunityChallenge
+              <CommunityChallengeWidget
                 challenges={challenges}
-                onJoinChallenge={joinChallenge}
-                onLeaveChallenge={leaveChallenge}
-                onUpdateProgress={(challengeId, progress) => {
-                  console.log("Update progress:", challengeId, progress);
-                }}
+                onJoin={joinChallenge}
+                onLeave={leaveChallenge}
                 className="max-w-4xl mx-auto"
               />
             )}
@@ -217,8 +214,8 @@ export function Social() {
               <FriendConnection
                 friends={friends}
                 suggestions={friendSuggestions}
-                onAddFriend={addFriend}
-                onRemoveFriend={removeFriend}
+                onConnect={addFriend}
+                onRemove={removeFriend}
                 className="max-w-4xl mx-auto"
               />
             )}

@@ -72,7 +72,7 @@ export const commonTranslations: CommonTranslations = {
       th: "ฟีเจอร์พรีเมียม",
     },
     familyFeature: {
-      en: "Family Feature", 
+      en: "Family Feature",
       th: "ฟีเจอร์สำหรับครอบครัว",
     },
     upgradeToUnlock: {

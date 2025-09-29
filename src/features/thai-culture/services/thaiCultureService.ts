@@ -1,8 +1,10 @@
 // Thai Culture Service - Buddhist Calendar and Cultural Financial Services
-import type { ThaiCulturalEvent } from "../components/ThaiCalendarIntegration";
-import type { FamilyObligation } from "../components/FamilyObligationTracker";
-import type { MeritMakingActivity } from "../components/MeritMakingBudget";
-import type { ThaiFestival } from "../components/FestivalSpendingPlanner";
+import type { 
+  ThaiCulturalEvent, 
+  FamilyObligation, 
+  MeritMakingActivity, 
+  ThaiFestival 
+} from "../../../../mockData/features/thai-culture";
 
 // Buddhist Era Conversion
 export const convertToBuddhistEra = (gregorianYear: number): number => {

@@ -8,7 +8,10 @@ import { FutureGoalDetail } from "../components/FutureGoalDetail";
 import { GoalCreationModal } from "../components/GoalCreationModal";
 import { UniverseBackground } from "../../../components/widgets";
 import { mockEnhancedGoals } from "../../../../mockData/features/goals";
-import { PremiumFeatureGate, UsageLimitIndicator } from "../../../components/premium";
+import {
+  PremiumFeatureGate,
+  UsageLimitIndicator,
+} from "../../../components/premium";
 import { useSubscription } from "../../subscription";
 
 import { useUIStore } from "../../../store/useUIStore";
@@ -173,19 +176,21 @@ export function Future() {
           <>
             <EnhancedGoalTracker
               goals={goals}
-              onGoalCreate={() => canCreateMoreGoals ? setShowCreateModal(true) : undefined}
+              onGoalCreate={() =>
+                canCreateMoreGoals ? setShowCreateModal(true) : undefined
+              }
               onContribute={handleContribute}
               onGoalSelect={(goal) => setSelectedGoal(goal)}
               showCreateButton={canCreateMoreGoals}
             />
-            
+
             {/* Premium Feature Gate for Goal Creation */}
             {!canCreateMoreGoals && (
               <FadeIn direction="up" delay={0.3} className="mt-8">
                 <PremiumFeatureGate
                   feature="unlimited_goals"
-                  title={t('premium.features.unlimitedGoals.title')}
-                  description={t('premium.features.unlimitedGoals.description')}
+                  title={t("premium.features.unlimitedGoals.title")}
+                  description={t("premium.features.unlimitedGoals.description")}
                   requiredPlan="premium"
                   showPreview={false}
                   className="max-w-2xl mx-auto"

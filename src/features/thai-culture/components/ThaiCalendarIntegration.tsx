@@ -8,30 +8,10 @@ import {
 } from "../../../core";
 import { useTranslation } from "../../../libs/i18n";
 import { cn } from "../../../libs/utils";
-
-// Thai Buddhist Calendar and Cultural Events
-export interface ThaiCulturalEvent {
-  id: string;
-  name: string;
-  nameEn: string;
-  nameTh: string;
-  date: string;
-  type: "religious" | "national" | "cultural" | "seasonal";
-  significance: "high" | "medium" | "low";
-  financialImpact: {
-    spendingIncrease: number; // percentage
-    categories: string[];
-    budgetRecommendation: string;
-  };
-  traditions: string[];
-  modernPractices: string[];
-  icon: string;
-  color: string;
-  description: {
-    en: string;
-    th: string;
-  };
-}
+import {
+  mockThaiEvents,
+  type ThaiCulturalEvent,
+} from "../../../../mockData/features/thai-culture";
 
 export interface ThaiCalendarIntegrationProps {
   currentEvents?: ThaiCulturalEvent[];
@@ -41,185 +21,8 @@ export interface ThaiCalendarIntegrationProps {
   className?: string;
 }
 
-// Thai Cultural Events Data
-const mockThaiEvents: ThaiCulturalEvent[] = [
-  {
-    id: "songkran-2025",
-    name: "สงกรานต์",
-    nameEn: "Songkran Festival",
-    nameTh: "เทศกาลสงกรานต์",
-    date: "2025-04-13",
-    type: "cultural",
-    significance: "high",
-    financialImpact: {
-      spendingIncrease: 45,
-      categories: ["Travel", "Food & Dining", "Gifts", "Entertainment"],
-      budgetRecommendation: "Plan ฿15,000-25,000 for travel and celebrations",
-    },
-    traditions: [
-      "Water blessing ceremonies",
-      "Visiting temples and elders",
-      "Traditional Thai games",
-      "Making merit with food offerings",
-    ],
-    modernPractices: [
-      "Water fights and festivals",
-      "Travel to hometowns",
-      "Hotel and resort bookings",
-      "Social media celebrations",
-    ],
-    icon: "💧",
-    color: "#3B82F6",
-    description: {
-      en: "Thai New Year celebration with water blessings and family reunions",
-      th: "เทศกาลปีใหม่ไทยด้วยการประพรมน้ำและการรวมตัวครอบครัว",
-    },
-  },
-  {
-    id: "vesak-2025",
-    name: "วิสาขบูชา",
-    nameEn: "Vesak Day",
-    nameTh: "วันวิสาขบูชา",
-    date: "2025-05-12",
-    type: "religious",
-    significance: "high",
-    financialImpact: {
-      spendingIncrease: 25,
-      categories: ["Merit Making", "Temple Donations", "Food Offerings"],
-      budgetRecommendation: "Allocate ฿5,000-8,000 for religious activities",
-    },
-    traditions: [
-      "Temple visits and meditation",
-      "Candle processions (Wien Tien)",
-      "Merit making with monks",
-      "Vegetarian meals",
-    ],
-    modernPractices: [
-      "Online dharma teachings",
-      "Digital merit making",
-      "Social media sharing of good deeds",
-      "Corporate CSR activities",
-    ],
-    icon: "🕯️",
-    color: "#F59E0B",
-    description: {
-      en: "Buddhist holy day commemorating Buddha's birth, enlightenment, and death",
-      th: "วันสำคัญทางพุทธศาสนาระลึกถึงการประสูติ ตรัสรู้ และปรินิพพานของพระพุทธเจ้า",
-    },
-  },
-  {
-    id: "lent-2025",
-    name: "เข้าพรรษา",
-    nameEn: "Buddhist Lent",
-    nameTh: "วันเข้าพรรษา",
-    date: "2025-07-13",
-    type: "religious",
-    significance: "high",
-    financialImpact: {
-      spendingIncrease: -15,
-      categories: [
-        "Reduced Entertainment",
-        "Mindful Spending",
-        "Meditation Retreats",
-      ],
-      budgetRecommendation:
-        "Focus on savings and mindful consumption during this period",
-    },
-    traditions: [
-      "Monks retreat to temples",
-      "Reduced social activities",
-      "Increased meditation practice",
-      "Traditional candle offerings",
-    ],
-    modernPractices: [
-      "Digital detox periods",
-      "Mindfulness apps usage",
-      "Sustainable living practices",
-      "Reduced consumption habits",
-    ],
-    icon: "🧘",
-    color: "#8B5CF6",
-    description: {
-      en: "Three-month Buddhist retreat period emphasizing mindfulness and restraint",
-      th: "ระยะเวลาพรรษา 3 เดือนที่เน้นการมีสติและความประมาณตน",
-    },
-  },
-  {
-    id: "loy-krathong-2025",
-    name: "ลอยกระทง",
-    nameEn: "Loy Krathong",
-    nameTh: "เทศกาลลอยกระทง",
-    date: "2025-11-05",
-    type: "cultural",
-    significance: "high",
-    financialImpact: {
-      spendingIncrease: 30,
-      categories: [
-        "Festival Materials",
-        "Travel",
-        "Food & Dining",
-        "Photography",
-      ],
-      budgetRecommendation: "Budget ฿8,000-12,000 for festival celebrations",
-    },
-    traditions: [
-      "Floating decorated baskets",
-      "Making wishes and prayers",
-      "Traditional Thai performances",
-      "Riverside celebrations",
-    ],
-    modernPractices: [
-      "Eco-friendly krathongs",
-      "Social media photo sharing",
-      "Hotel packages and events",
-      "Modern light festivals",
-    ],
-    icon: "🏮",
-    color: "#EC4899",
-    description: {
-      en: "Festival of lights celebrating the end of rainy season with floating offerings",
-      th: "เทศกาลแห่งแสงไฟฉลองการสิ้นสุดฤดูฝนด้วยการลอยกระทง",
-    },
-  },
-  {
-    id: "new-year-2025",
-    name: "ปีใหม่",
-    nameEn: "New Year",
-    nameTh: "เทศกาลปีใหม่",
-    date: "2025-01-01",
-    type: "national",
-    significance: "high",
-    financialImpact: {
-      spendingIncrease: 60,
-      categories: [
-        "Gifts",
-        "Travel",
-        "Celebrations",
-        "Resolutions",
-        "Shopping",
-      ],
-      budgetRecommendation: "Plan ฿20,000-35,000 for holiday season expenses",
-    },
-    traditions: [
-      "Family gatherings",
-      "Gift giving",
-      "New Year resolutions",
-      "Temple visits for blessings",
-    ],
-    modernPractices: [
-      "Countdown celebrations",
-      "Shopping mall events",
-      "Social media posts",
-      "Fitness and wellness goals",
-    ],
-    icon: "🎊",
-    color: "#10B981",
-    description: {
-      en: "International New Year celebration with Thai cultural elements",
-      th: "การเฉลิมฉลองปีใหม่สากลผสมผสานวัฒนธรรมไทย",
-    },
-  },
-];
+// Re-export the type for other components
+export type { ThaiCulturalEvent } from "../../../../mockData/features/thai-culture";
 
 // Buddhist Era Converter
 const convertToBuddhistEra = (gregorianYear: number): number => {
@@ -254,334 +57,277 @@ const formatThaiDate = (
   return `${day} ${month} ${year}`;
 };
 
-// Event Card Component
-function CulturalEventCard({
-  event,
-  onClick,
-  isSelected = false,
-}: {
-  event: ThaiCulturalEvent;
-  onClick?: () => void;
-  isSelected?: boolean;
-}) {
-  const { language } = useTranslation();
-  // const { themeMode } = useTheme();
-
-  const eventDate = new Date(event.date);
-  const isUpcoming = eventDate > new Date();
-  const daysUntil = isUpcoming
-    ? Math.ceil(
-        (eventDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24),
-      )
-    : 0;
-
-  return (
-    <motion.div
-      className={cn(
-        "cursor-pointer transition-all duration-300",
-        isSelected && "scale-105",
-      )}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      onClick={onClick}
-    >
-      <ThemeAwareCard
-        className={cn(
-          "p-4 border-2 transition-all duration-300",
-          isSelected
-            ? "border-purple-500 shadow-lg shadow-purple-500/20"
-            : "border-transparent",
-        )}
-      >
-        <div className="flex items-start justify-between mb-3">
-          <div className="flex items-center gap-3">
-            <div
-              className="text-2xl p-2 rounded-full"
-              style={{
-                backgroundColor: `${event.color}20`,
-                color: event.color,
-              }}
-            >
-              {event.icon}
-            </div>
-            <div>
-              <h3 className="font-semibold text-lg">
-                {language === "th" ? event.nameTh : event.nameEn}
-              </h3>
-              <div className="flex items-center gap-2 text-sm">
-                <span
-                  className={cn(
-                    "px-2 py-1 rounded-full text-xs font-medium capitalize",
-                    event.type === "religious"
-                      ? "bg-amber-500/20 text-amber-300"
-                      : event.type === "cultural"
-                        ? "bg-blue-500/20 text-blue-300"
-                        : event.type === "national"
-                          ? "bg-green-500/20 text-green-300"
-                          : "bg-purple-500/20 text-purple-300",
-                  )}
-                >
-                  {event.type}
-                </span>
-                <span
-                  className={cn(
-                    "px-2 py-1 rounded-full text-xs font-medium",
-                    event.significance === "high"
-                      ? "bg-red-500/20 text-red-300"
-                      : event.significance === "medium"
-                        ? "bg-yellow-500/20 text-yellow-300"
-                        : "bg-gray-500/20 text-gray-300",
-                  )}
-                >
-                  {event.significance} impact
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {isUpcoming && (
-            <div className="text-right">
-              <div className="text-xs text-gray-400">in</div>
-              <div className="text-lg font-bold text-purple-300">
-                {daysUntil}
-              </div>
-              <div className="text-xs text-gray-400">days</div>
-            </div>
-          )}
-        </div>
-
-        <ThemeAwareText color="secondary" className="text-sm mb-3 line-clamp-2">
-          {language === "th" ? event.description.th : event.description.en}
-        </ThemeAwareText>
-
-        <div className="space-y-2">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-400">Date:</span>
-            <span className="font-medium">
-              {formatThaiDate(eventDate, language === "th")}
-            </span>
-          </div>
-
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-400">Spending Impact:</span>
-            <span
-              className={cn(
-                "font-medium flex items-center gap-1",
-                event.financialImpact.spendingIncrease > 0
-                  ? "text-red-300"
-                  : event.financialImpact.spendingIncrease < 0
-                    ? "text-green-300"
-                    : "text-gray-300",
-              )}
-            >
-              {event.financialImpact.spendingIncrease > 0
-                ? "↗️"
-                : event.financialImpact.spendingIncrease < 0
-                  ? "↘️"
-                  : "➡️"}
-              {Math.abs(event.financialImpact.spendingIncrease)}%
-            </span>
-          </div>
-        </div>
-
-        {isSelected && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="mt-4 pt-4 border-t border-gray-700"
-          >
-            <div className="space-y-3">
-              <div>
-                <h4 className="text-sm font-semibold mb-2 text-purple-300">
-                  Financial Recommendation:
-                </h4>
-                <p className="text-sm text-gray-300">
-                  {event.financialImpact.budgetRecommendation}
-                </p>
-              </div>
-
-              <div>
-                <h4 className="text-sm font-semibold mb-2 text-blue-300">
-                  Affected Categories:
-                </h4>
-                <div className="flex flex-wrap gap-1">
-                  {event.financialImpact.categories.map((category, idx) => (
-                    <span
-                      key={idx}
-                      className="px-2 py-1 bg-gray-700 text-xs rounded-full"
-                    >
-                      {category}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </ThemeAwareCard>
-    </motion.div>
-  );
-}
-
 export function ThaiCalendarIntegration({
-  currentEvents: _currentEvents = [],
-  upcomingEvents: _upcomingEvents = [],
+  currentEvents = mockThaiEvents.slice(0, 2),
+  upcomingEvents = mockThaiEvents.slice(2, 4),
   onEventSelect,
   showBuddhistEra = true,
-  className = "",
+  className,
 }: ThaiCalendarIntegrationProps) {
-  // const { language } = useTranslation();
-  // const { themeMode } = useTheme();
-  const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<"current" | "upcoming" | "all">(
-    "upcoming",
+  const { t } = useTranslation();
+  const [selectedEvent, setSelectedEvent] = useState<ThaiCulturalEvent | null>(
+    null,
+  );
+  const [activeTab, setActiveTab] = useState<"current" | "upcoming">("current");
+
+  const today = useMemo(() => new Date(), []);
+  const todayThai = useMemo(
+    () => formatThaiDate(today, showBuddhistEra),
+    [today, showBuddhistEra],
   );
 
-  // Get current and upcoming events
-  const now = new Date();
-  const allEvents = mockThaiEvents;
+  const handleEventClick = (event: ThaiCulturalEvent) => {
+    setSelectedEvent(event);
+    onEventSelect?.(event);
+  };
 
-  const currentEventsData = allEvents.filter((event) => {
-    const eventDate = new Date(event.date);
-    const daysDiff = Math.abs(
-      (eventDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
-    );
-    return daysDiff <= 7; // Within 7 days
-  });
-
-  const upcomingEventsData = allEvents
-    .filter((event) => {
-      const eventDate = new Date(event.date);
-      return eventDate > now;
-    })
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-
-  const displayEvents =
-    viewMode === "current"
-      ? currentEventsData
-      : viewMode === "upcoming"
-        ? upcomingEventsData
-        : allEvents;
-
-  const handleEventSelect = (event: ThaiCulturalEvent) => {
-    const newSelection = selectedEvent === event.id ? null : event.id;
-    setSelectedEvent(newSelection);
-    if (newSelection && onEventSelect) {
-      onEventSelect(event);
+  const getSignificanceColor = (significance: string) => {
+    switch (significance) {
+      case "high":
+        return "text-red-600 dark:text-red-400";
+      case "medium":
+        return "text-yellow-600 dark:text-yellow-400";
+      case "low":
+        return "text-green-600 dark:text-green-400";
+      default:
+        return "text-gray-600 dark:text-gray-400";
     }
   };
 
-  // Calculate total financial impact
-  const totalImpact = useMemo(() => {
-    const relevantEvents =
-      viewMode === "current" ? currentEventsData : upcomingEventsData;
-    return relevantEvents.reduce(
-      (sum, event) => sum + event.financialImpact.spendingIncrease,
-      0,
-    );
-  }, [viewMode, currentEventsData, upcomingEventsData]);
+  const getTypeIcon = (type: string) => {
+    switch (type) {
+      case "religious":
+        return "🙏";
+      case "national":
+        return "🇹🇭";
+      case "cultural":
+        return "🎭";
+      case "seasonal":
+        return "🌸";
+      default:
+        return "📅";
+    }
+  };
 
   return (
     <div className={cn("space-y-6", className)}>
       {/* Header */}
       <div className="text-center">
-        <ThemeAwareHeading
-          level="h2"
-          className="text-2xl font-bold mb-2 flex items-center justify-center gap-2"
-        >
-          🇹🇭 Thai Cultural Calendar
+        <ThemeAwareHeading level="h2" className="mb-2">
+          {t("features.thaiCulture.calendar")}
         </ThemeAwareHeading>
-        <ThemeAwareText color="secondary" className="text-sm">
-          {showBuddhistEra &&
-            `Buddhist Era ${convertToBuddhistEra(new Date().getFullYear())} • `}
-          Plan your finances around Thai cultural events
-        </ThemeAwareText>
+        <ThemeAwareText color="secondary">{todayThai}</ThemeAwareText>
       </div>
 
-      {/* View Mode Selector */}
-      <div className="flex justify-center gap-2">
-        {(["current", "upcoming", "all"] as const).map((mode) => (
-          <ThemeAwareButton
-            key={mode}
-            variant={viewMode === mode ? "primary" : "ghost"}
-            size="sm"
-            onClick={() => setViewMode(mode)}
-            className="capitalize"
-          >
-            {mode === "current"
-              ? `Current (${currentEventsData.length})`
-              : mode === "upcoming"
-                ? `Upcoming (${upcomingEventsData.length})`
-                : `All (${allEvents.length})`}
-          </ThemeAwareButton>
-        ))}
+      {/* Tab Navigation */}
+      <div className="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+        <button
+          onClick={() => setActiveTab("current")}
+          className={cn(
+            "flex-1 px-4 py-2 rounded-md text-sm font-medium transition-colors",
+            activeTab === "current"
+              ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm"
+              : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white",
+          )}
+        >
+          Current Events
+        </button>
+        <button
+          onClick={() => setActiveTab("upcoming")}
+          className={cn(
+            "flex-1 px-4 py-2 rounded-md text-sm font-medium transition-colors",
+            activeTab === "upcoming"
+              ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm"
+              : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white",
+          )}
+        >
+          Upcoming Events
+        </button>
       </div>
-
-      {/* Financial Impact Summary */}
-      {viewMode !== "all" && (
-        <ThemeAwareCard className="p-4 bg-gradient-to-r from-purple-500/10 to-blue-500/10 border border-purple-500/20">
-          <div className="text-center">
-            <h3 className="font-semibold text-purple-300 mb-2">
-              📊 Expected Financial Impact
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <div
-                  className={cn(
-                    "text-2xl font-bold",
-                    totalImpact > 0
-                      ? "text-red-400"
-                      : totalImpact < 0
-                        ? "text-green-400"
-                        : "text-gray-400",
-                  )}
-                >
-                  {totalImpact > 0 ? "+" : ""}
-                  {totalImpact}%
-                </div>
-                <div className="text-sm text-gray-400">Spending Change</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-purple-400">
-                  {displayEvents.length}
-                </div>
-                <div className="text-sm text-gray-400">Events</div>
-              </div>
-            </div>
-          </div>
-        </ThemeAwareCard>
-      )}
 
       {/* Events List */}
-      <div className="space-y-4">
-        <AnimatePresence>
-          {displayEvents.map((event, index) => (
-            <motion.div
-              key={event.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-            >
-              <CulturalEventCard
-                event={event}
-                onClick={() => handleEventSelect(event)}
-                isSelected={selectedEvent === event.id}
-              />
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.2 }}
+          className="space-y-4"
+        >
+          {(activeTab === "current" ? currentEvents : upcomingEvents).map(
+            (event, index) => (
+              <motion.div
+                key={event.id}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <ThemeAwareCard
+                  variant="elevated"
+                  padding="lg"
+                  hover
+                  className="cursor-pointer"
+                  onClick={() => handleEventClick(event)}
+                >
+                  <div className="flex items-start space-x-4">
+                    <div className="text-3xl">{getTypeIcon(event.type)}</div>
 
-      {displayEvents.length === 0 && (
-        <div className="text-center py-8">
-          <div className="text-4xl mb-4">🗓️</div>
-          <ThemeAwareText color="secondary">
-            No events found for the selected period
-          </ThemeAwareText>
-        </div>
-      )}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-2">
+                        <ThemeAwareHeading level="h3" className="truncate">
+                          {event.name}
+                        </ThemeAwareHeading>
+                        <span
+                          className={cn(
+                            "text-xs font-medium px-2 py-1 rounded-full",
+                            getSignificanceColor(event.significance),
+                          )}
+                        >
+                          {event.significance}
+                        </span>
+                      </div>
+
+                      <ThemeAwareText color="secondary" className="mb-2">
+                        {formatThaiDate(new Date(event.date), showBuddhistEra)}
+                      </ThemeAwareText>
+
+                      <ThemeAwareText className="mb-3">
+                        {event.description.en}
+                      </ThemeAwareText>
+
+                      {event.financialImpact && (
+                        <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">
+                          <ThemeAwareText
+                            variant="caption"
+                            className="font-medium mb-1"
+                          >
+                            Financial Impact: +
+                            {event.financialImpact.spendingIncrease}% spending
+                          </ThemeAwareText>
+                          <ThemeAwareText variant="caption" color="secondary">
+                            {event.financialImpact.budgetRecommendation}
+                          </ThemeAwareText>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </ThemeAwareCard>
+              </motion.div>
+            ),
+          )}
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Event Detail Modal */}
+      <AnimatePresence>
+        {selectedEvent && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+            onClick={() => setSelectedEvent(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white dark:bg-gray-800 rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-3">
+                    <span className="text-4xl">
+                      {getTypeIcon(selectedEvent.type)}
+                    </span>
+                    <div>
+                      <ThemeAwareHeading level="h2">
+                        {selectedEvent.name}
+                      </ThemeAwareHeading>
+                      <ThemeAwareText color="secondary">
+                        {selectedEvent.nameEn}
+                      </ThemeAwareText>
+                    </div>
+                  </div>
+                  <ThemeAwareButton
+                    variant="ghost"
+                    onClick={() => setSelectedEvent(null)}
+                  >
+                    ✕
+                  </ThemeAwareButton>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <ThemeAwareText className="font-medium mb-2">
+                      Description
+                    </ThemeAwareText>
+                    <ThemeAwareText>
+                      {selectedEvent.description.en}
+                    </ThemeAwareText>
+                    <ThemeAwareText className="mt-2 text-sm italic">
+                      {selectedEvent.description.th}
+                    </ThemeAwareText>
+                  </div>
+
+                  <div>
+                    <ThemeAwareText className="font-medium mb-2">
+                      Traditions
+                    </ThemeAwareText>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedEvent.traditions.map((tradition, index) => (
+                        <span
+                          key={index}
+                          className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 rounded-full text-sm"
+                        >
+                          {tradition}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <ThemeAwareText className="font-medium mb-2">
+                      Modern Practices
+                    </ThemeAwareText>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedEvent.modernPractices.map((practice, index) => (
+                        <span
+                          key={index}
+                          className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 rounded-full text-sm"
+                        >
+                          {practice}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {selectedEvent.financialImpact && (
+                    <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-4">
+                      <ThemeAwareText className="font-medium mb-2">
+                        Financial Planning
+                      </ThemeAwareText>
+                      <ThemeAwareText className="mb-2">
+                        Expected spending increase:{" "}
+                        {selectedEvent.financialImpact.spendingIncrease}%
+                      </ThemeAwareText>
+                      <ThemeAwareText className="mb-2">
+                        Categories:{" "}
+                        {selectedEvent.financialImpact.categories.join(", ")}
+                      </ThemeAwareText>
+                      <ThemeAwareText>
+                        {selectedEvent.financialImpact.budgetRecommendation}
+                      </ThemeAwareText>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
