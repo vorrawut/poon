@@ -5,7 +5,6 @@ import {
   ThemeAwareText,
   ThemeAwareButton,
   ThemeAwareHeading,
-  useTheme,
 } from "../../../core";
 import { useTranslation } from "../../../libs/i18n";
 import { cn } from "../../../libs/utils";
@@ -437,7 +436,7 @@ export function AICoachAvatar({
   className = "",
 }: AICoachAvatarProps) {
   const { language } = useTranslation();
-  const { themeMode: _themeMode } = useTheme();
+  // const { themeMode } = useTheme();
   const [showPersonalitySelector, setShowPersonalitySelector] = useState(false);
   const [messageHistory, setMessageHistory] = useState<AICoachMessage[]>([]);
   const [currentPersonality, setCurrentPersonality] = useState(personality);

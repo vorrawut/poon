@@ -5,7 +5,6 @@ import {
   ThemeAwareText,
   ThemeAwareButton,
   ThemeAwareHeading,
-  useTheme,
 } from "../../../core";
 import { useTranslation } from "../../../libs/i18n";
 import { cn } from "../../../libs/utils";
@@ -266,7 +265,7 @@ function CulturalEventCard({
   isSelected?: boolean;
 }) {
   const { language } = useTranslation();
-  const { themeMode: _themeMode } = useTheme();
+  // const { themeMode } = useTheme();
 
   const eventDate = new Date(event.date);
   const isUpcoming = eventDate > new Date();
@@ -432,8 +431,8 @@ export function ThaiCalendarIntegration({
   showBuddhistEra = true,
   className = "",
 }: ThaiCalendarIntegrationProps) {
-  const { language: _language } = useTranslation();
-  const { themeMode: _themeMode } = useTheme();
+  // const { language } = useTranslation();
+  // const { themeMode } = useTheme();
   const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<"current" | "upcoming" | "all">(
     "upcoming",

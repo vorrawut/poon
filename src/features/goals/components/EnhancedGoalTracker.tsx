@@ -132,7 +132,7 @@ export function EnhancedGoalTracker({
   showCreateButton = true,
 }: EnhancedGoalTrackerProps) {
   const { isPlayMode } = useTheme();
-  const [_, _setSelectedGoal] = useState<string | null>(null);
+  const [/* selectedGoal */, /* setSelectedGoal */] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<"grid" | "list" | "missions">(
     "missions",
   );

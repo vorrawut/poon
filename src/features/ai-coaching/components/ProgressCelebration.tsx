@@ -651,7 +651,7 @@ export function ProgressCelebration({
   onCelebrate,
   className = "",
 }: ProgressCelebrationProps) {
-  const { language: _language } = useTranslation();
+  // const { language } = useTranslation();
   const [showCelebration, setShowCelebration] = useState<Achievement | null>(
     null,
   );

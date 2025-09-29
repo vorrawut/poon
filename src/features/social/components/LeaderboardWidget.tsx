@@ -6,7 +6,7 @@ import {
   ThemeAwareButton,
   ThemeAwareHeading,
 } from "../../../core";
-import { useTranslation } from "../../../libs/i18n";
+// import { useTranslation } from "../../../libs/i18n";
 import { cn } from "../../../libs/utils";
 
 // Leaderboard Types
@@ -92,7 +92,7 @@ export function LeaderboardWidget({
   onPeriodChange,
   className = "",
 }: LeaderboardWidgetProps) {
-  const { language: _language } = useTranslation();
+  // const { language } = useTranslation();
   const [showAll, setShowAll] = useState(false);
 
   const displayedEntries = showAll ? leaderboard : leaderboard.slice(0, 5);

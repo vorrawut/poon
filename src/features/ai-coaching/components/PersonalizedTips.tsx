@@ -600,7 +600,7 @@ export function PersonalizedTips({
   onRateTip,
   className = "",
 }: PersonalizedTipsProps) {
-  const { language: _language } = useTranslation();
+  // const { language } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedPriority, setSelectedPriority] = useState<string>("all");
   const [expandedTip, setExpandedTip] = useState<string | null>(null);

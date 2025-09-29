@@ -351,7 +351,7 @@ export function useSocial(options: UseSocialOptions = {}) {
   // Load data on mount or when dependencies change
   useEffect(() => {
     loadSocialData();
-  }, [userId, leaderboardCategory, leaderboardPeriod]);
+  }, [loadSocialData, userId, leaderboardCategory, leaderboardPeriod]);
 
   return {
     // Data

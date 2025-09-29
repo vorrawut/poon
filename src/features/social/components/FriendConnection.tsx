@@ -6,7 +6,7 @@ import {
   ThemeAwareButton,
   ThemeAwareHeading,
 } from "../../../core";
-import { useTranslation } from "../../../libs/i18n";
+// import { useTranslation } from "../../../libs/i18n";
 import { cn } from "../../../libs/utils";
 
 // Friend Connection Types
@@ -77,7 +77,7 @@ export function FriendConnection({
   onRemoveFriend,
   className = "",
 }: FriendConnectionProps) {
-  const { language: _language } = useTranslation();
+  // const { language } = useTranslation();
   const [activeTab, setActiveTab] = useState<"friends" | "suggestions">(
     "friends",
   );

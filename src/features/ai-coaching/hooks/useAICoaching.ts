@@ -39,7 +39,7 @@ export function useAICoaching(options: UseAICoachingOptions = {}) {
   const {
     userId = "current_user",
     autoLoad = true,
-    personalityId: _personalityId,
+    /* personalityId, */
     enableRealTimeUpdates = true,
   } = options;
 
@@ -359,7 +359,7 @@ export function useAICoaching(options: UseAICoachingOptions = {}) {
         (achievement) => new Date(achievement.achievedAt) > cutoffDate,
       );
     },
-    [data.achievements],
+    [data.achievements, data],
   );
 
   // Get coaching insights

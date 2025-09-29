@@ -381,11 +381,11 @@ export function UserProfile({
   onAddFriend,
   className = "",
 }: UserProfileProps) {
-  const { language: _language } = useTranslation();
+  // const { language } = useTranslation();
   const [selectedTab, setSelectedTab] = useState<
     "achievements" | "stats" | "activity"
   >("achievements");
-  const [selectedAchievement, _setSelectedAchievement] = useState<
+  const [selectedAchievement, /* setSelectedAchievement */] = useState<
     string | null
   >(null);
 

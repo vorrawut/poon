@@ -7,7 +7,7 @@ import {
   ThemeAwareHeading,
   useTheme,
 } from "../core";
-import { useTranslation } from "../libs/i18n";
+// import { useTranslation } from "../libs/i18n";
 // import { cn } from "../libs/utils";
 import {
   UserProfile,
@@ -20,7 +20,7 @@ import {
 import type { UserAchievement } from "../features/social";
 
 export function Social() {
-  const { language: _language } = useTranslation();
+  // const { language } = useTranslation();
   const { isPlayMode } = useTheme();
   const [activeTab, setActiveTab] = useState<
     "profile" | "challenges" | "friends" | "leaderboard"
@@ -30,8 +30,8 @@ export function Social() {
 
   // Use social hook for data management
   const {
-    profile: _profile,
-    achievements: _achievements,
+    /* profile, */
+    /* achievements, */
     friends,
     friendSuggestions,
     challenges,

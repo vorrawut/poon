@@ -307,7 +307,7 @@ export function MeritMakingBudget({
   onBudgetUpdate: _onBudgetUpdate,
   className = "",
 }: MeritMakingBudgetProps) {
-  const { language: _language } = useTranslation();
+  // const { language } = useTranslation();
   const [selectedActivity, setSelectedActivity] = useState<string | null>(null);
   const [allocations, setAllocations] = useState<Record<string, number>>({});
 

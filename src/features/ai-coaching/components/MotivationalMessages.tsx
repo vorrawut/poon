@@ -437,7 +437,7 @@ export function MotivationalMessages({
   onMessageAction,
   className = "",
 }: MotivationalMessagesProps) {
-  const { language: _language } = useTranslation();
+  // const { language } = useTranslation();
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 

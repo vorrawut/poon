@@ -644,7 +644,7 @@ export function CommunityChallenge({
   onUpdateProgress: _onUpdateProgress,
   className = "",
 }: CommunityChallengeProps) {
-  const { language: _language } = useTranslation();
+  // const { language } = useTranslation();
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
   const [selectedChallenge, setSelectedChallenge] = useState<string | null>(
     null,

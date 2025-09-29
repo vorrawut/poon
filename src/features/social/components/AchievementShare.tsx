@@ -4,7 +4,6 @@ import {
   ThemeAwareCard,
   ThemeAwareButton,
   ThemeAwareHeading,
-  useTheme,
 } from "../../../core";
 import { useTranslation } from "../../../libs/i18n";
 import { cn } from "../../../libs/utils";
@@ -166,7 +165,7 @@ function AchievementPreviewCard({
   userName: string;
 }) {
   const { language } = useTranslation();
-  const { themeMode: _themeMode } = useTheme();
+  // const { themeMode } = useTheme();
 
   const rarityColors = {
     common: "#6B7280",

@@ -244,6 +244,7 @@ export function useThaiCulture(options: UseThaiCultureOptions = {}) {
   useEffect(() => {
     loadThaiCultureData();
   }, [
+    loadThaiCultureData,
     monthlyIncome,
     familyProfile.size,
     familyProfile.hasElderlyParents,
@@ -255,7 +256,7 @@ export function useThaiCulture(options: UseThaiCultureOptions = {}) {
     if (Object.keys(spendingData).length > 0) {
       updateInsights(spendingData);
     }
-  }, [spendingData, monthlyIncome]);
+  }, [updateInsights, spendingData, monthlyIncome]);
 
   return {
     // Data
