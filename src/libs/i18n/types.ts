@@ -111,6 +111,21 @@ export interface CommonTranslations {
     lightMode: TranslationKey;
     auto: TranslationKey;
   };
+  loading: {
+    defaultMessage: TranslationKey;
+    subtitle: {
+      play: TranslationKey;
+      clarity: TranslationKey;
+    };
+    status: {
+      play: TranslationKey;
+      clarity: TranslationKey;
+    };
+  };
+  ui: {
+    addTransaction: TranslationKey;
+    notifications: TranslationKey;
+  };
 }
 
 export interface FeatureTranslations {
@@ -364,6 +379,94 @@ export interface FeatureTranslations {
     smartHighlights: {
       defaultTitle: TranslationKey;
       defaultSubtitle: TranslationKey;
+    };
+  };
+  financialUniverse: {
+    loading: {
+      message: TranslationKey;
+    };
+    error: {
+      title: TranslationKey;
+      message: TranslationKey;
+      reload: TranslationKey;
+    };
+    header: {
+      title: TranslationKey;
+      subtitle: TranslationKey;
+    };
+    navigation: {
+      quickActions: TranslationKey;
+      detailedView: TranslationKey;
+      analytics: TranslationKey;
+      settings: TranslationKey;
+    };
+    stats: {
+      title: TranslationKey;
+      totalWorth: TranslationKey;
+      monthlyFlow: TranslationKey;
+      activeGoals: TranslationKey;
+      goalsAchieved: TranslationKey;
+      planetMass: TranslationKey;
+      moonCycle: TranslationKey;
+      burningStars: TranslationKey;
+      ignitedStars: TranslationKey;
+    };
+    inspirational: {
+      title: TranslationKey;
+      message: TranslationKey;
+    };
+    wealthPlanet: {
+      title: TranslationKey;
+      instructions: TranslationKey;
+      status: {
+        growing: TranslationKey;
+        declining: TranslationKey;
+        stable: TranslationKey;
+      };
+      wealthStatus: {
+        millionaire: TranslationKey;
+        highNetWorth: TranslationKey;
+        buildingWealth: TranslationKey;
+        growingStrong: TranslationKey;
+        startingJourney: TranslationKey;
+      };
+    };
+    moonPhases: {
+      phases: {
+        newMoon: {
+          name: TranslationKey;
+          description: TranslationKey;
+        };
+        waxingCrescent: {
+          name: TranslationKey;
+          description: TranslationKey;
+        };
+        firstQuarter: {
+          name: TranslationKey;
+          description: TranslationKey;
+        };
+        waxingGibbous: {
+          name: TranslationKey;
+          description: TranslationKey;
+        };
+        fullMoon: {
+          name: TranslationKey;
+          description: TranslationKey;
+        };
+        waningGibbous: {
+          name: TranslationKey;
+          description: TranslationKey;
+        };
+        lastQuarter: {
+          name: TranslationKey;
+          description: TranslationKey;
+        };
+        waningCrescent: {
+          name: TranslationKey;
+          description: TranslationKey;
+        };
+      };
+      comparison: TranslationKey;
     };
   };
 }

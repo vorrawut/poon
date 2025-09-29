@@ -6,6 +6,7 @@ import { EnhancedCosmicBackground } from "./EnhancedCosmicBackground";
 import { SpendingMoonPhases } from "./SpendingMoonPhases";
 import { GoalStarConstellation } from "./GoalStarConstellation";
 import { useNetWorth } from "../../features/networth/hooks/useNetWorth";
+import { useTranslation } from "../../libs/i18n";
 import {
   mockFinancialUniverseGoals,
   mockSpendingData,
@@ -36,6 +37,7 @@ export function FinancialUniverse({
   const { netWorthData, loading, error } = useNetWorth();
   const [aiInsights, setAiInsights] = useState<any[]>([]);
   const { isPlayMode } = useTheme();
+  const { t } = useTranslation();
 
   // Use centralized mock AI insights
   useEffect(() => {
@@ -49,7 +51,7 @@ export function FinancialUniverse({
     return (
       <UniverseLoading
         className={className}
-        message="🌌 Loading your financial universe..."
+        message={t("features.financialUniverse.loading.message")}
       />
     );
   }
@@ -63,17 +65,17 @@ export function FinancialUniverse({
           <div className="text-white">
             <div className="text-6xl mb-4">🌌</div>
             <ThemeAwareHeading level="h2" className="text-2xl font-bold mb-2">
-              Universe Loading Error
+              {t("features.financialUniverse.error.title")}
             </ThemeAwareHeading>
             <ThemeAwareText className="text-white/70 mb-4">
-              Unable to load your financial data
+              {t("features.financialUniverse.error.message")}
             </ThemeAwareText>
             <ThemeAwareButton
               variant="primary"
               onClick={() => window.location.reload()}
               className="mt-4"
             >
-              Reload Universe
+              {t("features.financialUniverse.error.reload")}
             </ThemeAwareButton>
           </div>
         </div>
@@ -108,11 +110,10 @@ export function FinancialUniverse({
             >
               🌍
             </motion.span>
-            Your Financial Universe
+            {t("features.financialUniverse.header.title")}
           </h1>
           <p className="text-xl text-white/80 max-w-3xl mx-auto">
-            Welcome to your personal galaxy of wealth! Every planet, moon, and
-            star tells the story of your financial journey.
+            {t("features.financialUniverse.header.subtitle")}
           </p>
         </motion.div>
 
@@ -289,10 +290,26 @@ export function FinancialUniverse({
           transition={{ duration: 1, delay: 1.5 }}
         >
           {[
-            { emoji: "🚀", label: "Quick Actions", action: "quick_actions" },
-            { emoji: "🔭", label: "Detailed View", action: "detailed_view" },
-            { emoji: "📊", label: "Analytics", action: "analytics" },
-            { emoji: "⚙️", label: "Settings", action: "settings" },
+            {
+              emoji: "🚀",
+              label: t("features.financialUniverse.navigation.quickActions"),
+              action: "quick_actions",
+            },
+            {
+              emoji: "🔭",
+              label: t("features.financialUniverse.navigation.detailedView"),
+              action: "detailed_view",
+            },
+            {
+              emoji: "📊",
+              label: t("features.financialUniverse.navigation.analytics"),
+              action: "analytics",
+            },
+            {
+              emoji: "⚙️",
+              label: t("features.financialUniverse.navigation.settings"),
+              action: "settings",
+            },
           ].map((item) => (
             <motion.button
               key={item.action}
@@ -319,7 +336,7 @@ export function FinancialUniverse({
           transition={{ duration: 1, delay: 2 }}
         >
           <h3 className="text-xl md:text-2xl font-bold text-white mb-4 md:mb-6 text-center">
-            🌌 Universe Status
+            {t("features.financialUniverse.stats.title")}
           </h3>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             <div className="text-center">
@@ -327,36 +344,44 @@ export function FinancialUniverse({
                 ${(netWorthData.totalNetWorth / 1000).toFixed(0)}K
               </div>
               <div className="text-white/70 text-xs md:text-sm">
-                Total Worth
+                {t("features.financialUniverse.stats.totalWorth")}
               </div>
-              <div className="text-green-300 text-xs mt-1">Planet Mass</div>
+              <div className="text-green-300 text-xs mt-1">
+                {t("features.financialUniverse.stats.planetMass")}
+              </div>
             </div>
             <div className="text-center">
               <div className="text-xl md:text-3xl font-bold text-amber-300">
                 ${(mockSpendingData.monthlySpending / 1000).toFixed(1)}K
               </div>
               <div className="text-white/70 text-xs md:text-sm">
-                Monthly Flow
+                {t("features.financialUniverse.stats.monthlyFlow")}
               </div>
-              <div className="text-amber-300 text-xs mt-1">Moon Cycle</div>
+              <div className="text-amber-300 text-xs mt-1">
+                {t("features.financialUniverse.stats.moonCycle")}
+              </div>
             </div>
             <div className="text-center">
               <div className="text-xl md:text-3xl font-bold text-blue-300">
                 {mockGoals.filter((g) => !g.isCompleted).length}
               </div>
               <div className="text-white/70 text-xs md:text-sm">
-                Active Goals
+                {t("features.financialUniverse.stats.activeGoals")}
               </div>
-              <div className="text-blue-300 text-xs mt-1">Burning Stars</div>
+              <div className="text-blue-300 text-xs mt-1">
+                {t("features.financialUniverse.stats.burningStars")}
+              </div>
             </div>
             <div className="text-center">
               <div className="text-xl md:text-3xl font-bold text-purple-300">
                 {mockGoals.filter((g) => g.isCompleted).length}
               </div>
               <div className="text-white/70 text-xs md:text-sm">
-                Goals Achieved
+                {t("features.financialUniverse.stats.goalsAchieved")}
               </div>
-              <div className="text-purple-300 text-xs mt-1">Ignited Stars</div>
+              <div className="text-purple-300 text-xs mt-1">
+                {t("features.financialUniverse.stats.ignitedStars")}
+              </div>
             </div>
           </div>
         </motion.div>
@@ -370,12 +395,10 @@ export function FinancialUniverse({
         >
           <div className="text-4xl md:text-6xl mb-3 md:mb-4">✨</div>
           <h3 className="text-xl md:text-2xl font-bold text-white mb-3 md:mb-4">
-            Your Financial Galaxy is Growing!
+            {t("features.financialUniverse.inspirational.title")}
           </h3>
           <p className="text-white/70 max-w-xl md:max-w-2xl mx-auto text-sm md:text-lg">
-            Like the universe itself, your wealth is expanding. Every
-            transaction shapes your galaxy, every goal becomes a shining star,
-            and every achievement ignites new possibilities.
+            {t("features.financialUniverse.inspirational.message")}
           </p>
         </motion.div>
       </div>

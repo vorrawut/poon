@@ -12,6 +12,7 @@ import * as THREE from "three";
 import { useTheme } from "../../hooks/useTheme";
 import { useAccessibility } from "../../hooks/useAccessibility";
 import { cn } from "../../libs/utils";
+import { useTranslation } from "../../libs/i18n";
 
 interface WealthPlanetProps {
   netWorth: number;
@@ -32,6 +33,7 @@ function WealthPlanet({
   const atmosphereRef = useRef<THREE.Mesh>(null);
   const ringsRef = useRef<THREE.Mesh>(null);
   const { themeMode } = useTheme();
+  const { t } = useTranslation();
 
   // Calculate planet size based on net worth (more dramatic scaling)
   const planetSize = useMemo(() => {
@@ -237,14 +239,24 @@ function WealthPlanet({
         outlineColor={themeMode === "dark" ? "#000000" : "#FFFFFF"}
       >
         {netWorth > 1000000
-          ? "👑 Millionaire Status"
+          ? t(
+              "features.financialUniverse.wealthPlanet.wealthStatus.millionaire",
+            )
           : netWorth > 500000
-            ? "💎 High Net Worth"
+            ? t(
+                "features.financialUniverse.wealthPlanet.wealthStatus.highNetWorth",
+              )
             : netWorth > 100000
-              ? "⭐ Building Wealth"
+              ? t(
+                  "features.financialUniverse.wealthPlanet.wealthStatus.buildingWealth",
+                )
               : netWorth > 50000
-                ? "🌟 Growing Strong"
-                : "🌱 Starting Journey"}
+                ? t(
+                    "features.financialUniverse.wealthPlanet.wealthStatus.growingStrong",
+                  )
+                : t(
+                    "features.financialUniverse.wealthPlanet.wealthStatus.startingJourney",
+                  )}
       </Text>
     </group>
   );
@@ -389,6 +401,7 @@ export function InteractiveWealthPlanet({
 }: WealthPlanetProps) {
   const { isPlayMode, themeMode } = useTheme();
   const { accessibilityMode } = useAccessibility();
+  const { t } = useTranslation();
 
   // Disable 3D for elder mode or if user prefers reduced motion
   const disable3D = accessibilityMode === "elder";
@@ -495,10 +508,10 @@ export function InteractiveWealthPlanet({
       >
         <div className="text-center text-white">
           <div className="text-sm font-medium mb-1 bg-gradient-to-r from-purple-300 to-blue-300 bg-clip-text text-transparent">
-            🌍 Planet of Wealth
+            {t("features.financialUniverse.wealthPlanet.title")}
           </div>
           <div className="text-xs opacity-80">
-            Drag to rotate • Scroll to zoom • Auto-rotating
+            {t("features.financialUniverse.wealthPlanet.instructions")}
           </div>
         </div>
       </motion.div>
@@ -521,7 +534,11 @@ export function InteractiveWealthPlanet({
           repeat: Infinity,
         }}
       >
-        {growth > 0 ? "🚀 Growing" : growth < 0 ? "📉 Declining" : "📊 Stable"}
+        {growth > 0
+          ? t("features.financialUniverse.wealthPlanet.status.growing")
+          : growth < 0
+            ? t("features.financialUniverse.wealthPlanet.status.declining")
+            : t("features.financialUniverse.wealthPlanet.status.stable")}
       </motion.div>
     </div>
   );

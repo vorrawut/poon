@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { cn } from "../../libs/utils";
 import { useTheme } from "../../hooks/useTheme";
 import { useAccessibility } from "../../hooks/useAccessibility";
+import { useTranslation } from "../../libs/i18n";
 
 interface LoadingSpinnerProps {
   size?: "sm" | "md" | "lg" | "xl";
@@ -92,10 +93,13 @@ interface UniverseLoadingProps {
 
 export function UniverseLoading({
   className,
-  message = "Loading your financial universe...",
+  message,
 }: UniverseLoadingProps) {
   const { isPlayMode, themeMode } = useTheme();
   const { accessibilityMode } = useAccessibility();
+  const { t } = useTranslation();
+  
+  const displayMessage = message || t("common.loading.defaultMessage");
 
   const reduceMotion = accessibilityMode === "elder";
 
@@ -375,7 +379,7 @@ export function UniverseLoading({
                     }
               }
             >
-              {message}
+              {displayMessage}
             </motion.div>
 
             {/* Subtitle */}
@@ -388,7 +392,7 @@ export function UniverseLoading({
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 1 }}
             >
-              Preparing your cosmic financial journey...
+              {t("common.loading.subtitle.play")}
             </motion.div>
 
             {/* Enhanced progress indicator */}
@@ -443,7 +447,7 @@ export function UniverseLoading({
                     }
               }
             >
-              Initializing financial data streams...
+              {t("common.loading.status.play")}
             </motion.div>
           </motion.div>
         </div>
@@ -505,7 +509,7 @@ export function UniverseLoading({
                 }
           }
         >
-          {message}
+          {displayMessage}
         </motion.div>
 
         {/* Subtitle */}
@@ -515,7 +519,7 @@ export function UniverseLoading({
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.8 }}
         >
-          Preparing your financial data...
+          {t("common.loading.subtitle.clarity")}
         </motion.div>
 
         {/* Progress dots */}
@@ -564,7 +568,7 @@ export function UniverseLoading({
                 }
           }
         >
-          Loading components and data...
+          {t("common.loading.status.clarity")}
         </motion.div>
       </motion.div>
     </div>

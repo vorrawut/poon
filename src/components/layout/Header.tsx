@@ -142,7 +142,7 @@ export function Header() {
             glow={isPlayMode}
           >
             <PlusIcon className="h-4 w-4" />
-            <span className="hidden sm:inline text-sm">Add Transaction</span>
+            <span className="hidden sm:inline text-sm">{t("common.ui.addTransaction")}</span>
           </ThemeAwareButton>
 
           {/* Notifications */}

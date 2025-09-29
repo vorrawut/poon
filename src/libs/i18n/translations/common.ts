@@ -344,4 +344,44 @@ export const commonTranslations: CommonTranslations = {
       th: "อัตโนมัติ",
     },
   },
+
+  // Loading States
+  loading: {
+    defaultMessage: {
+      en: "Loading your financial universe...",
+      th: "กำลังโหลดจักรวาลการเงินของคุณ...",
+    },
+    subtitle: {
+      play: {
+        en: "Preparing your cosmic financial journey...",
+        th: "เตรียมการเดินทางการเงินแห่งจักรวาลของคุณ...",
+      },
+      clarity: {
+        en: "Preparing your financial data...",
+        th: "เตรียมข้อมูลการเงินของคุณ...",
+      },
+    },
+    status: {
+      play: {
+        en: "Initializing financial data streams...",
+        th: "เริ่มต้นสตรีมข้อมูลการเงิน...",
+      },
+      clarity: {
+        en: "Loading components and data...",
+        th: "โหลดส่วนประกอบและข้อมูล...",
+      },
+    },
+  },
+
+  // UI Components
+  ui: {
+    addTransaction: {
+      en: "Add Transaction",
+      th: "เพิ่มรายการ",
+    },
+    notifications: {
+      en: "Notifications",
+      th: "การแจ้งเตือน",
+    },
+  },
 };

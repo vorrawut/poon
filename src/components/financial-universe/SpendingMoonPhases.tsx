@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useTheme } from "../../core";
+import { useTranslation } from "../../libs/i18n";
 
 interface SpendingMoonPhasesProps {
   monthlySpending: number;
@@ -17,6 +18,7 @@ export function SpendingMoonPhases({
   className = "",
 }: SpendingMoonPhasesProps) {
   const { isPlayMode } = useTheme();
+  const { t } = useTranslation();
 
   // Calculate moon phase based on spending pattern
   const getMoonPhase = () => {
@@ -33,43 +35,67 @@ export function SpendingMoonPhases({
   const moonPhases = {
     new: {
       emoji: "🌑",
-      name: "New Moon",
-      description: "Minimal spending phase",
+      name: t("features.financialUniverse.moonPhases.phases.newMoon.name"),
+      description: t(
+        "features.financialUniverse.moonPhases.phases.newMoon.description",
+      ),
     },
     "waxing-crescent": {
       emoji: "🌒",
-      name: "Waxing Crescent",
-      description: "Spending starting to grow",
+      name: t(
+        "features.financialUniverse.moonPhases.phases.waxingCrescent.name",
+      ),
+      description: t(
+        "features.financialUniverse.moonPhases.phases.waxingCrescent.description",
+      ),
     },
     "first-quarter": {
       emoji: "🌓",
-      name: "First Quarter",
-      description: "Balanced spending",
+      name: t("features.financialUniverse.moonPhases.phases.firstQuarter.name"),
+      description: t(
+        "features.financialUniverse.moonPhases.phases.firstQuarter.description",
+      ),
     },
     "waxing-gibbous": {
       emoji: "🌔",
-      name: "Waxing Gibbous",
-      description: "Spending increasing",
+      name: t(
+        "features.financialUniverse.moonPhases.phases.waxingGibbous.name",
+      ),
+      description: t(
+        "features.financialUniverse.moonPhases.phases.waxingGibbous.description",
+      ),
     },
     full: {
       emoji: "🌕",
-      name: "Full Moon",
-      description: "Peak spending phase",
+      name: t("features.financialUniverse.moonPhases.phases.fullMoon.name"),
+      description: t(
+        "features.financialUniverse.moonPhases.phases.fullMoon.description",
+      ),
     },
     "waning-gibbous": {
       emoji: "🌖",
-      name: "Waning Gibbous",
-      description: "Spending decreasing",
+      name: t(
+        "features.financialUniverse.moonPhases.phases.waningGibbous.name",
+      ),
+      description: t(
+        "features.financialUniverse.moonPhases.phases.waningGibbous.description",
+      ),
     },
     "last-quarter": {
       emoji: "🌗",
-      name: "Last Quarter",
-      description: "Moderate spending",
+      name: t("features.financialUniverse.moonPhases.phases.lastQuarter.name"),
+      description: t(
+        "features.financialUniverse.moonPhases.phases.lastQuarter.description",
+      ),
     },
     "waning-crescent": {
       emoji: "🌘",
-      name: "Waning Crescent",
-      description: "Low spending phase",
+      name: t(
+        "features.financialUniverse.moonPhases.phases.waningCrescent.name",
+      ),
+      description: t(
+        "features.financialUniverse.moonPhases.phases.waningCrescent.description",
+      ),
     },
   };
 
@@ -107,7 +133,8 @@ export function SpendingMoonPhases({
               className={`text-sm font-medium ${spendingChange >= 0 ? "text-red-500" : "text-green-500"}`}
             >
               {spendingChange >= 0 ? "+" : ""}฿
-              {Math.abs(spendingChange).toLocaleString()} vs last month
+              {Math.abs(spendingChange).toLocaleString()}{" "}
+              {t("features.financialUniverse.moonPhases.comparison")}
             </div>
           </div>
         </div>
@@ -231,7 +258,8 @@ export function SpendingMoonPhases({
               className={`text-sm font-medium ${spendingChange >= 0 ? "text-red-300" : "text-green-300"}`}
             >
               {spendingChange >= 0 ? "+" : ""}฿
-              {Math.abs(spendingChange).toLocaleString()} vs last month
+              {Math.abs(spendingChange).toLocaleString()}{" "}
+              {t("features.financialUniverse.moonPhases.comparison")}
             </div>
           </div>
         </motion.div>
