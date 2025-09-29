@@ -12,6 +12,7 @@ interface AccessibleCardProps {
   className?: string;
   hover?: boolean;
   onClick?: () => void;
+  style?: React.CSSProperties;
 }
 
 interface AccessibleSectionProps {
@@ -30,6 +31,7 @@ interface AccessibleStatsCardProps {
   trend?: "up" | "down" | "neutral";
   trendValue?: string;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 /**
@@ -42,6 +44,7 @@ export function AccessibleCard({
   className = "",
   hover = false,
   onClick,
+  style,
 }: AccessibleCardProps) {
   const { getClasses, viewMode, isElderMode } = useAccessibility();
   const motionProps = useAccessibilityMotion();
@@ -87,7 +90,7 @@ export function AccessibleCard({
 
   if (isElderMode || !hover) {
     return (
-      <div className={combinedClassName} onClick={onClick}>
+      <div className={combinedClassName} onClick={onClick} style={style}>
         {children}
       </div>
     );
@@ -97,6 +100,7 @@ export function AccessibleCard({
     <motion.div
       className={combinedClassName}
       onClick={onClick}
+      style={style}
       whileHover={hover ? { scale: 1.02, y: -2 } : undefined}
       whileTap={onClick ? { scale: 0.98 } : undefined}
       {...motionProps}
@@ -156,6 +160,7 @@ export function AccessibleStatsCard({
   trend,
   trendValue,
   className = "",
+  style,
 }: AccessibleStatsCardProps) {
   const { getClasses, colors } = useAccessibility();
 
@@ -184,7 +189,7 @@ export function AccessibleStatsCard({
   };
 
   return (
-    <AccessibleCard variant="elevated" className={className}>
+    <AccessibleCard variant="elevated" className={className} style={style}>
       <div className="text-center">
         {icon && <div className="text-4xl mb-3">{icon}</div>}
 

@@ -2,6 +2,11 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FadeIn, SplitText } from "../../../components/ui";
 import {
+  AccessibleHeading,
+  AccessibleText,
+  AccessibleButton,
+} from "../../../core";
+import {
   WealthSolarSystem,
   SmartHighlights,
   WealthTimeline,
@@ -16,16 +21,9 @@ import {
 } from "../../../../mockData/features/portfolio";
 
 import { useUIStore } from "../../../store/useUIStore";
-import {
-  useAccessibility,
-  useAccessibilityText,
-} from "../../../hooks/useAccessibility";
 
 export function Portfolio() {
   const { viewMode } = useUIStore();
-  const { getClasses } = useAccessibility();
-  const headingClasses = useAccessibilityText("heading", "h1");
-  const subheadingClasses = useAccessibilityText("heading", "h2");
   const [showTimeline, setShowTimeline] = useState(false);
   const [showSimulation, setShowSimulation] = useState(false);
   const [showCategoryOverlay, setShowCategoryOverlay] = useState(false);
@@ -57,25 +55,27 @@ export function Portfolio() {
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.7 }}
       >
-        <button
+        <AccessibleButton
+          variant="ghost"
+          size="sm"
           onClick={() => setShowTimeline(!showTimeline)}
-          className="bg-black/30 backdrop-blur-sm border border-white/20 text-white px-4 py-2 rounded-full text-sm hover:bg-white/10 transition-all"
         >
           🕰 Timeline
-        </button>
-        <button
+        </AccessibleButton>
+        <AccessibleButton
+          variant="ghost"
+          size="sm"
           onClick={() => setShowSimulation(!showSimulation)}
-          className="bg-black/30 backdrop-blur-sm border border-white/20 text-white px-4 py-2 rounded-full text-sm hover:bg-white/10 transition-all"
         >
           🔮 Simulate
-        </button>
+        </AccessibleButton>
       </motion.div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Portfolio Universe Header */}
         <FadeIn direction="down">
           <div className="text-center mb-16">
-            <div className={`${headingClasses} font-bold text-white mb-4`}>
+            <AccessibleHeading level="h1" className="mb-4" gradient>
               <motion.span
                 className="inline-block mr-4"
                 animate={{ rotate: [0, 360] }}
@@ -84,14 +84,15 @@ export function Portfolio() {
                 ☀️
               </motion.span>
               <SplitText className="inline">Your Wealth Universe</SplitText>
-            </div>
-            <p
-              className={`${getClasses({ fontSize: "text" })} text-white/80 max-w-2xl mx-auto mb-8`}
+            </AccessibleHeading>
+            <AccessibleText
+              color="secondary"
+              className="max-w-2xl mx-auto mb-8"
             >
               {viewMode === "play"
                 ? "Navigate your financial solar system — each planet represents your asset categories orbiting around your portfolio sun!"
                 : "Clear overview of your portfolio performance with exact numbers and plain summaries."}
-            </p>
+            </AccessibleText>
 
             {/* Portfolio Summary */}
             <motion.div
@@ -99,11 +100,9 @@ export function Portfolio() {
               whileHover={{ scale: 1.02 }}
             >
               <div className="text-center">
-                <div
-                  className={`${getClasses({ fontSize: "heading", headingLevel: "h2" })} font-bold text-white`}
-                >
+                <AccessibleHeading level="h2" className="text-white">
                   {formatCurrency(totalValue)}
-                </div>
+                </AccessibleHeading>
                 <div className="text-white/70 text-sm">Total Portfolio</div>
               </div>
               <div className="w-px h-16 bg-white/20"></div>
@@ -159,9 +158,9 @@ export function Portfolio() {
               {/* Clean Table View */}
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 overflow-hidden">
                 <div className="px-6 py-4 border-b border-white/20">
-                  <h3 className={`${subheadingClasses} font-bold text-white`}>
+                  <AccessibleHeading level="h3" className="text-white">
                     Portfolio Assets
-                  </h3>
+                  </AccessibleHeading>
                   <p className="text-white/70 text-sm">
                     Clear breakdown of your investments
                   </p>

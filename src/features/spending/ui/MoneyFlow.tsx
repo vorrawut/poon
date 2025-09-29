@@ -2,6 +2,11 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FadeIn, SplitText } from "../../../components/ui";
 import {
+  AccessibleHeading,
+  AccessibleText,
+  AccessibleButton,
+} from "../../../core";
+import {
   MoneyFlowVisualizer,
   IncomeBreakdownCard,
   MonthlyReportCard,
@@ -49,16 +54,14 @@ export function MoneyFlow() {
         animate={{ opacity: 1, y: 0 }}
         className="relative z-10 pt-20 pb-8 text-center"
       >
-        <SplitText
-          text="Money Flow Universe"
-          className="text-6xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4"
-          delay={0.1}
-        />
+        <AccessibleHeading level="h1" className="mb-4" gradient>
+          <SplitText text="Money Flow Universe" delay={0.1} />
+        </AccessibleHeading>
         <FadeIn delay={0.5}>
-          <p className="text-xl text-slate-300 max-w-2xl mx-auto px-4">
+          <AccessibleText color="secondary" className="max-w-2xl mx-auto px-4">
             Your financial story told like never before — Spotify Wrapped meets
             Apple Health for your money! 🚀
-          </p>
+          </AccessibleText>
         </FadeIn>
       </motion.div>
 
@@ -79,18 +82,14 @@ export function MoneyFlow() {
             { id: "game", label: "Game", icon: "🎮" },
             { id: "coach", label: "Coach", icon: "🤖" },
           ].map((section) => (
-            <button
+            <AccessibleButton
               key={section.id}
+              variant={activeSection === section.id ? "primary" : "ghost"}
               onClick={() => setActiveSection(section.id as any)}
-              className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 ${
-                activeSection === section.id
-                  ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg"
-                  : "text-slate-300 hover:text-white hover:bg-white/10"
-              }`}
             >
               <span className="mr-2">{section.icon}</span>
               {section.label}
-            </button>
+            </AccessibleButton>
           ))}
         </div>
       </motion.div>

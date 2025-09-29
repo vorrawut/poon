@@ -2,6 +2,14 @@ import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FadeIn } from "../../../components/ui";
 import {
+  AccessibleHeading,
+  AccessibleText,
+  AccessibleButton,
+  AccessibleCard,
+  AccessibleStatsCard,
+  AccessibleGrid,
+} from "../../../core";
+import {
   SpendingGalaxy,
   SpendingTimelineHeatmap,
   PaymentMethodRadar,
@@ -36,9 +44,11 @@ const mockSpendingCategories = generateMockSpendingData();
 const mockSpendingData = generateMockTransactionData();
 
 import { useUIStore } from "../../../store/useUIStore";
+import { useAccessibilityMotion } from "../../../hooks/useAccessibility";
 
 export function Spending() {
   const { viewMode } = useUIStore();
+  const { transition } = useAccessibilityMotion();
   const [activeSection, setActiveSection] = useState<
     | "galaxy"
     | "timeline"
@@ -105,11 +115,7 @@ export function Spending() {
           className="text-center py-4 sm:py-8 mb-8"
         >
           <div className="mb-8">
-            <div
-              className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 ${
-                viewMode === "play" ? "text-white" : "text-gray-900"
-              }`}
-            >
+            <AccessibleHeading level="h1" className="mb-6" gradient>
               <motion.span
                 className="inline-block mr-4"
                 animate={{
@@ -123,22 +129,19 @@ export function Spending() {
               >
                 🌌
               </motion.span>
-              <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                {viewMode === "play" ? "Spending Galaxy" : "Spending Radar"}
-              </span>
-            </div>
-            <p
-              className={`text-lg sm:text-xl md:text-2xl mb-8 max-w-4xl mx-auto px-4 ${
-                viewMode === "play" ? "text-white/80" : "text-gray-600"
-              }`}
+              {viewMode === "play" ? "Spending Galaxy" : "Spending Radar"}
+            </AccessibleHeading>
+            <AccessibleText
+              color="secondary"
+              className="mb-8 max-w-4xl mx-auto px-4"
             >
               {viewMode === "play"
                 ? "Navigate your financial universe! Every category is a planet, every transaction tells a story in your personal spending galaxy. 🚀✨"
                 : "Professional spending analysis with advanced radar technology, timeline patterns, and intelligent insights for optimal financial management."}
-            </p>
+            </AccessibleText>
 
             {/* Quick Stats */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto">
+            <AccessibleGrid cols={4} gap="md" className="max-w-4xl mx-auto">
               {[
                 {
                   label: "Total Spent",
@@ -165,28 +168,16 @@ export function Spending() {
                   color: "#F9CA24",
                 },
               ].map((stat, index) => (
-                <motion.div
+                <AccessibleStatsCard
                   key={stat.label}
-                  className={`p-4 rounded-xl border ${
-                    viewMode === "play"
-                      ? "bg-white/10 backdrop-blur-sm border-white/20 text-white"
-                      : "bg-white border-gray-200 text-gray-900"
-                  }`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 + index * 0.1 }}
-                  whileHover={{ scale: 1.02, y: -2 }}
-                >
-                  <div className="text-2xl mb-2">{stat.icon}</div>
-                  <div className="text-xl font-bold">{stat.value}</div>
-                  <div
-                    className={`text-sm ${viewMode === "play" ? "text-white/70" : "text-gray-600"}`}
-                  >
-                    {stat.label}
-                  </div>
-                </motion.div>
+                  title={stat.label}
+                  value={stat.value.toString()}
+                  icon={stat.icon}
+                  className="motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4"
+                  style={{ animationDelay: `${0.2 + index * 0.1}s` }}
+                />
               ))}
-            </div>
+            </AccessibleGrid>
           </div>
         </FadeIn>
 
@@ -238,29 +229,31 @@ export function Spending() {
                   desc: "Smart Tips",
                 },
               ].map((tab) => (
-                <motion.button
+                <AccessibleButton
                   key={tab.id}
+                  variant={activeSection === tab.id ? "primary" : "ghost"}
+                  size="sm"
                   onClick={() => setActiveSection(tab.id as any)}
-                  className={`px-2 sm:px-4 lg:px-6 py-2 sm:py-3 rounded-xl font-medium transition-all text-xs sm:text-sm whitespace-nowrap flex-shrink-0 ${
-                    activeSection === tab.id
-                      ? "bg-white/20 text-white shadow-lg"
-                      : "text-white/70 hover:text-white hover:bg-white/10"
-                  }`}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  className="whitespace-nowrap flex-shrink-0"
                 >
                   <div className="flex items-center gap-1 sm:gap-2">
                     {tab.icon}
                     <div>
-                      <div className="text-xs sm:text-sm font-semibold leading-tight">
+                      <AccessibleText
+                        variant="caption"
+                        className="font-semibold leading-tight"
+                      >
                         {tab.label}
-                      </div>
-                      <div className="text-xs opacity-70 hidden sm:block mt-1">
+                      </AccessibleText>
+                      <AccessibleText
+                        variant="caption"
+                        className="opacity-70 hidden sm:block mt-1"
+                      >
                         {tab.desc}
-                      </div>
+                      </AccessibleText>
                     </div>
                   </div>
-                </motion.button>
+                </AccessibleButton>
               ))}
             </div>
           </div>
@@ -385,43 +378,39 @@ export function Spending() {
         </AnimatePresence>
 
         {/* Inspirational Footer */}
-        <motion.div
-          className={`mt-12 text-center p-8 rounded-2xl border ${
-            viewMode === "play"
-              ? "bg-white/10 backdrop-blur-sm border-white/20 text-white"
-              : "bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200 text-gray-900"
-          }`}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
+        <AccessibleCard
+          variant="elevated"
+          padding="lg"
+          className="mt-12 text-center"
         >
-          <div className="text-3xl sm:text-4xl mb-4">
-            {viewMode === "play" ? "🌟" : "💡"}
-          </div>
-          <h3 className="text-xl sm:text-2xl font-bold mb-4">
-            {viewMode === "play"
-              ? "Master Your Financial Galaxy"
-              : "Smart Spending Insights"}
-          </h3>
-          <p
-            className={`text-base sm:text-lg mb-6 max-w-2xl mx-auto px-4 ${
-              viewMode === "play" ? "text-white/80" : "text-gray-600"
-            }`}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={transition}
           >
-            {viewMode === "play"
-              ? "Every transaction is a step in your financial journey. Navigate wisely, spend mindfully, and watch your financial universe flourish! 🚀"
-              : "Track patterns, optimize spending, and make data-driven financial decisions. Your future self will thank you for the insights gained today."}
-          </p>
-          <div
-            className={`text-sm ${
-              viewMode === "play" ? "text-white/60" : "text-gray-500"
-            }`}
-          >
-            {viewMode === "play"
-              ? "🌌 Explore • 📊 Analyze • 🎯 Optimize • 🚀 Achieve"
-              : "📈 Monitor trends • ⚡ Set alerts • 🎯 Meet budgets • 💰 Save more"}
-          </div>
-        </motion.div>
+            <div className="text-3xl sm:text-4xl mb-4">
+              {viewMode === "play" ? "🌟" : "💡"}
+            </div>
+            <AccessibleHeading level="h3" className="mb-4">
+              {viewMode === "play"
+                ? "Master Your Financial Galaxy"
+                : "Smart Spending Insights"}
+            </AccessibleHeading>
+            <AccessibleText
+              color="secondary"
+              className="mb-6 max-w-2xl mx-auto px-4"
+            >
+              {viewMode === "play"
+                ? "Every transaction is a step in your financial journey. Navigate wisely, spend mindfully, and watch your financial universe flourish! 🚀"
+                : "Track patterns, optimize spending, and make data-driven financial decisions. Your future self will thank you for the insights gained today."}
+            </AccessibleText>
+            <AccessibleText variant="caption" color="tertiary">
+              {viewMode === "play"
+                ? "🌌 Explore • 📊 Analyze • 🎯 Optimize • 🚀 Achieve"
+                : "📈 Monitor trends • ⚡ Set alerts • 🎯 Meet budgets • 💰 Save more"}
+            </AccessibleText>
+          </motion.div>
+        </AccessibleCard>
       </div>
 
       {/* Category Explorer Overlay */}

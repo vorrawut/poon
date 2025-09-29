@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FadeIn } from "../../../components/ui";
+import { AccessibleHeading, AccessibleText } from "../../../core";
 import {
   TimeMachineTimeline,
   MoneyGalaxy,
@@ -63,11 +64,7 @@ export function MoneyTimeMachine() {
           className="text-center py-4 sm:py-8"
         >
           <div className="mb-8">
-            <div
-              className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 ${
-                viewMode === "play" ? "text-white" : "text-gray-900"
-              }`}
-            >
+            <AccessibleHeading level="h1" className="mb-6" gradient>
               <motion.span
                 className="inline-block mr-4"
                 animate={{
@@ -81,19 +78,16 @@ export function MoneyTimeMachine() {
               >
                 ⏰
               </motion.span>
-              <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Money Time Machine
-              </span>
-            </div>
-            <p
-              className={`text-lg sm:text-xl md:text-2xl mb-8 max-w-4xl mx-auto px-4 ${
-                viewMode === "play" ? "text-white/80" : "text-gray-600"
-              }`}
+              Money Time Machine
+            </AccessibleHeading>
+            <AccessibleText
+              color="secondary"
+              className="mb-8 max-w-4xl mx-auto px-4"
             >
               {viewMode === "play"
                 ? "Travel through your financial universe — witness your money's epic journey across time and space! 🚀✨"
                 : "Comprehensive financial time analysis with interactive visualizations and AI-powered insights for informed decision making."}
-            </p>
+            </AccessibleText>
           </div>
         </FadeIn>
 

@@ -15,6 +15,7 @@ interface AccessibleButtonProps {
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
   fullWidth?: boolean;
+  title?: string;
 }
 
 interface AccessibleIconButtonProps {
@@ -49,6 +50,7 @@ export function AccessibleButton({
   onClick,
   type = "button",
   fullWidth = false,
+  title,
 }: AccessibleButtonProps) {
   const { getClasses, isElderMode } = useAccessibility();
   const motionProps = useAccessibilityMotion();
@@ -133,6 +135,7 @@ export function AccessibleButton({
         disabled={disabled || loading}
         onClick={onClick}
         className={combinedClassName}
+        title={title}
       >
         {buttonContent}
       </button>
@@ -145,6 +148,7 @@ export function AccessibleButton({
       disabled={disabled || loading}
       onClick={onClick}
       className={combinedClassName}
+      title={title}
       whileHover={{ scale: disabled ? 1 : 1.02 }}
       whileTap={{ scale: disabled ? 1 : 0.98 }}
       {...motionProps}

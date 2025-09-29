@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FadeIn } from "../../../components/ui";
+import { AccessibleHeading, AccessibleText } from "../../../core";
 import {
   FutureMissionBoard,
   MissionDetailView,
@@ -13,15 +14,9 @@ import {
 } from "../../../../mockData/features/future";
 
 import { useUIStore } from "../../../store/useUIStore";
-import {
-  useAccessibility,
-  useAccessibilityText,
-} from "../../../hooks/useAccessibility";
 
 export function Future() {
   const { viewMode, accessibilityMode } = useUIStore();
-  const { getClasses, colors } = useAccessibility();
-  const headingClasses = useAccessibilityText("heading", "h1");
   const [selectedMission, setSelectedMission] = useState<Mission | null>(null);
   const [missions, setMissions] = useState<Mission[]>([]);
 
@@ -75,15 +70,9 @@ export function Future() {
               >
                 🚀
               </motion.div>
-              <h1
-                className={`${headingClasses} font-bold mb-4 ${
-                  viewMode === "play"
-                    ? "bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent"
-                    : colors.text
-                }`}
-              >
+              <AccessibleHeading level="h1" className="mb-4" gradient>
                 Future
-              </h1>
+              </AccessibleHeading>
               <motion.div
                 className="text-5xl md:text-7xl"
                 animate={{
@@ -101,8 +90,9 @@ export function Future() {
               </motion.div>
             </div>
 
-            <p
-              className={`${getClasses({ fontSize: "text" })} mb-8 max-w-4xl mx-auto px-4 ${colors.textSecondary}`}
+            <AccessibleText
+              color="secondary"
+              className="mb-8 max-w-4xl mx-auto px-4"
             >
               {accessibilityMode === "elder"
                 ? "Track your financial goals with clear, simple progress indicators and helpful guidance."
@@ -111,7 +101,7 @@ export function Future() {
                   : viewMode === "play"
                     ? "Navigate your financial universe — where every goal becomes a space mission in your personal galaxy! 🌌"
                     : "Your financial goals made simple. Track progress, set targets, and achieve your dreams with clear, actionable steps."}
-            </p>
+            </AccessibleText>
           </div>
         </FadeIn>
 

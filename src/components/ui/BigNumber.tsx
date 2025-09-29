@@ -1,5 +1,6 @@
 import { AnimatedNumber } from "./AnimatedNumber";
 import { InfoTooltip } from "./Tooltip";
+import { AccessibleHeading, AccessibleText } from "../../core";
 
 interface BigNumberProps {
   value: number;
@@ -86,7 +87,9 @@ export function BigNumber({
     <div className={`text-center ${className}`}>
       {/* Label with optional tooltip */}
       <div className="flex items-center justify-center mb-2">
-        <h3 className="text-lg font-semibold text-gray-700 mr-2">{label}</h3>
+        <AccessibleHeading level="h3" className="mr-2">
+          {label}
+        </AccessibleHeading>
         {showTooltip && <InfoTooltip content={getPlainEnglishExplanation()} />}
       </div>
 
@@ -107,7 +110,7 @@ export function BigNumber({
       </div>
 
       {/* Plain English explanation */}
-      <p className="text-base text-gray-600 mb-4 max-w-md mx-auto">
+      <AccessibleText color="secondary" className="mb-4 max-w-md mx-auto">
         {format === "currency" && value > 0 ? (
           <>
             You have <strong>{formatValue(value)}</strong> {label.toLowerCase()}
@@ -122,7 +125,7 @@ export function BigNumber({
             Your {label.toLowerCase()} is <strong>{formatValue(value)}</strong>
           </>
         )}
-      </p>
+      </AccessibleText>
 
       {/* Change indicator */}
       {changeInfo && (

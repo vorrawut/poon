@@ -89,6 +89,7 @@ export function getAccessibilityColors(
 ): {
   text: string;
   textSecondary: string;
+  textTertiary: string;
   background: string;
   border: string;
   accent: string;
@@ -99,6 +100,7 @@ export function getAccessibilityColors(
       ? {
           text: "text-white",
           textSecondary: "text-gray-100",
+          textTertiary: "text-gray-300",
           background: "bg-gray-900",
           border: "border-gray-300",
           accent: "text-yellow-300",
@@ -106,6 +108,7 @@ export function getAccessibilityColors(
       : {
           text: "text-gray-900",
           textSecondary: "text-gray-700",
+          textTertiary: "text-gray-500",
           background: "bg-white",
           border: "border-gray-900",
           accent: "text-blue-700",
@@ -118,6 +121,7 @@ export function getAccessibilityColors(
       ? {
           text: "text-white",
           textSecondary: "text-purple-200",
+          textTertiary: "text-purple-300",
           background: "bg-gradient-to-br from-purple-900 to-pink-900",
           border: "border-purple-400",
           accent: "text-pink-300",
@@ -125,6 +129,7 @@ export function getAccessibilityColors(
       : {
           text: "text-gray-900",
           textSecondary: "text-purple-700",
+          textTertiary: "text-purple-500",
           background: "bg-gradient-to-br from-purple-50 to-pink-50",
           border: "border-purple-300",
           accent: "text-purple-600",
@@ -136,6 +141,7 @@ export function getAccessibilityColors(
     ? {
         text: "text-white",
         textSecondary: "text-white/80",
+        textTertiary: "text-white/60",
         background: "bg-slate-900",
         border: "border-white/20",
         accent: "text-blue-300",
@@ -143,6 +149,7 @@ export function getAccessibilityColors(
     : {
         text: "text-gray-900",
         textSecondary: "text-gray-600",
+        textTertiary: "text-gray-500",
         background: "bg-white",
         border: "border-gray-200",
         accent: "text-blue-600",

@@ -1,4 +1,9 @@
 import { CalendarDaysIcon, ChartBarIcon } from "@heroicons/react/24/outline";
+import {
+  AccessibleHeading,
+  AccessibleText,
+  AccessibleButton,
+} from "../../core";
 
 type TimeRange = "7d" | "30d" | "90d";
 
@@ -73,8 +78,12 @@ export function TimeRangeSelector({
   return (
     <div className={`inline-block ${className}`}>
       <div className="mb-3">
-        <h4 className="text-sm font-medium text-gray-700 mb-1">View Period</h4>
-        <p className="text-xs text-gray-500">Choose how far back to look</p>
+        <AccessibleHeading level="h4" className="mb-1">
+          View Period
+        </AccessibleHeading>
+        <AccessibleText variant="caption" color="tertiary">
+          Choose how far back to look
+        </AccessibleText>
       </div>
 
       <div
@@ -85,32 +94,22 @@ export function TimeRangeSelector({
           const isSelected = value === option.value;
 
           return (
-            <button
+            <AccessibleButton
               key={option.value}
+              variant={isSelected ? "primary" : "ghost"}
+              size="sm"
               onClick={() => onChange(option.value)}
-              className={`
-                ${classes.button} ${classes.text}
-                rounded-lg font-medium transition-all duration-200
-                flex-1 flex flex-col items-center space-y-1
-                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-                ${
-                  isSelected
-                    ? "bg-white text-blue-600 shadow-sm border-2 border-blue-200"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-200/50"
-                }
-              `}
+              className="flex-1 flex flex-col items-center space-y-1"
               title={option.description}
             >
-              <IconComponent
-                className={`${classes.icon} ${isSelected ? "text-blue-600" : "text-gray-500"}`}
-              />
-              <span className="font-semibold">{option.shortLabel}</span>
-              <span
-                className={`text-xs ${isSelected ? "text-blue-500" : "text-gray-400"}`}
-              >
+              <IconComponent className={classes.icon} />
+              <AccessibleText variant="caption" className="font-semibold">
+                {option.shortLabel}
+              </AccessibleText>
+              <AccessibleText variant="caption" color="tertiary">
                 {option.label}
-              </span>
-            </button>
+              </AccessibleText>
+            </AccessibleButton>
           );
         })}
       </div>

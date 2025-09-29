@@ -7,7 +7,7 @@ import {
 interface AccessibleTextProps {
   children: React.ReactNode;
   variant?: "body" | "caption" | "small";
-  color?: "primary" | "secondary" | "accent" | "inherit";
+  color?: "primary" | "secondary" | "accent" | "tertiary" | "inherit";
   className?: string;
   as?: "p" | "span" | "div";
 }
@@ -15,7 +15,7 @@ interface AccessibleTextProps {
 interface AccessibleHeadingProps {
   children: React.ReactNode;
   level: "h1" | "h2" | "h3" | "h4";
-  color?: "primary" | "secondary" | "accent" | "inherit";
+  color?: "primary" | "secondary" | "accent" | "tertiary" | "inherit";
   className?: string;
   gradient?: boolean;
 }
@@ -44,6 +44,8 @@ export function AccessibleText({
         return colors.text;
       case "secondary":
         return colors.textSecondary;
+      case "tertiary":
+        return colors.textTertiary;
       case "accent":
         return colors.accent;
       case "inherit":
