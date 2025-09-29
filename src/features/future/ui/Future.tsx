@@ -8,9 +8,10 @@ import {
 } from "../../../core";
 import {
   EnhancedGoalTracker,
-  MissionDetailView as Enhanced3DMissionDetailView,
   type EnhancedGoal,
 } from "../../goals";
+import { FutureGoalDetail } from "../components/FutureGoalDetail";
+import { GoalCreationModal } from "../components/GoalCreationModal";
 import {
   UniverseBackground,
 } from "../../../components/widgets";
@@ -25,6 +26,7 @@ export function Future() {
   const { isPlayMode } = useTheme();
   const [selectedGoal, setSelectedGoal] = useState<EnhancedGoal | null>(null);
   const [goals, setGoals] = useState<EnhancedGoal[]>([]);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   // Initialize goals with enhanced data
   useEffect(() => {
@@ -54,6 +56,23 @@ export function Future() {
           : goal
       )
     );
+  };
+
+  const handleGoalUpdate = (goalId: string, updates: Partial<EnhancedGoal>) => {
+    setGoals((prev) =>
+      prev.map((goal) =>
+        goal.id === goalId ? { ...goal, ...updates } : goal
+      )
+    );
+    // Update selectedGoal if it's the one being updated
+    if (selectedGoal && selectedGoal.id === goalId) {
+      setSelectedGoal({ ...selectedGoal, ...updates });
+    }
+  };
+
+  const handleGoalDelete = (goalId: string) => {
+    setGoals((prev) => prev.filter((goal) => goal.id !== goalId));
+    setSelectedGoal(null);
   };
 
   return (
@@ -121,21 +140,31 @@ export function Future() {
           </div>
         </FadeIn>
 
-        {/* Enhanced Goal Tracker or 3D Detail View */}
+        {/* Enhanced Goal Tracker or Future Goal Detail View */}
         {selectedGoal ? (
-          <Enhanced3DMissionDetailView
+          <FutureGoalDetail
             goal={selectedGoal}
             onClose={() => setSelectedGoal(null)}
-            onContribute={(amount: number) => handleContribute(selectedGoal.id, amount)}
+            onUpdate={handleGoalUpdate}
+            onDelete={handleGoalDelete}
+            onContribute={(goalId: string, amount: number) => handleContribute(goalId, amount)}
           />
         ) : (
           <EnhancedGoalTracker
             goals={goals}
-            onGoalCreate={handleGoalCreate}
+            onGoalCreate={() => setShowCreateModal(true)}
             onContribute={handleContribute}
+            onGoalSelect={(goal) => setSelectedGoal(goal)}
             showCreateButton={true}
           />
         )}
+
+        {/* Goal Creation Modal */}
+        <GoalCreationModal
+          isOpen={showCreateModal}
+          onClose={() => setShowCreateModal(false)}
+          onCreateGoal={handleGoalCreate}
+        />
 
         {/* AI Co-Pilot - TODO: Update to work with EnhancedGoal type */}
         {/* <AICoPilot /> */}

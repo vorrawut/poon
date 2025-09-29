@@ -57,6 +57,7 @@ interface EnhancedGoalTrackerProps {
   onGoalUpdate?: (goalId: string, updates: Partial<EnhancedGoal>) => void;
   onGoalDelete?: (goalId: string) => void;
   onContribute?: (goalId: string, amount: number) => void;
+  onGoalSelect?: (goal: EnhancedGoal) => void;
   className?: string;
   showCreateButton?: boolean;
 }
@@ -126,6 +127,7 @@ export function EnhancedGoalTracker({
   onGoalUpdate: _onGoalUpdate,
   onGoalDelete: _onGoalDelete,
   onContribute,
+  onGoalSelect,
   className,
   showCreateButton = true,
 }: EnhancedGoalTrackerProps) {
@@ -550,9 +552,7 @@ export function EnhancedGoalTracker({
                         <ThemeAwareButton
                           variant="ghost"
                           size="sm"
-                          onClick={() =>
-                            console.log("View goal details:", goal.id)
-                          }
+                          onClick={() => onGoalSelect?.(goal)}
                         >
                           <ChartBarIcon className="w-4 h-4" />
                         </ThemeAwareButton>
