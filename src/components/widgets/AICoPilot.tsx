@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bot, Zap, AlertTriangle, Target, Star, Rocket, X } from "lucide-react";
+import { useTheme } from "../../core";
 import {
-  AccessibleHeading,
-  AccessibleText,
-  AccessibleButton,
+  ThemeAwareHeading,
+  ThemeAwareText,
+  ThemeAwareButton,
 } from "../../core";
 import type { Mission } from "../../../mockData/features/future";
 
@@ -27,6 +28,7 @@ interface AICoPilotProps {
 
 export function AICoPilot({ missions, className = "" }: AICoPilotProps) {
   const [messages, setMessages] = useState<CoPilotMessage[]>([]);
+  const { isPlayMode } = useTheme();
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeFilter, setActiveFilter] = useState<string>("all");
@@ -279,7 +281,11 @@ export function AICoPilot({ missions, className = "" }: AICoPilotProps) {
     <div className={`relative ${className}`}>
       {/* Main Co-Pilot Display */}
       <motion.div
-        className="bg-gradient-to-r from-blue-900/20 to-purple-900/20 backdrop-blur-md rounded-xl border border-white/10 overflow-hidden cursor-pointer w-80 sm:w-96 max-w-[calc(100vw-2rem)]"
+        className={`backdrop-blur-md rounded-xl border overflow-hidden cursor-pointer w-full sm:w-80 md:w-96 max-w-[calc(100vw-2rem)] ${g
+          isPlayMode 
+            ? "bg-gradient-to-r from-blue-900/20 to-purple-900/20 border-white/10" 
+            : "bg-[var(--color-surface-primary)] border-[var(--color-border-primary)]"
+        }`}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ scale: 1.02 }}
@@ -435,25 +441,24 @@ export function AICoPilot({ missions, className = "" }: AICoPilotProps) {
                       <Bot className="w-6 h-6 text-white" />
                     </motion.div>
                     <div>
-                      <AccessibleHeading level="h2" className="text-white">
+                      <ThemeAwareHeading level="h2" className="text-white">
                         AI Co-Pilot Command Center
-                      </AccessibleHeading>
-                      <AccessibleText
-                        variant="caption"
+                      </ThemeAwareHeading>
+                      <ThemeAwareText
                         className="text-white/70"
                       >
                         Mission intelligence and guidance system
-                      </AccessibleText>
+                      </ThemeAwareText>
                     </div>
                   </div>
-                  <AccessibleButton
+                  <ThemeAwareButton
                     variant="ghost"
                     size="sm"
                     onClick={() => setIsExpanded(false)}
                     className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white"
                   >
                     <X className="w-5 h-5" />
-                  </AccessibleButton>
+                  </ThemeAwareButton>
                 </div>
 
                 {/* Stats Bar */}

@@ -72,18 +72,18 @@ export function UniverseDashboard() {
               className="space-y-6"
             >
               {/* Placeholder for additional widgets */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg">
-                <h3 className="text-xl font-bold mb-4">
+              <div className="bg-[var(--color-surface-primary)] border border-[var(--color-border-primary)] rounded-2xl p-6 shadow-lg">
+                <h3 className="text-xl font-bold mb-4 text-[var(--color-text-primary)]">
                   📊 Financial Insights
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-[var(--color-text-secondary)]">
                   Detailed analytics and insights coming soon...
                 </p>
               </div>
 
-              <div className="bg-white rounded-2xl p-6 shadow-lg">
-                <h3 className="text-xl font-bold mb-4">🎯 Goal Tracker</h3>
-                <p className="text-gray-600">
+              <div className="bg-[var(--color-surface-primary)] border border-[var(--color-border-primary)] rounded-2xl p-6 shadow-lg">
+                <h3 className="text-xl font-bold mb-4 text-[var(--color-text-primary)]">🎯 Goal Tracker</h3>
+                <p className="text-[var(--color-text-secondary)]">
                   Advanced goal tracking and progress visualization...
                 </p>
               </div>
@@ -107,10 +107,9 @@ export function UniverseDashboard() {
       >
         <motion.button
           onClick={() => setShowDetailedView(true)}
-          className="bg-white/90 backdrop-blur-sm border border-white/20 text-gray-800 px-6 py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all"
+          className="bg-[var(--color-surface-primary)]/90 backdrop-blur-sm border border-[var(--color-border-primary)] text-[var(--color-text-primary)] px-6 py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all"
           whileHover={{
             scale: 1.05,
-            backgroundColor: "rgba(255, 255, 255, 0.95)",
           }}
           whileTap={{ scale: 0.95 }}
         >

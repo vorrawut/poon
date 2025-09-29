@@ -31,6 +31,8 @@ export function SmartHighlights({
   subtitle = "Your personal financial newsfeed — like Spotify Wrapped, but every week!",
   className = "",
 }: SmartHighlightsProps) {
+  const { isPlayMode } = useTheme();
+
   return (
     <motion.div
       className={`${className}`}
@@ -39,20 +41,27 @@ export function SmartHighlights({
       transition={{ duration: 1, delay: 0.5 }}
     >
       <div className="text-center mb-12">
-        <AccessibleHeading level="h2" className="text-white mb-4">
+        <ThemeAwareHeading 
+          level="h2" 
+          className="mb-4 text-2xl sm:text-3xl"
+          gradient={isPlayMode}
+        >
           <span className="mr-3">🧠</span>
           {title}
-        </AccessibleHeading>
-        <AccessibleText color="secondary" className="max-w-2xl mx-auto">
+        </ThemeAwareHeading>
+        <ThemeAwareText 
+          color="secondary" 
+          className="max-w-2xl mx-auto text-base sm:text-lg"
+        >
           {subtitle}
-        </AccessibleText>
+        </ThemeAwareText>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {highlights.map((highlight, index) => (
           <motion.div
             key={highlight.id}
-            className={`bg-gradient-to-br ${typeStyles[highlight.type]} backdrop-blur-sm rounded-xl p-6 border`}
+            className={`bg-gradient-to-br ${typeStyles[highlight.type]} backdrop-blur-sm rounded-xl p-4 sm:p-6 border`}
             whileHover={{ scale: 1.02, y: -5 }}
             transition={{ type: "spring", stiffness: 300 }}
             initial={{ opacity: 0, y: 20 }}
@@ -60,14 +69,19 @@ export function SmartHighlights({
             style={{ animationDelay: `${index * 0.1}s` }}
           >
             <div className="flex items-center gap-3 mb-3">
-              <div className="text-3xl">{highlight.icon}</div>
-              <AccessibleHeading level="h3" className="text-white">
+              <div className="text-2xl sm:text-3xl">{highlight.icon}</div>
+              <ThemeAwareHeading 
+                level="h3" 
+                className="text-base sm:text-lg font-semibold"
+              >
                 {highlight.title}
-              </AccessibleHeading>
+              </ThemeAwareHeading>
             </div>
-            <AccessibleText variant="caption" className="text-white/80">
+            <ThemeAwareText 
+              className="text-sm sm:text-base opacity-90"
+            >
               {highlight.message}
-            </AccessibleText>
+            </ThemeAwareText>
           </motion.div>
         ))}
       </div>
