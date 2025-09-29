@@ -76,7 +76,13 @@ export function FinancialUniverse({
   // Calculate dynamic financial activity for cosmic background
   const financialActivity = cosmicBackgroundUtils.calculateFinancialActivity({
     netWorthChange: netWorthData?.netWorthChangePercent || 0,
-    goalProgress: mockGoalStarData.reduce((sum, goal) => sum + (goal.current / goal.target), 0) / mockGoalStarData.length * 100,
+    goalProgress:
+      (mockGoalStarData.reduce(
+        (sum, goal) => sum + goal.current / goal.target,
+        0,
+      ) /
+        mockGoalStarData.length) *
+      100,
     spendingVariance: mockSpendingMoonData.spendingChange,
     transactionCount: 15, // Mock transaction count
   });
@@ -202,7 +208,8 @@ export function FinancialUniverse({
                 onClick={() => onQuickAction?.("view_star_constellation")}
                 className="flex items-center gap-2"
               >
-                ⭐ {t("features.financialUniverse.quickAccess.starConstellation")}
+                ⭐{" "}
+                {t("features.financialUniverse.quickAccess.starConstellation")}
               </ThemeAwareButton>
             </div>
           </div>
@@ -222,7 +229,9 @@ export function FinancialUniverse({
               <div className="w-full max-w-md">
                 <EnhancedSpendingMoonPhases
                   monthlySpending={mockSpendingMoonData.monthlySpending}
-                  previousMonthSpending={mockSpendingMoonData.previousMonthSpending}
+                  previousMonthSpending={
+                    mockSpendingMoonData.previousMonthSpending
+                  }
                   spendingChange={mockSpendingMoonData.spendingChange}
                   spendingPattern={mockSpendingMoonData.spendingPattern}
                   spendingHistory={mockSpendingMoonData.spendingHistory}

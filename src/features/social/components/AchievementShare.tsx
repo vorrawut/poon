@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  ThemeAwareCard, 
+import {
+  ThemeAwareCard,
   ThemeAwareButton,
   ThemeAwareHeading,
-  useTheme 
+  useTheme,
 } from "../../../core";
 import { useTranslation } from "../../../libs/i18n";
 import { cn } from "../../../libs/utils";
@@ -40,7 +40,11 @@ export interface ShareTemplate {
 export interface AchievementShareProps {
   achievement: UserAchievement;
   userDisplayName: string;
-  onShare?: (platform: string, template: string, customMessage?: string) => void;
+  onShare?: (
+    platform: string,
+    template: string,
+    customMessage?: string,
+  ) => void;
   onClose?: () => void;
   isVisible?: boolean;
   className?: string;
@@ -53,157 +57,172 @@ const socialPlatforms: SocialPlatform[] = [
     name: "Facebook",
     icon: "📘",
     color: "#1877F2",
-    isEnabled: true
+    isEnabled: true,
   },
   {
     id: "twitter",
     name: "Twitter/X",
     icon: "🐦",
-    color: "#1DA1F2", 
-    isEnabled: true
+    color: "#1DA1F2",
+    isEnabled: true,
   },
   {
     id: "instagram",
     name: "Instagram",
     icon: "📸",
     color: "#E4405F",
-    isEnabled: true
+    isEnabled: true,
   },
   {
     id: "line",
     name: "LINE",
     icon: "💬",
     color: "#00C300",
-    isEnabled: true
+    isEnabled: true,
   },
   {
     id: "linkedin",
     name: "LinkedIn",
     icon: "💼",
     color: "#0A66C2",
-    isEnabled: false
-  }
+    isEnabled: false,
+  },
 ];
 
 // Share Templates
 const shareTemplates: ShareTemplate[] = [
   {
     id: "celebration",
-    name: { 
-      en: "Celebration", 
-      th: "ฉลอง" 
+    name: {
+      en: "Celebration",
+      th: "ฉลอง",
     },
     template: {
       en: "🎉 Just unlocked '{achievementName}' in my financial journey! {achievementDesc} #FinancialGrowth #Achievement #PoonApp",
-      th: "🎉 เพิ่งปลดล็อค '{achievementName}' ในการเดินทางทางการเงิน! {achievementDesc} #การเติบโตทางการเงิน #ความสำเร็จ #PoonApp"
+      th: "🎉 เพิ่งปลดล็อค '{achievementName}' ในการเดินทางทางการเงิน! {achievementDesc} #การเติบโตทางการเงิน #ความสำเร็จ #PoonApp",
     },
     style: "celebration",
     preview: {
       en: "🎉 Just unlocked 'Savings Legend' in my financial journey! Saved over ฿250,000 #FinancialGrowth",
-      th: "🎉 เพิ่งปลดล็อค 'ตำนานนักออม' ในการเดินทางทางการเงิน! ออมเงินได้กว่า ฿250,000 #การเติบโตทางการเงิน"
-    }
+      th: "🎉 เพิ่งปลดล็อค 'ตำนานนักออม' ในการเดินทางทางการเงิน! ออมเงินได้กว่า ฿250,000 #การเติบโตทางการเงิน",
+    },
   },
   {
     id: "humble",
-    name: { 
-      en: "Humble", 
-      th: "ถ่อมตน" 
+    name: {
+      en: "Humble",
+      th: "ถ่อมตน",
     },
     template: {
       en: "Small step forward: {achievementDesc} 🌱 Every journey begins with a single step. #FinancialJourney #Progress",
-      th: "ก้าวเล็กๆ ไปข้างหน้า: {achievementDesc} 🌱 การเดินทางทุกครั้งเริ่มต้นด้วยก้าวเดียว #การเดินทางทางการเงิน #ความก้าวหน้า"
+      th: "ก้าวเล็กๆ ไปข้างหน้า: {achievementDesc} 🌱 การเดินทางทุกครั้งเริ่มต้นด้วยก้าวเดียว #การเดินทางทางการเงิน #ความก้าวหน้า",
     },
     style: "humble",
     preview: {
       en: "Small step forward: Saved over ฿250,000 🌱 Every journey begins with a single step.",
-      th: "ก้าวเล็กๆ ไปข้างหน้า: ออมเงินได้กว่า ฿250,000 🌱 การเดินทางทุกครั้งเริ่มต้นด้วยก้าวเดียว"
-    }
+      th: "ก้าวเล็กๆ ไปข้างหน้า: ออมเงินได้กว่า ฿250,000 🌱 การเดินทางทุกครั้งเริ่มต้นด้วยก้าวเดียว",
+    },
   },
   {
     id: "motivational",
-    name: { 
-      en: "Motivational", 
-      th: "สร้างแรงบันดาลใจ" 
+    name: {
+      en: "Motivational",
+      th: "สร้างแรงบันดาลใจ",
     },
     template: {
       en: "💪 {achievementDesc} - Proof that consistency pays off! What's your next financial goal? #Motivation #FinancialGoals",
-      th: "💪 {achievementDesc} - พิสูจน์แล้วว่าความสม่ำเสมอคุ้มค่า! เป้าหมายทางการเงินต่อไปของคุณคืออะไร? #แรงบันดาลใจ #เป้าหมายทางการเงิน"
+      th: "💪 {achievementDesc} - พิสูจน์แล้วว่าความสม่ำเสมอคุ้มค่า! เป้าหมายทางการเงินต่อไปของคุณคืออะไร? #แรงบันดาลใจ #เป้าหมายทางการเงิน",
     },
     style: "motivational",
     preview: {
       en: "💪 Saved over ฿250,000 - Proof that consistency pays off! What's your next financial goal?",
-      th: "💪 ออมเงินได้กว่า ฿250,000 - พิสูจน์แล้วว่าความสม่ำเสมอคุ้มค่า! เป้าหมายทางการเงินต่อไปของคุณคืออะไร?"
-    }
+      th: "💪 ออมเงินได้กว่า ฿250,000 - พิสูจน์แล้วว่าความสม่ำเสมอคุ้มค่า! เป้าหมายทางการเงินต่อไปของคุณคืออะไร?",
+    },
   },
   {
     id: "cultural",
-    name: { 
-      en: "Cultural", 
-      th: "วัฒนธรรม" 
+    name: {
+      en: "Cultural",
+      th: "วัฒนธรรม",
     },
     template: {
       en: "🙏 Following Thai values in my financial journey: {achievementDesc} Building wealth the traditional way! #ThaiWisdom #กตัญญู",
-      th: "🙏 ปฏิบัติตามคุณค่าไทยในการเดินทางทางการเงิน: {achievementDesc} สร้างความมั่งคั่งแบบดั้งเดิม! #ปัญญาไทย #กตัญญู"
+      th: "🙏 ปฏิบัติตามคุณค่าไทยในการเดินทางทางการเงิน: {achievementDesc} สร้างความมั่งคั่งแบบดั้งเดิม! #ปัญญาไทย #กตัญญู",
     },
     style: "cultural",
     preview: {
       en: "🙏 Following Thai values in my financial journey: Saved over ฿250,000 Building wealth the traditional way!",
-      th: "🙏 ปฏิบัติตามคุณค่าไทยในการเดินทางทางการเงิน: ออมเงินได้กว่า ฿250,000 สร้างความมั่งคั่งแบบดั้งเดิม!"
-    }
-  }
+      th: "🙏 ปฏิบัติตามคุณค่าไทยในการเดินทางทางการเงิน: ออมเงินได้กว่า ฿250,000 สร้างความมั่งคั่งแบบดั้งเดิม!",
+    },
+  },
 ];
 
 // Achievement Preview Card
-function AchievementPreviewCard({ achievement, userName }: { achievement: UserAchievement; userName: string }) {
+function AchievementPreviewCard({
+  achievement,
+  userName,
+}: {
+  achievement: UserAchievement;
+  userName: string;
+}) {
   const { language } = useTranslation();
   const { themeMode: _themeMode } = useTheme();
-  
+
   const rarityColors = {
     common: "#6B7280",
-    rare: "#3B82F6", 
+    rare: "#3B82F6",
     epic: "#8B5CF6",
-    legendary: "#F59E0B"
+    legendary: "#F59E0B",
   };
 
   return (
     <div className="relative">
-      <ThemeAwareCard className={cn(
-        "p-6 bg-gradient-to-br border-2",
-        achievement.rarity === 'legendary' ? 'from-yellow-500/10 to-orange-500/10 border-yellow-500/30' :
-        achievement.rarity === 'epic' ? 'from-purple-500/10 to-pink-500/10 border-purple-500/30' :
-        achievement.rarity === 'rare' ? 'from-blue-500/10 to-cyan-500/10 border-blue-500/30' :
-        'from-gray-500/10 to-gray-600/10 border-gray-500/30'
-      )}>
+      <ThemeAwareCard
+        className={cn(
+          "p-6 bg-gradient-to-br border-2",
+          achievement.rarity === "legendary"
+            ? "from-yellow-500/10 to-orange-500/10 border-yellow-500/30"
+            : achievement.rarity === "epic"
+              ? "from-purple-500/10 to-pink-500/10 border-purple-500/30"
+              : achievement.rarity === "rare"
+                ? "from-blue-500/10 to-cyan-500/10 border-blue-500/30"
+                : "from-gray-500/10 to-gray-600/10 border-gray-500/30",
+        )}
+      >
         {/* Header */}
         <div className="text-center mb-4">
-          <div className="text-sm text-gray-400 mb-1">Achievement Unlocked!</div>
+          <div className="text-sm text-gray-400 mb-1">
+            Achievement Unlocked!
+          </div>
           <div className="text-lg font-semibold">{userName}</div>
         </div>
 
         {/* Achievement Display */}
         <div className="flex items-center gap-4 mb-4">
-          <div 
+          <div
             className="text-4xl p-3 rounded-full border-2"
-            style={{ 
+            style={{
               borderColor: rarityColors[achievement.rarity],
-              backgroundColor: `${rarityColors[achievement.rarity]}15`
+              backgroundColor: `${rarityColors[achievement.rarity]}15`,
             }}
           >
             {achievement.icon}
           </div>
           <div className="flex-1">
             <h3 className="text-xl font-bold mb-1">
-              {language === 'th' ? achievement.name.th : achievement.name.en}
+              {language === "th" ? achievement.name.th : achievement.name.en}
             </h3>
             <p className="text-gray-300 text-sm">
-              {language === 'th' ? achievement.description.th : achievement.description.en}
+              {language === "th"
+                ? achievement.description.th
+                : achievement.description.en}
             </p>
             <div className="flex items-center gap-2 mt-2">
-              <span 
+              <span
                 className="px-2 py-1 rounded-full text-xs font-medium capitalize"
-                style={{ 
+                style={{
                   backgroundColor: `${rarityColors[achievement.rarity]}25`,
-                  color: rarityColors[achievement.rarity]
+                  color: rarityColors[achievement.rarity],
                 }}
               >
                 {achievement.rarity}
@@ -224,12 +243,20 @@ function AchievementPreviewCard({ achievement, userName }: { achievement: UserAc
         </div>
 
         {/* Legendary Sparkle Effect */}
-        {achievement.rarity === 'legendary' && (
+        {achievement.rarity === "legendary" && (
           <>
-            <div className="absolute top-2 left-2 text-yellow-400 animate-pulse">✨</div>
-            <div className="absolute top-2 right-2 text-yellow-400 animate-pulse">✨</div>
-            <div className="absolute bottom-2 left-2 text-yellow-400 animate-pulse">✨</div>
-            <div className="absolute bottom-2 right-2 text-yellow-400 animate-pulse">✨</div>
+            <div className="absolute top-2 left-2 text-yellow-400 animate-pulse">
+              ✨
+            </div>
+            <div className="absolute top-2 right-2 text-yellow-400 animate-pulse">
+              ✨
+            </div>
+            <div className="absolute bottom-2 left-2 text-yellow-400 animate-pulse">
+              ✨
+            </div>
+            <div className="absolute bottom-2 right-2 text-yellow-400 animate-pulse">
+              ✨
+            </div>
           </>
         )}
       </ThemeAwareCard>
@@ -238,12 +265,12 @@ function AchievementPreviewCard({ achievement, userName }: { achievement: UserAc
 }
 
 // Template Selection
-function TemplateSelector({ 
-  templates, 
-  selectedTemplate, 
+function TemplateSelector({
+  templates,
+  selectedTemplate,
   onSelect,
   achievement,
-  userName
+  userName,
 }: {
   templates: ShareTemplate[];
   selectedTemplate: string;
@@ -254,14 +281,19 @@ function TemplateSelector({
   const { language } = useTranslation();
 
   const generateMessage = (template: ShareTemplate) => {
-    const baseTemplate = language === 'th' ? template.template.th : template.template.en;
-    const achievementName = language === 'th' ? achievement.name.th : achievement.name.en;
-    const achievementDesc = language === 'th' ? achievement.description.th : achievement.description.en;
-    
+    const baseTemplate =
+      language === "th" ? template.template.th : template.template.en;
+    const achievementName =
+      language === "th" ? achievement.name.th : achievement.name.en;
+    const achievementDesc =
+      language === "th"
+        ? achievement.description.th
+        : achievement.description.en;
+
     return baseTemplate
-      .replace('{achievementName}', achievementName)
-      .replace('{achievementDesc}', achievementDesc)
-      .replace('{userName}', userName);
+      .replace("{achievementName}", achievementName)
+      .replace("{achievementDesc}", achievementDesc)
+      .replace("{userName}", userName);
   };
 
   return (
@@ -269,38 +301,43 @@ function TemplateSelector({
       <ThemeAwareHeading level="h4" className="text-lg font-semibold">
         📝 Choose Your Style
       </ThemeAwareHeading>
-      
+
       {templates.map((template) => (
         <motion.div
           key={template.id}
           className={cn(
             "cursor-pointer transition-all duration-300",
-            selectedTemplate === template.id && "scale-105"
+            selectedTemplate === template.id && "scale-105",
           )}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => onSelect(template.id)}
         >
-          <ThemeAwareCard 
+          <ThemeAwareCard
             className={cn(
               "p-4 border-2 transition-all duration-300",
-              selectedTemplate === template.id 
-                ? "border-purple-500 shadow-lg shadow-purple-500/20" 
-                : "border-transparent hover:border-gray-600"
+              selectedTemplate === template.id
+                ? "border-purple-500 shadow-lg shadow-purple-500/20"
+                : "border-transparent hover:border-gray-600",
             )}
           >
             <div className="flex items-start justify-between mb-2">
               <div>
                 <h5 className="font-medium">
-                  {language === 'th' ? template.name.th : template.name.en}
+                  {language === "th" ? template.name.th : template.name.en}
                 </h5>
-                <span className={cn(
-                  "px-2 py-1 rounded-full text-xs font-medium capitalize mt-1 inline-block",
-                  template.style === 'celebration' ? 'bg-yellow-500/20 text-yellow-300' :
-                  template.style === 'humble' ? 'bg-green-500/20 text-green-300' :
-                  template.style === 'motivational' ? 'bg-red-500/20 text-red-300' :
-                  'bg-purple-500/20 text-purple-300'
-                )}>
+                <span
+                  className={cn(
+                    "px-2 py-1 rounded-full text-xs font-medium capitalize mt-1 inline-block",
+                    template.style === "celebration"
+                      ? "bg-yellow-500/20 text-yellow-300"
+                      : template.style === "humble"
+                        ? "bg-green-500/20 text-green-300"
+                        : template.style === "motivational"
+                          ? "bg-red-500/20 text-red-300"
+                          : "bg-purple-500/20 text-purple-300",
+                  )}
+                >
                   {template.style}
                 </span>
               </div>
@@ -308,7 +345,7 @@ function TemplateSelector({
                 <div className="text-green-400">✓</div>
               )}
             </div>
-            
+
             <div className="text-sm text-gray-300 bg-gray-800/50 p-3 rounded border-l-4 border-gray-600">
               "{generateMessage(template)}"
             </div>
@@ -320,10 +357,10 @@ function TemplateSelector({
 }
 
 // Platform Selection
-function PlatformSelector({ 
-  platforms, 
-  selectedPlatforms, 
-  onToggle 
+function PlatformSelector({
+  platforms,
+  selectedPlatforms,
+  onToggle,
 }: {
   platforms: SocialPlatform[];
   selectedPlatforms: string[];
@@ -334,35 +371,37 @@ function PlatformSelector({
       <ThemeAwareHeading level="h4" className="text-lg font-semibold">
         📱 Select Platforms
       </ThemeAwareHeading>
-      
+
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-        {platforms.filter(p => p.isEnabled).map((platform) => (
-          <motion.div
-            key={platform.id}
-            className={cn(
-              "cursor-pointer transition-all duration-300",
-              selectedPlatforms.includes(platform.id) && "scale-105"
-            )}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => onToggle(platform.id)}
-          >
-            <ThemeAwareCard 
+        {platforms
+          .filter((p) => p.isEnabled)
+          .map((platform) => (
+            <motion.div
+              key={platform.id}
               className={cn(
-                "p-4 text-center border-2 transition-all duration-300",
-                selectedPlatforms.includes(platform.id)
-                  ? "border-purple-500 shadow-lg shadow-purple-500/20"
-                  : "border-transparent hover:border-gray-600"
+                "cursor-pointer transition-all duration-300",
+                selectedPlatforms.includes(platform.id) && "scale-105",
               )}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => onToggle(platform.id)}
             >
-              <div className="text-3xl mb-2">{platform.icon}</div>
-              <div className="font-medium text-sm">{platform.name}</div>
-              {selectedPlatforms.includes(platform.id) && (
-                <div className="text-green-400 text-xs mt-1">✓ Selected</div>
-              )}
-            </ThemeAwareCard>
-          </motion.div>
-        ))}
+              <ThemeAwareCard
+                className={cn(
+                  "p-4 text-center border-2 transition-all duration-300",
+                  selectedPlatforms.includes(platform.id)
+                    ? "border-purple-500 shadow-lg shadow-purple-500/20"
+                    : "border-transparent hover:border-gray-600",
+                )}
+              >
+                <div className="text-3xl mb-2">{platform.icon}</div>
+                <div className="font-medium text-sm">{platform.name}</div>
+                {selectedPlatforms.includes(platform.id) && (
+                  <div className="text-green-400 text-xs mt-1">✓ Selected</div>
+                )}
+              </ThemeAwareCard>
+            </motion.div>
+          ))}
       </div>
     </div>
   );
@@ -377,26 +416,33 @@ export function AchievementShare({
   className = "",
 }: AchievementShareProps) {
   const { language } = useTranslation();
-  const [selectedTemplate, setSelectedTemplate] = useState<string>('celebration');
-  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>(['facebook']);
-  const [customMessage, setCustomMessage] = useState<string>('');
-  const [step, setStep] = useState<'preview' | 'template' | 'platforms' | 'custom'>('preview');
+  const [selectedTemplate, setSelectedTemplate] =
+    useState<string>("celebration");
+  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([
+    "facebook",
+  ]);
+  const [customMessage, setCustomMessage] = useState<string>("");
+  const [step, setStep] = useState<
+    "preview" | "template" | "platforms" | "custom"
+  >("preview");
 
   const handlePlatformToggle = (platformId: string) => {
-    setSelectedPlatforms(prev => 
+    setSelectedPlatforms((prev) =>
       prev.includes(platformId)
-        ? prev.filter(id => id !== platformId)
-        : [...prev, platformId]
+        ? prev.filter((id) => id !== platformId)
+        : [...prev, platformId],
     );
   };
 
   const handleShare = () => {
-    selectedPlatforms.forEach(platformId => {
+    selectedPlatforms.forEach((platformId) => {
       onShare?.(platformId, selectedTemplate, customMessage || undefined);
     });
   };
 
-  const selectedTemplateData = shareTemplates.find(t => t.id === selectedTemplate);
+  const selectedTemplateData = shareTemplates.find(
+    (t) => t.id === selectedTemplate,
+  );
 
   if (!isVisible) return null;
 
@@ -413,7 +459,10 @@ export function AchievementShare({
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}
-          className={cn("w-full max-w-2xl max-h-[90vh] overflow-y-auto", className)}
+          className={cn(
+            "w-full max-w-2xl max-h-[90vh] overflow-y-auto",
+            className,
+          )}
           onClick={(e) => e.stopPropagation()}
         >
           <ThemeAwareCard className="p-6">
@@ -430,17 +479,19 @@ export function AchievementShare({
             {/* Step Navigation */}
             <div className="flex justify-center mb-6">
               <div className="flex gap-2">
-                {(['preview', 'template', 'platforms', 'custom'] as const).map((stepName, idx) => (
-                  <ThemeAwareButton
-                    key={stepName}
-                    variant={step === stepName ? "primary" : "ghost"}
-                    size="sm"
-                    onClick={() => setStep(stepName)}
-                    className="capitalize"
-                  >
-                    {idx + 1}. {stepName}
-                  </ThemeAwareButton>
-                ))}
+                {(["preview", "template", "platforms", "custom"] as const).map(
+                  (stepName, idx) => (
+                    <ThemeAwareButton
+                      key={stepName}
+                      variant={step === stepName ? "primary" : "ghost"}
+                      size="sm"
+                      onClick={() => setStep(stepName)}
+                      className="capitalize"
+                    >
+                      {idx + 1}. {stepName}
+                    </ThemeAwareButton>
+                  ),
+                )}
               </div>
             </div>
 
@@ -453,19 +504,22 @@ export function AchievementShare({
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3 }}
               >
-                {step === 'preview' && (
+                {step === "preview" && (
                   <div className="space-y-4">
-                    <ThemeAwareHeading level="h3" className="text-xl font-semibold text-center">
+                    <ThemeAwareHeading
+                      level="h3"
+                      className="text-xl font-semibold text-center"
+                    >
                       📱 Preview Your Share
                     </ThemeAwareHeading>
-                    <AchievementPreviewCard 
-                      achievement={achievement} 
+                    <AchievementPreviewCard
+                      achievement={achievement}
                       userName={userDisplayName}
                     />
                     <div className="text-center">
-                      <ThemeAwareButton 
-                        variant="primary" 
-                        onClick={() => setStep('template')}
+                      <ThemeAwareButton
+                        variant="primary"
+                        onClick={() => setStep("template")}
                       >
                         Customize Message →
                       </ThemeAwareButton>
@@ -473,7 +527,7 @@ export function AchievementShare({
                   </div>
                 )}
 
-                {step === 'template' && (
+                {step === "template" && (
                   <TemplateSelector
                     templates={shareTemplates}
                     selectedTemplate={selectedTemplate}
@@ -483,7 +537,7 @@ export function AchievementShare({
                   />
                 )}
 
-                {step === 'platforms' && (
+                {step === "platforms" && (
                   <PlatformSelector
                     platforms={socialPlatforms}
                     selectedPlatforms={selectedPlatforms}
@@ -491,22 +545,27 @@ export function AchievementShare({
                   />
                 )}
 
-                {step === 'custom' && (
+                {step === "custom" && (
                   <div className="space-y-4">
-                    <ThemeAwareHeading level="h4" className="text-lg font-semibold">
+                    <ThemeAwareHeading
+                      level="h4"
+                      className="text-lg font-semibold"
+                    >
                       ✏️ Custom Message (Optional)
                     </ThemeAwareHeading>
-                    
+
                     <div className="space-y-3">
                       <div className="text-sm text-gray-400">
                         Default message based on your template:
                       </div>
                       {selectedTemplateData && (
                         <div className="text-sm text-gray-300 bg-gray-800/50 p-3 rounded border-l-4 border-purple-500">
-                          {language === 'th' ? selectedTemplateData.preview.th : selectedTemplateData.preview.en}
+                          {language === "th"
+                            ? selectedTemplateData.preview.th
+                            : selectedTemplateData.preview.en}
                         </div>
                       )}
-                      
+
                       <textarea
                         className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 resize-none"
                         rows={4}
@@ -522,26 +581,36 @@ export function AchievementShare({
 
             {/* Action Buttons */}
             <div className="flex justify-between mt-6">
-              <ThemeAwareButton 
-                variant="ghost" 
+              <ThemeAwareButton
+                variant="ghost"
                 onClick={() => {
-                  const steps = ['preview', 'template', 'platforms', 'custom'] as const;
+                  const steps = [
+                    "preview",
+                    "template",
+                    "platforms",
+                    "custom",
+                  ] as const;
                   const currentIndex = steps.indexOf(step);
                   if (currentIndex > 0) {
                     setStep(steps[currentIndex - 1]);
                   }
                 }}
-                disabled={step === 'preview'}
+                disabled={step === "preview"}
               >
                 ← Back
               </ThemeAwareButton>
 
               <div className="flex gap-2">
-                {step !== 'custom' ? (
-                  <ThemeAwareButton 
-                    variant="primary" 
+                {step !== "custom" ? (
+                  <ThemeAwareButton
+                    variant="primary"
                     onClick={() => {
-                      const steps = ['preview', 'template', 'platforms', 'custom'] as const;
+                      const steps = [
+                        "preview",
+                        "template",
+                        "platforms",
+                        "custom",
+                      ] as const;
                       const currentIndex = steps.indexOf(step);
                       if (currentIndex < steps.length - 1) {
                         setStep(steps[currentIndex + 1]);
@@ -551,8 +620,8 @@ export function AchievementShare({
                     Next →
                   </ThemeAwareButton>
                 ) : (
-                  <ThemeAwareButton 
-                    variant="primary" 
+                  <ThemeAwareButton
+                    variant="primary"
                     onClick={handleShare}
                     disabled={selectedPlatforms.length === 0}
                   >

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { 
-  ThemeAwareCard, 
-  ThemeAwareText, 
+import {
+  ThemeAwareCard,
+  ThemeAwareText,
   ThemeAwareButton,
-  ThemeAwareHeading
+  ThemeAwareHeading,
 } from "../../../core";
 import { useTranslation } from "../../../libs/i18n";
 import { cn } from "../../../libs/utils";
@@ -45,19 +45,19 @@ const mockObligations: FamilyObligation[] = [
     recipient: {
       name: "คุณแม่ คุณพ่อ",
       relationship: "Parents",
-      relationshipTh: "บิดามารดา"
+      relationshipTh: "บิดามารดา",
     },
     amount: {
       budgeted: 15000,
-      frequency: "monthly"
+      frequency: "monthly",
     },
     priority: "essential",
     description: {
       en: "Monthly financial support for parents (กตัญญู)",
-      th: "การส่งเงินเลี้ยงดูบิดามารดา (กตัญญู)"
+      th: "การส่งเงินเลี้ยงดูบิดามารดา (กตัญญู)",
     },
     nextDueDate: "2025-01-01",
-    isActive: true
+    isActive: true,
   },
   {
     id: "temple-donations",
@@ -65,20 +65,20 @@ const mockObligations: FamilyObligation[] = [
     recipient: {
       name: "วัดป่าแสงธรรม",
       relationship: "Local Temple",
-      relationshipTh: "วัดประจำ"
+      relationshipTh: "วัดประจำ",
     },
     amount: {
       budgeted: 5000,
-      frequency: "monthly"
+      frequency: "monthly",
     },
     priority: "important",
     description: {
       en: "Regular temple donations for merit making",
-      th: "การบริจาควัดเพื่อทำบุญ"
+      th: "การบริจาควัดเพื่อทำบุญ",
     },
     nextDueDate: "2025-01-05",
-    isActive: true
-  }
+    isActive: true,
+  },
 ];
 
 export function FamilyObligationTracker({
@@ -87,15 +87,15 @@ export function FamilyObligationTracker({
   className = "",
 }: FamilyObligationTrackerProps) {
   const { language } = useTranslation();
-  const [selectedType, setSelectedType] = useState<string>('all');
+  const [selectedType, setSelectedType] = useState<string>("all");
 
-  const filteredObligations = obligations.filter(obligation => {
-    if (selectedType === 'all') return true;
+  const filteredObligations = obligations.filter((obligation) => {
+    if (selectedType === "all") return true;
     return obligation.type === selectedType;
   });
 
   const totalMonthly = obligations
-    .filter(o => o.isActive && o.amount.frequency === 'monthly')
+    .filter((o) => o.isActive && o.amount.frequency === "monthly")
     .reduce((sum, o) => sum + o.amount.budgeted, 0);
 
   const typeColors = {
@@ -103,7 +103,7 @@ export function FamilyObligationTracker({
     siblings: "#3B82F6",
     children: "#10B981",
     extended: "#8B5CF6",
-    community: "#EC4899"
+    community: "#EC4899",
   };
 
   return (
@@ -126,10 +126,10 @@ export function FamilyObligationTracker({
           </div>
           <div className="text-sm text-gray-400">Monthly Total</div>
         </ThemeAwareCard>
-        
+
         <ThemeAwareCard className="p-4 text-center">
           <div className="text-2xl font-bold text-blue-400">
-            {obligations.filter(o => o.isActive).length}
+            {obligations.filter((o) => o.isActive).length}
           </div>
           <div className="text-sm text-gray-400">Active Obligations</div>
         </ThemeAwareCard>
@@ -137,7 +137,7 @@ export function FamilyObligationTracker({
 
       {/* Type Filter */}
       <div className="flex gap-2 flex-wrap justify-center">
-        {(['all', 'parents', 'community', 'extended'] as const).map((type) => (
+        {(["all", "parents", "community", "extended"] as const).map((type) => (
           <ThemeAwareButton
             key={type}
             variant={selectedType === type ? "primary" : "ghost"}
@@ -145,7 +145,7 @@ export function FamilyObligationTracker({
             onClick={() => setSelectedType(type)}
             className="capitalize"
           >
-            {type === 'all' ? 'All' : type}
+            {type === "all" ? "All" : type}
           </ThemeAwareButton>
         ))}
       </div>
@@ -162,23 +162,27 @@ export function FamilyObligationTracker({
             <ThemeAwareCard className="p-4">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3 flex-1">
-                  <div 
+                  <div
                     className="w-3 h-3 rounded-full"
                     style={{ backgroundColor: typeColors[obligation.type] }}
                   />
                   <div>
                     <h3 className="font-semibold">
-                      {language === 'th' ? obligation.recipient.relationshipTh : obligation.recipient.relationship}
+                      {language === "th"
+                        ? obligation.recipient.relationshipTh
+                        : obligation.recipient.relationship}
                     </h3>
                     <p className="text-sm text-gray-400">
                       {obligation.recipient.name}
                     </p>
                     <p className="text-xs text-gray-500 mt-1">
-                      {language === 'th' ? obligation.description.th : obligation.description.en}
+                      {language === "th"
+                        ? obligation.description.th
+                        : obligation.description.en}
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="text-right">
                   <div className="text-lg font-bold text-green-300">
                     ฿{obligation.amount.budgeted.toLocaleString()}
@@ -186,12 +190,16 @@ export function FamilyObligationTracker({
                   <div className="text-xs text-gray-400 capitalize">
                     {obligation.amount.frequency}
                   </div>
-                  <span className={cn(
-                    "px-2 py-1 rounded-full text-xs font-medium mt-2 inline-block",
-                    obligation.priority === 'essential' ? 'bg-red-500/20 text-red-300' :
-                    obligation.priority === 'important' ? 'bg-yellow-500/20 text-yellow-300' :
-                    'bg-gray-500/20 text-gray-300'
-                  )}>
+                  <span
+                    className={cn(
+                      "px-2 py-1 rounded-full text-xs font-medium mt-2 inline-block",
+                      obligation.priority === "essential"
+                        ? "bg-red-500/20 text-red-300"
+                        : obligation.priority === "important"
+                          ? "bg-yellow-500/20 text-yellow-300"
+                          : "bg-gray-500/20 text-gray-300",
+                    )}
+                  >
                     {obligation.priority}
                   </span>
                 </div>
@@ -207,7 +215,8 @@ export function FamilyObligationTracker({
           🙏 กตัญญู (Katanyu) - Gratitude to Parents
         </h3>
         <p className="text-sm text-gray-300 mb-3">
-          Supporting parents is one of the highest virtues in Thai culture, essential for good karma and family honor.
+          Supporting parents is one of the highest virtues in Thai culture,
+          essential for good karma and family honor.
         </p>
         <ul className="text-sm text-gray-400 space-y-1">
           <li className="flex items-start gap-2">

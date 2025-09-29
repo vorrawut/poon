@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react';
-import { socialService } from '../services/socialService';
-import type { UserSocialProfile, UserAchievement } from '../components/UserProfile';
-import type { CommunityChallenge } from '../components/CommunityChallenge';
-import type { Friend } from '../components/FriendConnection';
-import type { LeaderboardEntry } from '../components/LeaderboardWidget';
+import { useState, useEffect } from "react";
+import { socialService } from "../services/socialService";
+import type {
+  UserSocialProfile,
+  UserAchievement,
+} from "../components/UserProfile";
+import type { CommunityChallenge } from "../components/CommunityChallenge";
+import type { Friend } from "../components/FriendConnection";
+import type { LeaderboardEntry } from "../components/LeaderboardWidget";
 
 export interface SocialData {
   profile: UserSocialProfile | null;
@@ -30,10 +33,10 @@ export interface UseSocialOptions {
 
 export function useSocial(options: UseSocialOptions = {}) {
   const {
-    userId = 'current_user',
+    userId = "current_user",
     autoLoad = true,
-    leaderboardCategory = 'overall',
-    leaderboardPeriod = 'monthly'
+    leaderboardCategory = "overall",
+    leaderboardPeriod = "monthly",
   } = options;
 
   const [data, setData] = useState<SocialData>({
@@ -48,8 +51,8 @@ export function useSocial(options: UseSocialOptions = {}) {
       totalAchievements: 0,
       totalShares: 0,
       socialRank: 0,
-      engagementScore: 0
-    }
+      engagementScore: 0,
+    },
   });
 
   const [loading, setLoading] = useState(false);
@@ -71,7 +74,7 @@ export function useSocial(options: UseSocialOptions = {}) {
         friendSuggestions,
         challenges,
         leaderboard,
-        socialStats
+        socialStats,
       ] = await Promise.all([
         socialService.getUserProfile(userId),
         socialService.getUserAchievements(userId),
@@ -79,7 +82,7 @@ export function useSocial(options: UseSocialOptions = {}) {
         socialService.getFriendSuggestions(userId),
         socialService.getCommunitychallenges(),
         socialService.getLeaderboard(leaderboardCategory, leaderboardPeriod),
-        socialService.getSocialStats(userId)
+        socialService.getSocialStats(userId),
       ]);
 
       setData({
@@ -89,10 +92,12 @@ export function useSocial(options: UseSocialOptions = {}) {
         friendSuggestions,
         challenges,
         leaderboard,
-        socialStats
+        socialStats,
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load social data');
+      setError(
+        err instanceof Error ? err.message : "Failed to load social data",
+      );
     } finally {
       setLoading(false);
     }
@@ -101,16 +106,19 @@ export function useSocial(options: UseSocialOptions = {}) {
   // Update user profile
   const updateProfile = async (updates: Partial<UserSocialProfile>) => {
     try {
-      const updatedProfile = await socialService.updateUserProfile(userId, updates);
+      const updatedProfile = await socialService.updateUserProfile(
+        userId,
+        updates,
+      );
       if (updatedProfile) {
-        setData(prev => ({
+        setData((prev) => ({
           ...prev,
-          profile: updatedProfile
+          profile: updatedProfile,
         }));
       }
       return updatedProfile;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update profile');
+      setError(err instanceof Error ? err.message : "Failed to update profile");
       return null;
     }
   };
@@ -120,31 +128,33 @@ export function useSocial(options: UseSocialOptions = {}) {
     achievementId: string,
     platform: string,
     template: string,
-    customMessage?: string
+    customMessage?: string,
   ) => {
     try {
       const success = await socialService.shareAchievement(
         achievementId,
         platform,
         template,
-        customMessage
+        customMessage,
       );
-      
+
       if (success) {
         // Update achievement share count locally
-        setData(prev => ({
+        setData((prev) => ({
           ...prev,
-          achievements: prev.achievements.map(achievement =>
+          achievements: prev.achievements.map((achievement) =>
             achievement.id === achievementId
               ? { ...achievement, shareCount: achievement.shareCount + 1 }
-              : achievement
-          )
+              : achievement,
+          ),
         }));
       }
-      
+
       return success;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to share achievement');
+      setError(
+        err instanceof Error ? err.message : "Failed to share achievement",
+      );
       return false;
     }
   };
@@ -157,18 +167,18 @@ export function useSocial(options: UseSocialOptions = {}) {
         // Refresh friends and suggestions
         const [friends, friendSuggestions] = await Promise.all([
           socialService.getFriends(userId),
-          socialService.getFriendSuggestions(userId)
+          socialService.getFriendSuggestions(userId),
         ]);
-        
-        setData(prev => ({
+
+        setData((prev) => ({
           ...prev,
           friends,
-          friendSuggestions
+          friendSuggestions,
         }));
       }
       return success;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to add friend');
+      setError(err instanceof Error ? err.message : "Failed to add friend");
       return false;
     }
   };
@@ -178,14 +188,14 @@ export function useSocial(options: UseSocialOptions = {}) {
       const success = await socialService.removeFriend(userId, friendId);
       if (success) {
         // Remove from friends list locally
-        setData(prev => ({
+        setData((prev) => ({
           ...prev,
-          friends: prev.friends.filter(friend => friend.id !== friendId)
+          friends: prev.friends.filter((friend) => friend.id !== friendId),
         }));
       }
       return success;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to remove friend');
+      setError(err instanceof Error ? err.message : "Failed to remove friend");
       return false;
     }
   };
@@ -196,18 +206,18 @@ export function useSocial(options: UseSocialOptions = {}) {
       const success = await socialService.joinChallenge(userId, challengeId);
       if (success) {
         // Update challenge locally
-        setData(prev => ({
+        setData((prev) => ({
           ...prev,
-          challenges: prev.challenges.map(challenge =>
+          challenges: prev.challenges.map((challenge) =>
             challenge.id === challengeId
               ? { ...challenge, isJoined: true }
-              : challenge
-          )
+              : challenge,
+          ),
         }));
       }
       return success;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to join challenge');
+      setError(err instanceof Error ? err.message : "Failed to join challenge");
       return false;
     }
   };
@@ -217,46 +227,59 @@ export function useSocial(options: UseSocialOptions = {}) {
       const success = await socialService.leaveChallenge(userId, challengeId);
       if (success) {
         // Update challenge locally
-        setData(prev => ({
+        setData((prev) => ({
           ...prev,
-          challenges: prev.challenges.map(challenge =>
+          challenges: prev.challenges.map((challenge) =>
             challenge.id === challengeId
               ? { ...challenge, isJoined: false }
-              : challenge
-          )
+              : challenge,
+          ),
         }));
       }
       return success;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to leave challenge');
+      setError(
+        err instanceof Error ? err.message : "Failed to leave challenge",
+      );
       return false;
     }
   };
 
-  const updateChallengeProgress = async (challengeId: string, progress: number) => {
+  const updateChallengeProgress = async (
+    challengeId: string,
+    progress: number,
+  ) => {
     try {
-      const success = await socialService.updateChallengeProgress(userId, challengeId, progress);
+      const success = await socialService.updateChallengeProgress(
+        userId,
+        challengeId,
+        progress,
+      );
       if (success) {
         // Update progress locally
-        setData(prev => ({
+        setData((prev) => ({
           ...prev,
-          challenges: prev.challenges.map(challenge =>
+          challenges: prev.challenges.map((challenge) =>
             challenge.id === challengeId
               ? {
                   ...challenge,
-                  participants: challenge.participants.map(participant =>
+                  participants: challenge.participants.map((participant) =>
                     participant.isCurrentUser
                       ? { ...participant, progress }
-                      : participant
-                  )
+                      : participant,
+                  ),
                 }
-              : challenge
-          )
+              : challenge,
+          ),
         }));
       }
       return success;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update challenge progress');
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to update challenge progress",
+      );
       return false;
     }
   };
@@ -265,19 +288,21 @@ export function useSocial(options: UseSocialOptions = {}) {
   const refreshLeaderboard = async (category: string, period: string) => {
     try {
       const leaderboard = await socialService.getLeaderboard(category, period);
-      setData(prev => ({
+      setData((prev) => ({
         ...prev,
-        leaderboard
+        leaderboard,
       }));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to refresh leaderboard');
+      setError(
+        err instanceof Error ? err.message : "Failed to refresh leaderboard",
+      );
     }
   };
 
   // Get user's current challenges
   const getActiveChallenges = () => {
-    return data.challenges.filter(challenge => 
-      challenge.isJoined && challenge.status === 'active'
+    return data.challenges.filter(
+      (challenge) => challenge.isJoined && challenge.status === "active",
     );
   };
 
@@ -285,9 +310,10 @@ export function useSocial(options: UseSocialOptions = {}) {
   const getRecentAchievements = (days: number = 30) => {
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - days);
-    
-    return data.achievements.filter(achievement => 
-      achievement.isUnlocked && new Date(achievement.earnedAt) > cutoffDate
+
+    return data.achievements.filter(
+      (achievement) =>
+        achievement.isUnlocked && new Date(achievement.earnedAt) > cutoffDate,
     );
   };
 
@@ -303,19 +329,22 @@ export function useSocial(options: UseSocialOptions = {}) {
       friends: 0.2,
       achievements: 0.3,
       shares: 0.2,
-      challenges: 0.3
+      challenges: 0.3,
     };
 
     const friendsScore = Math.min(data.friends.length * 5, 100);
     const achievementsScore = Math.min(data.achievements.length * 10, 100);
-    const sharesScore = Math.min(data.achievements.reduce((sum, a) => sum + a.shareCount, 0) * 2, 100);
+    const sharesScore = Math.min(
+      data.achievements.reduce((sum, a) => sum + a.shareCount, 0) * 2,
+      100,
+    );
     const challengesScore = Math.min(getActiveChallenges().length * 25, 100);
 
     return Math.round(
       friendsScore * weights.friends +
-      achievementsScore * weights.achievements +
-      sharesScore * weights.shares +
-      challengesScore * weights.challenges
+        achievementsScore * weights.achievements +
+        sharesScore * weights.shares +
+        challengesScore * weights.challenges,
     );
   };
 
@@ -327,11 +356,11 @@ export function useSocial(options: UseSocialOptions = {}) {
   return {
     // Data
     ...data,
-    
+
     // Loading states
     loading,
     error,
-    
+
     // Actions
     loadSocialData,
     updateProfile,
@@ -342,14 +371,14 @@ export function useSocial(options: UseSocialOptions = {}) {
     leaveChallenge,
     updateChallengeProgress,
     refreshLeaderboard,
-    
+
     // Computed values
     getActiveChallenges,
     getRecentAchievements,
     getFriendActivity,
     calculateEngagementScore,
-    
+
     // Refresh function
-    refresh: loadSocialData
+    refresh: loadSocialData,
   };
 }

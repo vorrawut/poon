@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react';
-import { thaiCultureService, getCulturalSpendingInsights } from '../services/thaiCultureService';
-import type { ThaiCulturalEvent } from '../components/ThaiCalendarIntegration';
-import type { FamilyObligation } from '../components/FamilyObligationTracker';
-import type { MeritMakingActivity } from '../components/MeritMakingBudget';
-import type { ThaiFestival } from '../components/FestivalSpendingPlanner';
+import { useState, useEffect } from "react";
+import {
+  thaiCultureService,
+  getCulturalSpendingInsights,
+} from "../services/thaiCultureService";
+import type { ThaiCulturalEvent } from "../components/ThaiCalendarIntegration";
+import type { FamilyObligation } from "../components/FamilyObligationTracker";
+import type { MeritMakingActivity } from "../components/MeritMakingBudget";
+import type { ThaiFestival } from "../components/FestivalSpendingPlanner";
 
 export interface ThaiCultureData {
   events: ThaiCulturalEvent[];
@@ -25,9 +28,9 @@ export interface ThaiCultureData {
     totalRecommended: number;
   } | null;
   insights: {
-    insights: Array<{ 
-      type: 'positive' | 'warning' | 'suggestion'; 
-      message: { en: string; th: string } 
+    insights: Array<{
+      type: "positive" | "warning" | "suggestion";
+      message: { en: string; th: string };
     }>;
     culturalScore: number;
   } | null;
@@ -38,7 +41,7 @@ export interface UseThaiCultureOptions {
   familyProfile?: {
     size: number;
     hasElderlyParents: boolean;
-    religiosity: 'low' | 'medium' | 'high';
+    religiosity: "low" | "medium" | "high";
   };
   spendingData?: Record<string, number>;
   autoLoad?: boolean;
@@ -50,10 +53,10 @@ export function useThaiCulture(options: UseThaiCultureOptions = {}) {
     familyProfile = {
       size: 3,
       hasElderlyParents: true,
-      religiosity: 'medium'
+      religiosity: "medium",
     },
     spendingData = {},
-    autoLoad = true
+    autoLoad = true,
   } = options;
 
   const [data, setData] = useState<ThaiCultureData>({
@@ -62,7 +65,7 @@ export function useThaiCulture(options: UseThaiCultureOptions = {}) {
     meritActivities: [],
     festivals: [],
     recommendations: null,
-    insights: null
+    insights: null,
   });
 
   const [loading, setLoading] = useState(false);
@@ -77,18 +80,20 @@ export function useThaiCulture(options: UseThaiCultureOptions = {}) {
 
     try {
       // Load all cultural data
-      const [events, obligations, meritActivities, festivals] = await Promise.all([
-        thaiCultureService.getUpcomingEvents(),
-        thaiCultureService.getFamilyObligations(),
-        thaiCultureService.getMeritMakingActivities(),
-        thaiCultureService.getFestivals()
-      ]);
+      const [events, obligations, meritActivities, festivals] =
+        await Promise.all([
+          thaiCultureService.getUpcomingEvents(),
+          thaiCultureService.getFamilyObligations(),
+          thaiCultureService.getMeritMakingActivities(),
+          thaiCultureService.getFestivals(),
+        ]);
 
       // Get financial recommendations
-      const recommendations = await thaiCultureService.getCulturalFinancialRecommendations(
-        monthlyIncome,
-        familyProfile
-      );
+      const recommendations =
+        await thaiCultureService.getCulturalFinancialRecommendations(
+          monthlyIncome,
+          familyProfile,
+        );
 
       // Generate cultural insights
       const insights = getCulturalSpendingInsights(spendingData, monthlyIncome);
@@ -99,10 +104,12 @@ export function useThaiCulture(options: UseThaiCultureOptions = {}) {
         meritActivities,
         festivals,
         recommendations,
-        insights
+        insights,
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load Thai culture data');
+      setError(
+        err instanceof Error ? err.message : "Failed to load Thai culture data",
+      );
     } finally {
       setLoading(false);
     }
@@ -111,29 +118,35 @@ export function useThaiCulture(options: UseThaiCultureOptions = {}) {
   // Update recommendations when income or family profile changes
   const updateRecommendations = async (
     newIncome: number,
-    newFamilyProfile: typeof familyProfile
+    newFamilyProfile: typeof familyProfile,
   ) => {
     try {
-      const recommendations = await thaiCultureService.getCulturalFinancialRecommendations(
-        newIncome,
-        newFamilyProfile
-      );
+      const recommendations =
+        await thaiCultureService.getCulturalFinancialRecommendations(
+          newIncome,
+          newFamilyProfile,
+        );
 
-      setData(prev => ({
+      setData((prev) => ({
         ...prev,
-        recommendations
+        recommendations,
       }));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update recommendations');
+      setError(
+        err instanceof Error ? err.message : "Failed to update recommendations",
+      );
     }
   };
 
   // Update insights when spending data changes
   const updateInsights = (newSpendingData: Record<string, number>) => {
-    const insights = getCulturalSpendingInsights(newSpendingData, monthlyIncome);
-    setData(prev => ({
+    const insights = getCulturalSpendingInsights(
+      newSpendingData,
+      monthlyIncome,
+    );
+    setData((prev) => ({
       ...prev,
-      insights
+      insights,
     }));
   };
 
@@ -145,10 +158,10 @@ export function useThaiCulture(options: UseThaiCultureOptions = {}) {
   // Check if today is a significant cultural day
   const getTodaysCulturalSignificance = () => {
     const today = new Date();
-    const todayString = today.toISOString().split('T')[0];
-    
-    return data.events.find(event => 
-      event.date === todayString && event.significance === 'high'
+    const todayString = today.toISOString().split("T")[0];
+
+    return data.events.find(
+      (event) => event.date === todayString && event.significance === "high",
     );
   };
 
@@ -156,18 +169,20 @@ export function useThaiCulture(options: UseThaiCultureOptions = {}) {
   const getUpcomingEvents = (days: number = 30) => {
     const today = new Date();
     const futureDate = new Date(today.getTime() + days * 24 * 60 * 60 * 1000);
-    
-    return data.events.filter(event => {
-      const eventDate = new Date(event.date);
-      return eventDate >= today && eventDate <= futureDate;
-    }).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+    return data.events
+      .filter((event) => {
+        const eventDate = new Date(event.date);
+        return eventDate >= today && eventDate <= futureDate;
+      })
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   };
 
   // Get overdue family obligations
   const getOverdueObligations = () => {
     const today = new Date();
-    
-    return data.obligations.filter(obligation => {
+
+    return data.obligations.filter((obligation) => {
       if (!obligation.nextDueDate || !obligation.isActive) return false;
       return new Date(obligation.nextDueDate) < today;
     });
@@ -176,50 +191,51 @@ export function useThaiCulture(options: UseThaiCultureOptions = {}) {
   // Calculate total cultural spending percentage
   const getCulturalSpendingPercentage = () => {
     if (!data.recommendations) return 0;
-    
-    const totalCultural = data.recommendations.familyObligations.recommended + 
-                         data.recommendations.meritMaking.recommended;
-    
+
+    const totalCultural =
+      data.recommendations.familyObligations.recommended +
+      data.recommendations.meritMaking.recommended;
+
     return (totalCultural / monthlyIncome) * 100;
   };
 
   // Get cultural score interpretation
   const getCulturalScoreInterpretation = () => {
     if (!data.insights) return null;
-    
+
     const score = data.insights.culturalScore;
-    
+
     if (score >= 80) {
       return {
-        level: 'excellent' as const,
+        level: "excellent" as const,
         message: {
-          en: 'Excellent cultural adherence! You are following Thai values beautifully.',
-          th: 'การยึดมั่นในวัฒนธรรมดีเยี่ยม! คุณปฏิบัติตามค่านิยมไทยอย่างสวยงาม'
-        }
+          en: "Excellent cultural adherence! You are following Thai values beautifully.",
+          th: "การยึดมั่นในวัฒนธรรมดีเยี่ยม! คุณปฏิบัติตามค่านิยมไทยอย่างสวยงาม",
+        },
       };
     } else if (score >= 60) {
       return {
-        level: 'good' as const,
+        level: "good" as const,
         message: {
-          en: 'Good cultural balance. Consider small improvements in some areas.',
-          th: 'สมดุลทางวัฒนธรรมดี ควรพิจารณาปรับปรุงเล็กน้อยในบางด้าน'
-        }
+          en: "Good cultural balance. Consider small improvements in some areas.",
+          th: "สมดุลทางวัฒนธรรมดี ควรพิจารณาปรับปรุงเล็กน้อยในบางด้าน",
+        },
       };
     } else if (score >= 40) {
       return {
-        level: 'moderate' as const,
+        level: "moderate" as const,
         message: {
-          en: 'Moderate cultural alignment. Room for improvement in traditional practices.',
-          th: 'การปฏิบัติตามวัฒนธรรมปานกลาง มีที่ปรับปรุงในการปฏิบัติตามประเพณี'
-        }
+          en: "Moderate cultural alignment. Room for improvement in traditional practices.",
+          th: "การปฏิบัติตามวัฒนธรรมปานกลาง มีที่ปรับปรุงในการปฏิบัติตามประเพณี",
+        },
       };
     } else {
       return {
-        level: 'low' as const,
+        level: "low" as const,
         message: {
-          en: 'Consider incorporating more Thai cultural practices into your financial planning.',
-          th: 'ควรพิจารณานำการปฏิบัติทางวัฒนธรรมไทยเข้ามาในการวางแผนการเงิน'
-        }
+          en: "Consider incorporating more Thai cultural practices into your financial planning.",
+          th: "ควรพิจารณานำการปฏิบัติทางวัฒนธรรมไทยเข้ามาในการวางแผนการเงิน",
+        },
       };
     }
   };
@@ -227,7 +243,12 @@ export function useThaiCulture(options: UseThaiCultureOptions = {}) {
   // Load data on mount or when dependencies change
   useEffect(() => {
     loadThaiCultureData();
-  }, [monthlyIncome, familyProfile.size, familyProfile.hasElderlyParents, familyProfile.religiosity]);
+  }, [
+    monthlyIncome,
+    familyProfile.size,
+    familyProfile.hasElderlyParents,
+    familyProfile.religiosity,
+  ]);
 
   // Update insights when spending data changes
   useEffect(() => {
@@ -239,16 +260,16 @@ export function useThaiCulture(options: UseThaiCultureOptions = {}) {
   return {
     // Data
     ...data,
-    
+
     // Loading states
     loading,
     error,
-    
+
     // Actions
     loadThaiCultureData,
     updateRecommendations,
     updateInsights,
-    
+
     // Computed values
     getCurrentBuddhistYear,
     getTodaysCulturalSignificance,
@@ -256,8 +277,8 @@ export function useThaiCulture(options: UseThaiCultureOptions = {}) {
     getOverdueObligations,
     getCulturalSpendingPercentage,
     getCulturalScoreInterpretation,
-    
+
     // Refresh function
-    refresh: loadThaiCultureData
+    refresh: loadThaiCultureData,
   };
 }

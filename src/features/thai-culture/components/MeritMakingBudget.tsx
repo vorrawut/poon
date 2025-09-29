@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { 
-  ThemeAwareCard, 
-  ThemeAwareText, 
+import {
+  ThemeAwareCard,
+  ThemeAwareText,
   ThemeAwareButton,
-  ThemeAwareHeading
+  ThemeAwareHeading,
 } from "../../../core";
 import { useTranslation } from "../../../libs/i18n";
 import { cn } from "../../../libs/utils";
@@ -12,7 +12,12 @@ import { cn } from "../../../libs/utils";
 // Merit Making Activities
 export interface MeritMakingActivity {
   id: string;
-  type: "temple_donation" | "monk_offering" | "charity" | "festival" | "ceremony";
+  type:
+    | "temple_donation"
+    | "monk_offering"
+    | "charity"
+    | "festival"
+    | "ceremony";
   name: {
     en: string;
     th: string;
@@ -50,16 +55,16 @@ const mockMeritActivities: MeritMakingActivity[] = [
     type: "temple_donation",
     name: {
       en: "Monthly Temple Donation",
-      th: "การบริจาควัดประจำเดือน"
+      th: "การบริจาควัดประจำเดือน",
     },
     description: {
       en: "Regular monthly donation to support temple operations and monks",
-      th: "การบริจาคประจำเดือนเพื่อสนับสนุนกิจกรรมวัดและพระสงฆ์"
+      th: "การบริจาคประจำเดือนเพื่อสนับสนุนกิจกรรมวัดและพระสงฆ์",
     },
     suggestedAmount: {
       min: 1000,
       max: 10000,
-      recommended: 3000
+      recommended: 3000,
     },
     frequency: "monthly",
     meritLevel: "high",
@@ -67,24 +72,24 @@ const mockMeritActivities: MeritMakingActivity[] = [
     color: "#F59E0B",
     culturalSignificance: {
       en: "Supports Buddhist community and earns continuous merit",
-      th: "สนับสนุนชุมชนพุทธและได้บุญอย่างต่อเนื่อง"
-    }
+      th: "สนับสนุนชุมชนพุทธและได้บุญอย่างต่อเนื่อง",
+    },
   },
   {
     id: "monk-alms",
     type: "monk_offering",
     name: {
       en: "Monk Alms Offering",
-      th: "การใส่บาตร"
+      th: "การใส่บาตร",
     },
     description: {
       en: "Daily or weekly alms offering to monks during morning rounds",
-      th: "การใส่บาตรพระสงฆ์ในตอนเช้าประจำวันหรือสัปดาห์"
+      th: "การใส่บาตรพระสงฆ์ในตอนเช้าประจำวันหรือสัปดาห์",
     },
     suggestedAmount: {
       min: 20,
       max: 100,
-      recommended: 50
+      recommended: 50,
     },
     frequency: "weekly",
     meritLevel: "high",
@@ -92,24 +97,24 @@ const mockMeritActivities: MeritMakingActivity[] = [
     color: "#10B981",
     culturalSignificance: {
       en: "Direct support to monks and traditional Buddhist practice",
-      th: "การสนับสนุนพระสงฆ์โดยตรงและปฏิบัติตามประเพณีพุทธ"
-    }
+      th: "การสนับสนุนพระสงฆ์โดยตรงและปฏิบัติตามประเพณีพุทธ",
+    },
   },
   {
     id: "charity-donation",
     type: "charity",
     name: {
       en: "Charity Donation",
-      th: "การบริจาคการกุศล"
+      th: "การบริจาคการกุศล",
     },
     description: {
       en: "Donations to charitable organizations and community causes",
-      th: "การบริจาคให้องค์กรการกุศลและกิจกรรมชุมชน"
+      th: "การบริจาคให้องค์กรการกุศลและกิจกรรมชุมชน",
     },
     suggestedAmount: {
       min: 500,
       max: 5000,
-      recommended: 2000
+      recommended: 2000,
     },
     frequency: "monthly",
     meritLevel: "medium",
@@ -117,24 +122,24 @@ const mockMeritActivities: MeritMakingActivity[] = [
     color: "#EC4899",
     culturalSignificance: {
       en: "Helps those in need and builds compassionate karma",
-      th: "ช่วยเหลือผู้ที่ต้องการและสร้างกรรมแห่งความเมตตา"
-    }
+      th: "ช่วยเหลือผู้ที่ต้องการและสร้างกรรมแห่งความเมตตา",
+    },
   },
   {
     id: "festival-offering",
     type: "festival",
     name: {
       en: "Festival Offerings",
-      th: "การถวายในเทศกาล"
+      th: "การถวายในเทศกาล",
     },
     description: {
       en: "Special offerings during Buddhist festivals and holy days",
-      th: "การถวายพิเศษในเทศกาลทางพุทธศาสนาและวันสำคัญ"
+      th: "การถวายพิเศษในเทศกาลทางพุทธศาสนาและวันสำคัญ",
     },
     suggestedAmount: {
       min: 1000,
       max: 15000,
-      recommended: 5000
+      recommended: 5000,
     },
     frequency: "seasonal",
     meritLevel: "high",
@@ -142,24 +147,24 @@ const mockMeritActivities: MeritMakingActivity[] = [
     color: "#8B5CF6",
     culturalSignificance: {
       en: "Participates in community celebrations and earns special merit",
-      th: "เข้าร่วมการเฉลิมฉลองชุมชนและได้บุญพิเศษ"
-    }
+      th: "เข้าร่วมการเฉลิมฉลองชุมชนและได้บุญพิเศษ",
+    },
   },
   {
     id: "ceremony-sponsorship",
     type: "ceremony",
     name: {
       en: "Ceremony Sponsorship",
-      th: "การสนับสนุนพิธีกรรม"
+      th: "การสนับสนุนพิธีกรรม",
     },
     description: {
       en: "Sponsoring religious ceremonies, ordinations, or temple events",
-      th: "การสนับสนุนพิธีทางศาสนา บวช หรืองานวัด"
+      th: "การสนับสนุนพิธีทางศาสนา บวช หรืองานวัด",
     },
     suggestedAmount: {
       min: 5000,
       max: 50000,
-      recommended: 15000
+      recommended: 15000,
     },
     frequency: "occasional",
     meritLevel: "high",
@@ -167,68 +172,75 @@ const mockMeritActivities: MeritMakingActivity[] = [
     color: "#EF4444",
     culturalSignificance: {
       en: "Major merit-making opportunity with lasting spiritual benefits",
-      th: "โอกาสทำบุญใหญ่ที่มีผลทางจิตวิญญาณยาวนาน"
-    }
-  }
+      th: "โอกาสทำบุญใหญ่ที่มีผลทางจิตวิญญาณยาวนาน",
+    },
+  },
 ];
 
 // Activity Card Component
-function MeritActivityCard({ 
-  activity, 
+function MeritActivityCard({
+  activity,
   isSelected = false,
   onSelect,
-  allocatedAmount = 0
-}: { 
-  activity: MeritMakingActivity; 
+  allocatedAmount = 0,
+}: {
+  activity: MeritMakingActivity;
   isSelected?: boolean;
   onSelect?: () => void;
   allocatedAmount?: number;
 }) {
   const { language } = useTranslation();
-  
+
   const isAllocated = allocatedAmount > 0;
-  const isWithinRange = allocatedAmount >= activity.suggestedAmount.min && 
-                       allocatedAmount <= activity.suggestedAmount.max;
+  const isWithinRange =
+    allocatedAmount >= activity.suggestedAmount.min &&
+    allocatedAmount <= activity.suggestedAmount.max;
 
   return (
     <motion.div
       className={cn(
         "cursor-pointer transition-all duration-300",
-        isSelected && "scale-105"
+        isSelected && "scale-105",
       )}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       onClick={onSelect}
     >
-      <ThemeAwareCard 
+      <ThemeAwareCard
         className={cn(
           "p-4 border-2 transition-all duration-300",
-          isSelected ? "border-purple-500 shadow-lg shadow-purple-500/20" : "border-transparent",
-          isAllocated && "bg-green-500/5 border-green-500/20"
+          isSelected
+            ? "border-purple-500 shadow-lg shadow-purple-500/20"
+            : "border-transparent",
+          isAllocated && "bg-green-500/5 border-green-500/20",
         )}
       >
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3">
-            <div 
+            <div
               className="text-2xl p-2 rounded-full"
-              style={{ 
+              style={{
                 backgroundColor: `${activity.color}20`,
-                color: activity.color 
+                color: activity.color,
               }}
             >
               {activity.icon}
             </div>
             <div>
               <h3 className="font-semibold text-lg">
-                {language === 'th' ? activity.name.th : activity.name.en}
+                {language === "th" ? activity.name.th : activity.name.en}
               </h3>
               <div className="flex items-center gap-2 text-sm">
-                <span className={cn(
-                  "px-2 py-1 rounded-full text-xs font-medium capitalize",
-                  activity.meritLevel === 'high' ? 'bg-yellow-500/20 text-yellow-300' :
-                  activity.meritLevel === 'medium' ? 'bg-blue-500/20 text-blue-300' :
-                  'bg-gray-500/20 text-gray-300'
-                )}>
+                <span
+                  className={cn(
+                    "px-2 py-1 rounded-full text-xs font-medium capitalize",
+                    activity.meritLevel === "high"
+                      ? "bg-yellow-500/20 text-yellow-300"
+                      : activity.meritLevel === "medium"
+                        ? "bg-blue-500/20 text-blue-300"
+                        : "bg-gray-500/20 text-gray-300",
+                  )}
+                >
                   {activity.meritLevel} merit
                 </span>
                 <span className="px-2 py-1 rounded-full text-xs font-medium bg-gray-700 text-gray-300 capitalize">
@@ -237,14 +249,16 @@ function MeritActivityCard({
               </div>
             </div>
           </div>
-          
+
           <div className="text-right">
             {isAllocated ? (
               <div>
-                <div className={cn(
-                  "text-lg font-bold",
-                  isWithinRange ? "text-green-300" : "text-yellow-300"
-                )}>
+                <div
+                  className={cn(
+                    "text-lg font-bold",
+                    isWithinRange ? "text-green-300" : "text-yellow-300",
+                  )}
+                >
                   ฿{allocatedAmount.toLocaleString()}
                 </div>
                 <div className="text-xs text-gray-400">allocated</div>
@@ -261,11 +275,15 @@ function MeritActivityCard({
         </div>
 
         <ThemeAwareText color="secondary" className="text-sm mb-3 line-clamp-2">
-          {language === 'th' ? activity.description.th : activity.description.en}
+          {language === "th"
+            ? activity.description.th
+            : activity.description.en}
         </ThemeAwareText>
 
         <div className="text-xs text-gray-400 italic">
-          {language === 'th' ? activity.culturalSignificance.th : activity.culturalSignificance.en}
+          {language === "th"
+            ? activity.culturalSignificance.th
+            : activity.culturalSignificance.en}
         </div>
 
         {/* Suggested Range */}
@@ -273,7 +291,8 @@ function MeritActivityCard({
           <div className="flex justify-between items-center">
             <span className="text-gray-400">Suggested Range:</span>
             <span className="text-white">
-              ฿{activity.suggestedAmount.min.toLocaleString()} - ฿{activity.suggestedAmount.max.toLocaleString()}
+              ฿{activity.suggestedAmount.min.toLocaleString()} - ฿
+              {activity.suggestedAmount.max.toLocaleString()}
             </span>
           </div>
         </div>
@@ -293,12 +312,18 @@ export function MeritMakingBudget({
   const [allocations, setAllocations] = useState<Record<string, number>>({});
 
   // Calculate totals
-  const totalAllocated = Object.values(allocations).reduce((sum, amount) => sum + amount, 0);
+  const totalAllocated = Object.values(allocations).reduce(
+    (sum, amount) => sum + amount,
+    0,
+  );
   const remainingBudget = monthlyBudget - totalAllocated;
   const recommendedTotal = activities.reduce((sum, activity) => {
-    if (activity.frequency === 'monthly') return sum + activity.suggestedAmount.recommended;
-    if (activity.frequency === 'weekly') return sum + (activity.suggestedAmount.recommended * 4);
-    if (activity.frequency === 'seasonal') return sum + (activity.suggestedAmount.recommended / 3);
+    if (activity.frequency === "monthly")
+      return sum + activity.suggestedAmount.recommended;
+    if (activity.frequency === "weekly")
+      return sum + activity.suggestedAmount.recommended * 4;
+    if (activity.frequency === "seasonal")
+      return sum + activity.suggestedAmount.recommended / 3;
     return sum;
   }, 0);
 
@@ -307,9 +332,9 @@ export function MeritMakingBudget({
   };
 
   const handleQuickAllocate = (activityId: string, amount: number) => {
-    setAllocations(prev => ({
+    setAllocations((prev) => ({
       ...prev,
-      [activityId]: amount
+      [activityId]: amount,
     }));
   };
 
@@ -317,7 +342,10 @@ export function MeritMakingBudget({
     <div className={cn("space-y-6", className)}>
       {/* Header */}
       <div className="text-center">
-        <ThemeAwareHeading level="h2" className="text-2xl font-bold mb-2 flex items-center justify-center gap-2">
+        <ThemeAwareHeading
+          level="h2"
+          className="text-2xl font-bold mb-2 flex items-center justify-center gap-2"
+        >
           🙏 Merit Making Budget
         </ThemeAwareHeading>
         <ThemeAwareText color="secondary" className="text-sm">
@@ -333,19 +361,21 @@ export function MeritMakingBudget({
           </div>
           <div className="text-sm text-gray-400">Monthly Budget</div>
         </ThemeAwareCard>
-        
+
         <ThemeAwareCard className="p-4 text-center">
           <div className="text-2xl font-bold text-green-400">
             ฿{totalAllocated.toLocaleString()}
           </div>
           <div className="text-sm text-gray-400">Allocated</div>
         </ThemeAwareCard>
-        
+
         <ThemeAwareCard className="p-4 text-center">
-          <div className={cn(
-            "text-2xl font-bold",
-            remainingBudget >= 0 ? "text-purple-400" : "text-red-400"
-          )}>
+          <div
+            className={cn(
+              "text-2xl font-bold",
+              remainingBudget >= 0 ? "text-purple-400" : "text-red-400",
+            )}
+          >
             ฿{remainingBudget.toLocaleString()}
           </div>
           <div className="text-sm text-gray-400">Remaining</div>
@@ -360,7 +390,8 @@ export function MeritMakingBudget({
               📊 Budget Comparison
             </h3>
             <p className="text-sm text-gray-300">
-              Recommended monthly merit-making budget based on traditional practices
+              Recommended monthly merit-making budget based on traditional
+              practices
             </p>
           </div>
           <div className="text-right">
@@ -387,35 +418,53 @@ export function MeritMakingBudget({
               onSelect={() => handleActivitySelect(activity.id)}
               allocatedAmount={allocations[activity.id] || 0}
             />
-            
+
             {/* Quick Allocation Buttons */}
             {selectedActivity === activity.id && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
+                animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 className="mt-2 p-4 bg-gray-800/50 rounded-lg border border-gray-700"
               >
-                <h4 className="text-sm font-semibold mb-3 text-purple-300">Quick Allocate:</h4>
+                <h4 className="text-sm font-semibold mb-3 text-purple-300">
+                  Quick Allocate:
+                </h4>
                 <div className="flex gap-2 flex-wrap">
                   <ThemeAwareButton
                     variant="ghost"
                     size="sm"
-                    onClick={() => handleQuickAllocate(activity.id, activity.suggestedAmount.min)}
+                    onClick={() =>
+                      handleQuickAllocate(
+                        activity.id,
+                        activity.suggestedAmount.min,
+                      )
+                    }
                   >
                     Min ฿{activity.suggestedAmount.min.toLocaleString()}
                   </ThemeAwareButton>
                   <ThemeAwareButton
                     variant="primary"
                     size="sm"
-                    onClick={() => handleQuickAllocate(activity.id, activity.suggestedAmount.recommended)}
+                    onClick={() =>
+                      handleQuickAllocate(
+                        activity.id,
+                        activity.suggestedAmount.recommended,
+                      )
+                    }
                   >
-                    Recommended ฿{activity.suggestedAmount.recommended.toLocaleString()}
+                    Recommended ฿
+                    {activity.suggestedAmount.recommended.toLocaleString()}
                   </ThemeAwareButton>
                   <ThemeAwareButton
                     variant="ghost"
                     size="sm"
-                    onClick={() => handleQuickAllocate(activity.id, activity.suggestedAmount.max)}
+                    onClick={() =>
+                      handleQuickAllocate(
+                        activity.id,
+                        activity.suggestedAmount.max,
+                      )
+                    }
                   >
                     Max ฿{activity.suggestedAmount.max.toLocaleString()}
                   </ThemeAwareButton>
@@ -441,9 +490,14 @@ export function MeritMakingBudget({
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
           <div>
-            <h4 className="font-medium text-white mb-2">Traditional Practice:</h4>
+            <h4 className="font-medium text-white mb-2">
+              Traditional Practice:
+            </h4>
             <ul className="text-gray-400 space-y-1">
-              <li>• Regular giving is more beneficial than large occasional donations</li>
+              <li>
+                • Regular giving is more beneficial than large occasional
+                donations
+              </li>
               <li>• Morning alms (ใส่บาตร) brings daily merit</li>
               <li>• Temple support maintains Buddhist community</li>
             </ul>

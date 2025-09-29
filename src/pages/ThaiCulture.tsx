@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FadeIn } from "../components/ui";
-import {
-  ThemeAwareHeading,
-  ThemeAwareText,
-  useTheme,
-} from "../core";
+import { ThemeAwareHeading, ThemeAwareText, useTheme } from "../core";
 import {
   ThaiCalendarIntegration,
   FamilyObligationTracker,
