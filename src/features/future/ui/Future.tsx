@@ -1,43 +1,59 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { FadeIn } from "../../../components/ui";
-import { AccessibleHeading, AccessibleText } from "../../../core";
 import {
-  FutureMissionBoard,
-  MissionDetailView,
-  AICoPilot,
+  ThemeAwareHeading,
+  ThemeAwareText,
+  useTheme,
+} from "../../../core";
+import {
+  EnhancedGoalTracker,
+  MissionDetailView as Enhanced3DMissionDetailView,
+  type EnhancedGoal,
+} from "../../goals";
+import {
   UniverseBackground,
 } from "../../../components/widgets";
 import {
-  initialMissions,
-  type Mission,
-} from "../../../../mockData/features/future";
+  mockEnhancedGoals,
+} from "../../../../mockData/features/goals";
 
 import { useUIStore } from "../../../store/useUIStore";
 
 export function Future() {
   const { viewMode, accessibilityMode } = useUIStore();
-  const [selectedMission, setSelectedMission] = useState<Mission | null>(null);
-  const [missions, setMissions] = useState<Mission[]>([]);
+  const { isPlayMode } = useTheme();
+  const [selectedGoal, setSelectedGoal] = useState<EnhancedGoal | null>(null);
+  const [goals, setGoals] = useState<EnhancedGoal[]>([]);
 
-  // Initialize missions
+  // Initialize goals with enhanced data
   useEffect(() => {
-    setMissions(initialMissions);
+    setGoals(mockEnhancedGoals);
   }, []);
 
-  const handleMissionClick = (mission: Mission) => {
-    setSelectedMission(mission);
+  const handleGoalCreate = (newGoal: Omit<EnhancedGoal, "id" | "createdAt" | "isCompleted">) => {
+    const goal: EnhancedGoal = {
+      ...newGoal,
+      id: `goal-${Date.now()}`,
+      createdAt: new Date(),
+      isCompleted: false,
+    };
+    setGoals((prev) => [...prev, goal]);
   };
 
-  const handleMissionUpdate = (updatedMission: Mission) => {
-    setMissions((prev) =>
-      prev.map((m) => (m.id === updatedMission.id ? updatedMission : m)),
+  const handleContribute = (goalId: string, amount: number) => {
+    setGoals((prev) =>
+      prev.map((goal) =>
+        goal.id === goalId
+          ? {
+              ...goal,
+              currentAmount: Math.min(goal.currentAmount + amount, goal.targetAmount),
+              lastContribution: new Date(),
+              isCompleted: goal.currentAmount + amount >= goal.targetAmount,
+            }
+          : goal
+      )
     );
-    setSelectedMission(updatedMission);
-  };
-
-  const handleBackToBoard = () => {
-    setSelectedMission(null);
   };
 
   return (
@@ -70,9 +86,9 @@ export function Future() {
               >
                 🚀
               </motion.div>
-              <AccessibleHeading level="h1" className="mb-4" gradient>
-                Future
-              </AccessibleHeading>
+              <ThemeAwareHeading level="h1" className="mb-4" gradient={isPlayMode}>
+                Future Missions
+              </ThemeAwareHeading>
               <motion.div
                 className="text-5xl md:text-7xl"
                 animate={{
@@ -90,7 +106,7 @@ export function Future() {
               </motion.div>
             </div>
 
-            <AccessibleText
+            <ThemeAwareText
               color="secondary"
               className="mb-8 max-w-4xl mx-auto px-4"
             >
@@ -101,49 +117,28 @@ export function Future() {
                   : viewMode === "play"
                     ? "Navigate your financial universe — where every goal becomes a space mission in your personal galaxy! 🌌"
                     : "Your financial goals made simple. Track progress, set targets, and achieve your dreams with clear, actionable steps."}
-            </AccessibleText>
+            </ThemeAwareText>
           </div>
         </FadeIn>
 
-        {/* Mission Board or Detail View */}
-        <AnimatePresence mode="wait">
-          {selectedMission ? (
-            <motion.div
-              key="detail"
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.3 }}
-            >
-              <MissionDetailView
-                mission={selectedMission}
-                onBack={handleBackToBoard}
-                onUpdate={handleMissionUpdate}
-              />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="board"
-              initial={{ opacity: 0, x: -100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 100 }}
-              transition={{ duration: 0.3 }}
-            >
-              <FutureMissionBoard
-                missions={missions}
-                onMissionClick={handleMissionClick}
-                viewMode={viewMode}
-                accessibilityMode={accessibilityMode}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Enhanced Goal Tracker or 3D Detail View */}
+        {selectedGoal ? (
+          <Enhanced3DMissionDetailView
+            goal={selectedGoal}
+            onClose={() => setSelectedGoal(null)}
+            onContribute={(amount: number) => handleContribute(selectedGoal.id, amount)}
+          />
+        ) : (
+          <EnhancedGoalTracker
+            goals={goals}
+            onGoalCreate={handleGoalCreate}
+            onContribute={handleContribute}
+            showCreateButton={true}
+          />
+        )}
 
-        {/* AI Co-Pilot - Responsive positioning */}
-        <AICoPilot
-          missions={missions}
-          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50"
-        />
+        {/* AI Co-Pilot - TODO: Update to work with EnhancedGoal type */}
+        {/* <AICoPilot /> */}
       </div>
     </div>
   );
