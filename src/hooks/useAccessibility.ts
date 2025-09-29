@@ -1,5 +1,5 @@
 import { useUIStore } from "../store/useUIStore";
-import { useTheme } from "../app/providers/ThemeProvider";
+import { useTheme } from "./useTheme";
 import {
   getAccessibilityClasses,
   getAccessibilityColors,

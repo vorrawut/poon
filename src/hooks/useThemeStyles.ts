@@ -4,7 +4,7 @@
  * Provides quick access to common theme-aware styles
  */
 
-import { useTheme } from "../app/providers/ThemeProvider";
+import { useTheme } from "./useTheme";
 
 export function useThemeStyles() {
   const theme = useTheme();

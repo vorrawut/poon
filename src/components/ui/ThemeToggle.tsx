@@ -10,7 +10,7 @@
  */
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useTheme } from "../../app/providers/ThemeProvider";
+import { useTheme } from "../../hooks/useTheme";
 import { useAccessibility } from "../../hooks/useAccessibility";
 import { cn } from "../../libs/utils";
 

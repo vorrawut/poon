@@ -63,7 +63,7 @@ export {
   useAccessibilityMotion,
 } from "../../hooks/useAccessibility";
 
-export { useTheme } from "../../app/providers/ThemeProvider";
+export { useTheme } from "../../hooks/useTheme";
 export { useThemeStyles } from "../../hooks/useThemeStyles";
 export { useThemeMotion } from "../../hooks/useThemeMotion";
 

@@ -4,7 +4,7 @@
  * Provides theme-aware motion settings and Framer Motion variants
  */
 
-import { useTheme } from "../app/providers/ThemeProvider";
+import { useTheme } from "./useTheme";
 
 export function useThemeMotion() {
   const theme = useTheme();

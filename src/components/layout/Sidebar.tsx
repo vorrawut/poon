@@ -1,7 +1,8 @@
 import { NavLink } from "react-router-dom";
-import { clsx } from "clsx";
 import { useUIStore } from "../../store/useUIStore";
 import { DualLensToggle } from "../widgets";
+import { useTheme, ThemeAwareText } from "../../core";
+import { cn } from "../../libs/utils";
 import {
   HomeIcon,
   BanknotesIcon,
@@ -39,14 +40,24 @@ export function Sidebar() {
     viewMode,
     toggleViewMode,
   } = useUIStore();
+  const { isPlayMode, themeMode } = useTheme();
 
   const isVisible = isMobile ? sidebarOpen : true;
   const isCollapsed = !isMobile && sidebarCollapsed;
 
   return (
     <div
-      className={clsx(
-        "flex flex-col bg-white border-r border-gray-200 transition-all duration-300",
+      className={cn(
+        "flex flex-col border-r transition-all duration-300 backdrop-blur-sm",
+        // Theme-aware background and borders
+        "bg-[var(--color-surface-primary)]/95 border-[var(--color-border-primary)]",
+        // Play mode cosmic effects
+        isPlayMode && "shadow-[0_0_30px_var(--color-mood-glow)]/20",
+        isPlayMode &&
+          themeMode === "dark" &&
+          "bg-slate-900/95 border-purple-500/30",
+        isPlayMode && themeMode === "light" && "bg-white/95 border-blue-200/50",
+        // Visibility and sizing
         isVisible ? "translate-x-0" : "-translate-x-full",
         isMobile
           ? "fixed inset-y-0 left-0 z-50 w-64"
@@ -56,15 +67,35 @@ export function Sidebar() {
       )}
     >
       {/* Logo & Brand */}
-      <div className="flex items-center h-16 px-6 border-b border-gray-200">
+      <div
+        className={cn(
+          "flex items-center h-16 px-4 sm:px-6 border-b transition-colors",
+          "border-[var(--color-border-primary)]",
+        )}
+      >
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
+          <div
+            className={cn(
+              "w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300",
+              isPlayMode
+                ? "bg-gradient-to-br from-[var(--color-primary-500)] to-[var(--color-accent-500)] shadow-[0_0_15px_var(--color-mood-glow)]/50"
+                : "bg-gradient-to-br from-[var(--color-primary-500)] to-[var(--color-primary-600)]",
+            )}
+          >
             <span className="text-white font-bold text-lg">P</span>
           </div>
           {!isCollapsed && (
             <div>
-              <h1 className="text-xl font-bold text-gray-900">Poon</h1>
-              <p className="text-xs text-gray-500">Personal Finance</p>
+              <ThemeAwareText
+                as="h1"
+                className="text-xl font-bold"
+                gradient={isPlayMode}
+              >
+                Poon
+              </ThemeAwareText>
+              <ThemeAwareText className="text-xs" color="secondary">
+                Personal Finance
+              </ThemeAwareText>
             </div>
           )}
         </div>
@@ -73,7 +104,10 @@ export function Sidebar() {
         {isMobile && (
           <button
             onClick={() => setSidebarOpen(false)}
-            className="ml-auto p-1 rounded-md text-gray-400 hover:text-gray-600"
+            className={cn(
+              "ml-auto p-1 rounded-md transition-colors",
+              "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-secondary)]",
+            )}
           >
             <XMarkIcon className="h-6 w-6" />
           </button>
@@ -83,10 +117,27 @@ export function Sidebar() {
         {!isMobile && (
           <button
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            className="ml-auto p-1 rounded-md text-gray-400 hover:text-gray-600"
+            className={cn(
+              "transition-all duration-200 rounded-lg group",
+              "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-secondary)]",
+              // Better sizing and positioning
+              isCollapsed 
+                ? "ml-auto p-3 hover:scale-110" // Larger when collapsed for easier clicking
+                : "ml-auto p-2",
+              // Play mode cosmic effects
+              isPlayMode && "hover:shadow-[0_0_12px_var(--color-mood-glow)]/30",
+              // Accessibility improvements
+              "focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-500)] focus:ring-offset-2",
+            )}
+            title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             <svg
-              className="h-5 w-5"
+              className={cn(
+                "transition-all duration-200",
+                isCollapsed ? "h-6 w-6" : "h-5 w-5", // Larger icon when collapsed
+                "group-hover:scale-110"
+              )}
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -95,7 +146,10 @@ export function Sidebar() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
+                d={isCollapsed 
+                  ? "M13 5l7 7-7 7M5 5l7 7-7 7" // Double arrow right when collapsed
+                  : "M11 19l-7-7 7-7M19 19l-7-7 7-7" // Double arrow left when expanded
+                }
               />
             </svg>
           </button>
@@ -103,35 +157,80 @@ export function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-4 py-6 space-y-1">
+      <nav className={cn(
+        "flex-1 py-6 space-y-1",
+        isCollapsed ? "px-2" : "px-4" // Less padding when collapsed for better touch targets
+      )}>
         {navigation.map((item) => (
           <NavLink
             key={item.name}
             to={item.href}
             className={({ isActive }) =>
-              clsx(
-                "flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-colors",
+              cn(
+                "flex items-center font-medium rounded-[var(--border-radius)] transition-all duration-200 group relative",
+                // Better sizing for collapsed state
+                isCollapsed 
+                  ? "px-3 py-3 justify-center text-xs" // Larger touch target when collapsed
+                  : "px-3 py-2.5 text-sm",
                 isActive
-                  ? "bg-primary-50 text-primary-700 border-r-2 border-primary-600"
-                  : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
-                isCollapsed && "justify-center",
+                  ? cn(
+                      // Active state with theme awareness
+                      "bg-[var(--color-primary-50)] text-[var(--color-primary-700)]",
+                      !isCollapsed && "border-r-2 border-[var(--color-primary-600)]",
+                      isCollapsed && "bg-[var(--color-primary-500)] text-white shadow-lg",
+                      isPlayMode &&
+                        "bg-gradient-to-r from-[var(--color-primary-500)]/10 to-[var(--color-accent-500)]/10 shadow-[0_0_10px_var(--color-mood-glow)]/20",
+                    )
+                  : cn(
+                      // Inactive state with theme awareness
+                      "text-[var(--color-text-primary)] hover:bg-[var(--color-surface-secondary)] hover:text-[var(--color-text-primary)]",
+                      isPlayMode &&
+                        "hover:shadow-[0_0_8px_var(--color-mood-glow)]/10",
+                      // Better hover state for collapsed
+                      isCollapsed && "hover:bg-[var(--color-primary-100)] hover:scale-105",
+                    ),
               )
             }
             title={isCollapsed ? item.name : undefined}
           >
-            <item.icon className="h-5 w-5 flex-shrink-0" />
-            {!isCollapsed && <span className="ml-3">{item.name}</span>}
+            <item.icon
+              className={cn(
+                "flex-shrink-0 transition-all duration-200",
+                isCollapsed ? "h-6 w-6" : "h-5 w-5", // Larger icons when collapsed
+                isPlayMode && "group-hover:scale-110",
+              )}
+            />
+            {!isCollapsed && (
+              <span className="ml-3 transition-all duration-200">
+                {item.name}
+              </span>
+            )}
+            
+            {/* Tooltip for collapsed state */}
+            {isCollapsed && (
+              <div className="absolute left-full ml-2 px-2 py-1 bg-[var(--color-surface-primary)] border border-[var(--color-border-primary)] rounded-md text-sm font-medium text-[var(--color-text-primary)] opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50 shadow-lg">
+                {item.name}
+              </div>
+            )}
           </NavLink>
         ))}
       </nav>
 
       {/* View Mode Toggle */}
       {!isCollapsed && (
-        <div className="px-4 py-3 border-t border-gray-200">
+        <div
+          className={cn(
+            "px-4 py-3 border-t transition-colors",
+            "border-[var(--color-border-primary)]",
+          )}
+        >
           <div className="mb-2">
-            <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+            <ThemeAwareText
+              className="text-xs font-medium uppercase tracking-wide"
+              color="secondary"
+            >
               View Mode
-            </span>
+            </ThemeAwareText>
           </div>
           <DualLensToggle
             viewMode={viewMode}
@@ -144,10 +243,19 @@ export function Sidebar() {
 
       {/* Collapsed View Mode Toggle */}
       {isCollapsed && (
-        <div className="px-2 py-3 border-t border-gray-200 flex justify-center">
+        <div
+          className={cn(
+            "px-2 py-3 border-t flex justify-center transition-colors",
+            "border-[var(--color-border-primary)]",
+          )}
+        >
           <button
             onClick={toggleViewMode}
-            className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+            className={cn(
+              "p-2 rounded-lg transition-all duration-200",
+              "text-[var(--color-text-primary)] hover:bg-[var(--color-surface-secondary)]",
+              isPlayMode && "hover:shadow-[0_0_8px_var(--color-mood-glow)]/20",
+            )}
             title={`Switch to ${viewMode === "play" ? "Clarity" : "Play"} Mode`}
           >
             {viewMode === "play" ? "🎮" : "📊"}
@@ -156,24 +264,73 @@ export function Sidebar() {
       )}
 
       {/* User section */}
-      <div className="p-4 border-t border-gray-200">
+      <div
+        className={cn(
+          "p-4 border-t transition-colors",
+          "border-[var(--color-border-primary)]",
+        )}
+      >
         <div
-          className={clsx(
+          className={cn(
             "flex items-center",
             isCollapsed ? "justify-center" : "space-x-3",
           )}
         >
-          <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-            <span className="text-sm font-medium text-gray-700">DU</span>
+          <div
+            className={cn(
+              "w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300",
+              "bg-[var(--color-surface-tertiary)]",
+              isPlayMode && "shadow-[0_0_10px_var(--color-mood-glow)]/30",
+            )}
+          >
+            <ThemeAwareText className="text-sm font-medium">DU</ThemeAwareText>
           </div>
           {!isCollapsed && (
             <div>
-              <p className="text-sm font-medium text-gray-900">Demo User</p>
-              <p className="text-xs text-gray-500">demo@example.com</p>
+              <ThemeAwareText className="text-sm font-medium">
+                Demo User
+              </ThemeAwareText>
+              <ThemeAwareText className="text-xs" color="secondary">
+                demo@example.com
+              </ThemeAwareText>
             </div>
           )}
         </div>
       </div>
+
+      {/* Floating expand button when collapsed */}
+      {isCollapsed && !isMobile && (
+        <button
+          onClick={() => setSidebarCollapsed(false)}
+          className={cn(
+            "fixed left-[4.5rem] top-4 z-[60] transition-all duration-300 group",
+            "bg-[var(--color-surface-primary)] border border-[var(--color-border-primary)]",
+            "rounded-full p-2 shadow-lg hover:shadow-xl",
+            "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]",
+            "hover:bg-[var(--color-surface-secondary)] hover:scale-110",
+            // Play mode cosmic effects
+            isPlayMode && "shadow-[0_0_20px_var(--color-mood-glow)]/40 hover:shadow-[0_0_30px_var(--color-mood-glow)]/60",
+            // Accessibility
+            "focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-500)] focus:ring-offset-2",
+          )}
+          title="Expand sidebar"
+          aria-label="Expand sidebar"
+        >
+          <svg
+            className="h-5 w-5 transition-transform duration-200 group-hover:scale-110"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </button>
+      )}
     </div>
   );
 }

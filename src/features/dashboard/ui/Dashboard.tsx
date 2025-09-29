@@ -2,11 +2,12 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { SplitText, FadeIn, TimeRangeSelector } from "../../../components/ui";
 import {
-  AccessibleHeading,
-  AccessibleText,
-  AccessibleButton,
-  AccessibleQuickAction,
-  AccessibleGrid,
+  ThemeAwareHeading,
+  ThemeAwareText,
+  ThemeAwareButton,
+  ThemeAwareQuickAction,
+  ThemeAwareGrid,
+  useTheme,
 } from "../../../core";
 import { EnhancedNetWorthWidget } from "../../networth/components/EnhancedNetWorthWidget";
 import { EnhancedAccountsWidget } from "../../accounts/components/EnhancedAccountsWidget";
@@ -22,6 +23,7 @@ import { useUIStore } from "../../../store/useUIStore";
 export default function Dashboard() {
   const [timeRange, setTimeRange] = useState<"7d" | "30d" | "90d">("30d");
   const { viewMode } = useUIStore();
+  const { isPlayMode } = useTheme();
 
   const handleQuickAction = (action: string, data?: unknown) => {
     console.log("Quick action:", action, data);
@@ -51,21 +53,23 @@ export default function Dashboard() {
   };
 
   return (
-    <div
-      className={`min-h-screen relative overflow-hidden ${
-        viewMode === "play"
-          ? "bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900"
-          : "bg-gradient-to-br from-slate-50 to-blue-50"
-      }`}
-    >
-      {viewMode === "play" && <UniverseBackground starCount={30} />}
+    <div className="min-h-screen relative overflow-hidden bg-[var(--color-bg-primary)]">
+      {isPlayMode && <UniverseBackground starCount={30} />}
 
       {/* Main Dashboard Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 relative z-10">
         {/* Hero Header */}
-        <FadeIn direction="down" delay={0.1} className="text-center py-12">
+        <FadeIn
+          direction="down"
+          delay={0.1}
+          className="text-center py-8 sm:py-12"
+        >
           <div className="mb-6">
-            <AccessibleHeading level="h1" className="mb-4" gradient>
+            <ThemeAwareHeading
+              level="h1"
+              className="mb-4 text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
+              gradient={isPlayMode}
+            >
               <motion.span
                 className="inline-block mr-4"
                 animate={{ rotate: [0, 360] }}
@@ -74,15 +78,15 @@ export default function Dashboard() {
                 👋
               </motion.span>
               <SplitText className="inline">Welcome back!</SplitText>
-            </AccessibleHeading>
-            <AccessibleText
+            </ThemeAwareHeading>
+            <ThemeAwareText
               color="secondary"
-              className="mb-8 max-w-2xl mx-auto"
+              className="mb-8 max-w-2xl mx-auto text-base sm:text-lg"
             >
-              {viewMode === "play"
+              {isPlayMode
                 ? "Navigate your financial universe — where every dollar has its place in your wealth galaxy!"
                 : "Here's your money in plain English. Everything you need to know, nothing you don't."}
-            </AccessibleText>
+            </ThemeAwareText>
           </div>
 
           {/* Big, Touch-Friendly Time Selector */}
@@ -110,24 +114,39 @@ export default function Dashboard() {
         {/* Recent Activity Section - Simple and Clear */}
         <div className="mb-12">
           <FadeIn direction="up" delay={0.6}>
-            <div className="bg-white rounded-2xl shadow-card border border-gray-200 overflow-hidden">
-              <div className="bg-gradient-to-r from-indigo-50 to-purple-50 px-8 py-6 border-b border-gray-200">
-                <div className="flex items-center justify-between">
+            <div className="bg-[var(--color-surface-primary)] rounded-[var(--border-radius)] shadow-lg border border-[var(--color-border-primary)] overflow-hidden">
+              <div
+                className={`px-6 sm:px-8 py-6 border-b border-[var(--color-border-primary)] ${
+                  isPlayMode
+                    ? "bg-gradient-to-r from-[var(--color-primary-500)]/10 to-[var(--color-accent-500)]/10"
+                    : "bg-[var(--color-surface-secondary)]"
+                }`}
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="flex items-center">
-                    <AccessibleHeading level="h2" className="mr-3">
+                    <ThemeAwareHeading
+                      level="h2"
+                      className="mr-3 text-xl sm:text-2xl"
+                      gradient={isPlayMode}
+                    >
                       📋 Recent Activity
-                    </AccessibleHeading>
+                    </ThemeAwareHeading>
                   </div>
-                  <AccessibleButton
-                    variant="primary"
+                  <ThemeAwareButton
+                    variant={isPlayMode ? "cosmic" : "primary"}
                     onClick={() => handleQuickAction("view_transactions")}
+                    glow={isPlayMode}
+                    className="text-sm sm:text-base"
                   >
                     See All Activity
-                  </AccessibleButton>
+                  </ThemeAwareButton>
                 </div>
-                <AccessibleText color="secondary" className="mt-2">
+                <ThemeAwareText
+                  color="secondary"
+                  className="mt-2 text-sm sm:text-base"
+                >
                   Your latest money movements
-                </AccessibleText>
+                </ThemeAwareText>
               </div>
 
               <div className="p-8">
@@ -146,21 +165,34 @@ export default function Dashboard() {
         {/* Quick Action Center - Big Buttons for Easy Access */}
         <div className="mb-12">
           <FadeIn direction="up" delay={0.8}>
-            <div className="bg-white rounded-2xl shadow-card border border-gray-200 overflow-hidden">
-              <div className="bg-gradient-to-r from-green-50 to-emerald-50 px-8 py-6 border-b border-gray-200">
+            <div className="bg-[var(--color-surface-primary)] rounded-[var(--border-radius)] shadow-lg border border-[var(--color-border-primary)] overflow-hidden">
+              <div
+                className={`px-6 sm:px-8 py-6 border-b border-[var(--color-border-primary)] ${
+                  isPlayMode
+                    ? "bg-gradient-to-r from-[var(--color-accent-500)]/10 to-[var(--color-primary-500)]/10"
+                    : "bg-[var(--color-surface-secondary)]"
+                }`}
+              >
                 <div className="text-center">
-                  <AccessibleHeading level="h2" className="mb-2">
+                  <ThemeAwareHeading
+                    level="h2"
+                    className="mb-2 text-xl sm:text-2xl"
+                    gradient={isPlayMode}
+                  >
                     ⚡ Quick Actions
-                  </AccessibleHeading>
-                  <AccessibleText color="secondary">
+                  </ThemeAwareHeading>
+                  <ThemeAwareText
+                    color="secondary"
+                    className="text-sm sm:text-base"
+                  >
                     Common things you might want to do
-                  </AccessibleText>
+                  </ThemeAwareText>
                 </div>
               </div>
 
-              <div className="p-8">
-                <AccessibleGrid cols={4} gap="md">
-                  <AccessibleQuickAction
+              <div className="p-6 sm:p-8">
+                <ThemeAwareGrid cols={4} gap="md">
+                  <ThemeAwareQuickAction
                     icon="➕"
                     title="Add Transaction"
                     description="Record a purchase or payment"
@@ -168,7 +200,7 @@ export default function Dashboard() {
                     onClick={() => handleQuickAction("add_transaction")}
                   />
 
-                  <AccessibleQuickAction
+                  <ThemeAwareQuickAction
                     icon="🔗"
                     title="Link Account"
                     description="Connect a new bank account"
@@ -176,7 +208,7 @@ export default function Dashboard() {
                     onClick={() => handleQuickAction("link_account")}
                   />
 
-                  <AccessibleQuickAction
+                  <ThemeAwareQuickAction
                     icon="📄"
                     title="Import Data"
                     description="Upload transactions from file"
@@ -184,14 +216,14 @@ export default function Dashboard() {
                     onClick={() => handleQuickAction("import_csv")}
                   />
 
-                  <AccessibleQuickAction
+                  <ThemeAwareQuickAction
                     icon="📊"
                     title="View Reports"
                     description="See spending patterns"
                     color="orange"
                     onClick={() => handleQuickAction("view_analytics")}
                   />
-                </AccessibleGrid>
+                </ThemeAwareGrid>
               </div>
             </div>
           </FadeIn>
@@ -215,20 +247,24 @@ export default function Dashboard() {
             }`}
           >
             <div className="text-4xl mb-4">🎉</div>
-            <AccessibleHeading level="h3" className="mb-4">
+            <ThemeAwareHeading
+              level="h3"
+              className="mb-4 text-xl sm:text-2xl"
+              gradient={isPlayMode}
+            >
               You're doing great with your money!
-            </AccessibleHeading>
-            <AccessibleText
+            </ThemeAwareHeading>
+            <ThemeAwareText
               color="secondary"
-              className="mb-6 max-w-2xl mx-auto"
+              className="mb-6 max-w-2xl mx-auto text-sm sm:text-base"
             >
               Keep track of your finances, and watch your wealth grow over time.
               Remember, every dollar saved is a dollar earned!
-            </AccessibleText>
-            <AccessibleText variant="small" color="secondary">
+            </ThemeAwareText>
+            <ThemeAwareText className="text-xs sm:text-sm" color="secondary">
               💡 Tip: Check your dashboard regularly to stay on top of your
               financial health
-            </AccessibleText>
+            </ThemeAwareText>
           </div>
         </FadeIn>
       </div>

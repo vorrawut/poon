@@ -10,7 +10,7 @@
  * - Smooth transitions between modes
  */
 
-import React, { createContext, useContext, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useUIStore } from "../../store/useUIStore";
 import {
   getThemeColors,
@@ -29,32 +29,8 @@ import type {
   AdaptiveMood,
 } from "../../styles/tokens/theme";
 
-interface ThemeContextValue extends ThemeConfig {
-  // Theme switching functions
-  toggleTheme: () => void;
-  toggleViewMode: () => void;
-  setAccessibilityMode: (mode: AccessibilityMode) => void;
-  setAdaptiveMood: (mood: AdaptiveMood) => void;
+import { ThemeContext, type ThemeContextValue } from "../../contexts/ThemeContext";
 
-  // Utility functions
-  getColor: (path: string) => string;
-  getSpacing: (size: keyof typeof spacing.accessibility.standard) => string;
-  getFontSize: (
-    type: keyof typeof typography.fontSize.accessibility.standard,
-  ) => string;
-
-  // CSS custom properties for dynamic theming
-  cssVariables: Record<string, string>;
-
-  // Theme state
-  isPlayMode: boolean;
-  isClarityMode: boolean;
-  isDarkMode: boolean;
-  isLightMode: boolean;
-  isSystemTheme: boolean;
-}
-
-const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 interface ThemeProviderProps {
   children: React.ReactNode;
@@ -336,11 +312,3 @@ export function ThemeProvider({
   );
 }
 
-// Hook to use theme context
-export function useTheme(): ThemeContextValue {
-  const context = useContext(ThemeContext);
-  if (context === undefined) {
-    throw new Error("useTheme must be used within a ThemeProvider");
-  }
-  return context;
-}

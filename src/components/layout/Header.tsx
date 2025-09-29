@@ -1,12 +1,14 @@
 import { useLocation } from "react-router-dom";
 import { useUIStore } from "../../store/useUIStore";
-import { Button } from "../ui/Button";
 import {
-  AccessibleHeading,
-  AccessibleText,
-  AccessibleButton,
+  ThemeAwareHeading,
+  ThemeAwareText,
+  ThemeAwareButton,
+  useTheme,
 } from "../../core";
+import { ThemeToggle } from "../ui/ThemeToggle";
 import { Bars3Icon, PlusIcon, BellIcon } from "@heroicons/react/24/outline";
+import { cn } from "../../libs/utils";
 
 const pageTitle: Record<string, string> = {
   "/": "Universe",
@@ -25,79 +27,87 @@ const pageTitle: Record<string, string> = {
 export function Header() {
   const location = useLocation();
   const { isMobile, toggleSidebar, openModal } = useUIStore();
+  const { isPlayMode, themeMode } = useTheme();
 
   const title = pageTitle[location.pathname] || "Universe";
 
   const handleQuickAction = () => {
-    // Quick add transaction
     openModal("addTransaction");
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 px-6 py-4">
+    <header
+      className={cn(
+        "border-b px-4 sm:px-6 py-4 transition-all duration-300 backdrop-blur-sm",
+        // Theme-aware background and borders
+        "bg-[var(--color-surface-primary)]/95 border-[var(--color-border-primary)]",
+        // Play mode cosmic effects
+        isPlayMode && "shadow-[0_0_20px_var(--color-mood-glow)]/10",
+        isPlayMode &&
+          themeMode === "dark" &&
+          "bg-slate-900/95 border-purple-500/20",
+        isPlayMode && themeMode === "light" && "bg-white/95 border-blue-200/50",
+      )}
+    >
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-3 sm:space-x-4">
           {/* Mobile menu button */}
           {isMobile && (
-            <AccessibleButton
+            <ThemeAwareButton
               variant="ghost"
               size="sm"
               onClick={toggleSidebar}
               className="p-2"
             >
-              <Bars3Icon className="h-6 w-6" />
-            </AccessibleButton>
+              <Bars3Icon className="h-5 w-5 sm:h-6 sm:w-6" />
+            </ThemeAwareButton>
           )}
 
           {/* Page title */}
-          <div>
-            <AccessibleHeading level="h1">{title}</AccessibleHeading>
-            <AccessibleText variant="caption" color="secondary">
+          <div className="min-w-0 flex-1">
+            <ThemeAwareHeading
+              level="h1"
+              className="text-lg sm:text-xl md:text-2xl font-bold truncate"
+              gradient={isPlayMode}
+            >
+              {title}
+            </ThemeAwareHeading>
+            <ThemeAwareText
+              className="text-xs sm:text-sm mt-0.5 hidden sm:block"
+              color="secondary"
+            >
               {new Date().toLocaleDateString("en-US", {
                 weekday: "long",
                 year: "numeric",
                 month: "long",
                 day: "numeric",
               })}
-            </AccessibleText>
+            </ThemeAwareText>
           </div>
         </div>
 
         {/* Actions */}
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2 sm:space-x-3">
           {/* Quick add button */}
-          <Button
-            variant="primary"
+          <ThemeAwareButton
+            variant={isPlayMode ? "cosmic" : "primary"}
             size="sm"
             onClick={handleQuickAction}
-            className="flex items-center space-x-2"
+            className="flex items-center space-x-1 sm:space-x-2"
+            glow={isPlayMode}
           >
             <PlusIcon className="h-4 w-4" />
-            <span className="hidden sm:inline">Add Transaction</span>
-          </Button>
+            <span className="hidden sm:inline text-sm">Add Transaction</span>
+          </ThemeAwareButton>
 
           {/* Notifications */}
-          <button className="p-2 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 relative">
-            <BellIcon className="h-6 w-6" />
-            <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"></span>
-          </button>
+          <ThemeAwareButton variant="ghost" size="sm" className="relative p-2">
+            <BellIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+            <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full animate-pulse"></span>
+          </ThemeAwareButton>
 
           {/* Theme toggle */}
-          <button className="p-2 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100">
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-              />
-            </svg>
-          </button>
+          <ThemeToggle className="h-10 w-10 sm:h-12 sm:w-12" />
         </div>
       </div>
     </header>
