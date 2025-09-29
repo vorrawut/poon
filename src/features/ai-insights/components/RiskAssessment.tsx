@@ -574,41 +574,4 @@ export function RiskAssessment({
   );
 }
 
-// Utility functions for risk assessment
-export const calculateFinancialHealthScore = (
-  monthlyIncome: number,
-  monthlyExpenses: number,
-  emergencyFund: number,
-  totalDebt: number,
-): FinancialHealthScore => {
-  const emergencyScore = Math.min(
-    100,
-    (emergencyFund / (monthlyExpenses * 6)) * 100,
-  );
-  const debtScore = Math.max(0, 100 - (totalDebt / (monthlyIncome * 12)) * 100);
-  const savingsRate = ((monthlyIncome - monthlyExpenses) / monthlyIncome) * 100;
-  const savingsScore = Math.min(100, Math.max(0, savingsRate * 5));
-
-  const overall =
-    (emergencyScore * 0.3 + debtScore * 0.25 + savingsScore * 0.25 + 70) / 4;
-
-  return {
-    overall: Math.round(overall),
-    categories: {
-      emergency: Math.round(emergencyScore),
-      debt: Math.round(debtScore),
-      savings: Math.round(savingsScore),
-      investment: 70, // Mock value
-      insurance: 65, // Mock value
-      income: 80, // Mock value
-    },
-    trend: overall > 70 ? "improving" : overall < 50 ? "declining" : "stable",
-    monthlyChange: Math.round((Math.random() - 0.5) * 10),
-  };
-};
-
-export const identifyFinancialRisks = (): FinancialRisk[] => {
-  // This would be replaced with actual AI/ML risk analysis
-  // For now, return mock risks based on financial data
-  return [];
-};
+// Utility functions moved to ../utils/riskAssessmentUtils.ts to fix React Fast Refresh warnings

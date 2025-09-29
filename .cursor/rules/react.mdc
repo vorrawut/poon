@@ -1,4 +1,1165 @@
+---
+alwaysApply: true
+---
+
 # React Development Rules & Project Structure Guide
+
+## 🏗️ **MANDATORY PROJECT STRUCTURE**
+
+### **1. Feature-Based Architecture (REQUIRED)**
+```
+src/
+├── app/                    # App-level bootstrap, routes, providers
+│   ├── App.tsx
+│   ├── routes.tsx
+│   └── providers/          # ThemeProvider, AuthProvider, i18n
+├── features/              # Feature-based domains (MAIN ORGANIZATION)
+│   ├── dashboard/
+│   │   ├── ui/           # Pages and route containers
+│   │   ├── components/   # Feature-specific components
+│   │   ├── hooks/        # Feature-specific hooks
+│   │   ├── services/     # Feature API clients
+│   │   ├── types/        # Feature types
+│   │   └── index.ts      # Feature exports
+├── components/           # Global atomic components (Button, Input)
+├── widgets/             # Composite components (Charts, Cards)
+├── services/            # Global API clients and adapters
+├── styles/              # Design tokens, themes, global CSS
+│   ├── tokens/          # Color, spacing, typography tokens
+│   └── index.css
+├── libs/                # Pure utilities (no React dependencies)
+│   └── i18n/            # Internationalization system
+├── hooks/               # Cross-feature hooks
+├── types/               # Global app types (use sparingly)
+└── tests/               # Common test fixtures
+```
+
+### **2. Mock Data Organization (CRITICAL RULE)**
+```
+mockData/                 # ALL mock data MUST be here, NEVER in /src
+├── common/              # Shared configurations, accounts, transactions
+│   └── data.ts
+└── features/           # Feature-specific mock data
+    ├── accounts/
+    │   ├── accountsData.ts
+    │   └── index.ts
+    ├── dashboard/
+    │   ├── dashboardData.ts
+    │   └── index.ts
+    ├── future/
+    │   ├── futureData.ts
+    │   └── index.ts
+    ├── portfolio/
+    │   ├── portfolioData.ts
+    │   ├── portfolioDetailData.ts
+    │   ├── portfolioCategoryData.ts
+    │   └── index.ts
+    ├── spending/
+    │   ├── moneyFlowData.ts
+    │   ├── spendingData.ts
+    │   └── index.ts
+    └── widgets/
+        ├── widgetsData.ts
+        ├── gamificationData.ts
+        ├── insightsData.ts
+        ├── categoryData.ts
+        └── index.ts
+```
+
+## 🚨 **CRITICAL BUILD & QUALITY RULES (MANDATORY)**
+
+### **Build Verification Rule**
+- **ALWAYS run `npm run build` after any code changes**
+- **FIX ALL TypeScript errors immediately** - Zero tolerance for build failures
+- **Test the build before committing** - Ensure production readiness
+- **Update this file with any new build requirements**
+
+### **Error Resolution Priority**
+1. **TypeScript compilation errors** - Fix immediately
+2. **Lint warnings** - Address systematically  
+3. **Test failures** - Resolve before deployment
+4. **Runtime errors** - Debug and fix promptly
+
+**🚨 CRITICAL MOCK DATA RULES:**
+- **NO mock data allowed in `/src` directory**
+- **ALL mock data MUST be in `/mockData` organized by features**
+- **Use centralized imports from `/mockData` only**
+- **Each feature has its own mock data folder**
+- **No local mock data definitions in components**
+- **No `const mockXxx = [...]` in `/src` files**
+- **No `generateXxxData()` functions in `/src` files**
+- **No `initialXxx`, `dummyXxx`, `sampleXxx` data in `/src`**
+
+## 📦 **COMPONENT TAXONOMY**
+
+### **Atoms (components/)**
+- **Purpose**: Tiny presentational components (Button, Icon, Typography)
+- **Rules**: No side effects, highly reusable
+- **Tests**: Unit + snapshot
+- **Example**: `<Button>`, `<Input>`, `<Icon>`
+
+### **Molecules (components/widgets/)**
+- **Purpose**: Small compositions (InputWithLabel, SearchBox)
+- **Rules**: Combine atoms, minimal logic
+- **Tests**: Unit + integration
+
+### **Widgets (widgets/)**
+- **Purpose**: Complex composites with logic (Charts, DataTables)
+- **Rules**: Business logic, API interactions, state management
+- **Tests**: Integration tests
+
+### **Feature UI (features/*/ui)**
+- **Purpose**: Pages, route containers, feature orchestration
+- **Rules**: Wire services/state together, handle routing
+- **Tests**: Integration & E2E
+
+## 🎯 **IMPORT/EXPORT RULES**
+
+### **Feature Exports**
+```typescript
+// features/portfolio/index.ts
+export { Portfolio } from "./ui/Portfolio";
+export { PortfolioDetail } from "./ui/PortfolioDetail";
+export { usePortfolio } from "./hooks/usePortfolio";
+export type { PortfolioAsset } from "./types";
+```
+
+### **Mock Data Imports**
+```typescript
+// ✅ CORRECT - Import from centralized mockData
+import { mockPortfolioAssets } from "../../../../mockData/features/portfolio";
+
+// ❌ WRONG - Local mock data in components
+const mockData = [...]; // NEVER DO THIS IN /src
+```
+
+### **Import Patterns**
+- **Within features**: Use relative imports
+- **Cross-feature**: Use absolute imports from feature index
+- **Mock data**: Always from `/mockData` structure
+
+## 🧪 **TESTING STRATEGY**
+
+### **Unit Tests (Vitest + RTL)**
+- **Location**: Co-locate with components
+- **Pattern**: `Component.test.tsx` next to `Component.tsx`
+- **Focus**: Component behavior, props, rendering
+
+### **Integration Tests**
+- **Purpose**: Multiple components together
+- **Tools**: RTL + Vitest + MSW for API mocking
+- **Focus**: Feature workflows, user interactions
+
+### **E2E Tests (Playwright)**
+- **Location**: `/e2e` directory
+- **Focus**: Critical user flows, auth, payments
+- **Strategy**: Minimal but high-value coverage
+
+## 🎨 **STYLING PATTERNS**
+
+### **Tailwind Usage**
+```typescript
+// ✅ GOOD - Semantic wrapper classes
+.btn-primary { @apply px-4 py-2 rounded-md font-medium bg-blue-500; }
+
+// ✅ GOOD - Design tokens
+const colors = {
+  primary: "#6366F1",
+  secondary: "#8B5CF6",
+};
+
+// ❌ AVOID - Long utility chains in JSX
+<div className="px-4 py-2 bg-blue-500 text-white rounded-md font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+```
+
+### **Component Styling**
+- Use semantic CSS classes for repeated patterns
+- Keep design tokens in `/src/styles/tokens/`
+- Prefer component-level styling over global styles
+
+## 🔧 **TYPESCRIPT RULES**
+
+### **Type Organization**
+```typescript
+// ✅ GOOD - Feature-specific types
+// features/portfolio/types/index.ts
+export interface PortfolioAsset {
+  id: string;
+  name: string;
+  value: number;
+}
+
+// ✅ GOOD - String unions over enums
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost';
+
+// ❌ AVOID - Runtime enums (use const assertions)
+enum ButtonVariant { Primary, Secondary } // Avoid
+```
+
+### **Type Safety**
+- Keep types close to domain (in feature folders)
+- Export common types from `types/` sparingly
+- Use string unions over enums for cross-bundle safety
+
+## 🗂️ **STATE MANAGEMENT**
+
+### **Global State**
+- **Server State**: React Query (TanStack Query)
+- **UI State**: Zustand or React Context
+- **Location**: Co-locate with features
+
+### **State Patterns**
+```typescript
+// ✅ GOOD - Feature-specific store
+// features/portfolio/hooks/usePortfolio.ts
+export const usePortfolio = () => {
+  // Feature-specific state logic
+};
+
+// ✅ GOOD - Query keys with features
+// features/portfolio/hooks/usePortfolioQuery.ts
+const portfolioKeys = {
+  all: ['portfolio'] as const,
+  lists: () => [...portfolioKeys.all, 'list'] as const,
+};
+```
+
+## 📁 **FILE NAMING CONVENTIONS**
+
+### **Components**
+- **React Components**: PascalCase (`PortfolioCard.tsx`)
+- **Utilities**: camelCase (`formatCurrency.ts`)
+- **Types**: PascalCase (`PortfolioTypes.ts`)
+- **Tests**: Match component name (`PortfolioCard.test.tsx`)
+
+### **Features**
+- **Feature folders**: lowercase with hyphens (`money-flow/`)
+- **Feature exports**: PascalCase (`MoneyFlow.tsx`)
+- **Services**: camelCase (`portfolioService.ts`)
+
+## 🚀 **DEVELOPMENT WORKFLOW**
+
+### **Adding New Features**
+1. Create feature folder: `src/features/feature-name/`
+2. Add subfolders: `ui/`, `components/`, `hooks/`, `services/`, `types/`
+3. Create mock data: `mockData/features/feature-name/`
+4. Export from feature index: `src/features/feature-name/index.ts`
+5. Add tests co-located with components
+6. Update routes in `src/app/routes.tsx`
+
+### **Mock Data Workflow**
+1. **NEVER** create mock data in `/src`
+2. Add to appropriate `/mockData/features/[feature]/`
+3. Export from feature mock data index
+4. Import in components from centralized location
+5. Update main `/mockData/index.ts` if needed
+
+## 🔍 **CODE QUALITY RULES**
+
+### **Component Rules**
+```typescript
+// ✅ GOOD - Clean component structure
+export function PortfolioCard({ asset }: PortfolioCardProps) {
+  const { data, isLoading } = usePortfolioQuery();
+  
+  if (isLoading) return <Skeleton />;
+  
+  return (
+    <Card>
+      <CardHeader>{asset.name}</CardHeader>
+      <CardContent>{formatCurrency(asset.value)}</CardContent>
+    </Card>
+  );
+}
+
+// ❌ AVOID - Inline styles, complex logic in render
+export function BadComponent() {
+  return (
+    <div style={{ padding: '16px' }}> {/* Use Tailwind/CSS classes */}
+      {/* Complex logic here */}
+    </div>
+  );
+}
+```
+
+### **Performance Rules**
+- Use `React.memo()` for expensive components
+- Implement proper loading states
+- Use `useMemo()` and `useCallback()` judiciously
+- Lazy load routes and heavy components
+
+### **Accessibility Rules**
+- Always include proper ARIA labels
+- Ensure keyboard navigation works
+- Use semantic HTML elements
+- Test with screen readers
+
+## 📋 **MANDATORY CHECKLIST**
+
+### **Before Creating Components**
+- [ ] Is this an atom, molecule, widget, or feature UI?
+- [ ] Where should it live in the component taxonomy?
+- [ ] Does it need mock data? (Add to `/mockData`)
+- [ ] What tests does it need?
+
+### **Before Adding Mock Data**
+- [ ] Is it in `/mockData` (NOT `/src`)?
+- [ ] Is it organized by feature?
+- [ ] Is it exported from feature index?
+- [ ] Are imports updated to use centralized location?
+
+### **Before Committing**
+- [ ] All tests pass (`npm test`)
+- [ ] Linting passes (`npm run lint`)
+- [ ] TypeScript compiles (`npm run build`)
+- [ ] No mock data in `/src` directory
+- [ ] Components follow taxonomy rules
+- [ ] Proper imports/exports structure
+
+## 🎯 **PERFORMANCE & UX**
+
+### **Loading States**
+- Always show skeleton loaders
+- Implement proper error boundaries
+- Use Suspense for code splitting
+- Handle offline states gracefully
+
+### **User Experience**
+- Implement optimistic updates
+- Provide immediate feedback
+- Use animations for state transitions
+- Ensure responsive design works on all devices
+
+## 🔒 **SECURITY & BEST PRACTICES**
+
+### **Data Handling**
+- Sanitize user inputs
+- Validate props with TypeScript
+- Handle API errors gracefully
+- Never expose sensitive data in client code
+
+### **Code Organization**
+- Keep components focused and single-purpose
+- Extract custom hooks for reusable logic
+- Use proper error boundaries
+- Implement proper logging for debugging
+
+---
+
+**🚨 CRITICAL REMINDERS:**
+1. **NO MOCK DATA IN `/src`** - Always use `/mockData` structure
+2. **Feature-based organization** - Group by domain, not file type
+3. **Co-locate tests** - Keep tests next to components
+4. **Export through index files** - Clean public APIs
+5. **Follow component taxonomy** - Atoms → Molecules → Widgets → Features
+6. **NO COMPONENT OVERLAPPING** - Only modals, popups, alerts, menus allowed to overlap
+7. **MOBILE-FIRST RESPONSIVE** - Always design for mobile first, then enhance for larger screens
+8. **PROPER Z-INDEX HIERARCHY** - Follow the mandatory z-index scale for all fixed elements
+
+This structure ensures maintainability, testability, and scalability for long-term development success.
+
+## 📱 **RESPONSIVE DESIGN RULES (MANDATORY)**
+
+### **Breakpoint Strategy**
+```typescript
+// ✅ REQUIRED - Use Tailwind's responsive breakpoints consistently
+sm: 640px   // Small devices (phones in landscape)
+md: 768px   // Medium devices (tablets)  
+lg: 1024px  // Large devices (laptops)
+xl: 1280px  // Extra large devices (desktops)
+2xl: 1536px // 2X large devices (large desktops)
+```
+
+### **Grid & Layout Rules**
+```typescript
+// ✅ GOOD - Progressive grid enhancement
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+
+// ✅ GOOD - Responsive spacing
+<div className="px-2 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+
+// ✅ GOOD - Responsive text sizing
+<h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl">
+```
+
+### **Component Overlap Prevention**
+**🚨 CRITICAL RULES:**
+- **NO component overlapping allowed** (except modals, popups, notifications, alerts, menus)
+- **Fixed positioned elements MUST have proper z-index hierarchy**
+- **Bottom spacing MUST account for fixed elements** (AI Co-Pilot, FABs, etc.)
+- **Mobile-first responsive design is MANDATORY**
+
+### **Z-Index Hierarchy (MANDATORY)**
+```typescript
+// ✅ REQUIRED - Consistent z-index scale
+z-0     // Base layer (default)
+z-10    // Content layer (cards, widgets)
+z-20    // Sticky headers, navigation
+z-30    // Dropdowns, tooltips
+z-40    // Overlays, sheets
+z-50    // Modals, dialogs, fixed elements (AI Co-Pilot, toggles)
+z-[60]  // Modal content (inside modals)
+z-[70]  // Toast notifications
+z-[80]  // Critical alerts
+z-[90]  // Debug/dev tools
+z-[100] // Absolute top (emergency)
+```
+
+### **Fixed Element Rules**
+```typescript
+// ✅ GOOD - Responsive fixed positioning
+className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50"
+
+// ✅ GOOD - Account for fixed elements in main content
+className="pb-20 sm:pb-24" // Extra bottom padding for fixed AI Co-Pilot
+
+// ✅ GOOD - Responsive modal sizing
+className="fixed inset-x-2 sm:inset-x-4 lg:inset-x-8 top-1/2 max-w-4xl mx-auto"
+```
+
+### **Mobile-First Responsive Patterns**
+```typescript
+// ✅ GOOD - Mobile-first approach
+<div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+
+// ✅ GOOD - Progressive enhancement
+<div className="w-80 sm:w-96 max-w-[calc(100vw-2rem)]">
+
+// ✅ GOOD - Responsive visibility
+<span className="hidden sm:inline">Desktop Text</span>
+<span className="sm:hidden">Mobile Text</span>
+```
+
+### **Touch & Interaction Rules**
+- **Minimum touch target: 44px × 44px** (iOS/Android guidelines)
+- **Hover states ONLY for non-touch devices** (use `hover:` prefix)
+- **Focus states MUST be visible** for keyboard navigation
+- **Gestures should be intuitive** (swipe, pinch, tap)
+
+### **Performance Considerations**
+```typescript
+// ✅ GOOD - Responsive images
+<img 
+  src="image.jpg" 
+  srcSet="image-sm.jpg 640w, image-md.jpg 768w, image-lg.jpg 1024w"
+  sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+/>
+
+// ✅ GOOD - Conditional rendering for mobile
+{isMobile ? <MobileComponent /> : <DesktopComponent />}
+```
+
+## ♿ **ACCESSIBILITY RULES (MANDATORY)**
+
+### **Global Accessibility Management**
+- **ALWAYS use global accessibility mode** from `useUIStore`
+- **NO local accessibility state** in individual components
+- **Settings-based control**: Accessibility mode is managed through Settings page only
+- **Persistent preferences**: User accessibility choices are saved globally
+
+### **Accessibility Modes**
+```typescript
+// ✅ REQUIRED - Three accessibility modes
+type AccessibilityMode = "standard" | "elder" | "youth";
+
+// Elder Mode: Larger fonts, high contrast, slower animations, bigger touch targets
+// Youth Mode: Compact design, vibrant colors, fast animations
+// Standard Mode: Balanced design for general use
+```
+
+### **Accessibility Utilities (MANDATORY)**
+```typescript
+// ✅ GOOD - Use accessibility utilities
+import { useAccessibility, useAccessibilityText } from "../hooks/useAccessibility";
+
+export function MyComponent() {
+  const { getClasses, colors, isElderMode } = useAccessibility();
+  const headingClasses = useAccessibilityText("heading", "h1");
+  
+  return (
+    <div className={getClasses({ includeSpacing: true, includeColors: true })}>
+      <h1 className={headingClasses}>Accessible Heading</h1>
+    </div>
+  );
+}
+
+// ❌ BAD - Hardcoded accessibility styles
+<h1 className="text-3xl font-bold">Non-accessible heading</h1>
+```
+
+**🚨 CRITICAL ACCESSIBILITY REMINDERS:**
+1. **GLOBAL ACCESSIBILITY STATE** - Always use UIStore, never local state
+2. **SETTINGS-BASED CONTROL** - Accessibility managed through Settings page only
+3. **RESPONSIVE FONT SIZES** - Different sizes for elder/youth/standard modes
+4. **HIGH CONTRAST SUPPORT** - Elder mode requires high contrast colors
+5. **TOUCH TARGET COMPLIANCE** - Minimum 44px (48px for elder mode)
+6. **REDUCED MOTION SUPPORT** - Elder mode should have slower/reduced animations
+7. **LIVE PREVIEW** - Settings page must show real-time preview
+8. **PERSISTENT PREFERENCES** - User choices saved and restored
+9. **FRAMER MOTION COMPATIBILITY** - Use cubic-bezier easing values, not strings
+
+### **Framer Motion Easing (MANDATORY)**
+```typescript
+// ✅ GOOD - Proper cubic-bezier values for Framer Motion
+const { transition } = useAccessibilityMotion();
+// Returns: { duration: 0.5, ease: [0.42, 0, 0.58, 1] }
+
+<motion.div transition={transition}>
+
+// ❌ BAD - String easing causes runtime errors
+<motion.div transition={{ ease: "ease-in-out" }}>
+```
+
+This ensures the application is accessible to users of all ages and abilities.
+
+## 🎨 **CORE DESIGN SYSTEM (MANDATORY)**
+
+### **Core Components Location**
+```
+src/core/
+├── components/
+│   ├── AccessibleText.tsx      # Text components with accessibility
+│   ├── AccessibleButton.tsx    # Button components with accessibility
+│   ├── AccessibleCard.tsx      # Layout & card components
+│   └── index.ts               # Core components exports
+├── index.ts                   # Main core exports
+```
+
+### **Import Strategy (MANDATORY)**
+```typescript
+// ✅ GOOD - Import from core for all new components
+import { 
+  AccessibleHeading, 
+  AccessibleText, 
+  AccessibleButton,
+  AccessibleCard 
+} from "../../core";
+
+// ✅ ACCEPTABLE - Import from ui (re-exports core)
+import { AccessibleHeading } from "../../components/ui";
+
+// ❌ BAD - Never hardcode accessibility styles
+<h1 className="text-3xl font-bold">Hardcoded heading</h1>
+```
+
+### **Text Components (MANDATORY)**
+```typescript
+// ✅ REQUIRED - Use AccessibleHeading for all headings
+<AccessibleHeading level="h1" gradient>Main Title</AccessibleHeading>
+<AccessibleHeading level="h2">Section Title</AccessibleHeading>
+<AccessibleHeading level="h3" color="accent">Subsection</AccessibleHeading>
+
+// ✅ REQUIRED - Use AccessibleText for all text
+<AccessibleText>Body text that adapts to accessibility mode</AccessibleText>
+<AccessibleText color="secondary">Secondary text</AccessibleText>
+<AccessibleText variant="caption">Small caption text</AccessibleText>
+
+// ✅ REQUIRED - Use specialized text components
+<AccessibleLabel required>Form Label</AccessibleLabel>
+<AccessibleDescription>Help text</AccessibleDescription>
+<AccessibleError>Error message</AccessibleError>
+<AccessibleSuccess>Success message</AccessibleSuccess>
+
+// ❌ BAD - Never use hardcoded text styles
+<p className="text-lg text-gray-600">Hardcoded text</p>
+```
+
+### **Button Components (MANDATORY)**
+```typescript
+// ✅ REQUIRED - Use AccessibleButton for all buttons
+<AccessibleButton variant="primary" size="lg">
+  Primary Action
+</AccessibleButton>
+
+<AccessibleButton variant="secondary" disabled loading>
+  Secondary Action
+</AccessibleButton>
+
+<AccessibleIconButton aria-label="Close" variant="ghost">
+  <XIcon />
+</AccessibleIconButton>
+
+// ✅ REQUIRED - Use AccessibleQuickAction for dashboard actions
+<AccessibleQuickAction
+  icon="➕"
+  title="Add Transaction"
+  description="Record a purchase or payment"
+  color="green"
+  onClick={handleAction}
+/>
+
+// ❌ BAD - Never use hardcoded button styles
+<button className="px-4 py-2 bg-blue-500 text-white">Hardcoded</button>
+```
+
+### **Layout Components (MANDATORY)**
+```typescript
+// ✅ REQUIRED - Use AccessibleCard for all cards
+<AccessibleCard variant="elevated" padding="lg" hover>
+  Card content with proper accessibility
+</AccessibleCard>
+
+// ✅ REQUIRED - Use AccessibleSection for page sections
+<AccessibleSection 
+  title="Section Title" 
+  description="Section description"
+>
+  Section content
+</AccessibleSection>
+
+// ✅ REQUIRED - Use AccessibleGrid for responsive grids
+<AccessibleGrid cols={4} gap="md">
+  <div>Grid item 1</div>
+  <div>Grid item 2</div>
+</AccessibleGrid>
+
+// ✅ REQUIRED - Use AccessibleFlex for flex layouts
+<AccessibleFlex direction="row" align="center" justify="between" gap="lg">
+  <div>Flex item 1</div>
+  <div>Flex item 2</div>
+</AccessibleFlex>
+
+// ❌ BAD - Never use hardcoded layout styles
+<div className="grid grid-cols-4 gap-6">Hardcoded grid</div>
+```
+
+### **Stats & Data Display (MANDATORY)**
+```typescript
+// ✅ REQUIRED - Use AccessibleStatsCard for metrics
+<AccessibleStatsCard
+  title="Total Balance"
+  value="$12,345"
+  subtitle="Available funds"
+  icon="💰"
+  trend="up"
+  trendValue="+5.2%"
+/>
+
+// ✅ GOOD - Combine with other core components
+<AccessibleCard>
+  <AccessibleHeading level="h2">Portfolio Performance</AccessibleHeading>
+  <AccessibleGrid cols={3}>
+    <AccessibleStatsCard title="Assets" value="15" />
+    <AccessibleStatsCard title="Growth" value="+12%" trend="up" />
+    <AccessibleStatsCard title="Risk" value="Medium" />
+  </AccessibleGrid>
+</AccessibleCard>
+```
+
+### **Component Development Rules (MANDATORY)**
+
+#### **For New Components:**
+```typescript
+// ✅ REQUIRED - Always import core components
+import { AccessibleHeading, AccessibleText, AccessibleButton } from "../../core";
+
+export function MyNewComponent() {
+  return (
+    <AccessibleCard>
+      <AccessibleHeading level="h2">Component Title</AccessibleHeading>
+      <AccessibleText color="secondary">
+        Description text that adapts to accessibility modes
+      </AccessibleText>
+      <AccessibleButton variant="primary">
+        Action Button
+      </AccessibleButton>
+    </AccessibleCard>
+  );
+}
+
+// ❌ BAD - Never hardcode styles in new components
+export function BadComponent() {
+  return (
+    <div className="p-6 bg-white rounded-lg">
+      <h2 className="text-2xl font-bold text-gray-900">Title</h2>
+      <p className="text-gray-600">Description</p>
+      <button className="px-4 py-2 bg-blue-500 text-white rounded">
+        Button
+      </button>
+    </div>
+  );
+}
+```
+
+#### **For Widget Components:**
+```typescript
+// ✅ REQUIRED - Widgets must use core components
+export function MyWidget({ data }: MyWidgetProps) {
+  return (
+    <AccessibleCard variant="elevated">
+      <AccessibleHeading level="h3">{data.title}</AccessibleHeading>
+      
+      <AccessibleGrid cols={2} gap="md">
+        {data.items.map(item => (
+          <AccessibleStatsCard
+            key={item.id}
+            title={item.label}
+            value={item.value}
+            trend={item.trend}
+          />
+        ))}
+      </AccessibleGrid>
+      
+      <AccessibleButton 
+        variant="outline" 
+        onClick={data.onViewMore}
+        fullWidth
+      >
+        View Details
+      </AccessibleButton>
+    </AccessibleCard>
+  );
+}
+```
+
+### **Migration Strategy (MANDATORY)**
+```typescript
+// ✅ STEP 1 - Replace hardcoded headings
+// Before:
+<h1 className="text-4xl font-bold text-gray-900">Title</h1>
+// After:
+<AccessibleHeading level="h1">Title</AccessibleHeading>
+
+// ✅ STEP 2 - Replace hardcoded text
+// Before:
+<p className="text-lg text-gray-600">Description</p>
+// After:
+<AccessibleText color="secondary">Description</AccessibleText>
+
+// ✅ STEP 3 - Replace hardcoded buttons
+// Before:
+<button className="px-4 py-2 bg-blue-500 text-white rounded">Click</button>
+// After:
+<AccessibleButton variant="primary">Click</AccessibleButton>
+
+// ✅ STEP 4 - Replace hardcoded layouts
+// Before:
+<div className="grid grid-cols-3 gap-6">...</div>
+// After:
+<AccessibleGrid cols={3} gap="md">...</AccessibleGrid>
+```
+
+### **Quality Assurance Rules (MANDATORY)**
+
+#### **Code Review Checklist:**
+- [ ] All headings use `AccessibleHeading`
+- [ ] All text uses `AccessibleText` or variants
+- [ ] All buttons use `AccessibleButton` or variants
+- [ ] All cards use `AccessibleCard`
+- [ ] All grids use `AccessibleGrid`
+- [ ] No hardcoded `text-*`, `font-*`, `p-*` classes
+- [ ] No hardcoded color classes for text
+- [ ] Component works in all 3 accessibility modes
+
+#### **Testing Requirements:**
+```typescript
+// ✅ REQUIRED - Test all accessibility modes
+describe("MyComponent Accessibility", () => {
+  it("renders correctly in elder mode", () => {
+    // Test with elder accessibility mode
+  });
+  
+  it("renders correctly in youth mode", () => {
+    // Test with youth accessibility mode
+  });
+  
+  it("has proper touch targets", () => {
+    // Verify minimum touch target sizes
+  });
+  
+  it("has proper color contrast", () => {
+    // Test high contrast in elder mode
+  });
+});
+```
+
+### **Performance Considerations**
+```typescript
+// ✅ GOOD - Tree-shake by importing from core
+import { AccessibleHeading } from "../../core";
+
+// ✅ ACCEPTABLE - Import multiple components
+import { 
+  AccessibleHeading, 
+  AccessibleText, 
+  AccessibleButton 
+} from "../../core";
+
+// ❌ AVOID - Importing entire core (affects bundle size)
+import * as Core from "../../core";
+```
+
+### **Enforcement Rules (MANDATORY)**
+1. **NO hardcoded text styles** - All text must use core components
+2. **NO hardcoded button styles** - All buttons must use core components  
+3. **NO hardcoded spacing** - Use core component padding/margin props
+4. **NO hardcoded colors** - Use core component color props
+5. **NO accessibility bypassing** - Never override core component styles
+6. **MANDATORY code review** - All PRs must verify core component usage
+7. **AUTOMATED testing** - All components must pass accessibility tests
+
+**🚨 CRITICAL CORE DESIGN SYSTEM REMINDERS:**
+1. **ALWAYS USE CORE COMPONENTS** - Never hardcode styles
+2. **IMPORT FROM CORE** - Use `import from "../../core"`
+3. **TEST ALL MODES** - Verify standard, elder, youth modes
+4. **PROPER SEMANTICS** - Use correct heading levels and ARIA
+5. **CONSISTENT PATTERNS** - Follow established component patterns
+6. **PERFORMANCE AWARE** - Import only needed components
+7. **FUTURE PROOF** - Core components evolve, hardcoded styles don't
+
+This ensures consistent, accessible, and maintainable UI across the entire application.
+
+## 🌍 **INTERNATIONALIZATION (i18n) SYSTEM (MANDATORY)**
+
+### **Systematic Localization Architecture**
+```
+src/libs/i18n/
+├── types.ts                    # TypeScript interfaces for i18n
+├── context/
+│   └── I18nContext.ts         # React context for language state
+├── hooks/
+│   └── useI18n.ts             # Hooks for translation functions
+├── providers/
+│   └── I18nProvider.tsx       # Context provider with persistence
+├── translations/
+│   ├── common.ts              # Common UI text (buttons, labels, etc.)
+│   ├── features.ts            # Feature-specific translations
+│   └── index.ts               # Translation exports
+├── utils/
+│   └── translationUtils.ts    # Translation utilities and validation
+└── index.ts                   # Main i18n exports
+```
+
+### **Supported Languages (CURRENT)**
+- **English (en)**: Primary language, fallback for missing translations
+- **Thai (th)**: Full localization with cultural context
+- **Extensible**: Architecture ready for additional languages
+
+### **Translation Structure (MANDATORY)**
+```typescript
+// ✅ REQUIRED - All translations must follow this structure
+interface TranslationKey {
+  en: string;
+  th: string;
+}
+
+// ✅ GOOD - Organized by domain and feature
+const translations = {
+  common: {
+    navigation: {
+      dashboard: {
+        en: 'Dashboard',
+        th: 'แดชบอร์ด'
+      }
+    },
+    actions: {
+      save: {
+        en: 'Save',
+        th: 'บันทึก'
+      }
+    }
+  },
+  features: {
+    goals: {
+      title: {
+        en: 'Future Missions',
+        th: 'ภารกิจอนาคต'
+      }
+    }
+  }
+};
+```
+
+### **Translation Usage (MANDATORY)**
+```typescript
+// ✅ REQUIRED - Use useTranslation hook in all components
+import { useTranslation } from '../../libs/i18n';
+
+export function MyComponent() {
+  const { t } = useTranslation();
+  
+  return (
+    <div>
+      <h1>{t('features.dashboard.title')}</h1>
+      <button>{t('common.actions.save')}</button>
+    </div>
+  );
+}
+
+// ✅ GOOD - Parameter interpolation
+const message = t('common.messages.welcome', { name: 'John' });
+// Translation: "Welcome {{name}}" -> "Welcome John"
+```
+
+### **Language Management (MANDATORY)**
+```typescript
+// ✅ REQUIRED - Language switching
+import { useLanguage } from '../../libs/i18n';
+
+export function LanguageSettings() {
+  const { language, setLanguage } = useLanguage();
+  
+  const handleLanguageChange = (newLang: 'en' | 'th') => {
+    setLanguage(newLang); // Automatically persisted
+  };
+  
+  return (
+    <select value={language} onChange={(e) => handleLanguageChange(e.target.value)}>
+      <option value="en">English</option>
+      <option value="th">ไทย</option>
+    </select>
+  );
+}
+```
+
+### **Component Integration (MANDATORY)**
+```typescript
+// ✅ REQUIRED - All user-facing text must use translations
+import { useTranslation } from '../../libs/i18n';
+import { ThemeAwareHeading, ThemeAwareText, ThemeAwareButton } from '../../core';
+
+export function Dashboard() {
+  const { t } = useTranslation();
+  
+  return (
+    <div>
+      <ThemeAwareHeading level="h1">
+        {t('features.dashboard.title')}
+      </ThemeAwareHeading>
+      
+      <ThemeAwareText color="secondary">
+        {t('features.dashboard.subtitle')}
+      </ThemeAwareText>
+      
+      <ThemeAwareButton variant="primary">
+        {t('common.actions.create')}
+      </ThemeAwareButton>
+    </div>
+  );
+}
+
+// ❌ BAD - Hardcoded text
+export function BadComponent() {
+  return (
+    <div>
+      <h1>Dashboard</h1> {/* Should use t('features.dashboard.title') */}
+      <button>Save</button> {/* Should use t('common.actions.save') */}
+    </div>
+  );
+}
+```
+
+### **Language Switcher Integration (MANDATORY)**
+```typescript
+// ✅ REQUIRED - Include language switcher in app header
+import { LanguageSwitcher } from '../../components/ui/LanguageSwitcher';
+
+export function Header() {
+  return (
+    <header>
+      {/* Other header content */}
+      <LanguageSwitcher variant="compact" />
+    </header>
+  );
+}
+
+// ✅ AVAILABLE VARIANTS
+// variant="button" - Simple toggle between languages
+// variant="dropdown" - Full dropdown with flags and names
+// variant="compact" - Minimal flag/code display
+```
+
+### **Translation Organization Rules (MANDATORY)**
+```typescript
+// ✅ GOOD - Organized by feature and context
+common: {
+  navigation: { /* navigation items */ },
+  actions: { /* buttons and actions */ },
+  labels: { /* form labels and fields */ },
+  time: { /* date and time related */ },
+  status: { /* status messages */ },
+  accessibility: { /* accessibility modes */ }
+}
+
+features: {
+  dashboard: { /* dashboard specific */ },
+  accounts: { /* accounts specific */ },
+  goals: { /* goals specific */ },
+  thaiCulture: { /* Thai cultural features */ }
+}
+
+// ❌ BAD - Flat or poorly organized
+translations: {
+  button1: { en: 'Save', th: 'บันทึก' },
+  text1: { en: 'Dashboard', th: 'แดชบอร์ด' },
+  // Hard to maintain and find
+}
+```
+
+### **Thai Language Considerations (CRITICAL)**
+```typescript
+// ✅ REQUIRED - Thai cultural context
+const culturalTranslations = {
+  familyObligations: {
+    en: 'Family Obligations',
+    th: 'ภาระครอบครัว' // Uses cultural concept
+  },
+  meritMaking: {
+    en: 'Merit Making',
+    th: 'การทำบุญ' // Buddhist concept
+  }
+};
+
+// ✅ GOOD - Thai number formatting
+import { formatThaiCurrency } from '../features/thai-culture';
+const amount = formatThaiCurrency(1000, 'th'); // "฿1,000"
+
+// ✅ GOOD - Buddhist calendar integration
+import { formatBuddhistDate } from '../features/thai-culture';
+const date = formatBuddhistDate(new Date(), 'th'); // "15 ธันวาคม พ.ศ. 2567"
+```
+
+### **Development Workflow (MANDATORY)**
+
+#### **Adding New Translations:**
+1. **Add to translation files**: Update `src/libs/i18n/translations/`
+2. **Use TypeScript**: Ensure type safety with interfaces
+3. **Test both languages**: Verify translations work in both en/th
+4. **Cultural review**: Ensure Thai translations are culturally appropriate
+
+#### **Translation Keys Naming:**
+```typescript
+// ✅ GOOD - Clear hierarchical naming
+'common.actions.save'
+'features.dashboard.welcomeMessage'
+'features.goals.createNewGoal'
+
+// ❌ BAD - Unclear or flat naming
+'save'
+'msg1'
+'dashboardText'
+```
+
+#### **Missing Translation Handling:**
+```typescript
+// ✅ BUILT-IN - Automatic fallback to English
+const text = t('some.missing.key'); 
+// If Thai missing, shows English
+// If both missing, shows the key path
+
+// ✅ VALIDATION - Check translation completeness
+import { validateTranslations } from '../../libs/i18n';
+const validation = validateTranslations();
+console.log(validation.missingTranslations);
+```
+
+### **Performance Considerations (MANDATORY)**
+```typescript
+// ✅ GOOD - Translation functions are memoized
+const { t } = useTranslation(); // Memoized based on language
+
+// ✅ GOOD - Language persistence
+// Language choice automatically saved to localStorage
+// Restored on app reload
+
+// ✅ GOOD - Lazy loading ready
+// Architecture supports lazy loading of translation chunks
+// Currently loads all translations for simplicity
+```
+
+### **Testing i18n Components (MANDATORY)**
+```typescript
+// ✅ REQUIRED - Test with both languages
+import { render } from '@testing-library/react';
+import { I18nProvider } from '../../libs/i18n';
+
+describe('MyComponent i18n', () => {
+  it('renders in English', () => {
+    render(
+      <I18nProvider defaultLanguage="en">
+        <MyComponent />
+      </I18nProvider>
+    );
+    expect(screen.getByText('Dashboard')).toBeInTheDocument();
+  });
+
+  it('renders in Thai', () => {
+    render(
+      <I18nProvider defaultLanguage="th">
+        <MyComponent />
+      </I18nProvider>
+    );
+    expect(screen.getByText('แดชบอร์ด')).toBeInTheDocument();
+  });
+});
+```
+
+### **Integration with Existing Systems (MANDATORY)**
+```typescript
+// ✅ REQUIRED - Works with theme system
+const { t } = useTranslation();
+const { isPlayMode } = useTheme();
+
+<ThemeAwareHeading level="h1" gradient={isPlayMode}>
+  {t('features.dashboard.title')}
+</ThemeAwareHeading>
+
+// ✅ REQUIRED - Works with accessibility
+const { t } = useTranslation();
+const { accessibilityMode } = useUIStore();
+
+const message = accessibilityMode === 'elder' 
+  ? t('features.dashboard.elderMessage')
+  : t('features.dashboard.standardMessage');
+```
+
+### **Quality Assurance (MANDATORY)**
+
+#### **Translation Checklist:**
+- [ ] All user-facing text uses `t()` function
+- [ ] No hardcoded strings in components
+- [ ] Both English and Thai translations provided
+- [ ] Thai translations culturally appropriate
+- [ ] Translation keys follow naming conventions
+- [ ] Components tested in both languages
+- [ ] Language switcher accessible and functional
+
+#### **Code Review Requirements:**
+- [ ] No hardcoded text in JSX
+- [ ] Proper use of `useTranslation` hook
+- [ ] Translation keys are descriptive
+- [ ] Thai cultural context respected
+- [ ] Performance considerations addressed
+
+### **Future Extensibility (READY)**
+```typescript
+// ✅ ARCHITECTURE READY - Additional languages
+type SupportedLanguage = 'en' | 'th' | 'zh' | 'ja' | 'ko';
+
+// ✅ PREPARED - Regional variations
+interface TranslationKey {
+  en: string;
+  'en-US': string;
+  'en-GB': string;
+  th: string;
+  'th-TH': string;
+}
+
+// ✅ SCALABLE - Feature-based translation loading
+const loadFeatureTranslations = (feature: string) => 
+  import(`./translations/${feature}`);
+```
+
+**🚨 CRITICAL i18n REMINDERS:**
+1. **NO HARDCODED TEXT** - All user-facing text must use translations
+2. **THAI CULTURAL CONTEXT** - Ensure Thai translations respect cultural values
+3. **FALLBACK TO ENGLISH** - System gracefully handles missing translations
+4. **PERSISTENT LANGUAGE** - User language choice is saved and restored
+5. **COMPONENT INTEGRATION** - Works seamlessly with theme and accessibility systems
+6. **PERFORMANCE OPTIMIZED** - Translation functions are memoized and efficient
+7. **TESTING REQUIRED** - All components must be tested in both languages
+
+This systematic localization ensures the app is truly accessible to both English and Thai users while maintaining cultural authenticity and technical excellence.# React Development Rules & Project Structure Guide
 
 ## 🏗️ **MANDATORY PROJECT STRUCTURE**
 

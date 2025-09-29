@@ -47,6 +47,18 @@ export const commonTranslations: CommonTranslations = {
       en: "Social",
       th: "สังคม",
     },
+    aiCoaching: {
+      en: "AI Coaching",
+      th: "AI โค้ช",
+    },
+    aiInsights: {
+      en: "AI Insights",
+      th: "AI ข้อมูลเชิงลึก",
+    },
+    subscription: {
+      en: "Subscription",
+      th: "สมาชิก",
+    },
     settings: {
       en: "Settings",
       th: "ตั้งค่า",

@@ -359,7 +359,7 @@ export function useAICoaching(options: UseAICoachingOptions = {}) {
         (achievement) => new Date(achievement.achievedAt) > cutoffDate,
       );
     },
-    [data.achievements, data],
+    [data],
   );
 
   // Get coaching insights
@@ -417,7 +417,7 @@ export function useAICoaching(options: UseAICoachingOptions = {}) {
         achievementScore * 0.2 +
         ratingScore * 0.1,
     );
-  }, [data.coachingStats]);
+  }, [data]);
 
   // Load data on mount or when dependencies change
   useEffect(() => {

@@ -336,33 +336,4 @@ export function SpendingPatternAnalyzer({
   );
 }
 
-// Export pattern analysis utilities
-export const analyzeSpendingPatterns = (): SpendingPattern[] => {
-  // This would be replaced with actual AI/ML analysis
-  // For now, return mock patterns based on transaction data
-  return [];
-};
-
-export const getPatternInsights = (pattern: SpendingPattern): string[] => {
-  const insights = [];
-
-  if (pattern.confidence > 85) {
-    insights.push(
-      "High confidence prediction - very reliable pattern detected",
-    );
-  }
-
-  if (pattern.change > 20) {
-    insights.push(
-      `Significant ${pattern.change}% increase detected - requires immediate attention`,
-    );
-  }
-
-  if (pattern.type === "recurring" && pattern.amount > 5000) {
-    insights.push(
-      "Large recurring expense - consider negotiating or finding alternatives",
-    );
-  }
-
-  return insights;
-};
+// Utility functions moved to ../utils/spendingPatternUtils.ts to fix React Fast Refresh warnings

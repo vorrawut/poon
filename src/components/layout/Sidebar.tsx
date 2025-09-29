@@ -17,6 +17,9 @@ import {
   ClockIcon,
   RocketLaunchIcon,
   UserGroupIcon,
+  SparklesIcon,
+  LightBulbIcon,
+  StarIcon,
 } from "@heroicons/react/24/outline";
 
 // Navigation items with translation keys
@@ -61,6 +64,21 @@ const getNavigation = (t: (key: string) => string) => [
     name: t("common.navigation.social"),
     href: "/social",
     icon: UserGroupIcon,
+  },
+  {
+    name: t("common.navigation.aiCoaching"),
+    href: "/ai-coaching",
+    icon: SparklesIcon,
+  },
+  {
+    name: t("common.navigation.aiInsights"),
+    href: "/ai-insights",
+    icon: LightBulbIcon,
+  },
+  {
+    name: t("common.navigation.subscription"),
+    href: "/subscription",
+    icon: StarIcon,
   },
   {
     name: t("common.navigation.spending"),

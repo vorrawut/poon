@@ -495,43 +495,4 @@ export function GoalOptimizer({
   );
 }
 
-// Utility functions for goal optimization
-export const calculateOptimalContribution = (
-  targetAmount: number,
-  currentSavings: number,
-  timelineMonths: number,
-  interestRate: number = 0.04,
-): number => {
-  const remainingAmount = targetAmount - currentSavings;
-  const monthlyRate = interestRate / 12;
-
-  if (monthlyRate === 0) {
-    return remainingAmount / timelineMonths;
-  }
-
-  // Calculate monthly payment for compound interest
-  const monthlyPayment =
-    (remainingAmount * monthlyRate) /
-    (1 - Math.pow(1 + monthlyRate, -timelineMonths));
-  return monthlyPayment;
-};
-
-export const predictGoalCompletion = (
-  currentSavings: number,
-  monthlyContribution: number,
-  interestRate: number = 0.04,
-): { months: number; finalAmount: number } => {
-  const monthlyRate = interestRate / 12;
-  let amount = currentSavings;
-  let months = 0;
-
-  while (months < 600) {
-    // Max 50 years
-    amount = amount * (1 + monthlyRate) + monthlyContribution;
-    months++;
-
-    if (amount >= currentSavings * 2) break; // Example target
-  }
-
-  return { months, finalAmount: amount };
-};
+// Utility functions moved to ../utils/goalOptimizerUtils.ts to fix React Fast Refresh warnings

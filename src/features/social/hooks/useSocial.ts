@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { socialService } from "../services/socialService";
 import type {
   UserSocialProfile,
@@ -59,7 +59,7 @@ export function useSocial(options: UseSocialOptions = {}) {
   const [error, setError] = useState<string | null>(null);
 
   // Load social data
-  const loadSocialData = async () => {
+  const loadSocialData = useCallback(async () => {
     if (!autoLoad) return;
 
     setLoading(true);
@@ -101,7 +101,7 @@ export function useSocial(options: UseSocialOptions = {}) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [autoLoad, userId, leaderboardCategory, leaderboardPeriod]);
 
   // Update user profile
   const updateProfile = async (updates: Partial<UserSocialProfile>) => {

@@ -26,6 +26,9 @@ const getPageTitle = (path: string, t: (key: string) => string): string => {
     "/future": t("common.navigation.future"),
     "/thai-culture": t("common.navigation.thaiCulture"),
     "/social": t("common.navigation.social"),
+    "/ai-coaching": t("common.navigation.aiCoaching"),
+    "/ai-insights": t("common.navigation.aiInsights"),
+    "/subscription": t("common.navigation.subscription"),
     "/settings": t("common.navigation.settings"),
   };
   return titleMap[path] || path;

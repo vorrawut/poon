@@ -385,7 +385,7 @@ export function UserProfile({
   const [selectedTab, setSelectedTab] = useState<
     "achievements" | "stats" | "activity"
   >("achievements");
-  const [selectedAchievement, /* setSelectedAchievement */] = useState<
+  const [selectedAchievement /* setSelectedAchievement */] = useState<
     string | null
   >(null);
 

@@ -14,6 +14,9 @@ import {
   UniverseDashboard,
   ThaiCulture,
   Social,
+  AICoaching,
+  AIInsights,
+  Subscription,
 } from "../pages";
 
 export function AppRoutes() {
@@ -32,6 +35,9 @@ export function AppRoutes() {
         <Route path="future" element={<Future />} />
         <Route path="thai-culture" element={<ThaiCulture />} />
         <Route path="social" element={<Social />} />
+        <Route path="ai-coaching" element={<AICoaching />} />
+        <Route path="ai-insights" element={<AIInsights />} />
+        <Route path="subscription" element={<Subscription />} />
         <Route path="imports" element={<Imports />} />
         <Route path="settings" element={<Settings />} />
       </Route>

@@ -13,90 +13,92 @@ export interface OfflineStorageConfig {
 
 // Default storage configuration
 export const STORAGE_CONFIG: OfflineStorageConfig = {
-  dbName: 'PoonFinancialDB',
+  dbName: "PoonFinancialDB",
   version: 1,
   stores: {
     transactions: {
-      keyPath: 'id',
+      keyPath: "id",
       indexes: {
-        date: 'date',
-        category: 'category',
-        amount: 'amount',
-        syncStatus: 'syncStatus'
-      }
+        date: "date",
+        category: "category",
+        amount: "amount",
+        syncStatus: "syncStatus",
+      },
     },
     goals: {
-      keyPath: 'id',
+      keyPath: "id",
       indexes: {
-        status: 'status',
-        targetDate: 'targetDate',
-        priority: 'priority',
-        syncStatus: 'syncStatus'
-      }
+        status: "status",
+        targetDate: "targetDate",
+        priority: "priority",
+        syncStatus: "syncStatus",
+      },
     },
     accounts: {
-      keyPath: 'id',
+      keyPath: "id",
       indexes: {
-        type: 'type',
-        balance: 'balance',
-        syncStatus: 'syncStatus'
-      }
+        type: "type",
+        balance: "balance",
+        syncStatus: "syncStatus",
+      },
     },
     insights: {
-      keyPath: 'id',
+      keyPath: "id",
       indexes: {
-        type: 'type',
-        createdAt: 'createdAt',
-        category: 'category'
-      }
+        type: "type",
+        createdAt: "createdAt",
+        category: "category",
+      },
     },
     achievements: {
-      keyPath: 'id',
+      keyPath: "id",
       indexes: {
-        unlockedAt: 'unlockedAt',
-        category: 'category',
-        rarity: 'rarity'
-      }
+        unlockedAt: "unlockedAt",
+        category: "category",
+        rarity: "rarity",
+      },
     },
     socialActivity: {
-      keyPath: 'id',
+      keyPath: "id",
       indexes: {
-        type: 'type',
-        timestamp: 'timestamp',
-        userId: 'userId',
-        syncStatus: 'syncStatus'
-      }
+        type: "type",
+        timestamp: "timestamp",
+        userId: "userId",
+        syncStatus: "syncStatus",
+      },
     },
     culturalEvents: {
-      keyPath: 'id',
+      keyPath: "id",
       indexes: {
-        date: 'date',
-        type: 'type',
-        importance: 'importance'
-      }
+        date: "date",
+        type: "type",
+        importance: "importance",
+      },
     },
     userPreferences: {
-      keyPath: 'key',
+      keyPath: "key",
       indexes: {
-        category: 'category',
-        updatedAt: 'updatedAt'
-      }
-    }
-  }
+        category: "category",
+        updatedAt: "updatedAt",
+      },
+    },
+  },
 };
 
-// Sync status enum
-export enum SyncStatus {
-  SYNCED = 'synced',
-  PENDING = 'pending',
-  FAILED = 'failed',
-  CONFLICT = 'conflict'
-}
+// Sync status constants
+export const SyncStatus = {
+  SYNCED: "synced",
+  PENDING: "pending",
+  FAILED: "failed",
+  CONFLICT: "conflict",
+} as const;
+
+export type SyncStatusType = (typeof SyncStatus)[keyof typeof SyncStatus];
 
 // Base interface for all stored data
 export interface StoredData {
   id: string;
-  syncStatus: SyncStatus;
+  syncStatus: SyncStatusType;
   lastModified: number;
   version: number;
 }
@@ -117,16 +119,16 @@ export class OfflineStorageManager {
   async initialize(): Promise<boolean> {
     try {
       this.db = await this.openDatabase();
-      console.log('Offline storage initialized');
-      
+      console.log("Offline storage initialized");
+
       // Start sync process if online
       if (this.isOnline) {
         await this.syncPendingData();
       }
-      
+
       return true;
     } catch (error) {
-      console.error('Failed to initialize offline storage:', error);
+      console.error("Failed to initialize offline storage:", error);
       return false;
     }
   }
@@ -141,20 +143,26 @@ export class OfflineStorageManager {
 
       request.onupgradeneeded = (event) => {
         const db = (event.target as IDBOpenDBRequest).result;
-        
+
         // Create object stores
-        Object.entries(this.config.stores).forEach(([storeName, storeConfig]) => {
-          if (!db.objectStoreNames.contains(storeName)) {
-            const store = db.createObjectStore(storeName, { keyPath: storeConfig.keyPath });
-            
-            // Create indexes
-            if (storeConfig.indexes) {
-              Object.entries(storeConfig.indexes).forEach(([indexName, keyPath]) => {
-                store.createIndex(indexName, keyPath);
+        Object.entries(this.config.stores).forEach(
+          ([storeName, storeConfig]) => {
+            if (!db.objectStoreNames.contains(storeName)) {
+              const store = db.createObjectStore(storeName, {
+                keyPath: storeConfig.keyPath,
               });
+
+              // Create indexes
+              if (storeConfig.indexes) {
+                Object.entries(storeConfig.indexes).forEach(
+                  ([indexName, keyPath]) => {
+                    store.createIndex(indexName, keyPath);
+                  },
+                );
+              }
             }
-          }
-        });
+          },
+        );
       };
     });
   }
@@ -163,19 +171,19 @@ export class OfflineStorageManager {
   async store(storeName: string, data: any): Promise<boolean> {
     try {
       if (!this.db) {
-        throw new Error('Database not initialized');
+        throw new Error("Database not initialized");
       }
 
       const enrichedData = {
         ...data,
         syncStatus: this.isOnline ? SyncStatus.SYNCED : SyncStatus.PENDING,
         lastModified: Date.now(),
-        version: (data.version || 0) + 1
+        version: (data.version || 0) + 1,
       };
 
-      const transaction = this.db.transaction([storeName], 'readwrite');
+      const transaction = this.db.transaction([storeName], "readwrite");
       const store = transaction.objectStore(storeName);
-      
+
       await new Promise<void>((resolve, reject) => {
         const request = store.put(enrichedData);
         request.onsuccess = () => resolve();
@@ -192,7 +200,7 @@ export class OfflineStorageManager {
 
       return true;
     } catch (error) {
-      console.error('Failed to store data:', error);
+      console.error("Failed to store data:", error);
       return false;
     }
   }
@@ -201,10 +209,10 @@ export class OfflineStorageManager {
   async get(storeName: string, key: string): Promise<any | null> {
     try {
       if (!this.db) {
-        throw new Error('Database not initialized');
+        throw new Error("Database not initialized");
       }
 
-      const transaction = this.db.transaction([storeName], 'readonly');
+      const transaction = this.db.transaction([storeName], "readonly");
       const store = transaction.objectStore(storeName);
 
       return new Promise((resolve, reject) => {
@@ -213,7 +221,7 @@ export class OfflineStorageManager {
         request.onerror = () => reject(request.error);
       });
     } catch (error) {
-      console.error('Failed to get data:', error);
+      console.error("Failed to get data:", error);
       return null;
     }
   }
@@ -222,10 +230,10 @@ export class OfflineStorageManager {
   async getAll(storeName: string): Promise<any[]> {
     try {
       if (!this.db) {
-        throw new Error('Database not initialized');
+        throw new Error("Database not initialized");
       }
 
-      const transaction = this.db.transaction([storeName], 'readonly');
+      const transaction = this.db.transaction([storeName], "readonly");
       const store = transaction.objectStore(storeName);
 
       return new Promise((resolve, reject) => {
@@ -234,24 +242,24 @@ export class OfflineStorageManager {
         request.onerror = () => reject(request.error);
       });
     } catch (error) {
-      console.error('Failed to get all data:', error);
+      console.error("Failed to get all data:", error);
       return [];
     }
   }
 
   // Query data with filters
   async query(
-    storeName: string, 
-    indexName?: string, 
+    storeName: string,
+    indexName?: string,
     query?: IDBValidKey | IDBKeyRange,
-    limit?: number
+    limit?: number,
   ): Promise<any[]> {
     try {
       if (!this.db) {
-        throw new Error('Database not initialized');
+        throw new Error("Database not initialized");
       }
 
-      const transaction = this.db.transaction([storeName], 'readonly');
+      const transaction = this.db.transaction([storeName], "readonly");
       const store = transaction.objectStore(storeName);
       const source = indexName ? store.index(indexName) : store;
 
@@ -272,7 +280,7 @@ export class OfflineStorageManager {
         request.onerror = () => reject(request.error);
       });
     } catch (error) {
-      console.error('Failed to query data:', error);
+      console.error("Failed to query data:", error);
       return [];
     }
   }
@@ -281,10 +289,10 @@ export class OfflineStorageManager {
   async delete(storeName: string, key: string): Promise<boolean> {
     try {
       if (!this.db) {
-        throw new Error('Database not initialized');
+        throw new Error("Database not initialized");
       }
 
-      const transaction = this.db.transaction([storeName], 'readwrite');
+      const transaction = this.db.transaction([storeName], "readwrite");
       const store = transaction.objectStore(storeName);
 
       await new Promise<void>((resolve, reject) => {
@@ -300,7 +308,7 @@ export class OfflineStorageManager {
 
       return true;
     } catch (error) {
-      console.error('Failed to delete data:', error);
+      console.error("Failed to delete data:", error);
       return false;
     }
   }
@@ -309,10 +317,10 @@ export class OfflineStorageManager {
   async clear(storeName: string): Promise<boolean> {
     try {
       if (!this.db) {
-        throw new Error('Database not initialized');
+        throw new Error("Database not initialized");
       }
 
-      const transaction = this.db.transaction([storeName], 'readwrite');
+      const transaction = this.db.transaction([storeName], "readwrite");
       const store = transaction.objectStore(storeName);
 
       await new Promise<void>((resolve, reject) => {
@@ -323,7 +331,7 @@ export class OfflineStorageManager {
 
       return true;
     } catch (error) {
-      console.error('Failed to clear store:', error);
+      console.error("Failed to clear store:", error);
       return false;
     }
   }
@@ -334,9 +342,9 @@ export class OfflineStorageManager {
 
     for (const storeName of Object.keys(this.config.stores)) {
       const pending = await this.query(
-        storeName, 
-        'syncStatus', 
-        IDBKeyRange.only(SyncStatus.PENDING)
+        storeName,
+        "syncStatus",
+        IDBKeyRange.only(SyncStatus.PENDING),
       );
       if (pending.length > 0) {
         pendingData[storeName] = pending;
@@ -350,16 +358,16 @@ export class OfflineStorageManager {
   async syncPendingData(): Promise<void> {
     try {
       const pendingData = await this.getPendingSyncData();
-      
+
       for (const [storeName, items] of Object.entries(pendingData)) {
         for (const item of items) {
           await this.syncData(storeName, item);
         }
       }
 
-      console.log('Pending data synced successfully');
+      console.log("Pending data synced successfully");
     } catch (error) {
-      console.error('Failed to sync pending data:', error);
+      console.error("Failed to sync pending data:", error);
     }
   }
 
@@ -368,11 +376,11 @@ export class OfflineStorageManager {
     try {
       // Determine API endpoint based on store name
       const endpoint = this.getAPIEndpoint(storeName);
-      
+
       const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
       });
 
       if (response.ok) {
@@ -384,7 +392,7 @@ export class OfflineStorageManager {
         await this.updateSyncStatus(storeName, data.id, SyncStatus.FAILED);
       }
     } catch (error) {
-      console.error('Failed to sync data to server:', error);
+      console.error("Failed to sync data to server:", error);
       await this.updateSyncStatus(storeName, data.id, SyncStatus.FAILED);
     }
   }
@@ -393,25 +401,25 @@ export class OfflineStorageManager {
   private async syncDeletion(storeName: string, id: string): Promise<void> {
     try {
       const endpoint = `${this.getAPIEndpoint(storeName)}/${id}`;
-      
-      await fetch(endpoint, { method: 'DELETE' });
+
+      await fetch(endpoint, { method: "DELETE" });
     } catch (error) {
-      console.error('Failed to sync deletion to server:', error);
+      console.error("Failed to sync deletion to server:", error);
     }
   }
 
   // Update sync status
   private async updateSyncStatus(
-    storeName: string, 
-    id: string, 
-    status: SyncStatus
+    storeName: string,
+    id: string,
+    status: SyncStatusType,
   ): Promise<void> {
     const data = await this.get(storeName, id);
     if (data) {
       data.syncStatus = status;
       data.lastModified = Date.now();
-      
-      const transaction = this.db!.transaction([storeName], 'readwrite');
+
+      const transaction = this.db!.transaction([storeName], "readwrite");
       const store = transaction.objectStore(storeName);
       store.put(data);
     }
@@ -428,14 +436,14 @@ export class OfflineStorageManager {
   // Get API endpoint for store
   private getAPIEndpoint(storeName: string): string {
     const endpoints: { [key: string]: string } = {
-      transactions: '/api/transactions',
-      goals: '/api/goals',
-      accounts: '/api/accounts',
-      insights: '/api/insights',
-      achievements: '/api/achievements',
-      socialActivity: '/api/social/activity',
-      culturalEvents: '/api/cultural/events',
-      userPreferences: '/api/user/preferences'
+      transactions: "/api/transactions",
+      goals: "/api/goals",
+      accounts: "/api/accounts",
+      insights: "/api/insights",
+      achievements: "/api/achievements",
+      socialActivity: "/api/social/activity",
+      culturalEvents: "/api/cultural/events",
+      userPreferences: "/api/user/preferences",
     };
 
     return endpoints[storeName] || `/api/${storeName}`;
@@ -443,14 +451,14 @@ export class OfflineStorageManager {
 
   // Setup online status listener
   private setupOnlineStatusListener(): void {
-    window.addEventListener('online', async () => {
-      console.log('Back online - syncing pending data');
+    window.addEventListener("online", async () => {
+      console.log("Back online - syncing pending data");
       this.isOnline = true;
       await this.syncPendingData();
     });
 
-    window.addEventListener('offline', () => {
-      console.log('Gone offline - queuing data for sync');
+    window.addEventListener("offline", () => {
+      console.log("Gone offline - queuing data for sync");
       this.isOnline = false;
     });
   }
@@ -462,16 +470,16 @@ export class OfflineStorageManager {
   }> {
     const stats = {
       totalSize: 0,
-      stores: {} as { [storeName: string]: { count: number; size: number } }
+      stores: {} as { [storeName: string]: { count: number; size: number } },
     };
 
     for (const storeName of Object.keys(this.config.stores)) {
       const data = await this.getAll(storeName);
       const storeSize = JSON.stringify(data).length;
-      
+
       stats.stores[storeName] = {
         count: data.length,
-        size: storeSize
+        size: storeSize,
       };
       stats.totalSize += storeSize;
     }
@@ -481,16 +489,16 @@ export class OfflineStorageManager {
 
   // Cleanup old data
   async cleanup(daysToKeep: number = 30): Promise<void> {
-    const cutoffDate = Date.now() - (daysToKeep * 24 * 60 * 60 * 1000);
+    const cutoffDate = Date.now() - daysToKeep * 24 * 60 * 60 * 1000;
 
     for (const storeName of Object.keys(this.config.stores)) {
-      if (storeName === 'userPreferences') continue; // Don't cleanup preferences
+      if (storeName === "userPreferences") continue; // Don't cleanup preferences
 
       try {
         const oldData = await this.query(
           storeName,
-          'lastModified',
-          IDBKeyRange.upperBound(cutoffDate)
+          "lastModified",
+          IDBKeyRange.upperBound(cutoffDate),
         );
 
         for (const item of oldData) {
@@ -524,7 +532,7 @@ export class OfflineStorageManager {
         if (this.config.stores[storeName]) {
           // Clear existing data
           await this.clear(storeName);
-          
+
           // Import new data
           for (const item of items) {
             await this.store(storeName, item);
@@ -532,10 +540,10 @@ export class OfflineStorageManager {
         }
       }
 
-      console.log('Data imported successfully');
+      console.log("Data imported successfully");
       return true;
     } catch (error) {
-      console.error('Failed to import data:', error);
+      console.error("Failed to import data:", error);
       return false;
     }
   }
@@ -546,11 +554,11 @@ export const offlineStorage = new OfflineStorageManager();
 
 // Utility functions
 export function isOfflineStorageSupported(): boolean {
-  return 'indexedDB' in window;
+  return "indexedDB" in window;
 }
 
 export function getOfflineStorageUsage(): Promise<StorageEstimate | undefined> {
-  if ('storage' in navigator && 'estimate' in navigator.storage) {
+  if ("storage" in navigator && "estimate" in navigator.storage) {
     return navigator.storage.estimate();
   }
   return Promise.resolve(undefined);

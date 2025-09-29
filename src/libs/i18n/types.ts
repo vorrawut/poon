@@ -19,6 +19,9 @@ export interface CommonTranslations {
     future: TranslationKey;
     thaiCulture: TranslationKey;
     social: TranslationKey;
+    aiCoaching: TranslationKey;
+    aiInsights: TranslationKey;
+    subscription: TranslationKey;
     spending: TranslationKey;
     import: TranslationKey;
     settings: TranslationKey;

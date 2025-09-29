@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   thaiCultureService,
   getCulturalSpendingInsights,
@@ -72,7 +72,7 @@ export function useThaiCulture(options: UseThaiCultureOptions = {}) {
   const [error, setError] = useState<string | null>(null);
 
   // Load Thai culture data
-  const loadThaiCultureData = async () => {
+  const loadThaiCultureData = useCallback(async () => {
     if (!autoLoad) return;
 
     setLoading(true);
@@ -113,7 +113,7 @@ export function useThaiCulture(options: UseThaiCultureOptions = {}) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [autoLoad, monthlyIncome, familyProfile, spendingData]);
 
   // Update recommendations when income or family profile changes
   const updateRecommendations = async (
@@ -139,16 +139,19 @@ export function useThaiCulture(options: UseThaiCultureOptions = {}) {
   };
 
   // Update insights when spending data changes
-  const updateInsights = (newSpendingData: Record<string, number>) => {
-    const insights = getCulturalSpendingInsights(
-      newSpendingData,
-      monthlyIncome,
-    );
-    setData((prev) => ({
-      ...prev,
-      insights,
-    }));
-  };
+  const updateInsights = useCallback(
+    (newSpendingData: Record<string, number>) => {
+      const insights = getCulturalSpendingInsights(
+        newSpendingData,
+        monthlyIncome,
+      );
+      setData((prev) => ({
+        ...prev,
+        insights,
+      }));
+    },
+    [monthlyIncome],
+  );
 
   // Get current Buddhist year
   const getCurrentBuddhistYear = () => {

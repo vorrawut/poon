@@ -10,3 +10,6 @@ export { Imports } from "./Imports";
 export { Settings } from "./Settings";
 export { ThaiCulture } from "./ThaiCulture";
 export { Social } from "./Social";
+export { AICoaching } from "./AICoaching";
+export { AIInsights } from "./AIInsights";
+export { Subscription } from "./Subscription";
