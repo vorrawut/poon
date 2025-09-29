@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { MoonOfSpending } from "./MoonOfSpending";
 import { GoalsAsStars } from "./GoalsAsStars";
 import { InteractiveWealthPlanet } from "./InteractiveWealthPlanet";
-import { EnhancedCosmicBackground } from "./EnhancedCosmicBackground";
+import { UltimateCosmicBackground } from "./UltimateCosmicBackground";
 import { EnhancedSpendingMoonPhases } from "./EnhancedSpendingMoonPhases";
 import { EnhancedGoalStarConstellation } from "./EnhancedGoalStarConstellation";
 import { useNetWorth } from "../../features/networth/hooks/useNetWorth";
@@ -13,6 +13,8 @@ import {
   mockGoals,
   mockSpendingMoonData,
   mockGoalStarData,
+  mockCosmicBackgroundData,
+  cosmicBackgroundUtils,
 } from "../../../mockData/features/dashboard";
 import { UniverseLoading } from "../ui/LoadingStates";
 import {
@@ -71,6 +73,14 @@ export function FinancialUniverse({
   const { isPlayMode } = useTheme();
   const { t } = useTranslation();
 
+  // Calculate dynamic financial activity for cosmic background
+  const financialActivity = cosmicBackgroundUtils.calculateFinancialActivity({
+    netWorthChange: netWorthData?.netWorthChangePercent || 0,
+    goalProgress: mockGoalStarData.reduce((sum, goal) => sum + (goal.current / goal.target), 0) / mockGoalStarData.length * 100,
+    spendingVariance: mockSpendingMoonData.spendingChange,
+    transactionCount: 15, // Mock transaction count
+  });
+
   // Use centralized mock AI insights
   useEffect(() => {
     if (netWorthData) {
@@ -119,11 +129,15 @@ export function FinancialUniverse({
     <div
       className={`relative h-full bg-gradient-to-b from-slate-900 via-purple-900 to-indigo-900 overflow-y-auto ${className}`}
     >
-      {/* Enhanced Cosmic Background */}
-      <EnhancedCosmicBackground
-        starCount={200}
-        showNebula={true}
-        showShootingStars={true}
+      {/* Ultimate Cosmic Background */}
+      <UltimateCosmicBackground
+        intensity={mockCosmicBackgroundData.settings.intensity}
+        showNebula={mockCosmicBackgroundData.settings.showNebula}
+        showShootingStars={mockCosmicBackgroundData.settings.showShootingStars}
+        showParticles={mockCosmicBackgroundData.settings.showParticles}
+        show3DStars={mockCosmicBackgroundData.settings.show3DStars}
+        financialActivity={financialActivity}
+        interactive={mockCosmicBackgroundData.settings.interactive}
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
