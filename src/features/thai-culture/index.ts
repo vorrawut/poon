@@ -1,4 +1,5 @@
 // Thai Cultural Features - Localization and Cultural Adaptation
+// @TODO: See TODO.md - THAI CULTURAL FEATURES section for complete localization roadmap
 export { ThaiCalendarIntegration } from "./components/ThaiCalendarIntegration";
 export { FamilyObligationTracker } from "./components/FamilyObligationTracker";
 export { MeritMakingBudget } from "./components/MeritMakingBudget";

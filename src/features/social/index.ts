@@ -1,4 +1,5 @@
 // Social Features - User profiles, achievement sharing, community challenges
+// @TODO: See TODO.md - SOCIAL FEATURES section for complete implementation roadmap
 export { UserProfile } from "./components/UserProfile";
 export { AchievementShare } from "./components/AchievementShare";
 export { CommunityChallenge } from "./components/CommunityChallenge";

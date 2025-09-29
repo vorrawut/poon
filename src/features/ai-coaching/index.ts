@@ -1,4 +1,5 @@
 // AI Coaching Features - Intelligent financial coaching with cultural awareness
+// @TODO: See TODO.md - AI INTELLIGENCE & COACHING section for advanced AI implementation
 export { AICoachAvatar } from "./components/AICoachAvatar";
 export { PersonalizedTips } from "./components/PersonalizedTips";
 export { ProgressCelebration } from "./components/ProgressCelebration";
