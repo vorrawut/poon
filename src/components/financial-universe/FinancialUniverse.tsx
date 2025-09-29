@@ -3,14 +3,16 @@ import { MoonOfSpending } from "./MoonOfSpending";
 import { GoalsAsStars } from "./GoalsAsStars";
 import { InteractiveWealthPlanet } from "./InteractiveWealthPlanet";
 import { EnhancedCosmicBackground } from "./EnhancedCosmicBackground";
-import { SpendingMoonPhases } from "./SpendingMoonPhases";
-import { GoalStarConstellation } from "./GoalStarConstellation";
+import { EnhancedSpendingMoonPhases } from "./EnhancedSpendingMoonPhases";
+import { EnhancedGoalStarConstellation } from "./EnhancedGoalStarConstellation";
 import { useNetWorth } from "../../features/networth/hooks/useNetWorth";
 import { useTranslation } from "../../libs/i18n";
 import {
   mockFinancialUniverseGoals,
   mockSpendingData,
   mockGoals,
+  mockSpendingMoonData,
+  mockGoalStarData,
 } from "../../../mockData/features/dashboard";
 import { UniverseLoading } from "../ui/LoadingStates";
 import {
@@ -24,6 +26,36 @@ import { mockAIInsights } from "../../../mockData/features/ai-insights";
 import { useState, useEffect } from "react";
 
 // Using centralized mock data
+const mockInvestments = [
+  {
+    id: "inv1",
+    name: "Thai Stock Index",
+    value: 150000,
+    type: "stocks" as const,
+    performance: 12.5,
+  },
+  {
+    id: "inv2",
+    name: "Government Bonds",
+    value: 80000,
+    type: "bonds" as const,
+    performance: 4.2,
+  },
+  {
+    id: "inv3",
+    name: "Bitcoin Portfolio",
+    value: 45000,
+    type: "crypto" as const,
+    performance: -8.3,
+  },
+  {
+    id: "inv4",
+    name: "Bangkok Condo",
+    value: 2500000,
+    type: "real-estate" as const,
+    performance: 6.8,
+  },
+];
 
 interface FinancialUniverseProps {
   className?: string;
@@ -147,19 +179,15 @@ export function FinancialUniverse({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.8 }}
             >
-              <SpendingMoonPhases
-                monthlySpending={mockSpendingData.monthlySpending}
-                previousMonthSpending={mockSpendingData.previousMonthSpending}
-                spendingChange={mockSpendingData.spendingChange}
-                spendingPattern={
-                  mockSpendingData.spendingChange > 20
-                    ? "volatile"
-                    : mockSpendingData.spendingChange > 5
-                      ? "increasing"
-                      : mockSpendingData.spendingChange < -5
-                        ? "decreasing"
-                        : "stable"
+              <EnhancedSpendingMoonPhases
+                monthlySpending={mockSpendingMoonData.monthlySpending}
+                previousMonthSpending={
+                  mockSpendingMoonData.previousMonthSpending
                 }
+                spendingChange={mockSpendingMoonData.spendingChange}
+                spendingPattern={mockSpendingMoonData.spendingPattern}
+                spendingHistory={mockSpendingMoonData.spendingHistory}
+                categories={mockSpendingMoonData.categories}
               />
             </motion.div>
 
@@ -170,19 +198,12 @@ export function FinancialUniverse({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 1.2 }}
             >
-              <GoalStarConstellation
-                goals={mockGoals.map((goal) => ({
-                  id: goal.id,
-                  name: goal.name,
-                  target: goal.targetAmount,
-                  current: goal.currentAmount,
-                  deadline: "2024-12-31", // Mock deadline
-                  category: goal.category,
-                  icon: goal.icon,
-                  color: goal.color,
-                  priority: goal.priority as "low" | "medium" | "high",
-                }))}
+              <EnhancedGoalStarConstellation
+                goals={mockGoalStarData}
                 onGoalClick={(goal) => onQuickAction?.("view_goal", goal)}
+                interactive={true}
+                showConnections={true}
+                animateIgnition={true}
               />
             </motion.div>
           </div>
@@ -203,6 +224,7 @@ export function FinancialUniverse({
                 netWorth={netWorthData.totalNetWorth}
                 previousNetWorth={netWorthData.previousNetWorth}
                 growth={netWorthData.netWorthChange}
+                investments={mockInvestments}
               />
             </motion.div>
 
@@ -259,6 +281,7 @@ export function FinancialUniverse({
                   netWorth={netWorthData.totalNetWorth}
                   previousNetWorth={netWorthData.previousNetWorth}
                   growth={netWorthData.netWorthChange}
+                  investments={mockInvestments}
                 />
               </motion.div>
 

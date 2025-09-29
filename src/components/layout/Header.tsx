@@ -7,7 +7,6 @@ import {
   useTheme,
 } from "../../core";
 import { ThemeToggle } from "../ui/ThemeToggle";
-import { LanguageSwitcher } from "../ui/LanguageSwitcher";
 import { useTranslation } from "../../libs/i18n";
 import { Bars3Icon, PlusIcon, BellIcon } from "@heroicons/react/24/outline";
 import { cn } from "../../libs/utils";
@@ -142,7 +141,9 @@ export function Header() {
             glow={isPlayMode}
           >
             <PlusIcon className="h-4 w-4" />
-            <span className="hidden sm:inline text-sm">{t("common.ui.addTransaction")}</span>
+            <span className="hidden sm:inline text-sm">
+              {t("common.ui.addTransaction")}
+            </span>
           </ThemeAwareButton>
 
           {/* Notifications */}
@@ -150,9 +151,6 @@ export function Header() {
             <BellIcon className="h-5 w-5 sm:h-6 sm:w-6" />
             <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full animate-pulse"></span>
           </ThemeAwareButton>
-
-          {/* Language switcher */}
-          <LanguageSwitcher variant="compact" />
 
           {/* Theme toggle */}
           <ThemeToggle className="h-10 w-10 sm:h-12 sm:w-12" />

@@ -335,7 +335,7 @@ export const mockFinancialProfile = {
 };
 
 // Mock spending patterns
-export const mockSpendingPatterns = [
+export const mockEnhancedSpendingPatterns = [
   {
     category: "Food & Dining",
     trend: "increasing" as const,

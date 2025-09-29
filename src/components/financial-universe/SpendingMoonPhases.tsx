@@ -4,7 +4,7 @@ import { useTranslation } from "../../libs/i18n";
 
 interface SpendingMoonPhasesProps {
   monthlySpending: number;
-  previousMonthSpending?: number; // Made optional since it's not used
+  previousMonthSpending?: number;
   spendingChange: number;
   spendingPattern: "increasing" | "decreasing" | "stable" | "volatile";
   className?: string;
@@ -12,9 +12,9 @@ interface SpendingMoonPhasesProps {
 
 export function SpendingMoonPhases({
   monthlySpending,
-  previousMonthSpending: _previousMonthSpending, // Renamed to indicate it's unused
+  previousMonthSpending: _previousMonthSpending,
   spendingChange,
-  spendingPattern,
+  spendingPattern: _spendingPattern,
   className = "",
 }: SpendingMoonPhasesProps) {
   const { isPlayMode } = useTheme();
@@ -210,7 +210,7 @@ export function SpendingMoonPhases({
         </motion.div>
 
         {/* Spending Meteors */}
-        {spendingPattern === "volatile" && (
+        {_spendingPattern === "volatile" && (
           <div className="absolute inset-0">
             {[...Array(3)].map((_, i) => (
               <motion.div

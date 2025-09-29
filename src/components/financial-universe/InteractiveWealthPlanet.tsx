@@ -18,16 +18,126 @@ interface WealthPlanetProps {
   netWorth: number;
   previousNetWorth: number;
   growth: number;
+  investments?: Array<{
+    id: string;
+    name: string;
+    value: number;
+    type: "stocks" | "bonds" | "crypto" | "real-estate";
+    performance: number;
+  }>;
   className?: string;
+}
+
+// Investment Satellites Component
+function InvestmentSatellites({
+  investments,
+  planetSize,
+}: {
+  investments?: Array<{
+    id: string;
+    name: string;
+    value: number;
+    type: "stocks" | "bonds" | "crypto" | "real-estate";
+    performance: number;
+  }>;
+  planetSize: number;
+}) {
+  const satelliteRefs = useRef<THREE.Mesh[]>([]);
+
+  const getSatelliteColor = (type: string, performance: number) => {
+    const baseColors = {
+      stocks: "#3B82F6", // Blue
+      bonds: "#10B981", // Green
+      crypto: "#F59E0B", // Amber
+      "real-estate": "#8B5CF6", // Purple
+    };
+
+    // Brighter color for positive performance
+    return performance > 0
+      ? baseColors[type as keyof typeof baseColors]
+      : "#6B7280";
+  };
+
+  useFrame((state) => {
+    const time = state.clock.elapsedTime;
+
+    satelliteRefs.current.forEach((satellite, index) => {
+      if (satellite && investments?.[index]) {
+        const investment = investments[index];
+        const radius = planetSize * (2.5 + index * 0.5);
+        const speed = 0.5 + (investment.value / 100000) * 0.3;
+        const angle = time * speed + index * (Math.PI / 2);
+
+        // Orbital motion
+        satellite.position.x = Math.cos(angle) * radius;
+        satellite.position.z = Math.sin(angle) * radius;
+        satellite.position.y = Math.sin(time + index) * 0.3;
+
+        // Satellite rotation
+        satellite.rotation.x += 0.02;
+        satellite.rotation.y += 0.01;
+
+        // Performance-based scaling
+        const performanceScale = 1 + (investment.performance / 100) * 0.2;
+        satellite.scale.setScalar(Math.max(performanceScale, 0.5));
+      }
+    });
+  });
+
+  if (!investments || investments.length === 0) return null;
+
+  return (
+    <group>
+      {investments.slice(0, 6).map((investment, index) => (
+        <mesh
+          key={investment.id}
+          ref={(el) => {
+            if (el) satelliteRefs.current[index] = el;
+          }}
+        >
+          <boxGeometry args={[0.15, 0.15, 0.15]} />
+          <meshStandardMaterial
+            color={getSatelliteColor(investment.type, investment.performance)}
+            emissive={getSatelliteColor(
+              investment.type,
+              investment.performance,
+            )}
+            emissiveIntensity={investment.performance > 0 ? 0.2 : 0.1}
+            metalness={0.8}
+            roughness={0.2}
+          />
+
+          {/* Investment type indicator */}
+          <Text
+            position={[0, 0.3, 0]}
+            fontSize={0.08}
+            color="white"
+            anchorX="center"
+            anchorY="middle"
+          >
+            {investment.type.charAt(0).toUpperCase()}
+          </Text>
+        </mesh>
+      ))}
+    </group>
+  );
 }
 
 // Enhanced 3D Wealth Planet Component with Realistic Materials
 function WealthPlanet({
   netWorth,
   growth,
+  investments,
 }: {
   netWorth: number;
   growth: number;
+  investments?: Array<{
+    id: string;
+    name: string;
+    value: number;
+    type: "stocks" | "bonds" | "crypto" | "real-estate";
+    performance: number;
+  }>;
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
   const atmosphereRef = useRef<THREE.Mesh>(null);
@@ -39,8 +149,10 @@ function WealthPlanet({
   const planetSize = useMemo(() => {
     const baseSize = 1.8;
     const scaleFactor = Math.log10(Math.max(netWorth / 5000, 1)) * 0.4;
-    return Math.min(baseSize + scaleFactor, 3.5); // Larger max size
-  }, [netWorth]);
+    const growthMultiplier =
+      growth > 0 ? 1 + growth * 0.001 : 1 + growth * 0.0005;
+    return Math.min((baseSize + scaleFactor) * growthMultiplier, 4.0); // Dynamic growth scaling
+  }, [netWorth, growth]);
 
   // Dynamic planet appearance based on wealth and growth
   const planetMaterial = useMemo(() => {
@@ -89,31 +201,40 @@ function WealthPlanet({
 
   // Enhanced animations
   useFrame((state) => {
-    if (meshRef.current) {
-      // Smooth rotation
-      meshRef.current.rotation.y += 0.004;
-      meshRef.current.rotation.x =
-        Math.sin(state.clock.elapsedTime * 0.3) * 0.1;
+    const time = state.clock.elapsedTime;
 
-      // Dynamic pulsing based on growth
+    if (meshRef.current) {
+      // Smooth rotation with wealth-based speed
+      const rotationSpeed = 0.004 + (netWorth / 1000000) * 0.002;
+      meshRef.current.rotation.y += rotationSpeed;
+      meshRef.current.rotation.x = Math.sin(time * 0.3) * 0.1;
+
+      // Dynamic pulsing based on growth with breathing effect
       const pulseIntensity = Math.abs(growth) / 20000;
-      const pulse =
-        Math.sin(state.clock.elapsedTime * 1.5) * pulseIntensity * 0.08;
-      meshRef.current.scale.setScalar(1 + pulse);
+      const growthPulse = Math.sin(time * 1.5) * pulseIntensity * 0.08;
+      const breathingEffect = Math.sin(time * 2) * 0.01;
+      meshRef.current.scale.setScalar(1 + growthPulse + breathingEffect);
+
+      // Floating motion based on wealth status
+      const floatIntensity = Math.min(netWorth / 500000, 0.15);
+      meshRef.current.position.y = Math.sin(time * 0.8) * floatIntensity;
     }
 
     if (atmosphereRef.current) {
-      // Counter-rotate atmosphere
+      // Counter-rotate atmosphere with dynamic intensity
       atmosphereRef.current.rotation.y -= 0.002;
-      atmosphereRef.current.rotation.z =
-        Math.sin(state.clock.elapsedTime * 0.5) * 0.05;
+      atmosphereRef.current.rotation.z = Math.sin(time * 0.5) * 0.05;
+
+      // Atmosphere pulsing effect
+      const atmospherePulse = 1 + Math.sin(time * 3) * 0.02;
+      atmosphereRef.current.scale.setScalar(atmospherePulse);
     }
 
     if (ringsRef.current) {
-      // Rotate rings
-      ringsRef.current.rotation.z += 0.01;
-      ringsRef.current.rotation.x =
-        Math.sin(state.clock.elapsedTime * 0.4) * 0.2;
+      // Ring rotation based on growth direction
+      const ringSpeed = growth > 0 ? 0.01 + growth / 100000 : -0.005;
+      ringsRef.current.rotation.z += ringSpeed;
+      ringsRef.current.rotation.x = Math.sin(time * 0.4) * 0.2;
     }
   });
 
@@ -258,6 +379,9 @@ function WealthPlanet({
                     "features.financialUniverse.wealthPlanet.wealthStatus.startingJourney",
                   )}
       </Text>
+
+      {/* Investment Satellites */}
+      <InvestmentSatellites investments={investments} planetSize={planetSize} />
     </group>
   );
 }
@@ -293,7 +417,21 @@ function OrbitalRings() {
 }
 
 // Scene Setup Component
-function Scene({ netWorth, growth }: { netWorth: number; growth: number }) {
+function Scene({
+  netWorth,
+  growth,
+  investments,
+}: {
+  netWorth: number;
+  growth: number;
+  investments?: Array<{
+    id: string;
+    name: string;
+    value: number;
+    type: "stocks" | "bonds" | "crypto" | "real-estate";
+    performance: number;
+  }>;
+}) {
   const { themeMode } = useTheme();
 
   return (
@@ -370,7 +508,11 @@ function Scene({ netWorth, growth }: { netWorth: number; growth: number }) {
       )}
 
       {/* Wealth Planet */}
-      <WealthPlanet netWorth={netWorth} growth={growth} />
+      <WealthPlanet
+        netWorth={netWorth}
+        growth={growth}
+        investments={investments}
+      />
 
       {/* Orbital Rings */}
       <OrbitalRings />
@@ -397,6 +539,7 @@ export function InteractiveWealthPlanet({
   netWorth,
   previousNetWorth: _previousNetWorth,
   growth,
+  investments,
   className,
 }: WealthPlanetProps) {
   const { isPlayMode, themeMode } = useTheme();
@@ -491,7 +634,7 @@ export function InteractiveWealthPlanet({
           background: "transparent", // Make canvas transparent to blend with universe background
         }}
       >
-        <Scene netWorth={netWorth} growth={growth} />
+        <Scene netWorth={netWorth} growth={growth} investments={investments} />
       </Canvas>
 
       {/* Enhanced Interactive Overlay */}

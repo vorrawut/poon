@@ -91,14 +91,11 @@ interface UniverseLoadingProps {
   message?: string;
 }
 
-export function UniverseLoading({
-  className,
-  message,
-}: UniverseLoadingProps) {
+export function UniverseLoading({ className, message }: UniverseLoadingProps) {
   const { isPlayMode, themeMode } = useTheme();
   const { accessibilityMode } = useAccessibility();
   const { t } = useTranslation();
-  
+
   const displayMessage = message || t("common.loading.defaultMessage");
 
   const reduceMotion = accessibilityMode === "elder";
