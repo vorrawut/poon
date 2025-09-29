@@ -400,6 +400,10 @@ export interface FeatureTranslations {
       analytics: TranslationKey;
       settings: TranslationKey;
     };
+    quickAccess: {
+      moonPhases: TranslationKey;
+      starConstellation: TranslationKey;
+    };
     stats: {
       title: TranslationKey;
       totalWorth: TranslationKey;

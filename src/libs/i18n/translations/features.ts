@@ -746,6 +746,16 @@ export const featureTranslations: FeatureTranslations = {
         th: "การตั้งค่า",
       },
     },
+    quickAccess: {
+      moonPhases: {
+        en: "Moon Phases",
+        th: "เฟสดวงจันทร์",
+      },
+      starConstellation: {
+        en: "Star Constellation",
+        th: "กลุ่มดาวเป้าหมาย",
+      },
+    },
     stats: {
       title: {
         en: "🌌 Universe Status",

@@ -183,56 +183,81 @@ export function FinancialUniverse({
           </motion.div>
         )}
 
-        {/* Enhanced Universe Components */}
+        {/* Enhanced Universe Components - Only show in dedicated sections */}
         {isPlayMode && (
-          <div className="mb-16 space-y-16">
-            {/* Spending Moon Phases */}
+          <div className="mb-12">
+            {/* Quick Access to Enhanced Components */}
+            <div className="flex flex-wrap justify-center gap-4 mb-8">
+              <ThemeAwareButton
+                variant="cosmic"
+                size="sm"
+                onClick={() => onQuickAction?.("view_moon_phases")}
+                className="flex items-center gap-2"
+              >
+                🌙 {t("features.financialUniverse.quickAccess.moonPhases")}
+              </ThemeAwareButton>
+              <ThemeAwareButton
+                variant="cosmic"
+                size="sm"
+                onClick={() => onQuickAction?.("view_star_constellation")}
+                className="flex items-center gap-2"
+              >
+                ⭐ {t("features.financialUniverse.quickAccess.starConstellation")}
+              </ThemeAwareButton>
+            </div>
+          </div>
+        )}
+
+        {/* Main Universe Layout - Simplified and Clean */}
+        <div className="space-y-16 mb-16">
+          {/* Enhanced Components Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+            {/* Enhanced Spending Moon Phases */}
+            <motion.div
+              className="flex justify-center"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.5 }}
+            >
+              <div className="w-full max-w-md">
+                <EnhancedSpendingMoonPhases
+                  monthlySpending={mockSpendingMoonData.monthlySpending}
+                  previousMonthSpending={mockSpendingMoonData.previousMonthSpending}
+                  spendingChange={mockSpendingMoonData.spendingChange}
+                  spendingPattern={mockSpendingMoonData.spendingPattern}
+                  spendingHistory={mockSpendingMoonData.spendingHistory}
+                  categories={mockSpendingMoonData.categories}
+                />
+              </div>
+            </motion.div>
+
+            {/* Enhanced Goal Star Constellation */}
             <motion.div
               className="flex justify-center"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.8 }}
             >
-              <EnhancedSpendingMoonPhases
-                monthlySpending={mockSpendingMoonData.monthlySpending}
-                previousMonthSpending={
-                  mockSpendingMoonData.previousMonthSpending
-                }
-                spendingChange={mockSpendingMoonData.spendingChange}
-                spendingPattern={mockSpendingMoonData.spendingPattern}
-                spendingHistory={mockSpendingMoonData.spendingHistory}
-                categories={mockSpendingMoonData.categories}
-              />
-            </motion.div>
-
-            {/* Goal Star Constellation */}
-            <motion.div
-              className="flex justify-center"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 1.2 }}
-            >
-              <EnhancedGoalStarConstellation
-                goals={mockGoalStarData}
-                onGoalClick={(goal) => onQuickAction?.("view_goal", goal)}
-                interactive={true}
-                showConnections={true}
-                animateIgnition={true}
-              />
+              <div className="w-full max-w-md">
+                <EnhancedGoalStarConstellation
+                  goals={mockGoalStarData}
+                  onGoalClick={(goal) => onQuickAction?.("view_goal", goal)}
+                  interactive={true}
+                  showConnections={true}
+                  animateIgnition={true}
+                />
+              </div>
             </motion.div>
           </div>
-        )}
 
-        {/* Main Universe Layout */}
-        <div className="space-y-12 lg:space-y-0">
-          {/* Desktop Layout */}
-          <div className="hidden lg:grid lg:grid-cols-3 gap-16 items-center justify-items-center mb-12 min-h-[700px] overflow-visible">
-            {/* Interactive Wealth Planet - Left */}
+          {/* Traditional Universe Components */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 max-w-6xl mx-auto">
+            {/* Interactive Wealth Planet */}
             <motion.div
-              className="w-full max-w-lg flex justify-center items-center h-full overflow-visible"
-              initial={{ opacity: 0, x: -100 }}
+              className="flex justify-center"
+              initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1, delay: 0.5 }}
+              transition={{ duration: 1, delay: 1.1 }}
             >
               <InteractiveWealthPlanet
                 netWorth={netWorthData.totalNetWorth}
@@ -242,22 +267,22 @@ export function FinancialUniverse({
               />
             </motion.div>
 
-            {/* Goals Constellation - Center */}
+            {/* Goals Constellation */}
             <motion.div
-              className="w-full max-w-2xl flex justify-center items-center h-full overflow-visible"
+              className="flex justify-center"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 1 }}
+              transition={{ duration: 1, delay: 1.4 }}
             >
               <GoalsAsStars goals={mockFinancialUniverseGoals} />
             </motion.div>
 
-            {/* Moon of Spending - Right */}
+            {/* Moon of Spending */}
             <motion.div
-              className="w-full max-w-lg flex justify-center items-center h-full overflow-visible"
-              initial={{ opacity: 0, x: 100 }}
+              className="flex justify-center"
+              initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1, delay: 0.8 }}
+              transition={{ duration: 1, delay: 1.7 }}
             >
               <MoonOfSpending
                 monthlySpending={mockSpendingData.monthlySpending}
@@ -270,53 +295,6 @@ export function FinancialUniverse({
               />
             </motion.div>
           </div>
-
-          {/* Mobile/Tablet Layout */}
-          <div className="lg:hidden space-y-8 mb-12">
-            {/* Goals Constellation - Top on mobile */}
-            <motion.div
-              className="flex justify-center"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 0.3 }}
-            >
-              <GoalsAsStars goals={mockFinancialUniverseGoals} />
-            </motion.div>
-
-            {/* Planet and Moon - Side by side on mobile */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              <motion.div
-                className="flex justify-center"
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.6 }}
-              >
-                <InteractiveWealthPlanet
-                  netWorth={netWorthData.totalNetWorth}
-                  previousNetWorth={netWorthData.previousNetWorth}
-                  growth={netWorthData.netWorthChange}
-                  investments={mockInvestments}
-                />
-              </motion.div>
-
-              <motion.div
-                className="flex justify-center"
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.9 }}
-              >
-                <MoonOfSpending
-                  monthlySpending={mockSpendingData.monthlySpending}
-                  previousMonthSpending={mockSpendingData.previousMonthSpending}
-                  spendingChange={mockSpendingData.spendingChange}
-                  topCategories={mockSpendingData.topCategories.map((data) => ({
-                    ...data,
-                    name: data.category,
-                  }))}
-                />
-              </motion.div>
-            </div>
-          </div>
         </div>
 
         {/* Universe Navigation */}
@@ -324,7 +302,7 @@ export function FinancialUniverse({
           className="grid grid-cols-2 md:flex md:justify-center md:space-x-6 gap-4 md:gap-0 mb-12 max-w-2xl mx-auto px-4"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.5 }}
+          transition={{ duration: 1, delay: 2.0 }}
         >
           {[
             {
