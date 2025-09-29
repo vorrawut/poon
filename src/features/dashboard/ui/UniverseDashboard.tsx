@@ -119,32 +119,6 @@ export function UniverseDashboard() {
           Detailed View
         </motion.button>
       </motion.div>
-
-      {/* Optional: Universe Controls */}
-      <motion.div
-        className="fixed top-24 right-8 z-40 space-y-4"
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 1.5 }}
-      >
-        <motion.button
-          className="bg-black/20 backdrop-blur-sm border border-white/20 text-white p-3 rounded-full hover:bg-black/30 transition-all"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          title="Toggle Fullscreen"
-        >
-          ⛶
-        </motion.button>
-
-        <motion.button
-          className="bg-black/20 backdrop-blur-sm border border-white/20 text-white p-3 rounded-full hover:bg-black/30 transition-all"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          title="Universe Settings"
-        >
-          ⚙️
-        </motion.button>
-      </motion.div>
     </div>
   );
 }

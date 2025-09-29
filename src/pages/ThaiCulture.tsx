@@ -4,7 +4,6 @@ import { FadeIn } from "../components/ui";
 import {
   ThemeAwareHeading,
   ThemeAwareText,
-  ThemeAwareButton,
   useTheme,
 } from "../core";
 import {
@@ -14,6 +13,7 @@ import {
 } from "../features/thai-culture";
 import { UniverseBackground } from "../components/widgets";
 import { useUIStore } from "../store/useUIStore";
+import { useTranslation } from "../libs/i18n";
 
 export function ThaiCulture() {
   const { viewMode, accessibilityMode } = useUIStore();
@@ -21,7 +21,7 @@ export function ThaiCulture() {
   const [activeTab, setActiveTab] = useState<"calendar" | "family" | "merit">(
     "calendar",
   );
-  const [language, setLanguage] = useState<"en" | "th">("en");
+  const { language } = useTranslation();
 
   const tabs = [
     {
@@ -136,24 +136,6 @@ export function ThaiCulture() {
                       ? "การจัดการการเงินที่เข้าใจวัฒนธรรมไทย วางแผนเทศกาล ดูแลครอบครัว และทำบุญอย่างเป็นระบบ"
                       : "Thai culture-aware financial management. Plan festivals, care for family, and make merit systematically."}
             </ThemeAwareText>
-
-            {/* Language Toggle */}
-            <div className="flex items-center justify-center gap-2 mb-8">
-              <ThemeAwareButton
-                variant={language === "en" ? "primary" : "outline"}
-                size="sm"
-                onClick={() => setLanguage("en")}
-              >
-                🇺🇸 English
-              </ThemeAwareButton>
-              <ThemeAwareButton
-                variant={language === "th" ? "primary" : "outline"}
-                size="sm"
-                onClick={() => setLanguage("th")}
-              >
-                🇹🇭 ไทย
-              </ThemeAwareButton>
-            </div>
           </div>
         </FadeIn>
 
@@ -206,21 +188,14 @@ export function ThaiCulture() {
         >
           {activeTab === "calendar" && (
             <ThaiCalendarIntegration
-              language={language}
-              onPlanExpense={(holiday, amount) => {
-                console.log(
-                  "Planning expense for",
-                  holiday.name[language],
-                  ":",
-                  amount,
-                );
+              onEventSelect={(event) => {
+                console.log("Event selected:", event);
               }}
             />
           )}
 
           {activeTab === "family" && (
             <FamilyObligationTracker
-              language={language}
               onObligationUpdate={(obligation) => {
                 console.log("Family obligation updated:", obligation);
               }}
@@ -229,9 +204,8 @@ export function ThaiCulture() {
 
           {activeTab === "merit" && (
             <MeritMakingBudget
-              language={language}
-              onMeritMakingUpdate={(entry) => {
-                console.log("Merit making entry updated:", entry);
+              onBudgetUpdate={(budget) => {
+                console.log("Merit making budget updated:", budget);
               }}
             />
           )}

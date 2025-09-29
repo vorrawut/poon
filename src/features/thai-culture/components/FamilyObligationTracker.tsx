@@ -1,652 +1,225 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  CurrencyDollarIcon,
-  PlusIcon,
-  PencilIcon,
-  TrashIcon,
-  CheckCircleIcon,
-} from "@heroicons/react/24/outline";
-import {
-  ThemeAwareCard,
-  ThemeAwareText,
-  ThemeAwareHeading,
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { 
+  ThemeAwareCard, 
+  ThemeAwareText, 
   ThemeAwareButton,
-  useTheme,
+  ThemeAwareHeading
 } from "../../../core";
+import { useTranslation } from "../../../libs/i18n";
 import { cn } from "../../../libs/utils";
-import { formatThaiCurrency } from "../services/thaiLocalization";
-import type { FamilyObligation } from "../types";
 
-interface FamilyObligationEntry {
+// Thai Family Financial Obligations
+export interface FamilyObligation {
   id: string;
-  obligationType: FamilyObligation["type"];
-  recipientName: string;
-  amount: number;
-  frequency: FamilyObligation["frequency"];
-  lastPayment?: Date;
-  nextDue?: Date;
+  type: "parents" | "siblings" | "children" | "extended" | "community";
+  recipient: {
+    name: string;
+    relationship: string;
+    relationshipTh: string;
+  };
+  amount: {
+    budgeted: number;
+    frequency: "monthly" | "quarterly" | "yearly";
+  };
+  priority: "essential" | "important" | "optional";
+  description: {
+    en: string;
+    th: string;
+  };
+  nextDueDate?: string;
   isActive: boolean;
-  notes?: string;
 }
 
-interface FamilyObligationTrackerProps {
-  language?: "en" | "th";
-  onObligationUpdate?: (obligation: FamilyObligationEntry) => void;
+export interface FamilyObligationTrackerProps {
+  obligations?: FamilyObligation[];
+  onObligationUpdate?: (obligation: FamilyObligation) => void;
   className?: string;
 }
 
-// Mock family obligations data
-const FAMILY_OBLIGATION_TYPES: FamilyObligation[] = [
+// Mock Data
+const mockObligations: FamilyObligation[] = [
   {
-    id: "parents_support",
-    name: {
-      en: "Parents Support",
-      th: "ค่าเลี้ยงดูพ่อแม่",
+    id: "parents-support",
+    type: "parents",
+    recipient: {
+      name: "คุณแม่ คุณพ่อ",
+      relationship: "Parents",
+      relationshipTh: "บิดามารดา"
     },
-    type: "parents_support",
+    amount: {
+      budgeted: 15000,
+      frequency: "monthly"
+    },
     priority: "essential",
-    frequency: "monthly",
-    culturalImportance: {
-      en: "Filial piety - caring for aging parents is a fundamental Thai value",
-      th: "กตัญญูกตเวทิตา - การดูแลพ่อแม่ที่แก่ชราเป็นคุณค่าพื้นฐานของคนไทย",
+    description: {
+      en: "Monthly financial support for parents (กตัญญู)",
+      th: "การส่งเงินเลี้ยงดูบิดามารดา (กตัญญู)"
     },
-    icon: "👴👵",
+    nextDueDate: "2025-01-01",
+    isActive: true
   },
   {
-    id: "siblings_support",
-    name: {
-      en: "Siblings Support",
-      th: "ช่วยเหลือพี่น้อง",
+    id: "temple-donations",
+    type: "community",
+    recipient: {
+      name: "วัดป่าแสงธรรม",
+      relationship: "Local Temple",
+      relationshipTh: "วัดประจำ"
     },
-    type: "siblings_support",
+    amount: {
+      budgeted: 5000,
+      frequency: "monthly"
+    },
     priority: "important",
-    frequency: "as_needed",
-    culturalImportance: {
-      en: "Supporting younger siblings or helping family members in need",
-      th: "การช่วยเหลือน้องๆ หรือสมาชิกครอบครัวที่ต้องการความช่วยเหลือ",
+    description: {
+      en: "Regular temple donations for merit making",
+      th: "การบริจาควัดเพื่อทำบุญ"
     },
-    icon: "👫",
-  },
-  {
-    id: "extended_family",
-    name: {
-      en: "Extended Family",
-      th: "ญาติพี่น้อง",
-    },
-    type: "extended_family",
-    priority: "optional",
-    frequency: "quarterly",
-    culturalImportance: {
-      en: "Maintaining relationships with extended family through financial support",
-      th: "การรักษาความสัมพันธ์กับญาติพี่น้องผ่านการช่วยเหลือทางการเงิน",
-    },
-    icon: "👨‍👩‍👧‍👦",
-  },
-  {
-    id: "education_support",
-    name: {
-      en: "Education Support",
-      th: "ค่าเล่าเรียน",
-    },
-    type: "education_support",
-    priority: "essential",
-    frequency: "monthly",
-    culturalImportance: {
-      en: "Supporting family members' education - investing in family's future",
-      th: "การสนับสนุนการศึกษาของสมาชิกครอบครัว - การลงทุนในอนาคตของครอบครัว",
-    },
-    icon: "🎓",
-  },
+    nextDueDate: "2025-01-05",
+    isActive: true
+  }
 ];
 
 export function FamilyObligationTracker({
-  language = "en",
-  onObligationUpdate,
-  className,
+  obligations = mockObligations,
+  onObligationUpdate: _onObligationUpdate,
+  className = "",
 }: FamilyObligationTrackerProps) {
-  const { isPlayMode } = useTheme();
-  const [obligations, setObligations] = useState<FamilyObligationEntry[]>([]);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [editingObligation, setEditingObligation] =
-    useState<FamilyObligationEntry | null>(null);
-  const [newObligation, setNewObligation] = useState<
-    Partial<FamilyObligationEntry>
-  >({});
+  const { language } = useTranslation();
+  const [selectedType, setSelectedType] = useState<string>('all');
 
-  // Initialize with some sample data
-  useEffect(() => {
-    const sampleObligations: FamilyObligationEntry[] = [
-      {
-        id: "1",
-        obligationType: "parents_support",
-        recipientName: language === "th" ? "คุณแม่" : "Mother",
-        amount: 8000,
-        frequency: "monthly",
-        lastPayment: new Date(2024, 11, 1),
-        nextDue: new Date(2025, 0, 1),
-        isActive: true,
-        notes:
-          language === "th"
-            ? "ค่าใช้จ่ายประจำเดือน"
-            : "Monthly living expenses",
-      },
-      {
-        id: "2",
-        obligationType: "education_support",
-        recipientName: language === "th" ? "น้องสาว" : "Younger Sister",
-        amount: 12000,
-        frequency: "monthly",
-        lastPayment: new Date(2024, 11, 15),
-        nextDue: new Date(2025, 0, 15),
-        isActive: true,
-        notes:
-          language === "th" ? "ค่าเล่าเรียนมหาวิทยาลัย" : "University tuition",
-      },
-    ];
-    setObligations(sampleObligations);
-  }, [language]);
+  const filteredObligations = obligations.filter(obligation => {
+    if (selectedType === 'all') return true;
+    return obligation.type === selectedType;
+  });
 
-  const getObligationType = (type: FamilyObligation["type"]) => {
-    return FAMILY_OBLIGATION_TYPES.find((o) => o.type === type);
+  const totalMonthly = obligations
+    .filter(o => o.isActive && o.amount.frequency === 'monthly')
+    .reduce((sum, o) => sum + o.amount.budgeted, 0);
+
+  const typeColors = {
+    parents: "#F59E0B",
+    siblings: "#3B82F6",
+    children: "#10B981",
+    extended: "#8B5CF6",
+    community: "#EC4899"
   };
-
-  const getPriorityColor = (priority: FamilyObligation["priority"]) => {
-    switch (priority) {
-      case "essential":
-        return "text-red-600 bg-red-100 dark:bg-red-900/20";
-      case "important":
-        return "text-orange-600 bg-orange-100 dark:bg-orange-900/20";
-      case "optional":
-        return "text-green-600 bg-green-100 dark:bg-green-900/20";
-      default:
-        return "text-gray-600 bg-gray-100 dark:bg-gray-900/20";
-    }
-  };
-
-  const getFrequencyText = (frequency: FamilyObligation["frequency"]) => {
-    const frequencies = {
-      en: {
-        monthly: "Monthly",
-        quarterly: "Quarterly",
-        annual: "Annual",
-        as_needed: "As Needed",
-      },
-      th: {
-        monthly: "รายเดือน",
-        quarterly: "รายไตรมาส",
-        annual: "รายปี",
-        as_needed: "ตามความจำเป็น",
-      },
-    };
-    return frequencies[language][frequency];
-  };
-
-  const getDaysUntilDue = (nextDue?: Date) => {
-    if (!nextDue) return null;
-    const today = new Date();
-    const diffTime = nextDue.getTime() - today.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
-  };
-
-  const handleAddObligation = () => {
-    if (
-      !newObligation.obligationType ||
-      !newObligation.recipientName ||
-      !newObligation.amount
-    ) {
-      return;
-    }
-
-    const obligation: FamilyObligationEntry = {
-      id: Date.now().toString(),
-      obligationType: newObligation.obligationType,
-      recipientName: newObligation.recipientName,
-      amount: newObligation.amount,
-      frequency: newObligation.frequency || "monthly",
-      isActive: true,
-      notes: newObligation.notes,
-    };
-
-    setObligations((prev) => [...prev, obligation]);
-    onObligationUpdate?.(obligation);
-    setNewObligation({});
-    setShowAddModal(false);
-  };
-
-  const handleDeleteObligation = (id: string) => {
-    setObligations((prev) => prev.filter((o) => o.id !== id));
-  };
-
-  const toggleObligationStatus = (id: string) => {
-    setObligations((prev) =>
-      prev.map((o) => (o.id === id ? { ...o, isActive: !o.isActive } : o)),
-    );
-  };
-
-  const totalMonthlyObligations = obligations
-    .filter((o) => o.isActive && o.frequency === "monthly")
-    .reduce((sum, o) => sum + o.amount, 0);
 
   return (
     <div className={cn("space-y-6", className)}>
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <ThemeAwareHeading level="h2" className="mb-2" gradient={isPlayMode}>
-            {language === "th" ? "👨‍👩‍👧‍👦 ภาระครอบครัว" : "👨‍👩‍👧‍👦 Family Obligations"}
-          </ThemeAwareHeading>
-          <ThemeAwareText color="secondary">
-            {language === "th"
-              ? "จัดการและติดตามการช่วยเหลือครอบครัวตามวัฒนธรรมไทย"
-              : "Manage and track family support according to Thai cultural values"}
-          </ThemeAwareText>
-        </div>
-
-        <ThemeAwareButton
-          variant="primary"
-          onClick={() => setShowAddModal(true)}
-        >
-          <PlusIcon className="w-4 h-4 mr-2" />
-          {language === "th" ? "เพิ่มภาระ" : "Add Obligation"}
-        </ThemeAwareButton>
+      <div className="text-center">
+        <ThemeAwareHeading level="h2" className="text-2xl font-bold mb-2">
+          👨‍👩‍👧‍👦 Family Obligations
+        </ThemeAwareHeading>
+        <ThemeAwareText color="secondary" className="text-sm">
+          Thai cultural family financial responsibilities
+        </ThemeAwareText>
       </div>
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <ThemeAwareCard className="p-4">
-          <div className="text-center">
-            <ThemeAwareText color="secondary" className="text-sm mb-1">
-              {language === "th" ? "ภาระที่ใช้งานอยู่" : "Active Obligations"}
-            </ThemeAwareText>
-            <ThemeAwareText className="text-2xl font-bold text-blue-600">
-              {obligations.filter((o) => o.isActive).length}
-            </ThemeAwareText>
+      {/* Summary */}
+      <div className="grid grid-cols-2 gap-4">
+        <ThemeAwareCard className="p-4 text-center">
+          <div className="text-2xl font-bold text-green-400">
+            ฿{totalMonthly.toLocaleString()}
           </div>
+          <div className="text-sm text-gray-400">Monthly Total</div>
         </ThemeAwareCard>
+        
+        <ThemeAwareCard className="p-4 text-center">
+          <div className="text-2xl font-bold text-blue-400">
+            {obligations.filter(o => o.isActive).length}
+          </div>
+          <div className="text-sm text-gray-400">Active Obligations</div>
+        </ThemeAwareCard>
+      </div>
 
-        <ThemeAwareCard className="p-4">
-          <div className="text-center">
-            <ThemeAwareText color="secondary" className="text-sm mb-1">
-              {language === "th" ? "รายเดือนรวม" : "Monthly Total"}
-            </ThemeAwareText>
-            <ThemeAwareText className="text-2xl font-bold text-green-600">
-              {formatThaiCurrency(totalMonthlyObligations, language, true)}
-            </ThemeAwareText>
-          </div>
-        </ThemeAwareCard>
-
-        <ThemeAwareCard className="p-4">
-          <div className="text-center">
-            <ThemeAwareText color="secondary" className="text-sm mb-1">
-              {language === "th" ? "ภาระจำเป็น" : "Essential Obligations"}
-            </ThemeAwareText>
-            <ThemeAwareText className="text-2xl font-bold text-red-600">
-              {
-                obligations.filter((o) => {
-                  const type = getObligationType(o.obligationType);
-                  return o.isActive && type?.priority === "essential";
-                }).length
-              }
-            </ThemeAwareText>
-          </div>
-        </ThemeAwareCard>
+      {/* Type Filter */}
+      <div className="flex gap-2 flex-wrap justify-center">
+        {(['all', 'parents', 'community', 'extended'] as const).map((type) => (
+          <ThemeAwareButton
+            key={type}
+            variant={selectedType === type ? "primary" : "ghost"}
+            size="sm"
+            onClick={() => setSelectedType(type)}
+            className="capitalize"
+          >
+            {type === 'all' ? 'All' : type}
+          </ThemeAwareButton>
+        ))}
       </div>
 
       {/* Obligations List */}
       <div className="space-y-4">
-        {obligations.map((obligation, index) => {
-          const type = getObligationType(obligation.obligationType);
-          const daysUntilDue = getDaysUntilDue(obligation.nextDue);
-
-          return (
-            <motion.div
-              key={obligation.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <ThemeAwareCard
-                className={cn(
-                  "p-6",
-                  !obligation.isActive && "opacity-60",
-                  isPlayMode && "border-2 border-pink-400/30",
-                )}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4 flex-1">
-                    <div className="text-3xl">{type?.icon}</div>
-
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <ThemeAwareHeading level="h3">
-                          {obligation.recipientName}
-                        </ThemeAwareHeading>
-                        <span
-                          className={cn(
-                            "px-2 py-1 rounded-full text-xs font-medium",
-                            getPriorityColor(type?.priority || "optional"),
-                          )}
-                        >
-                          {type?.priority === "essential"
-                            ? language === "th"
-                              ? "จำเป็น"
-                              : "Essential"
-                            : type?.priority === "important"
-                              ? language === "th"
-                                ? "สำคัญ"
-                                : "Important"
-                              : language === "th"
-                                ? "เลือกได้"
-                                : "Optional"}
-                        </span>
-                      </div>
-
-                      <ThemeAwareText
-                        color="secondary"
-                        className="text-sm mb-1"
-                      >
-                        {type?.name[language]}
-                      </ThemeAwareText>
-
-                      <div className="flex items-center gap-4 text-sm">
-                        <div className="flex items-center gap-1">
-                          <CurrencyDollarIcon className="w-4 h-4" />
-                          <ThemeAwareText className="font-medium">
-                            {formatThaiCurrency(obligation.amount, language)}
-                          </ThemeAwareText>
-                        </div>
-
-                        <ThemeAwareText color="secondary">
-                          {getFrequencyText(obligation.frequency)}
-                        </ThemeAwareText>
-
-                        {daysUntilDue !== null && (
-                          <span
-                            className={cn(
-                              "px-2 py-1 rounded-full text-xs font-medium",
-                              daysUntilDue <= 7
-                                ? "bg-red-100 text-red-600 dark:bg-red-900/20"
-                                : daysUntilDue <= 14
-                                  ? "bg-orange-100 text-orange-600 dark:bg-orange-900/20"
-                                  : "bg-green-100 text-green-600 dark:bg-green-900/20",
-                            )}
-                          >
-                            {daysUntilDue > 0
-                              ? `${daysUntilDue} ${language === "th" ? "วัน" : "days"}`
-                              : language === "th"
-                                ? "เกินกำหนด"
-                                : "Overdue"}
-                          </span>
-                        )}
-                      </div>
-
-                      {obligation.notes && (
-                        <ThemeAwareText className="text-sm mt-2 italic">
-                          {obligation.notes}
-                        </ThemeAwareText>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <ThemeAwareButton
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => toggleObligationStatus(obligation.id)}
-                    >
-                      <CheckCircleIcon
-                        className={cn(
-                          "w-4 h-4",
-                          obligation.isActive
-                            ? "text-green-600"
-                            : "text-gray-400",
-                        )}
-                      />
-                    </ThemeAwareButton>
-
-                    <ThemeAwareButton
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setEditingObligation(obligation)}
-                    >
-                      <PencilIcon className="w-4 h-4" />
-                    </ThemeAwareButton>
-
-                    <ThemeAwareButton
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDeleteObligation(obligation.id)}
-                    >
-                      <TrashIcon className="w-4 h-4 text-red-500" />
-                    </ThemeAwareButton>
+        {filteredObligations.map((obligation, index) => (
+          <motion.div
+            key={obligation.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: index * 0.1 }}
+          >
+            <ThemeAwareCard className="p-4">
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-3 flex-1">
+                  <div 
+                    className="w-3 h-3 rounded-full"
+                    style={{ backgroundColor: typeColors[obligation.type] }}
+                  />
+                  <div>
+                    <h3 className="font-semibold">
+                      {language === 'th' ? obligation.recipient.relationshipTh : obligation.recipient.relationship}
+                    </h3>
+                    <p className="text-sm text-gray-400">
+                      {obligation.recipient.name}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {language === 'th' ? obligation.description.th : obligation.description.en}
+                    </p>
                   </div>
                 </div>
-
-                {/* Cosmic Effects for Play Mode */}
-                {isPlayMode && (
-                  <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-pink-400/20 to-purple-400/20 rounded-full blur-xl" />
+                
+                <div className="text-right">
+                  <div className="text-lg font-bold text-green-300">
+                    ฿{obligation.amount.budgeted.toLocaleString()}
                   </div>
-                )}
-              </ThemeAwareCard>
-            </motion.div>
-          );
-        })}
+                  <div className="text-xs text-gray-400 capitalize">
+                    {obligation.amount.frequency}
+                  </div>
+                  <span className={cn(
+                    "px-2 py-1 rounded-full text-xs font-medium mt-2 inline-block",
+                    obligation.priority === 'essential' ? 'bg-red-500/20 text-red-300' :
+                    obligation.priority === 'important' ? 'bg-yellow-500/20 text-yellow-300' :
+                    'bg-gray-500/20 text-gray-300'
+                  )}>
+                    {obligation.priority}
+                  </span>
+                </div>
+              </div>
+            </ThemeAwareCard>
+          </motion.div>
+        ))}
       </div>
 
-      {obligations.length === 0 && (
-        <ThemeAwareCard className="p-12 text-center">
-          <div className="text-6xl mb-4">👨‍👩‍👧‍👦</div>
-          <ThemeAwareHeading level="h3" className="mb-2">
-            {language === "th"
-              ? "ยังไม่มีภาระครอบครัว"
-              : "No Family Obligations Yet"}
-          </ThemeAwareHeading>
-          <ThemeAwareText color="secondary" className="mb-6">
-            {language === "th"
-              ? "เริ่มต้นการจัดการภาระครอบครัวตามวัฒนธรรมไทย"
-              : "Start managing your family obligations according to Thai culture"}
-          </ThemeAwareText>
-          <ThemeAwareButton
-            variant="primary"
-            onClick={() => setShowAddModal(true)}
-          >
-            <PlusIcon className="w-4 h-4 mr-2" />
-            {language === "th" ? "เพิ่มภาระแรก" : "Add First Obligation"}
-          </ThemeAwareButton>
-        </ThemeAwareCard>
-      )}
-
-      {/* Add/Edit Modal */}
-      <AnimatePresence>
-        {(showAddModal || editingObligation) && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-            onClick={() => {
-              setShowAddModal(false);
-              setEditingObligation(null);
-              setNewObligation({});
-            }}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="max-w-md w-full"
-            >
-              <ThemeAwareCard className="p-6">
-                <ThemeAwareHeading level="h2" className="mb-6">
-                  {editingObligation
-                    ? language === "th"
-                      ? "แก้ไขภาระครอบครัว"
-                      : "Edit Family Obligation"
-                    : language === "th"
-                      ? "เพิ่มภาระครอบครัว"
-                      : "Add Family Obligation"}
-                </ThemeAwareHeading>
-
-                <div className="space-y-4">
-                  {/* Obligation Type */}
-                  <div>
-                    <ThemeAwareText className="text-sm font-medium mb-2">
-                      {language === "th" ? "ประเภทภาระ" : "Obligation Type"}
-                    </ThemeAwareText>
-                    <select
-                      className="w-full p-3 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
-                      value={newObligation.obligationType || ""}
-                      onChange={(e) =>
-                        setNewObligation((prev) => ({
-                          ...prev,
-                          obligationType: e.target
-                            .value as FamilyObligation["type"],
-                        }))
-                      }
-                    >
-                      <option value="">
-                        {language === "th" ? "เลือกประเภท" : "Select Type"}
-                      </option>
-                      {FAMILY_OBLIGATION_TYPES.map((type) => (
-                        <option key={type.id} value={type.type}>
-                          {type.icon} {type.name[language]}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Recipient Name */}
-                  <div>
-                    <ThemeAwareText className="text-sm font-medium mb-2">
-                      {language === "th" ? "ชื่อผู้รับ" : "Recipient Name"}
-                    </ThemeAwareText>
-                    <input
-                      type="text"
-                      className="w-full p-3 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
-                      placeholder={
-                        language === "th"
-                          ? "เช่น คุณแม่, น้องสาว"
-                          : "e.g., Mother, Younger Sister"
-                      }
-                      value={newObligation.recipientName || ""}
-                      onChange={(e) =>
-                        setNewObligation((prev) => ({
-                          ...prev,
-                          recipientName: e.target.value,
-                        }))
-                      }
-                    />
-                  </div>
-
-                  {/* Amount */}
-                  <div>
-                    <ThemeAwareText className="text-sm font-medium mb-2">
-                      {language === "th" ? "จำนวนเงิน (บาท)" : "Amount (THB)"}
-                    </ThemeAwareText>
-                    <input
-                      type="number"
-                      className="w-full p-3 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
-                      placeholder="0"
-                      value={newObligation.amount || ""}
-                      onChange={(e) =>
-                        setNewObligation((prev) => ({
-                          ...prev,
-                          amount: parseFloat(e.target.value) || 0,
-                        }))
-                      }
-                    />
-                  </div>
-
-                  {/* Frequency */}
-                  <div>
-                    <ThemeAwareText className="text-sm font-medium mb-2">
-                      {language === "th" ? "ความถี่" : "Frequency"}
-                    </ThemeAwareText>
-                    <select
-                      className="w-full p-3 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
-                      value={newObligation.frequency || "monthly"}
-                      onChange={(e) =>
-                        setNewObligation((prev) => ({
-                          ...prev,
-                          frequency: e.target
-                            .value as FamilyObligation["frequency"],
-                        }))
-                      }
-                    >
-                      <option value="monthly">
-                        {language === "th" ? "รายเดือน" : "Monthly"}
-                      </option>
-                      <option value="quarterly">
-                        {language === "th" ? "รายไตรมาส" : "Quarterly"}
-                      </option>
-                      <option value="annual">
-                        {language === "th" ? "รายปี" : "Annual"}
-                      </option>
-                      <option value="as_needed">
-                        {language === "th" ? "ตามความจำเป็น" : "As Needed"}
-                      </option>
-                    </select>
-                  </div>
-
-                  {/* Notes */}
-                  <div>
-                    <ThemeAwareText className="text-sm font-medium mb-2">
-                      {language === "th" ? "หมายเหตุ" : "Notes"}
-                    </ThemeAwareText>
-                    <textarea
-                      className="w-full p-3 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
-                      rows={3}
-                      placeholder={
-                        language === "th"
-                          ? "หมายเหตุเพิ่มเติม..."
-                          : "Additional notes..."
-                      }
-                      value={newObligation.notes || ""}
-                      onChange={(e) =>
-                        setNewObligation((prev) => ({
-                          ...prev,
-                          notes: e.target.value,
-                        }))
-                      }
-                    />
-                  </div>
-                </div>
-
-                <div className="flex gap-3 mt-6">
-                  <ThemeAwareButton
-                    variant="outline"
-                    className="flex-1"
-                    onClick={() => {
-                      setShowAddModal(false);
-                      setEditingObligation(null);
-                      setNewObligation({});
-                    }}
-                  >
-                    {language === "th" ? "ยกเลิก" : "Cancel"}
-                  </ThemeAwareButton>
-                  <ThemeAwareButton
-                    variant="primary"
-                    className="flex-1"
-                    onClick={handleAddObligation}
-                  >
-                    {editingObligation
-                      ? language === "th"
-                        ? "บันทึก"
-                        : "Save"
-                      : language === "th"
-                        ? "เพิ่ม"
-                        : "Add"}
-                  </ThemeAwareButton>
-                </div>
-              </ThemeAwareCard>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Cultural Guidance */}
+      <ThemeAwareCard className="p-4 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20">
+        <h3 className="font-semibold text-amber-300 mb-2">
+          🙏 กตัญญู (Katanyu) - Gratitude to Parents
+        </h3>
+        <p className="text-sm text-gray-300 mb-3">
+          Supporting parents is one of the highest virtues in Thai culture, essential for good karma and family honor.
+        </p>
+        <ul className="text-sm text-gray-400 space-y-1">
+          <li className="flex items-start gap-2">
+            <span className="text-amber-400 mt-1">•</span>
+            <span>Allocate 10-20% of income for parent support</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-amber-400 mt-1">•</span>
+            <span>Regular contributions show consistent care and respect</span>
+          </li>
+        </ul>
+      </ThemeAwareCard>
     </div>
   );
 }

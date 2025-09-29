@@ -1,441 +1,501 @@
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  CalendarIcon,
-  GiftIcon,
-  CurrencyDollarIcon,
-} from "@heroicons/react/24/outline";
-import {
-  ThemeAwareCard,
-  ThemeAwareText,
-  ThemeAwareHeading,
+import { 
+  ThemeAwareCard, 
+  ThemeAwareText, 
   ThemeAwareButton,
-  useTheme,
+  ThemeAwareHeading,
+  useTheme 
 } from "../../../core";
+import { useTranslation } from "../../../libs/i18n";
 import { cn } from "../../../libs/utils";
-import { getUpcomingThaiHolidays } from "../data/thaiHolidays";
-import {
-  formatThaiCurrency,
-  formatBuddhistDate,
-} from "../services/thaiLocalization";
-import type { ThaiHoliday } from "../types";
 
-interface ThaiCalendarIntegrationProps {
-  language?: "en" | "th";
-  onPlanExpense?: (holiday: ThaiHoliday, amount: number) => void;
+// Thai Buddhist Calendar and Cultural Events
+export interface ThaiCulturalEvent {
+  id: string;
+  name: string;
+  nameEn: string;
+  nameTh: string;
+  date: string;
+  type: "religious" | "national" | "cultural" | "seasonal";
+  significance: "high" | "medium" | "low";
+  financialImpact: {
+    spendingIncrease: number; // percentage
+    categories: string[];
+    budgetRecommendation: string;
+  };
+  traditions: string[];
+  modernPractices: string[];
+  icon: string;
+  color: string;
+  description: {
+    en: string;
+    th: string;
+  };
+}
+
+export interface ThaiCalendarIntegrationProps {
+  currentEvents?: ThaiCulturalEvent[];
+  upcomingEvents?: ThaiCulturalEvent[];
+  onEventSelect?: (event: ThaiCulturalEvent) => void;
+  showBuddhistEra?: boolean;
   className?: string;
 }
 
+// Thai Cultural Events Data
+const mockThaiEvents: ThaiCulturalEvent[] = [
+  {
+    id: "songkran-2025",
+    name: "สงกรานต์",
+    nameEn: "Songkran Festival",
+    nameTh: "เทศกาลสงกรานต์",
+    date: "2025-04-13",
+    type: "cultural",
+    significance: "high",
+    financialImpact: {
+      spendingIncrease: 45,
+      categories: ["Travel", "Food & Dining", "Gifts", "Entertainment"],
+      budgetRecommendation: "Plan ฿15,000-25,000 for travel and celebrations"
+    },
+    traditions: [
+      "Water blessing ceremonies",
+      "Visiting temples and elders", 
+      "Traditional Thai games",
+      "Making merit with food offerings"
+    ],
+    modernPractices: [
+      "Water fights and festivals",
+      "Travel to hometowns",
+      "Hotel and resort bookings",
+      "Social media celebrations"
+    ],
+    icon: "💧",
+    color: "#3B82F6",
+    description: {
+      en: "Thai New Year celebration with water blessings and family reunions",
+      th: "เทศกาลปีใหม่ไทยด้วยการประพรมน้ำและการรวมตัวครอบครัว"
+    }
+  },
+  {
+    id: "vesak-2025",
+    name: "วิสาขบูชา",
+    nameEn: "Vesak Day",
+    nameTh: "วันวิสาขบูชา",
+    date: "2025-05-12",
+    type: "religious",
+    significance: "high",
+    financialImpact: {
+      spendingIncrease: 25,
+      categories: ["Merit Making", "Temple Donations", "Food Offerings"],
+      budgetRecommendation: "Allocate ฿5,000-8,000 for religious activities"
+    },
+    traditions: [
+      "Temple visits and meditation",
+      "Candle processions (Wien Tien)",
+      "Merit making with monks",
+      "Vegetarian meals"
+    ],
+    modernPractices: [
+      "Online dharma teachings",
+      "Digital merit making",
+      "Social media sharing of good deeds",
+      "Corporate CSR activities"
+    ],
+    icon: "🕯️",
+    color: "#F59E0B",
+    description: {
+      en: "Buddhist holy day commemorating Buddha's birth, enlightenment, and death",
+      th: "วันสำคัญทางพุทธศาสนาระลึกถึงการประสูติ ตรัสรู้ และปรินิพพานของพระพุทธเจ้า"
+    }
+  },
+  {
+    id: "lent-2025",
+    name: "เข้าพรรษา",
+    nameEn: "Buddhist Lent",
+    nameTh: "วันเข้าพรรษา",
+    date: "2025-07-13",
+    type: "religious",
+    significance: "high",
+    financialImpact: {
+      spendingIncrease: -15,
+      categories: ["Reduced Entertainment", "Mindful Spending", "Meditation Retreats"],
+      budgetRecommendation: "Focus on savings and mindful consumption during this period"
+    },
+    traditions: [
+      "Monks retreat to temples",
+      "Reduced social activities",
+      "Increased meditation practice",
+      "Traditional candle offerings"
+    ],
+    modernPractices: [
+      "Digital detox periods",
+      "Mindfulness apps usage",
+      "Sustainable living practices",
+      "Reduced consumption habits"
+    ],
+    icon: "🧘",
+    color: "#8B5CF6",
+    description: {
+      en: "Three-month Buddhist retreat period emphasizing mindfulness and restraint",
+      th: "ระยะเวลาพรรษา 3 เดือนที่เน้นการมีสติและความประมาณตน"
+    }
+  },
+  {
+    id: "loy-krathong-2025",
+    name: "ลอยกระทง",
+    nameEn: "Loy Krathong",
+    nameTh: "เทศกาลลอยกระทง",
+    date: "2025-11-05",
+    type: "cultural",
+    significance: "high",
+    financialImpact: {
+      spendingIncrease: 30,
+      categories: ["Festival Materials", "Travel", "Food & Dining", "Photography"],
+      budgetRecommendation: "Budget ฿8,000-12,000 for festival celebrations"
+    },
+    traditions: [
+      "Floating decorated baskets",
+      "Making wishes and prayers",
+      "Traditional Thai performances",
+      "Riverside celebrations"
+    ],
+    modernPractices: [
+      "Eco-friendly krathongs",
+      "Social media photo sharing",
+      "Hotel packages and events",
+      "Modern light festivals"
+    ],
+    icon: "🏮",
+    color: "#EC4899",
+    description: {
+      en: "Festival of lights celebrating the end of rainy season with floating offerings",
+      th: "เทศกาลแห่งแสงไฟฉลองการสิ้นสุดฤดูฝนด้วยการลอยกระทง"
+    }
+  },
+  {
+    id: "new-year-2025",
+    name: "ปีใหม่",
+    nameEn: "New Year",
+    nameTh: "เทศกาลปีใหม่",
+    date: "2025-01-01",
+    type: "national",
+    significance: "high",
+    financialImpact: {
+      spendingIncrease: 60,
+      categories: ["Gifts", "Travel", "Celebrations", "Resolutions", "Shopping"],
+      budgetRecommendation: "Plan ฿20,000-35,000 for holiday season expenses"
+    },
+    traditions: [
+      "Family gatherings",
+      "Gift giving",
+      "New Year resolutions",
+      "Temple visits for blessings"
+    ],
+    modernPractices: [
+      "Countdown celebrations",
+      "Shopping mall events",
+      "Social media posts",
+      "Fitness and wellness goals"
+    ],
+    icon: "🎊",
+    color: "#10B981",
+    description: {
+      en: "International New Year celebration with Thai cultural elements",
+      th: "การเฉลิมฉลองปีใหม่สากลผสมผสานวัฒนธรรมไทย"
+    }
+  }
+];
+
+// Buddhist Era Converter
+const convertToBuddhistEra = (gregorianYear: number): number => {
+  return gregorianYear + 543;
+};
+
+const formatThaiDate = (date: Date, includeBuddhistEra: boolean = true): string => {
+  const thaiMonths = [
+    "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+    "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+  ];
+  
+  const day = date.getDate();
+  const month = thaiMonths[date.getMonth()];
+  const year = includeBuddhistEra ? convertToBuddhistEra(date.getFullYear()) : date.getFullYear();
+  
+  return `${day} ${month} ${year}`;
+};
+
+// Event Card Component
+function CulturalEventCard({ 
+  event, 
+  onClick,
+  isSelected = false 
+}: { 
+  event: ThaiCulturalEvent; 
+  onClick?: () => void;
+  isSelected?: boolean;
+}) {
+  const { language } = useTranslation();
+  const { themeMode: _themeMode } = useTheme();
+  
+  const eventDate = new Date(event.date);
+  const isUpcoming = eventDate > new Date();
+  const daysUntil = isUpcoming ? Math.ceil((eventDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)) : 0;
+
+  return (
+    <motion.div
+      className={cn(
+        "cursor-pointer transition-all duration-300",
+        isSelected && "scale-105"
+      )}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      onClick={onClick}
+    >
+      <ThemeAwareCard 
+        className={cn(
+          "p-4 border-2 transition-all duration-300",
+          isSelected ? "border-purple-500 shadow-lg shadow-purple-500/20" : "border-transparent"
+        )}
+      >
+        <div className="flex items-start justify-between mb-3">
+          <div className="flex items-center gap-3">
+            <div 
+              className="text-2xl p-2 rounded-full"
+              style={{ 
+                backgroundColor: `${event.color}20`,
+                color: event.color 
+              }}
+            >
+              {event.icon}
+            </div>
+            <div>
+              <h3 className="font-semibold text-lg">
+                {language === 'th' ? event.nameTh : event.nameEn}
+              </h3>
+              <div className="flex items-center gap-2 text-sm">
+                <span className={cn(
+                  "px-2 py-1 rounded-full text-xs font-medium capitalize",
+                  event.type === 'religious' ? 'bg-amber-500/20 text-amber-300' :
+                  event.type === 'cultural' ? 'bg-blue-500/20 text-blue-300' :
+                  event.type === 'national' ? 'bg-green-500/20 text-green-300' :
+                  'bg-purple-500/20 text-purple-300'
+                )}>
+                  {event.type}
+                </span>
+                <span className={cn(
+                  "px-2 py-1 rounded-full text-xs font-medium",
+                  event.significance === 'high' ? 'bg-red-500/20 text-red-300' :
+                  event.significance === 'medium' ? 'bg-yellow-500/20 text-yellow-300' :
+                  'bg-gray-500/20 text-gray-300'
+                )}>
+                  {event.significance} impact
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          {isUpcoming && (
+            <div className="text-right">
+              <div className="text-xs text-gray-400">in</div>
+              <div className="text-lg font-bold text-purple-300">{daysUntil}</div>
+              <div className="text-xs text-gray-400">days</div>
+            </div>
+          )}
+        </div>
+
+        <ThemeAwareText color="secondary" className="text-sm mb-3 line-clamp-2">
+          {language === 'th' ? event.description.th : event.description.en}
+        </ThemeAwareText>
+
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-gray-400">Date:</span>
+            <span className="font-medium">
+              {formatThaiDate(eventDate, language === 'th')}
+            </span>
+          </div>
+          
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-gray-400">Spending Impact:</span>
+            <span className={cn(
+              "font-medium flex items-center gap-1",
+              event.financialImpact.spendingIncrease > 0 ? 'text-red-300' : 
+              event.financialImpact.spendingIncrease < 0 ? 'text-green-300' : 
+              'text-gray-300'
+            )}>
+              {event.financialImpact.spendingIncrease > 0 ? '↗️' : 
+               event.financialImpact.spendingIncrease < 0 ? '↘️' : '➡️'}
+              {Math.abs(event.financialImpact.spendingIncrease)}%
+            </span>
+          </div>
+        </div>
+
+        {isSelected && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="mt-4 pt-4 border-t border-gray-700"
+          >
+            <div className="space-y-3">
+              <div>
+                <h4 className="text-sm font-semibold mb-2 text-purple-300">Financial Recommendation:</h4>
+                <p className="text-sm text-gray-300">{event.financialImpact.budgetRecommendation}</p>
+              </div>
+              
+              <div>
+                <h4 className="text-sm font-semibold mb-2 text-blue-300">Affected Categories:</h4>
+                <div className="flex flex-wrap gap-1">
+                  {event.financialImpact.categories.map((category, idx) => (
+                    <span 
+                      key={idx}
+                      className="px-2 py-1 bg-gray-700 text-xs rounded-full"
+                    >
+                      {category}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </ThemeAwareCard>
+    </motion.div>
+  );
+}
+
 export function ThaiCalendarIntegration({
-  language = "en",
-  onPlanExpense,
-  className,
+  currentEvents: _currentEvents = [],
+  upcomingEvents: _upcomingEvents = [],
+  onEventSelect,
+  showBuddhistEra = true,
+  className = "",
 }: ThaiCalendarIntegrationProps) {
-  const { isPlayMode } = useTheme();
-  const [upcomingHolidays, setUpcomingHolidays] = useState<ThaiHoliday[]>([]);
-  const [selectedHoliday, setSelectedHoliday] = useState<ThaiHoliday | null>(
-    null,
-  );
-  const [plannedBudgets, setPlannedBudgets] = useState<Record<string, number>>(
-    {},
-  );
+  const { language: _language } = useTranslation();
+  const { themeMode: _themeMode } = useTheme();
+  const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<'current' | 'upcoming' | 'all'>('upcoming');
 
-  useEffect(() => {
-    const holidays = getUpcomingThaiHolidays(6); // Next 6 months
-    setUpcomingHolidays(holidays);
-  }, []);
+  // Get current and upcoming events
+  const now = new Date();
+  const allEvents = mockThaiEvents;
+  
+  const currentEventsData = allEvents.filter(event => {
+    const eventDate = new Date(event.date);
+    const daysDiff = Math.abs((eventDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+    return daysDiff <= 7; // Within 7 days
+  });
 
-  const handlePlanBudget = (holiday: ThaiHoliday, amount: number) => {
-    setPlannedBudgets((prev) => ({
-      ...prev,
-      [holiday.id]: amount,
-    }));
-    onPlanExpense?.(holiday, amount);
-  };
+  const upcomingEventsData = allEvents.filter(event => {
+    const eventDate = new Date(event.date);
+    return eventDate > now;
+  }).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-  const getHolidayTypeIcon = (type: ThaiHoliday["type"]) => {
-    switch (type) {
-      case "religious":
-        return "🙏";
-      case "royal":
-        return "👑";
-      case "cultural":
-        return "🎉";
-      case "seasonal":
-        return "🌸";
-      default:
-        return "📅";
+  const displayEvents = viewMode === 'current' ? currentEventsData :
+                       viewMode === 'upcoming' ? upcomingEventsData :
+                       allEvents;
+
+  const handleEventSelect = (event: ThaiCulturalEvent) => {
+    const newSelection = selectedEvent === event.id ? null : event.id;
+    setSelectedEvent(newSelection);
+    if (newSelection && onEventSelect) {
+      onEventSelect(event);
     }
   };
 
-  const getHolidayTypeColor = (type: ThaiHoliday["type"]) => {
-    switch (type) {
-      case "religious":
-        return "from-yellow-400 to-orange-500";
-      case "royal":
-        return "from-purple-400 to-purple-600";
-      case "cultural":
-        return "from-pink-400 to-red-500";
-      case "seasonal":
-        return "from-green-400 to-blue-500";
-      default:
-        return "from-gray-400 to-gray-600";
-    }
-  };
-
-  const getDaysUntil = (dateString: string) => {
-    const holidayDate = new Date(dateString);
-    const today = new Date();
-    const diffTime = holidayDate.getTime() - today.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
-  };
+  // Calculate total financial impact
+  const totalImpact = useMemo(() => {
+    const relevantEvents = viewMode === 'current' ? currentEventsData : upcomingEventsData;
+    return relevantEvents.reduce((sum, event) => sum + event.financialImpact.spendingIncrease, 0);
+  }, [viewMode, currentEventsData, upcomingEventsData]);
 
   return (
     <div className={cn("space-y-6", className)}>
       {/* Header */}
       <div className="text-center">
-        <ThemeAwareHeading level="h2" className="mb-4" gradient={isPlayMode}>
-          {language === "th"
-            ? "📅 ปฏิทินวัฒนธรรมไทย"
-            : "📅 Thai Cultural Calendar"}
+        <ThemeAwareHeading level="h2" className="text-2xl font-bold mb-2 flex items-center justify-center gap-2">
+          🇹🇭 Thai Cultural Calendar
         </ThemeAwareHeading>
-        <ThemeAwareText color="secondary">
-          {language === "th"
-            ? "วางแผนการเงินสำหรับเทศกาลและวันสำคัญของไทย"
-            : "Plan your finances for Thai festivals and important occasions"}
+        <ThemeAwareText color="secondary" className="text-sm">
+          {showBuddhistEra && `Buddhist Era ${convertToBuddhistEra(new Date().getFullYear())} • `}
+          Plan your finances around Thai cultural events
         </ThemeAwareText>
       </div>
 
-      {/* Upcoming Holidays Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {upcomingHolidays.map((holiday, index) => {
-          const daysUntil = getDaysUntil(holiday.gregorianDate);
-          const plannedBudget = plannedBudgets[holiday.id];
-
-          return (
-            <motion.div
-              key={holiday.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <ThemeAwareCard
-                hover
-                className={cn(
-                  "relative overflow-hidden",
-                  isPlayMode && "border-2 border-purple-400/30",
-                )}
-              >
-                {/* Holiday Type Badge */}
-                <div
-                  className={cn(
-                    "absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-medium",
-                    `bg-gradient-to-r ${getHolidayTypeColor(holiday.type)}`,
-                    "text-white shadow-lg",
-                  )}
-                >
-                  {getHolidayTypeIcon(holiday.type)}
-                </div>
-
-                {/* Days Until Badge */}
-                {daysUntil > 0 && (
-                  <div className="absolute top-3 left-3 px-2 py-1 bg-blue-500 text-white rounded-full text-xs font-medium">
-                    {daysUntil} {language === "th" ? "วัน" : "days"}
-                  </div>
-                )}
-
-                <div className="p-6">
-                  <div className="mb-4">
-                    <ThemeAwareHeading level="h3" className="mb-2">
-                      {holiday.name[language]}
-                    </ThemeAwareHeading>
-                    <ThemeAwareText color="secondary" className="text-sm mb-2">
-                      {formatBuddhistDate(
-                        new Date(holiday.gregorianDate),
-                        language,
-                      )}
-                    </ThemeAwareText>
-                    <ThemeAwareText className="text-sm line-clamp-2">
-                      {holiday.significance[language]}
-                    </ThemeAwareText>
-                  </div>
-
-                  {/* Budget Information */}
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between text-sm">
-                      <ThemeAwareText color="secondary">
-                        {language === "th"
-                          ? "งบประมาณแนะนำ:"
-                          : "Suggested Budget:"}
-                      </ThemeAwareText>
-                      <ThemeAwareText className="font-medium">
-                        {formatThaiCurrency(
-                          holiday.budgetSuggestion.min,
-                          language,
-                          true,
-                        )}{" "}
-                        -{" "}
-                        {formatThaiCurrency(
-                          holiday.budgetSuggestion.max,
-                          language,
-                          true,
-                        )}
-                      </ThemeAwareText>
-                    </div>
-
-                    {plannedBudget && (
-                      <div className="flex items-center justify-between text-sm">
-                        <ThemeAwareText color="secondary">
-                          {language === "th"
-                            ? "งบที่วางแผน:"
-                            : "Planned Budget:"}
-                        </ThemeAwareText>
-                        <ThemeAwareText className="font-medium text-green-600">
-                          {formatThaiCurrency(plannedBudget, language)}
-                        </ThemeAwareText>
-                      </div>
-                    )}
-
-                    {/* Action Buttons */}
-                    <div className="flex gap-2 mt-4">
-                      <ThemeAwareButton
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setSelectedHoliday(holiday)}
-                        className="flex-1"
-                      >
-                        <CalendarIcon className="w-4 h-4 mr-2" />
-                        {language === "th" ? "ดูรายละเอียด" : "View Details"}
-                      </ThemeAwareButton>
-
-                      {!plannedBudget && (
-                        <ThemeAwareButton
-                          variant="primary"
-                          size="sm"
-                          onClick={() =>
-                            handlePlanBudget(
-                              holiday,
-                              holiday.budgetSuggestion.min,
-                            )
-                          }
-                          className="flex-1"
-                        >
-                          <CurrencyDollarIcon className="w-4 h-4 mr-2" />
-                          {language === "th" ? "วางแผน" : "Plan"}
-                        </ThemeAwareButton>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Cosmic Effects for Play Mode */}
-                {isPlayMode && (
-                  <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-xl" />
-                    <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-blue-400/20 to-cyan-400/20 rounded-full blur-lg" />
-                  </div>
-                )}
-              </ThemeAwareCard>
-            </motion.div>
-          );
-        })}
+      {/* View Mode Selector */}
+      <div className="flex justify-center gap-2">
+        {(['current', 'upcoming', 'all'] as const).map((mode) => (
+          <ThemeAwareButton
+            key={mode}
+            variant={viewMode === mode ? "primary" : "ghost"}
+            size="sm"
+            onClick={() => setViewMode(mode)}
+            className="capitalize"
+          >
+            {mode === 'current' ? `Current (${currentEventsData.length})` :
+             mode === 'upcoming' ? `Upcoming (${upcomingEventsData.length})` :
+             `All (${allEvents.length})`}
+          </ThemeAwareButton>
+        ))}
       </div>
 
-      {/* Holiday Detail Modal */}
-      <AnimatePresence>
-        {selectedHoliday && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-            onClick={() => setSelectedHoliday(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="max-w-2xl w-full"
-            >
-              <ThemeAwareCard className="p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-3">
-                    <span className="text-4xl">
-                      {getHolidayTypeIcon(selectedHoliday.type)}
-                    </span>
-                    <div>
-                      <ThemeAwareHeading level="h2" className="mb-1">
-                        {selectedHoliday.name[language]}
-                      </ThemeAwareHeading>
-                      <ThemeAwareText color="secondary">
-                        {formatBuddhistDate(
-                          new Date(selectedHoliday.gregorianDate),
-                          language,
-                        )}
-                      </ThemeAwareText>
-                    </div>
-                  </div>
-                  <ThemeAwareButton
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setSelectedHoliday(null)}
-                  >
-                    ✕
-                  </ThemeAwareButton>
-                </div>
-
-                <div className="space-y-6">
-                  {/* Significance */}
-                  <div>
-                    <ThemeAwareHeading level="h3" className="mb-3">
-                      {language === "th" ? "ความสำคัญ" : "Significance"}
-                    </ThemeAwareHeading>
-                    <ThemeAwareText>
-                      {selectedHoliday.significance[language]}
-                    </ThemeAwareText>
-                  </div>
-
-                  {/* Traditional Expenses */}
-                  <div>
-                    <ThemeAwareHeading level="h3" className="mb-3">
-                      {language === "th"
-                        ? "ค่าใช้จ่ายตามประเพณี"
-                        : "Traditional Expenses"}
-                    </ThemeAwareHeading>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {selectedHoliday.traditionalExpenses.map(
-                        (expense, index) => (
-                          <div key={index} className="flex items-center gap-2">
-                            <GiftIcon className="w-4 h-4 text-purple-500" />
-                            <ThemeAwareText className="text-sm">
-                              {expense}
-                            </ThemeAwareText>
-                          </div>
-                        ),
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Budget Planning */}
-                  <div>
-                    <ThemeAwareHeading level="h3" className="mb-3">
-                      {language === "th"
-                        ? "การวางแผนงบประมาณ"
-                        : "Budget Planning"}
-                    </ThemeAwareHeading>
-                    <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 p-4 rounded-lg">
-                      <div className="flex items-center justify-between mb-4">
-                        <ThemeAwareText color="secondary">
-                          {language === "th"
-                            ? "ช่วงงบประมาณแนะนำ"
-                            : "Recommended Budget Range"}
-                        </ThemeAwareText>
-                        <ThemeAwareText className="font-bold text-lg">
-                          {formatThaiCurrency(
-                            selectedHoliday.budgetSuggestion.min,
-                            language,
-                          )}{" "}
-                          -{" "}
-                          {formatThaiCurrency(
-                            selectedHoliday.budgetSuggestion.max,
-                            language,
-                          )}
-                        </ThemeAwareText>
-                      </div>
-
-                      <div className="flex gap-2">
-                        <ThemeAwareButton
-                          variant="outline"
-                          size="sm"
-                          onClick={() =>
-                            handlePlanBudget(
-                              selectedHoliday,
-                              selectedHoliday.budgetSuggestion.min,
-                            )
-                          }
-                        >
-                          {language === "th" ? "วางแผนขั้นต่ำ" : "Plan Minimum"}
-                        </ThemeAwareButton>
-                        <ThemeAwareButton
-                          variant="primary"
-                          size="sm"
-                          onClick={() =>
-                            handlePlanBudget(
-                              selectedHoliday,
-                              selectedHoliday.budgetSuggestion.max,
-                            )
-                          }
-                        >
-                          {language === "th" ? "วางแผนสูงสุด" : "Plan Maximum"}
-                        </ThemeAwareButton>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </ThemeAwareCard>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Summary Card */}
-      {upcomingHolidays.length > 0 && (
-        <ThemeAwareCard className="p-6">
+      {/* Financial Impact Summary */}
+      {viewMode !== 'all' && (
+        <ThemeAwareCard className="p-4 bg-gradient-to-r from-purple-500/10 to-blue-500/10 border border-purple-500/20">
           <div className="text-center">
-            <ThemeAwareHeading level="h3" className="mb-4">
-              {language === "th"
-                ? "📊 สรุปงบประมาณเทศกาล"
-                : "📊 Festival Budget Summary"}
-            </ThemeAwareHeading>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="text-center">
-                <ThemeAwareText color="secondary" className="text-sm mb-1">
-                  {language === "th"
-                    ? "เทศกาลที่จะมาถึง"
-                    : "Upcoming Festivals"}
-                </ThemeAwareText>
-                <ThemeAwareText className="text-2xl font-bold text-blue-600">
-                  {upcomingHolidays.length}
-                </ThemeAwareText>
+            <h3 className="font-semibold text-purple-300 mb-2">
+              📊 Expected Financial Impact
+            </h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <div className={cn(
+                  "text-2xl font-bold",
+                  totalImpact > 0 ? "text-red-400" : 
+                  totalImpact < 0 ? "text-green-400" : "text-gray-400"
+                )}>
+                  {totalImpact > 0 ? '+' : ''}{totalImpact}%
+                </div>
+                <div className="text-sm text-gray-400">Spending Change</div>
               </div>
-
-              <div className="text-center">
-                <ThemeAwareText color="secondary" className="text-sm mb-1">
-                  {language === "th" ? "งบที่วางแผนแล้ว" : "Planned Budget"}
-                </ThemeAwareText>
-                <ThemeAwareText className="text-2xl font-bold text-green-600">
-                  {formatThaiCurrency(
-                    Object.values(plannedBudgets).reduce(
-                      (sum, amount) => sum + amount,
-                      0,
-                    ),
-                    language,
-                    true,
-                  )}
-                </ThemeAwareText>
-              </div>
-
-              <div className="text-center">
-                <ThemeAwareText color="secondary" className="text-sm mb-1">
-                  {language === "th" ? "งบประมาณแนะนำ" : "Suggested Total"}
-                </ThemeAwareText>
-                <ThemeAwareText className="text-2xl font-bold text-purple-600">
-                  {formatThaiCurrency(
-                    upcomingHolidays.reduce(
-                      (sum, holiday) => sum + holiday.budgetSuggestion.max,
-                      0,
-                    ),
-                    language,
-                    true,
-                  )}
-                </ThemeAwareText>
+              <div>
+                <div className="text-2xl font-bold text-purple-400">
+                  {displayEvents.length}
+                </div>
+                <div className="text-sm text-gray-400">Events</div>
               </div>
             </div>
           </div>
         </ThemeAwareCard>
+      )}
+
+      {/* Events List */}
+      <div className="space-y-4">
+        <AnimatePresence>
+          {displayEvents.map((event, index) => (
+            <motion.div
+              key={event.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+            >
+              <CulturalEventCard
+                event={event}
+                onClick={() => handleEventSelect(event)}
+                isSelected={selectedEvent === event.id}
+              />
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
+
+      {displayEvents.length === 0 && (
+        <div className="text-center py-8">
+          <div className="text-4xl mb-4">🗓️</div>
+          <ThemeAwareText color="secondary">
+            No events found for the selected period
+          </ThemeAwareText>
+        </div>
       )}
     </div>
   );
