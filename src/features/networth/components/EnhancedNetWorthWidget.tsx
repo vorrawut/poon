@@ -5,6 +5,11 @@ import {
   SyncStatus,
   InfoTooltip,
 } from "../../../components/ui";
+import {
+  AccessibleHeading,
+  AccessibleText,
+  AccessibleCard,
+} from "../../../core";
 import { useNetWorth } from "../hooks/useNetWorth";
 import {
   PieChart,
@@ -162,40 +167,50 @@ export function EnhancedNetWorthWidget({
 
             {/* Simple breakdown */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white rounded-xl p-6 border border-green-200">
+              <AccessibleCard
+                variant="elevated"
+                className="border border-green-200"
+              >
                 <div className="flex items-center mb-2">
                   <span className="text-2xl mr-2">💰</span>
-                  <h4 className="font-semibold text-green-800">What You Own</h4>
+                  <AccessibleHeading level="h4" className="text-green-800">
+                    What You Own
+                  </AccessibleHeading>
                 </div>
-                <div className="text-3xl font-bold text-green-600 mb-1">
+                <AccessibleHeading level="h3" className="text-green-600 mb-1">
                   ${totalAssets.toLocaleString()}
-                </div>
-                <p className="text-sm text-green-700">
+                </AccessibleHeading>
+                <AccessibleText variant="caption" className="text-green-700">
                   Your cash + investments + property
-                </p>
-              </div>
+                </AccessibleText>
+              </AccessibleCard>
 
-              <div className="bg-white rounded-xl p-6 border border-red-200">
+              <AccessibleCard
+                variant="elevated"
+                className="border border-red-200"
+              >
                 <div className="flex items-center mb-2">
                   <span className="text-2xl mr-2">💳</span>
-                  <h4 className="font-semibold text-red-800">What You Owe</h4>
+                  <AccessibleHeading level="h4" className="text-red-800">
+                    What You Owe
+                  </AccessibleHeading>
                 </div>
-                <div className="text-3xl font-bold text-red-600 mb-1">
+                <AccessibleHeading level="h3" className="text-red-600 mb-1">
                   ${totalDebts.toLocaleString()}
-                </div>
-                <p className="text-sm text-red-700">
+                </AccessibleHeading>
+                <AccessibleText variant="caption" className="text-red-700">
                   Your credit cards + loans
-                </p>
-              </div>
+                </AccessibleText>
+              </AccessibleCard>
             </div>
           </div>
 
           {/* Right: Pie Chart */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl p-6 h-full">
-              <h4 className="text-lg font-semibold text-gray-900 mb-4 text-center">
+              <AccessibleHeading level="h4" className="mb-4 text-center">
                 💼 Where Your Money Is
-              </h4>
+              </AccessibleHeading>
 
               {pieData.length > 0 ? (
                 <div className="h-64">

@@ -1,6 +1,11 @@
 import { useLocation } from "react-router-dom";
 import { useUIStore } from "../../store/useUIStore";
 import { Button } from "../ui/Button";
+import {
+  AccessibleHeading,
+  AccessibleText,
+  AccessibleButton,
+} from "../../core";
 import { Bars3Icon, PlusIcon, BellIcon } from "@heroicons/react/24/outline";
 
 const pageTitle: Record<string, string> = {
@@ -34,25 +39,27 @@ export function Header() {
         <div className="flex items-center space-x-4">
           {/* Mobile menu button */}
           {isMobile && (
-            <button
+            <AccessibleButton
+              variant="ghost"
+              size="sm"
               onClick={toggleSidebar}
-              className="p-2 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+              className="p-2"
             >
               <Bars3Icon className="h-6 w-6" />
-            </button>
+            </AccessibleButton>
           )}
 
           {/* Page title */}
           <div>
-            <h1 className="text-2xl font-semibold text-gray-900">{title}</h1>
-            <p className="text-sm text-gray-500">
+            <AccessibleHeading level="h1">{title}</AccessibleHeading>
+            <AccessibleText variant="caption" color="secondary">
               {new Date().toLocaleDateString("en-US", {
                 weekday: "long",
                 year: "numeric",
                 month: "long",
                 day: "numeric",
               })}
-            </p>
+            </AccessibleText>
           </div>
         </div>
 

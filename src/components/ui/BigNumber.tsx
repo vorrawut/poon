@@ -134,8 +134,8 @@ export function BigNumber({
             changeInfo.isPositive ? "text-green-600" : "text-red-600"
           }`}
         >
-          <div
-            className={`flex items-center text-lg font-semibold ${
+          <AccessibleText
+            className={`flex items-center font-semibold ${
               changeInfo.isPositive ? "text-green-600" : "text-red-600"
             }`}
           >
@@ -144,10 +144,10 @@ export function BigNumber({
               {changeInfo.isPositive ? "+" : "-"}
               {changeInfo.formattedChange}
             </span>
-          </div>
-          <span className="text-sm text-gray-500">
+          </AccessibleText>
+          <AccessibleText variant="caption" className="text-gray-500">
             ({changeInfo.formattedPercent} this month)
-          </span>
+          </AccessibleText>
         </div>
       )}
 

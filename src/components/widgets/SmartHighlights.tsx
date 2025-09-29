@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { AccessibleHeading, AccessibleText } from "../../core";
 
 interface Highlight {
   id: string;
@@ -38,11 +39,13 @@ export function SmartHighlights({
       transition={{ duration: 1, delay: 0.5 }}
     >
       <div className="text-center mb-12">
-        <h2 className="text-4xl font-bold text-white mb-4">
+        <AccessibleHeading level="h2" className="text-white mb-4">
           <span className="mr-3">🧠</span>
           {title}
-        </h2>
-        <p className="text-white/70 max-w-2xl mx-auto">{subtitle}</p>
+        </AccessibleHeading>
+        <AccessibleText color="secondary" className="max-w-2xl mx-auto">
+          {subtitle}
+        </AccessibleText>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -58,9 +61,13 @@ export function SmartHighlights({
           >
             <div className="flex items-center gap-3 mb-3">
               <div className="text-3xl">{highlight.icon}</div>
-              <h3 className="text-white font-bold">{highlight.title}</h3>
+              <AccessibleHeading level="h3" className="text-white">
+                {highlight.title}
+              </AccessibleHeading>
             </div>
-            <p className="text-white/80 text-sm">{highlight.message}</p>
+            <AccessibleText variant="caption" className="text-white/80">
+              {highlight.message}
+            </AccessibleText>
           </motion.div>
         ))}
       </div>

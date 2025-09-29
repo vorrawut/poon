@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bot, Zap, AlertTriangle, Target, Star, Rocket, X } from "lucide-react";
+import {
+  AccessibleHeading,
+  AccessibleText,
+  AccessibleButton,
+} from "../../core";
 import type { Mission } from "../../../mockData/features/future";
 
 interface CoPilotMessage {
@@ -430,22 +435,25 @@ export function AICoPilot({ missions, className = "" }: AICoPilotProps) {
                       <Bot className="w-6 h-6 text-white" />
                     </motion.div>
                     <div>
-                      <h2 className="text-2xl font-bold text-white">
+                      <AccessibleHeading level="h2" className="text-white">
                         AI Co-Pilot Command Center
-                      </h2>
-                      <p className="text-white/70 text-sm">
+                      </AccessibleHeading>
+                      <AccessibleText
+                        variant="caption"
+                        className="text-white/70"
+                      >
                         Mission intelligence and guidance system
-                      </p>
+                      </AccessibleText>
                     </div>
                   </div>
-                  <motion.button
+                  <AccessibleButton
+                    variant="ghost"
+                    size="sm"
                     onClick={() => setIsExpanded(false)}
-                    className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white transition-colors"
-                    whileHover={{ scale: 1.1, rotate: 90 }}
-                    whileTap={{ scale: 0.9 }}
+                    className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white"
                   >
                     <X className="w-5 h-5" />
-                  </motion.button>
+                  </AccessibleButton>
                 </div>
 
                 {/* Stats Bar */}
