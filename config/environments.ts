@@ -77,7 +77,7 @@ const localConfig: AppConfig = {
   },
 };
 
-// Development environment (real APIs for integration testing)
+// Development environment (mock data for local development)
 const developmentConfig: AppConfig = {
   ...baseConfig,
   environment: 'development',
@@ -85,9 +85,9 @@ const developmentConfig: AppConfig = {
   isProduction: false,
   isLocal: false,
   apiBaseUrl: 'http://localhost:3001/api',
-  dataSource: 'api', // Use real APIs in development
-  mockApiDelay: 500,
-  mockEnableErrors: true, // Enable error simulation for testing
+  dataSource: 'mock', // Use mock data for local development
+  mockApiDelay: 800, // Realistic loading experience
+  mockEnableErrors: false, // Disable errors for better UX
   features: {
     ...baseConfig.features,
     debugMode: true,

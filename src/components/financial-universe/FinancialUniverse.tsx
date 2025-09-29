@@ -62,7 +62,7 @@ export function FinancialUniverse({
 
   return (
     <div
-      className={`relative h-full bg-gradient-to-b from-slate-900 via-purple-900 to-indigo-900 overflow-hidden ${className}`}
+      className={`relative h-full bg-gradient-to-b from-slate-900 via-purple-900 to-indigo-900 overflow-y-auto ${className}`}
     >
       {/* Background Stars Field */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
