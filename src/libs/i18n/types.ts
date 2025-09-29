@@ -18,6 +18,7 @@ export interface CommonTranslations {
     timeMachine: TranslationKey;
     future: TranslationKey;
     thaiCulture: TranslationKey;
+    social: TranslationKey;
     spending: TranslationKey;
     import: TranslationKey;
     settings: TranslationKey;

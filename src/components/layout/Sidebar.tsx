@@ -16,6 +16,7 @@ import {
   CurrencyDollarIcon,
   ClockIcon,
   RocketLaunchIcon,
+  UserGroupIcon,
 } from "@heroicons/react/24/outline";
 
 // Navigation items with translation keys
@@ -56,6 +57,11 @@ const getNavigation = (t: (key: string) => string) => [
     href: "/thai-culture",
     icon: HomeIcon,
   }, // Will fix icon later
+  {
+    name: t("common.navigation.social"),
+    href: "/social",
+    icon: UserGroupIcon,
+  },
   {
     name: t("common.navigation.spending"),
     href: "/spending",

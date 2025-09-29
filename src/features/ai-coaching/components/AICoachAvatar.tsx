@@ -437,7 +437,7 @@ export function AICoachAvatar({
   className = "",
 }: AICoachAvatarProps) {
   const { language } = useTranslation();
-  const { themeMode } = useTheme();
+  const { themeMode: _themeMode } = useTheme();
   const [showPersonalitySelector, setShowPersonalitySelector] = useState(false);
   const [messageHistory, setMessageHistory] = useState<AICoachMessage[]>([]);
   const [currentPersonality, setCurrentPersonality] = useState(personality);

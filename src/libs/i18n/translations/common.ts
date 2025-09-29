@@ -43,6 +43,10 @@ export const commonTranslations: CommonTranslations = {
       en: "Import",
       th: "นำเข้า",
     },
+    social: {
+      en: "Social",
+      th: "สังคม",
+    },
     settings: {
       en: "Settings",
       th: "ตั้งค่า",

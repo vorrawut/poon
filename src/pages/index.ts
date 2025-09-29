@@ -9,3 +9,4 @@ export { Future } from "../features/future";
 export { Imports } from "./Imports";
 export { Settings } from "./Settings";
 export { ThaiCulture } from "./ThaiCulture";
+export { Social } from "./Social";

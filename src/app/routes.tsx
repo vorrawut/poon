@@ -13,6 +13,7 @@ import {
   Settings,
   UniverseDashboard,
   ThaiCulture,
+  Social,
 } from "../pages";
 
 export function AppRoutes() {
@@ -30,6 +31,7 @@ export function AppRoutes() {
         <Route path="time-machine" element={<MoneyTimeMachine />} />
         <Route path="future" element={<Future />} />
         <Route path="thai-culture" element={<ThaiCulture />} />
+        <Route path="social" element={<Social />} />
         <Route path="imports" element={<Imports />} />
         <Route path="settings" element={<Settings />} />
       </Route>

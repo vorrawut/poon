@@ -5,7 +5,6 @@ import {
   ThemeAwareText,
   ThemeAwareButton,
   ThemeAwareHeading,
-  useTheme,
 } from "../../../core";
 import { useTranslation } from "../../../libs/i18n";
 import { cn } from "../../../libs/utils";
@@ -595,13 +594,13 @@ function TipCard({
 
 export function PersonalizedTips({
   tips = mockPersonalizedTips,
-  userProfile,
+  userProfile: _userProfile,
   onImplementTip,
   onDismissTip,
   onRateTip,
   className = "",
 }: PersonalizedTipsProps) {
-  const { language } = useTranslation();
+  const { language: _language } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedPriority, setSelectedPriority] = useState<string>("all");
   const [expandedTip, setExpandedTip] = useState<string | null>(null);
