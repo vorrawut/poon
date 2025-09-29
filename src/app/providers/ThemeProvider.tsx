@@ -70,14 +70,29 @@ export function ThemeProvider({
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
-  // Determine effective theme mode
-  const effectiveThemeMode = theme === "system" ? systemTheme : theme;
+  // Determine effective theme mode - ensure it's always "light" or "dark"
+  const effectiveThemeMode = React.useMemo(() => {
+    if (theme === "system") {
+      return systemTheme;
+    }
+    return theme;
+  }, [theme, systemTheme]);
 
   // Create theme configuration
   const themeConfig = useMemo((): ThemeConfig => {
     const colors = getThemeColors(viewMode, effectiveThemeMode);
     const accessibilitySpacing = getAccessibilitySpacing(accessibilityMode);
     const motionSettings = getMotionSettings(viewMode, accessibilityMode);
+
+    // Debug logging to identify the issue
+    if (!colors || !colors.primary) {
+      console.error('ThemeProvider: Colors not properly loaded', {
+        viewMode,
+        effectiveThemeMode,
+        colors,
+        colorKeys: colors ? Object.keys(colors) : 'no colors'
+      });
+    }
 
     return {
       viewMode,
@@ -97,6 +112,12 @@ export function ThemeProvider({
   const cssVariables = useMemo(() => {
     const colors = themeConfig.colors;
     const moodColors = getAdaptiveMoodColor(adaptiveMood);
+
+    // Safety check to prevent runtime errors
+    if (!colors || !colors.primary) {
+      console.error('ThemeProvider: Cannot generate CSS variables, colors.primary is undefined');
+      return {} as Record<string, string>;
+    }
 
     return {
       // Color variables

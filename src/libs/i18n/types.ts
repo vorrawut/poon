@@ -109,6 +109,7 @@ export interface CommonTranslations {
     clarityMode: TranslationKey;
     darkMode: TranslationKey;
     lightMode: TranslationKey;
+    auto: TranslationKey;
   };
 }
 
@@ -172,10 +173,31 @@ export interface FeatureTranslations {
     subtitle: TranslationKey;
     language: TranslationKey;
     theme: TranslationKey;
+    currency: TranslationKey;
+    preferences: TranslationKey;
     accessibility: TranslationKey;
     notifications: TranslationKey;
-    privacy: TranslationKey;
-    security: TranslationKey;
+    privacy: {
+      title: TranslationKey;
+      message: TranslationKey;
+    };
+    security: {
+      title: TranslationKey;
+      status: TranslationKey;
+      statusMessage: TranslationKey;
+      twoFactor: TranslationKey;
+      twoFactorDesc: TranslationKey;
+    };
+    sync: {
+      title: TranslationKey;
+      message: TranslationKey;
+    };
+    backup: {
+      title: TranslationKey;
+      message: TranslationKey;
+    };
+    systemStatus: TranslationKey;
+    systemStatusDesc: TranslationKey;
     about: TranslationKey;
   };
 }

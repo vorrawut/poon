@@ -189,6 +189,14 @@ export const featureTranslations: FeatureTranslations = {
       en: "Theme",
       th: "ธีม",
     },
+    currency: {
+      en: "Currency",
+      th: "สกุลเงิน",
+    },
+    preferences: {
+      en: "Preferences",
+      th: "การตั้งค่าส่วนตัว",
+    },
     accessibility: {
       en: "Accessibility",
       th: "การเข้าถึง",
@@ -198,12 +206,64 @@ export const featureTranslations: FeatureTranslations = {
       th: "การแจ้งเตือน",
     },
     privacy: {
-      en: "Privacy",
-      th: "ความเป็นส่วนตัว",
+      title: {
+        en: "Privacy & Data",
+        th: "ความเป็นส่วนตัวและข้อมูล",
+      },
+      message: {
+        en: "Your financial data is encrypted and secure. We never share your personal information with third parties.",
+        th: "ข้อมูลทางการเงินของคุณได้รับการเข้ารหัสและปลอดภัย เราไม่เคยแบ่งปันข้อมูลส่วนบุคคลของคุณกับบุคคลที่สาม",
+      },
     },
     security: {
-      en: "Security",
-      th: "ความปลอดภัย",
+      title: {
+        en: "Account & Security",
+        th: "บัญชีและความปลอดภัย",
+      },
+      status: {
+        en: "Security Status",
+        th: "สถานะความปลอดภัย",
+      },
+      statusMessage: {
+        en: "Your account is fully secured with 2FA enabled and strong password protection. All security checks passed!",
+        th: "บัญชีของคุณปลอดภัยด้วยการเปิดใช้งาน 2FA และการป้องกันรหัสผ่านที่แข็งแกร่ง การตรวจสอบความปลอดภัยทั้งหมดผ่าน!",
+      },
+      twoFactor: {
+        en: "Two-Factor Authentication",
+        th: "การยืนยันตัวตนสองขั้นตอน",
+      },
+      twoFactorDesc: {
+        en: "Extra security for your account",
+        th: "ความปลอดภัยเพิ่มเติมสำหรับบัญชีของคุณ",
+      },
+    },
+    sync: {
+      title: {
+        en: "Data Sync",
+        th: "การซิงค์ข้อมูล",
+      },
+      message: {
+        en: "All your financial accounts are syncing perfectly. Last update: 2 minutes ago. Your data is always current!",
+        th: "บัญชีการเงินทั้งหมดของคุณซิงค์อย่างสมบูรณ์แบบ อัปเดตล่าสุด: 2 นาทีที่แล้ว ข้อมูลของคุณเป็นปัจจุบันเสมอ!",
+      },
+    },
+    backup: {
+      title: {
+        en: "Backup Complete",
+        th: "การสำรองข้อมูลเสร็จสิ้น",
+      },
+      message: {
+        en: "Your financial data backup was completed successfully. Your information is safe and recoverable.",
+        th: "การสำรองข้อมูลการเงินของคุณเสร็จสิ้นเรียบร้อยแล้ว ข้อมูลของคุณปลอดภัยและสามารถกู้คืนได้",
+      },
+    },
+    systemStatus: {
+      en: "System Status",
+      th: "สถานะระบบ",
+    },
+    systemStatusDesc: {
+      en: "Everything about your account security and system health!",
+      th: "ทุกสิ่งเกี่ยวกับความปลอดภัยบัญชีและสุขภาพระบบของคุณ!",
     },
     about: {
       en: "About",

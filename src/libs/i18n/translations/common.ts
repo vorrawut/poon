@@ -339,5 +339,9 @@ export const commonTranslations: CommonTranslations = {
       en: "Light Mode",
       th: "โหมดสว่าง",
     },
+    auto: {
+      en: "Auto",
+      th: "อัตโนมัติ",
+    },
   },
 };

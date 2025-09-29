@@ -4,45 +4,47 @@ import { FadeIn, SplitText } from "../components/ui";
 import { SmartHighlights, UniverseBackground } from "../components/widgets";
 import { useUIStore } from "../store/useUIStore";
 import { getAccessibilityClasses } from "../libs/accessibility";
+import { useTranslation, useLanguage } from "../libs/i18n";
+import { useCurrency } from "../hooks/useCurrency";
 
-// Settings Highlights
-const settingsHighlights = [
+// Settings Highlights - will be translated in component
+const getSettingsHighlights = (t: (key: string) => string) => [
   {
     id: "1",
-    title: "Security Status",
-    message:
-      "Your account is fully secured with 2FA enabled and strong password protection. All security checks passed!",
+    title: t("features.settings.security.status"),
+    message: t("features.settings.security.statusMessage"),
     icon: "🔒",
     type: "success" as const,
   },
   {
     id: "2",
-    title: "Data Sync",
-    message:
-      "All your financial accounts are syncing perfectly. Last update: 2 minutes ago. Your data is always current!",
+    title: t("features.settings.sync.title"),
+    message: t("features.settings.sync.message"),
     icon: "🔄",
     type: "info" as const,
   },
   {
     id: "3",
-    title: "Privacy Settings",
-    message:
-      "Your privacy settings are optimized. Data sharing is minimal and you have full control over your information.",
+    title: t("features.settings.privacy.title"),
+    message: t("features.settings.privacy.message"),
     icon: "🛡️",
     type: "insight" as const,
   },
   {
     id: "4",
-    title: "Backup Complete",
-    message:
-      "Your financial data backup was completed successfully. Your information is safe and recoverable.",
+    title: t("features.settings.backup.title"),
+    message: t("features.settings.backup.message"),
     icon: "💾",
     type: "celebration" as const,
   },
 ];
 
 export function Settings() {
-  const { viewMode, accessibilityMode, setAccessibilityMode } = useUIStore();
+  const { t } = useTranslation();
+  const { language, setLanguage } = useLanguage();
+  const { currency, setCurrency } = useCurrency();
+  const { theme, viewMode, accessibilityMode, setTheme, setAccessibilityMode } = useUIStore();
+  
   const [notifications, setNotifications] = useState({
     email: true,
     push: true,
@@ -57,12 +59,6 @@ export function Settings() {
     marketing: false,
     profilePublic: false,
   });
-  const [preferences, setPreferences] = useState({
-    currency: "USD",
-    dateFormat: "MM/DD/YYYY",
-    theme: "auto",
-    language: "en",
-  });
 
   const handleNotificationChange = (key: keyof typeof notifications) => {
     setNotifications((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -72,11 +68,16 @@ export function Settings() {
     setPrivacy((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const handlePreferenceChange = (
-    key: keyof typeof preferences,
-    value: string,
-  ) => {
-    setPreferences((prev) => ({ ...prev, [key]: value }));
+  const handleCurrencyChange = (newCurrency: string) => {
+    setCurrency(newCurrency as 'USD' | 'EUR' | 'GBP' | 'THB');
+  };
+
+  const handleThemeChange = (newTheme: string) => {
+    setTheme(newTheme as 'light' | 'dark' | 'system');
+  };
+
+  const handleLanguageChange = (newLanguage: string) => {
+    setLanguage(newLanguage as 'en' | 'th');
   };
 
   return (
@@ -112,16 +113,14 @@ export function Settings() {
               >
                 ⚙️
               </motion.span>
-              <SplitText className="inline">Settings</SplitText>
+              <SplitText className="inline">{t("features.settings.title")}</SplitText>
             </div>
             <p
               className={`text-xl mb-8 max-w-2xl mx-auto ${
                 viewMode === "play" ? "text-white/80" : "text-gray-600"
               }`}
             >
-              {viewMode === "play"
-                ? "Command center for your financial universe — customize every aspect of your experience!"
-                : "Manage your account settings, privacy preferences, and customize your financial dashboard experience."}
+              {t("features.settings.subtitle")}
             </p>
           </div>
         </FadeIn>
@@ -145,7 +144,7 @@ export function Settings() {
               }`}
             >
               <span className="text-3xl">🔐</span>
-              Account & Security
+              {t("features.settings.security.title")}
             </h2>
 
             <div className="space-y-6">
@@ -154,12 +153,12 @@ export function Settings() {
                   <h3
                     className={`font-semibold ${viewMode === "play" ? "text-white" : "text-gray-900"}`}
                   >
-                    Two-Factor Authentication
+                    {t("features.settings.security.twoFactor")}
                   </h3>
                   <p
                     className={`text-sm ${viewMode === "play" ? "text-white/70" : "text-gray-600"}`}
                   >
-                    Extra security for your account
+                    {t("features.settings.security.twoFactorDesc")}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -469,7 +468,7 @@ export function Settings() {
               }`}
             >
               <span className="text-3xl">🎨</span>
-              Preferences
+              {t("features.settings.preferences")}
             </h2>
 
             <div className="space-y-6">
@@ -477,13 +476,11 @@ export function Settings() {
                 <label
                   className={`block font-semibold mb-2 ${viewMode === "play" ? "text-white" : "text-gray-900"}`}
                 >
-                  Currency
+                  {t("features.settings.currency")}
                 </label>
                 <select
-                  value={preferences.currency}
-                  onChange={(e) =>
-                    handlePreferenceChange("currency", e.target.value)
-                  }
+                  value={currency}
+                  onChange={(e) => handleCurrencyChange(e.target.value)}
                   className={`w-full p-3 rounded-lg border ${
                     viewMode === "play"
                       ? "bg-white/10 border-white/20 text-white"
@@ -501,22 +498,20 @@ export function Settings() {
                 <label
                   className={`block font-semibold mb-2 ${viewMode === "play" ? "text-white" : "text-gray-900"}`}
                 >
-                  Theme
+                  {t("features.settings.theme")}
                 </label>
                 <select
-                  value={preferences.theme}
-                  onChange={(e) =>
-                    handlePreferenceChange("theme", e.target.value)
-                  }
+                  value={theme}
+                  onChange={(e) => handleThemeChange(e.target.value)}
                   className={`w-full p-3 rounded-lg border ${
                     viewMode === "play"
                       ? "bg-white/10 border-white/20 text-white"
                       : "bg-white border-gray-300 text-gray-900"
                   }`}
                 >
-                  <option value="auto">Auto</option>
-                  <option value="light">Light</option>
-                  <option value="dark">Dark</option>
+                  <option value="system">{t("common.accessibility.auto")}</option>
+                  <option value="light">{t("common.accessibility.lightMode")}</option>
+                  <option value="dark">{t("common.accessibility.darkMode")}</option>
                 </select>
               </div>
 
@@ -524,13 +519,11 @@ export function Settings() {
                 <label
                   className={`block font-semibold mb-2 ${viewMode === "play" ? "text-white" : "text-gray-900"}`}
                 >
-                  Language
+                  {t("features.settings.language")}
                 </label>
                 <select
-                  value={preferences.language}
-                  onChange={(e) =>
-                    handlePreferenceChange("language", e.target.value)
-                  }
+                  value={language}
+                  onChange={(e) => handleLanguageChange(e.target.value)}
                   className={`w-full p-3 rounded-lg border ${
                     viewMode === "play"
                       ? "bg-white/10 border-white/20 text-white"
@@ -539,8 +532,6 @@ export function Settings() {
                 >
                   <option value="en">English</option>
                   <option value="th">ไทย</option>
-                  <option value="es">Español</option>
-                  <option value="fr">Français</option>
                 </select>
               </div>
             </div>
@@ -549,9 +540,9 @@ export function Settings() {
 
         {/* Settings Smart Highlights */}
         <SmartHighlights
-          highlights={settingsHighlights}
-          title="System Status"
-          subtitle="Everything about your account security and system health!"
+          highlights={getSettingsHighlights(t)}
+          title={t("features.settings.systemStatus")}
+          subtitle={t("features.settings.systemStatusDesc")}
           className="mb-12"
         />
 
